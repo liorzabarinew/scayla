@@ -3,8 +3,7 @@ title: "ארכיטקטורת SEO לשופיפיי: המדריך לקישורים
 description: "רוצים להפוך את חנות השופיפיי שלכם למקור סמכותי בעיני גוגל ו-AI? המדריך המלא לארכיטקטורת אתר, קישורים פנימיים ובניית היררכיה שמגדילה טראפיק ומכירות."
 pubDate: 2026-07-10
 coverImage: "/covers/ארכיטקטורת-seo-שופיפיי-קישורים-פנימיים-סמכות.webp"
-draft: true
-needsReview: true
+draft: false
 cluster: "SEO לחנויות שופיפיי"
 readingMinutes: 8
 demo: false
