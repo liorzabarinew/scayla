@@ -9,7 +9,16 @@ const year = new Date().getFullYear();
     <div class="cols">
       <div class="brand-col">
         <a class="logo" href="/" aria-label="Scayla · לעמוד הבית">
-          <span class="mk" aria-hidden="true">S</span> Scayla
+          <span class="mk" aria-hidden="true">
+            <svg viewBox="0 0 100 100" width="28" height="28" role="img" aria-label="Scayla">
+              <defs>
+                <linearGradient id="ring-ftr" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#211c86" /><stop offset=".5" stop-color="#5546d6" /><stop offset="1" stop-color="#8b76f2" />
+                </linearGradient>
+              </defs>
+              <circle cx="50" cy="50" r="36" fill="none" stroke="url(#ring-ftr)" stroke-width="13" stroke-linecap="round" stroke-dasharray="184 226" transform="rotate(-90 50 50)" />
+            </svg>
+          </span> Scayla
         </a>
         <p>נראות ב-Google וב-AI · אוטומטית, מהיום.<br />האפליקציה הישראלית שמכניסה את החנות שלכם לתשובות של מחר.</p>
       </div>
@@ -86,10 +95,10 @@ const year = new Date().getFullYear();
     font-weight: 800; font-size: 19px; letter-spacing: -.02em; color: var(--sc-ink);
   }
   .mk {
-    inline-size: 28px; block-size: 28px; border-radius: 8px;
-    background: var(--sc-grad); color: #fff; font-weight: 800; font-size: 15px;
+    inline-size: 28px; block-size: 28px; flex: none;
     display: grid; place-items: center;
   }
+  .mk svg { display: block; }
   .brand-col p { font-size: 13.5px; margin-block-start: 12px; max-inline-size: 34ch; }
   h3 {
     font-size: 13px; font-weight: 700; letter-spacing: .04em;

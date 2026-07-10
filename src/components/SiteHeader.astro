@@ -37,7 +37,16 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
 <header class="site-header">
   <nav class="nav wrap" aria-label="ניווט ראשי">
     <a class="logo" href="/" aria-label="Scayla · לעמוד הבית">
-      <span class="mk" aria-hidden="true">S</span>
+      <span class="mk" aria-hidden="true">
+        <svg viewBox="0 0 100 100" width="30" height="30" role="img" aria-label="Scayla">
+          <defs>
+            <linearGradient id="ring-hdr" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#211c86" /><stop offset=".5" stop-color="#5546d6" /><stop offset="1" stop-color="#8b76f2" />
+            </linearGradient>
+          </defs>
+          <circle cx="50" cy="50" r="36" fill="none" stroke="url(#ring-hdr)" stroke-width="13" stroke-linecap="round" stroke-dasharray="184 226" transform="rotate(-90 50 50)" />
+        </svg>
+      </span>
       <span>Scayla</span>
     </a>
 
@@ -160,10 +169,10 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
   }
   .logo:hover { color: var(--sc-ink); }
   .mk {
-    inline-size: 30px; block-size: 30px; border-radius: 9px;
-    background: var(--sc-grad); color: #fff; font-weight: 800;
-    display: grid; place-items: center; box-shadow: var(--sc-sh-hero);
+    inline-size: 30px; block-size: 30px; flex: none;
+    display: grid; place-items: center;
   }
+  .mk svg { display: block; }
   .navlinks { display: flex; align-items: center; gap: 22px; margin-inline-start: 10px; }
   .nl {
     font-size: 14.5px; color: var(--sc-muted); font-weight: 600;
