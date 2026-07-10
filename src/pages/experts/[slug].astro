@@ -1,0 +1,289 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { experts, TEAM_STATS, TEAM_TESTIMONIALS } from '../../data/experts';
+
+export async function getStaticPaths() {
+  return experts.map((e) => ({ params: { slug: e.slug }, props: { e } }));
+}
+
+const { e } = Astro.props;
+
+const title = `${e.name} · ${e.role} | Scayla`;
+const description = e.bioShort;
+const pageUrl = new URL(`/experts/${e.slug}`, Astro.site).href;
+const photoUrl = e.photo ? new URL(e.photo, Astro.site).href : undefined;
+
+// Person + ProfilePage JSON-LD · full E-E-A-T signal for this individual.
+const person = {
+  '@type': 'Person',
+  '@id': `${pageUrl}#person`,
+  name: e.name,
+  alternateName: e.latin,
+  jobTitle: e.roleLong,
+  description: e.bioShort,
+  ...(photoUrl && { image: photoUrl }),
+  knowsAbout: e.knowsAbout,
+  sameAs: e.sameAs,
+  url: pageUrl,
+  worksFor: { '@type': 'Organization', '@id': 'https://scayla.co.il/#organization', name: 'Scayla', url: 'https://scayla.co.il/' },
+  alumniOf: e.credentials.map((c) => ({ '@type': 'EducationalOrganization', name: c.from })),
+  hasCredential: e.credentials.map((c) => ({
+    '@type': 'EducationalOccupationalCredential',
+    name: `${c.label} · ${c.from}`,
+    credentialCategory: 'certificate',
+  })),
+};
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  name: `${e.name} · ${e.role}`,
+  url: pageUrl,
+  inLanguage: 'he',
+  mainEntity: person,
+};
+const firstName = e.name.split(' ')[0];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogType="profile"
+  ogImage={e.photo}
+  ogImageAlt={e.name}
+  breadcrumbs={[
+    { name: 'המומחים', path: '/experts' },
+    { name: e.name, path: `/experts/${e.slug}` },
+  ]}
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <article class={`prof accent-${e.accent}`}>
+    <div class="wrap">
+      <nav class="crumb" aria-label="פירורי לחם">
+        <a href="/experts">המומחים</a>
+        <span aria-hidden="true">‹</span>
+        <span>{e.name}</span>
+      </nav>
+
+      <!-- HERO · text + photo -->
+      <header class="hero">
+        <div class="hero-who">
+          <p class="kicker">המומחים · Scayla</p>
+          <h1>{e.name}</h1>
+          <p class="role">{e.roleLong}</p>
+          <div class="stats">
+            <span class="stat">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg>
+              <span class="num">{e.years}</span> שנות ניסיון
+            </span>
+            {(e.brands || []).map((b) => (
+              <span class="stat">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                {b}
+              </span>
+            ))}
+          </div>
+          <div class="tags">
+            {e.tags.map((t) => <span class="tag">{t}</span>)}
+          </div>
+        </div>
+
+        <div class="hero-photo">
+          <span class="glow" aria-hidden="true"></span>
+          {e.photo ? (
+            <img src={e.photo} alt={e.name} width="600" height="750" loading="eager" />
+          ) : (
+            <div class="photo-ph" role="img" aria-label={`תמונה · ${e.name}`}>
+              <span class="ph-letter" aria-hidden="true">{e.initial}</span>
+              <span class="ph-note">תמונה בקרוב</span>
+            </div>
+          )}
+        </div>
+      </header>
+
+      <div class="rule"></div>
+
+      <!-- BIO · credential rail + paragraphs -->
+      <section class="zone bio">
+        <p class="zone-k">קצת על {firstName}</p>
+        <div class="bio-grid">
+          <div class="cred">
+            {e.credentials.map((c) => (
+              <div class="cred-item">
+                <b>{c.label}</b>
+                <span>{c.from}</span>
+              </div>
+            ))}
+            <div class="links">
+              {e.links.map((l) => (
+                <a href={l.href} target="_blank" rel="noopener">{l.label}</a>
+              ))}
+            </div>
+          </div>
+          <div class="bio-body">
+            {e.bio.map((p) => <p>{p}</p>)}
+          </div>
+        </div>
+      </section>
+
+      <!-- EXPERTISE · 4 cards -->
+      <section class="zone">
+        <p class="zone-k">תחומי מומחיות</p>
+        <div class="expertise">
+          {e.expertise.map((x, i) => (
+            <div class="xcard">
+              <div class="n">{String(i + 1).padStart(2, '0')}</div>
+              <h3>{x.title}</h3>
+              <p>{x.text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- PROOF · testimonials + team stats -->
+      <section class="zone">
+        <div class="proof-band">
+          <div class="proof-head">
+            <div>
+              <h2>מה אומרים על העבודה</h2>
+              <p>עדויות אמיתיות על עבודת הצוות שמאחורי Scayla · האפליקציה חדשה, הניסיון לא.</p>
+            </div>
+            <div class="proof-stats">
+              {TEAM_STATS.map((s) => (
+                <div class="pstat"><b class="num">{s.value}</b><span>{s.label}</span></div>
+              ))}
+            </div>
+          </div>
+          <div class="quotes">
+            {TEAM_TESTIMONIALS.map((q) => (
+              <figure class="quote">
+                <blockquote>{q.text}</blockquote>
+                <figcaption><b>{q.name}</b> · {q.role}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="zone cta-zone">
+        <CtaBand
+          title="אותם אנשים · עכשיו בתוך אפליקציה."
+          body="התקינו את Scayla וקבלו אבחון נראות, או קבעו דמו ונעבור יחד על החנות שלכם."
+        />
+      </section>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .prof .wrap { max-inline-size: 1160px; }
+  .crumb { font-size: 13px; color: var(--sc-muted); display: flex; gap: 8px; padding-block: 10px 0; }
+  .crumb a { color: var(--sc-muted); }
+  .crumb a:hover { color: var(--sc-accent-text); }
+  .crumb span[aria-hidden] { color: var(--sc-disabled); }
+
+  /* ── Hero · text 1.05fr / photo .95fr ── */
+  .hero {
+    display: grid; grid-template-columns: 1.05fr .95fr; gap: min(6vw, 64px);
+    align-items: center; padding-block: clamp(28px, 4vw, 44px) clamp(22px, 3vw, 30px);
+  }
+  .kicker { font-size: 12.5px; font-weight: 800; letter-spacing: .14em; color: var(--sc-accent-text); margin-block-end: 16px; }
+  .hero-who h1 { font-size: clamp(42px, 6vw, 76px); font-weight: 900; letter-spacing: -.03em; line-height: 1.02; color: var(--sc-ink); }
+  .role { font-size: clamp(16px, 2vw, 19px); font-weight: 600; color: var(--sc-muted); margin-block-start: 14px; }
+  .stats { display: flex; gap: 10px; flex-wrap: wrap; margin-block-start: 26px; }
+  .stat {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--sc-card); border: 1px solid var(--sc-hair);
+    border-radius: var(--sc-r-pill); padding: 9px 16px;
+    font-size: 13.5px; font-weight: 700; color: var(--sc-ink);
+    box-shadow: var(--sc-sh-subtle);
+  }
+  .stat svg { color: var(--sc-accent-text); flex: none; }
+  .stat .num { font-weight: 800; }
+  .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-block-start: 16px; }
+  .tag { background: var(--sc-wash); color: var(--sc-accent-text); border-radius: var(--sc-r-pill); padding: 6px 14px; font-size: 12.5px; font-weight: 700; }
+
+  .hero-photo { position: relative; }
+  .hero-photo .glow {
+    position: absolute; inset: -22px; z-index: 0; border-radius: 40px;
+    background: var(--sc-grad); opacity: .22; filter: blur(28px);
+  }
+  .accent-gold .glow { background: linear-gradient(135deg, var(--sc-accent), var(--accent-gold)); }
+  .hero-photo img,
+  .hero-photo .photo-ph {
+    position: relative; z-index: 1; inline-size: 100%; aspect-ratio: 4 / 5;
+    object-fit: cover; object-position: top; border-radius: 28px;
+    box-shadow: 0 30px 70px -28px rgba(85, 70, 214, .4), 0 2px 8px rgba(29, 29, 31, .08);
+  }
+  .photo-ph {
+    display: grid; place-items: center; align-content: center; gap: 6px;
+    background: var(--sc-grad); color: #fff;
+  }
+  .accent-gold .photo-ph { background: linear-gradient(135deg, var(--sc-accent), var(--accent-gold)); }
+  .ph-letter { font-weight: 900; font-size: clamp(64px, 10vw, 104px); line-height: 1; }
+  .ph-note { font-size: 12px; font-weight: 700; opacity: .9; letter-spacing: .03em; }
+
+  .rule { block-size: 1px; background: var(--sc-div); }
+
+  /* ── Zones ── */
+  .zone { padding-block: clamp(30px, 4vw, 40px); }
+  .zone-k { font-size: 12.5px; font-weight: 800; letter-spacing: .08em; color: var(--sc-mv); margin-block-end: 18px; }
+
+  .bio-grid { display: grid; grid-template-columns: 200px 1fr; gap: clamp(28px, 4vw, 48px); align-items: start; }
+  .cred { border-top: 2px solid var(--sc-accent); padding-block-start: 18px; display: grid; gap: 16px; }
+  .cred-item b { display: block; font-size: 14px; font-weight: 700; color: var(--sc-ink); margin-block-end: 3px; }
+  .cred-item span { font-size: 13.5px; color: var(--sc-muted); line-height: 1.5; }
+  .cred .links { display: flex; gap: 18px; flex-wrap: wrap; font-size: 14px; font-weight: 700; }
+  .cred .links a { color: var(--sc-accent-text); }
+  .cred .links a:hover { color: var(--sc-deep); }
+  :global([data-theme='dark']) .cred .links a:hover { color: var(--sc-lav); }
+  .bio-body p { font-size: clamp(15.5px, 1.8vw, 17px); line-height: 1.75; font-weight: 400; color: var(--sc-ink); }
+  .bio-body p + p { margin-block-start: 16px; }
+
+  .expertise { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .xcard {
+    background: var(--sc-card); border: 1px solid var(--sc-hair); border-radius: 18px;
+    padding: 22px 20px; box-shadow: var(--sc-sh-subtle);
+    transition: transform .2s var(--sc-ease), box-shadow .2s var(--sc-ease);
+  }
+  .xcard:hover { transform: translateY(-4px); box-shadow: var(--sc-sh-lift); }
+  .xcard .n {
+    inline-size: 36px; block-size: 36px; border-radius: 11px; background: var(--sc-wash);
+    color: var(--sc-accent-text); display: grid; place-items: center; font-weight: 800;
+    font-size: 14px; margin-block-end: 14px; font-variant-numeric: tabular-nums;
+  }
+  .xcard h3 { font-size: 15.5px; font-weight: 800; color: var(--sc-ink); margin-block-end: 7px; }
+  .xcard p { font-size: 13px; color: var(--sc-muted); line-height: 1.6; }
+
+  .proof-band {
+    background: var(--sc-wash); border: 1px solid var(--sc-soft); border-radius: 24px;
+    padding: clamp(28px, 4vw, 40px) clamp(24px, 4vw, 48px);
+  }
+  .proof-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; margin-block-end: 28px; }
+  .proof-head h2 { font-size: clamp(22px, 2.6vw, 26px); font-weight: 800; letter-spacing: -.01em; color: var(--sc-ink); }
+  .proof-head > div > p { font-size: 14px; color: var(--sc-mv); margin-block-start: 6px; max-inline-size: 420px; }
+  .proof-stats { display: flex; gap: clamp(18px, 3vw, 28px); }
+  .pstat b { display: block; font-size: 26px; font-weight: 800; color: var(--sc-accent-text); font-variant-numeric: tabular-nums; }
+  .pstat span { font-size: 12px; color: var(--sc-mv); font-weight: 600; }
+  .quotes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .quote { background: var(--sc-card); border-radius: 16px; padding: 22px; box-shadow: var(--sc-sh-subtle); margin: 0; }
+  .quote blockquote { font-size: 14.5px; line-height: 1.6; font-weight: 500; color: var(--sc-ink); margin: 0; }
+  .quote figcaption { margin-block-start: 14px; font-size: 12.5px; color: var(--sc-muted); }
+  .quote figcaption b { color: var(--sc-ink); font-weight: 700; }
+
+  .cta-zone { padding-block-end: clamp(28px, 4vw, 48px); }
+
+  /* ── Responsive ── */
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; gap: 28px; }
+    .hero-photo { max-inline-size: 380px; }
+    .bio-grid { grid-template-columns: 1fr; gap: 22px; }
+    .expertise { grid-template-columns: repeat(2, 1fr); }
+    .quotes { grid-template-columns: 1fr; max-inline-size: 520px; }
+  }
+  @media (max-width: 520px) {
+    .expertise { grid-template-columns: 1fr; }
+  }
+</style>

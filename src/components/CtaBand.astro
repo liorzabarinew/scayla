@@ -1,0 +1,44 @@
+---
+/**
+ * Final gradient CTA band · the one loud surface at the end of a page.
+ * Uses the shared InstallCtaPair: prominent "התקינו ב-Shopify" (white on the
+ * gradient) + a calm "קבעו דמו" that pulls from DEMO_URL and opens a new tab.
+ */
+import InstallCtaPair from './InstallCtaPair.astro';
+
+interface Props {
+  title: string;
+  body?: string;
+  demoLabel?: string;
+}
+const { title, body, demoLabel = 'קבעו דמו' } = Astro.props;
+---
+
+<div class="cta-band">
+  <h2>{title}</h2>
+  {body && <p>{body}</p>}
+  <div class="row">
+    <InstallCtaPair center variant="onGradient" demoLabel={demoLabel} />
+  </div>
+</div>
+
+<style>
+  .cta-band {
+    background: var(--sc-grad-rich);
+    border-radius: 24px;
+    padding: clamp(36px, 6vw, 64px) 28px;
+    color: #fff;
+    box-shadow: 0 24px 50px -22px rgba(33, 28, 134, .6);
+    text-align: center;
+  }
+  h2 { color: #fff; }
+  p {
+    color: rgba(255, 255, 255, .88);
+    max-inline-size: 52ch;
+    margin: 14px auto 0;
+  }
+  .row {
+    display: flex; justify-content: center;
+    margin-block-start: 28px;
+  }
+</style>

@@ -1,0 +1,1124 @@
+---
+/**
+ * ═══ Homepage · "The Answer Engine" (v2-bold, promoted to canonical /) ═══
+ * Editorial-tech, daring layout, Apple-clean components:
+ * · strong (but light) Picktime-style gradient hero surface
+ * · giant editorial headline, offset to the inline-start · not centered
+ * · the REAL dashboard tilted in 3D perspective, OVERLAPPING into the next section
+ * · a floating live-AI-answer card (brand green / absent red) escaping the mockup
+ * · a diagonal-cut full-bleed gradient band with an ANIMATED RANKING CLIMB ·
+ *   "החנות שלכם" rises 3 → 1 on scroll (reduced-motion → final state)
+ * · an unequal bento for the specialized team ("עשרות עובדים") + a rotated sharp "ticket"
+ * · soft gold (--accent-gold) = the warm complementary accent: primary CTA, "בקרוב"/live badges
+ *   (green = positive only, red = negative only · gold is decorative-safe and distinct from both)
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import DashboardMock from '../components/DashboardMock.astro';
+import InstallCtaPair from '../components/InstallCtaPair.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import { homeFaq } from '../data/faq';
+
+// Meta per Noy (question 3): title ≤60 chars, description ≤130 chars
+const title = 'Scayla · נראות ב-Google וב-AI לחנויות שופיפיי';
+const description =
+  'מודדים אם ChatGPT מצטט את החנות שלכם, משווים למתחרים בעברית, וסוגרים את הפער אוטומטית. 14 יום ניסיון.';
+
+// Schema per Noy (question 9): Organization + WebSite (with SearchAction) on home.
+// SoftwareApplication + the 3 Offers live on /pricing. FAQPage lives on /faq.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': 'https://scayla.co.il/#org',
+      name: 'Scayla',
+      url: 'https://scayla.co.il',
+      logo: 'https://scayla.co.il/favicon.svg',
+      founder: [
+        { '@type': 'Person', name: 'ליאור צברי' },
+        { '@type': 'Person', name: 'נוי קייטל' },
+      ],
+    },
+    {
+      '@type': 'WebSite',
+      '@id': 'https://scayla.co.il/#website',
+      name: 'Scayla',
+      url: 'https://scayla.co.il',
+      inLanguage: 'he',
+      publisher: { '@id': 'https://scayla.co.il/#org' },
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: {
+          '@type': 'EntryPoint',
+          urlTemplate: 'https://scayla.co.il/magazine?q={search_term_string}',
+        },
+        'query-input': 'required name=search_term_string',
+      },
+    },
+  ],
+};
+
+const rotWords = ['נעלי ריצה', 'מנורות לסלון', 'שמלת ערב', 'מזון לכלבים', 'מתנה ללידה'];
+
+// the ranking climb · DOM order = FINAL ranking (no-JS / reduced-motion state).
+// JS rewinds to startSlot/startPct, then plays the overtake on scroll-into-view.
+// bar width = pct · 2.4 so the leader nearly fills the track.
+const board = [
+  { name: 'החנות שלכם', self: true, finalPct: 34, startPct: 12, startSlot: 2, slot: 0 },
+  { name: 'מתחרה אחד', self: false, finalPct: 29, startPct: 29, startSlot: 0, slot: 1 },
+  { name: 'מתחרה שתיים', self: false, finalPct: 22, startPct: 22, startSlot: 1, slot: 2 },
+];
+
+// the specialized team · beyond the three featured workers (no "סוכן" anywhere)
+const team = [
+  { name: 'מומחה SEO', desc: 'מילות מפתח שמנצחות בגוגל', icon: 'seo' },
+  { name: 'QA', desc: 'כל שינוי נבדק לפני שהוא עולה', icon: 'qa' },
+  { name: 'הגהה', desc: 'אפס שגיאות כתיב ופיסוק', icon: 'proof' },
+  { name: 'עורך לשוני', desc: 'עברית ילידית, משפט אחר משפט', icon: 'editor' },
+  { name: 'אנליסט נתונים', desc: 'הופך נתונים להחלטות', icon: 'data' },
+  { name: 'עיצוב', desc: 'כל עמוד נראה מותג', icon: 'design' },
+  { name: 'חווית משתמש', desc: 'מסע קנייה חלק שממיר', icon: 'ux' },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <!-- ═══ HERO · gradient surface, editorial type, tilted overlapping product ═══ -->
+  <section class="hero">
+    <div class="hero-in">
+      <h1>
+        הקידום האורגני<br />
+        של החנות שלכם.<br />
+        <span class="grad-word">אוטומטי. מהיום.</span>
+      </h1>
+      <div class="hero-side">
+        <p class="sub">
+          מתחברת ל-Shopify שלכם בקליק, לומדת את החנות לעומק, ומקדמת אתכם גם
+          בגוגל וגם במנועי AI. בלי סוכנות יקרה, בלי מומחים <strong>ובמחיר נמוך של עד
+          <span class="num">80%</span> מריטיינר ממוצע.</strong>
+        </p>
+        <InstallCtaPair gold />
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══ SHOWCASE · the REAL dashboard · its own generous section, centered & large ═══ -->
+  <section class="showcase" aria-label="הדשבורד של Scayla">
+    <div class="stage">
+      <div class="tilt-wrap fade-up" data-parallax>
+        <div class="tilt">
+          <DashboardMock />
+        </div>
+        <!-- floating live answer · green = you exist, red = the gap -->
+        <aside class="live" aria-label="דוגמה לתשובת AI חיה">
+          <p class="live-top"><span class="lv-dot" aria-hidden="true"></span>תשובה חיה · Gemini</p>
+          <p class="live-q">"איפה הכי כדאי לקנות מנורות מעוצבות?"</p>
+          <p class="live-a">אפשרות מצוינת היא <span class="hl-grn">החנות שלכם</span>, עם מדריכי קנייה מפורטים ודירוגים גבוהים, וגם <span class="hl-red">מתחרה אחד</span> עם מבחר דומה.</p>
+          <p class="live-b">Scayla שמה אתכם בתשובה · ועוקבת שתישארו</p>
+        </aside>
+        <!-- floating content-writer card · the machine writing an article, live -->
+        <aside class="writer" aria-label="דוגמה לכתיבת מאמר אוטומטית">
+          <p class="wr-top">
+            <span class="wr-ic" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l4.5-1L18 9.5a2.1 2.1 0 0 0-3-3L5.5 16z"/><path d="M14 6.5l3 3"/></svg>
+            </span>
+            כותבת התוכן · עובדת עכשיו<span class="lv-dot" aria-hidden="true"></span>
+          </p>
+          <p class="wr-t">כותבת מאמר · "המדריך המלא למנורות לסלון"</p>
+          <p class="wr-line">בוחרים גובה תלייה לפי פינת האוכל, ומתאימים גוון אור לסלון<span class="wr-caret" aria-hidden="true"></span></p>
+          <span class="wr-skel" aria-hidden="true"><i style="--w:84%"></i><i style="--w:58%"></i></span>
+          <p class="wr-b">הטיוטה תחכה לאישור שלכם · לא עולה בלעדיכם</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ THE QUESTION · editorial rotating marquee ═══ -->
+  <section id="how" class="q-sec">
+    <div class="wrap q-grid">
+      <div class="q-text">
+        <p class="q-kicker fade-up">כל קנייה מתחילה היום באותו משפט</p>
+        <p class="q-line fade-up" aria-live="off">
+          "איפה הכי כדאי לקנות
+          <span class="q-tail"><span class="rot" data-rot>
+            {rotWords.map((w, i) => <b class:list={[{ on: i === 0 }]}>{w}</b>)}
+          </span><span class="qm">?"</span></span>
+        </p>
+        <p class="q-intro fade-up">
+          Scayla לא רק בודקת אם אתם מופיעים בתשובה · היא גם עושה את העבודה שתכניס
+          אתכם אליה. כותבת לכם מאמר, משנה כותרות, מתקנת עמודים ועוד · הכל בעברית של
+          הקונים שלכם, והכל מחכה לאישור שלכם. לא סתם מכונת סריקה · גם הכוח שמזיז.
+        </p>
+      </div>
+      <div class="q-foot fade-up">
+        <div class="engines" role="list" aria-label="מנועי ה-AI הנמדדים">
+          <p class="eng-lead">המנועים שאנחנו מודדים</p>
+          <span class="eng is-live" role="listitem">
+            <span class="eng-logo" aria-hidden="true">
+              {/* brand logos — replace with official assets before launch */}
+              {/* OpenAI / ChatGPT mark */}
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.28 9.82a5.98 5.98 0 0 0-.52-4.91 6.05 6.05 0 0 0-6.51-2.9A6 6 0 0 0 4.98 4.18a5.98 5.98 0 0 0-3.99 2.9 6.05 6.05 0 0 0 .74 7.1 5.98 5.98 0 0 0 .51 4.91 6.05 6.05 0 0 0 6.52 2.9A5.98 5.98 0 0 0 13.26 24a6.06 6.06 0 0 0 5.77-4.2 5.99 5.99 0 0 0 4-2.9 6.06 6.06 0 0 0-.75-7.08Zm-9.02 12.6a4.48 4.48 0 0 1-2.88-1.04l.14-.08 4.78-2.76a.79.79 0 0 0 .39-.68v-6.74l2.02 1.17a.07.07 0 0 1 .04.05v5.58a4.5 4.5 0 0 1-4.49 4.49ZM3.6 18.3a4.47 4.47 0 0 1-.54-3.01l.14.08 4.78 2.76c.24.14.54.14.78 0l5.84-3.37v2.33a.08.08 0 0 1-.03.06L9.74 20a4.5 4.5 0 0 1-6.14-1.65ZM2.34 7.9a4.48 4.48 0 0 1 2.34-1.97v5.68c0 .28.15.54.39.68l5.83 3.36-2.02 1.17a.08.08 0 0 1-.07 0l-4.83-2.79A4.5 4.5 0 0 1 2.34 7.9Zm16.6 3.86-5.84-3.37 2.02-1.16a.08.08 0 0 1 .07 0l4.83 2.78a4.49 4.49 0 0 1-.68 8.1v-5.67a.79.79 0 0 0-.4-.68Zm2.01-3.02-.14-.09-4.77-2.78a.78.78 0 0 0-.79 0L9.42 9.24V6.9a.07.07 0 0 1 .03-.06l4.83-2.79a4.5 4.5 0 0 1 6.68 4.66ZM8.32 12.87 6.3 11.7a.08.08 0 0 1-.04-.06V6.07a4.5 4.5 0 0 1 7.37-3.45l-.14.08L8.71 5.46a.79.79 0 0 0-.4.68l.01 6.73Zm1.1-2.36 2.6-1.5 2.6 1.5v3l-2.6 1.5-2.6-1.5v-3Z"/></svg>
+            </span>
+            <span class="eng-nm">ChatGPT</span>
+            <i class="live-dot" aria-hidden="true"></i>
+            <span class="eng-state live-txt">מנוטר</span>
+          </span>
+          <span class="eng is-live" role="listitem">
+            <span class="eng-logo" aria-hidden="true">
+              {/* brand logos — replace with official assets before launch */}
+              {/* Google Gemini spark */}
+              <svg viewBox="0 0 24 24" fill="url(#gemGrad)" aria-hidden="true"><defs><linearGradient id="gemGrad" x1="2" y1="20" x2="22" y2="4" gradientUnits="userSpaceOnUse"><stop stop-color="#1C7DFF"/><stop offset="0.52" stop-color="#7B5CFF"/><stop offset="1" stop-color="#D96570"/></linearGradient></defs><path d="M12 0c.34 4.42 1.72 7.62 4.13 9.87C18.38 12.28 21.58 13.66 24 12c-4.42.34-7.62 1.72-9.87 4.13C11.72 18.38 10.34 21.58 12 24c-.34-4.42-1.72-7.62-4.13-9.87C5.62 11.72 2.42 10.34 0 12c4.42-.34 7.62-1.72 9.87-4.13C12.28 5.62 13.66 2.42 12 0Z"/></svg>
+            </span>
+            <span class="eng-nm">Gemini</span>
+            <i class="live-dot" aria-hidden="true"></i>
+            <span class="eng-state live-txt">מנוטר</span>
+          </span>
+          <span class="eng soon" role="listitem">
+            <span class="eng-logo" aria-hidden="true">
+              {/* brand logos — replace with official assets before launch */}
+              {/* Anthropic / Claude mark */}
+              <svg viewBox="0 0 24 24" fill="#D97757" aria-hidden="true"><path d="M4.7 15.9 9 13.5l.07-.2-.07-.12H8.8l-.68-.04-2.32-.06-2.01-.08-1.95-.11-.49-.11L1.4 12l.05-.3.41-.28.59.05 1.3.09 1.95.13 1.42.09 2.1.21h.33l.05-.13-.11-.08-.09-.08-2-1.36-2.17-1.43-1.14-.83-.61-.42-.31-.39-.13-.86.56-.61.75.05.19.06 1.29.53.98.76 1.28.94.9.66.1.08.05-.03.02-.02-.05-.09-.42-.75-1.42-2.46-1.51-2.5-.67-1.08-.18-.65a3.1 3.1 0 0 1-.11-.77l.64-.86L4 .28l.83.11.35.3.51 1.18 1.86 4.09 1.46 3.16.42.85.23.79.08.24h.15v-.14l.12-1.62.22-1.98.22-2.55.07-.72.36-.86.71-.47.56.27.46.66-.06.42-.28 1.8-.53 2.75-.35 1.84h.2l.24-.23.96-1.27 1.62-2.02.71-.8.84-.9.53-.42h1l.75 1.1-.34 1.14-1.04 1.32-.87 1.12-1.24 1.67-.78 1.34.07.11.19-.02 2.83-.6 1.53-.28 1.83-.32.83.4.09.39-.33.8-1.95.48-2.29.46-3.42.8-.04.03.05.06 1.53.14.66.04h1.61l3 .22.79.52.47.63-.08.48-1.21.62-1.63-.39-3.8-.9-1.31-.33h-.18v.11l1.09 1.06 2 1.8 2.5 2.33.13.58-.32.46-.34-.05-2.2-1.65-.84-.75-1.92-1.61h-.13v.17l.44.65 2.34 3.52.12 1.08-.17.35-.6.22-.67-.13-1.37-1.93-1.42-2.17-1.14-1.95-.14.08-.68 7.28-.32.37-.73.28-.61-.46-.32-.75.32-1.48.39-1.93.32-1.53.28-1.9.17-.63-.01-.04-.14.01-1.43 1.96-2.17 2.94-1.72 1.83-.41.17-.71-.37.07-.66.4-.58 2.36-3 1.42-1.86.92-1.07-.01-.16h-.05L6.25 18.6l-1.55.2-.66-.62.08-1.02.31-.33 2.6-1.78Z"/></svg>
+            </span>
+            <span class="eng-nm">Claude</span>
+            <span class="soon-tag">בקרוב</span>
+          </span>
+          <span class="eng soon" role="listitem">
+            <span class="eng-logo" aria-hidden="true">
+              {/* brand logos — replace with official assets before launch */}
+              {/* Perplexity mark */}
+              <svg viewBox="0 0 24 24" fill="none" stroke="#20808D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.2 19 8v8l-7 4.8L5 16V8l7-4.8Z"/><path d="M12 3.2v17.6M5 8l7 4.8L19 8M5 16l7-4.8 7 4.8"/></svg>
+            </span>
+            <span class="eng-nm">Perplexity</span>
+            <span class="soon-tag">בקרוב</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ THE CLIMB · diagonal full-bleed gradient, your store rises 3 → 1 ═══ -->
+  <section class="race-sec">
+    <div class="wrap race-grid">
+      <div class="race-copy">
+        <p class="r-kicker">מרוץ נתח-הקול</p>
+        <h2>על כל שאלה יש מרוץ.<br />Scayla מביאה אתכם ראשונים.</h2>
+        <p class="r-sub">
+          כשקונה שואל "איפה כדאי לקנות", גוגל וה-AI בוחרים שם אחד או שניים · וכל
+          השאר נשארים בחוץ. זה מה שקורה, וזה בדיוק מה ש-Scayla פותרת: היא מודדת
+          איפה אתם מול המתחרים האמיתיים שלכם, ואז מטפסת אתכם לראש · שאלה אחר שאלה.
+        </p>
+        <div class="r-stat">
+          <span class="r-num num"><b data-count="34">34</b>%</span>
+          <span class="r-lbl">מהתשובות כבר מזכירות אתכם · <b class="num">▲ +6</b> מאז ההתקנה</span>
+        </div>
+      </div>
+
+      <div class="climb" data-climb>
+        <div class="lanes" aria-hidden="true">
+          <span class="num">1</span><span class="num">2</span><span class="num">3</span>
+        </div>
+        <ol class="board">
+          {board.map((r) => (
+            <li
+              class:list={['rb', { self: r.self }]}
+              style={`--slot:${r.slot}; --pct:${(r.finalPct * 2.4).toFixed(1)}%; --d:${r.startSlot * 140}ms`}
+              data-start-slot={r.startSlot}
+              data-start-pct={r.startPct}
+              data-final-pct={r.finalPct}
+            >
+              <span class="rb-name">
+                <span class="rb-nm">{r.name}{r.self && <em>אתם</em>}</span>
+                {r.self && (
+                  <span class="rank-badge">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+                    מקום <b class="num">1</b>
+                  </span>
+                )}
+              </span>
+              <span class="rb-track"><i></i></span>
+              <span class="rb-val num"><b data-val>{r.finalPct}</b>%</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ THE MACHINE · unequal bento ═══ -->
+  <section id="features" class="bento-sec">
+    <div class="wrap">
+      <div class="b-head fade-up">
+        <p class="q-kicker">המכונה</p>
+        <h2 class="b-big"><span class="tens">תכירו</span> את הצוות<br />שלא ישן.</h2>
+        <p class="b-sub b-lead">בודק, מתקן, מעדכן · הכל מסביב לשעון.</p>
+        <p class="b-sub b-choice">אתם בוחרים · לתת לצוות לעבוד עצמאית, או לאשר כל פעולה לפני שהיא יוצאת.</p>
+      </div>
+
+      <div class="bento">
+        <!-- content writer · the big cell -->
+        <article class="cell cell-writer fade-up">
+          <div class="c-top">
+            <span class="c-ic" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4.5-1L18 9.5a2.1 2.1 0 0 0-3-3L5.5 16z"/><path d="M14 6.5l3 3"/></svg>
+            </span>
+            <h3>כותב התוכן</h3>
+          </div>
+          <p class="c-p">מאמרים ו-FAQ מבוססי מחקר, בעברית ילידית שה-AI אוהב לצטט · בדיוק בשאלות שבהן נעדרתם.</p>
+          <div class="draft" aria-hidden="true">
+            <p class="d-t">מדריך בחירת נעלי ריצה 2026</p>
+            <span class="d-l" style="--w:96%"></span>
+            <span class="d-l" style="--w:88%"></span>
+            <span class="d-l" style="--w:71%"></span>
+            <span class="d-badge">טיוטה מוכנה · ממתינה לאישור</span>
+          </div>
+        </article>
+
+        <!-- researcher -->
+        <article class="cell cell-research fade-up">
+          <div class="c-top">
+            <span class="c-ic" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg>
+            </span>
+            <h3>החוקרת</h3>
+          </div>
+          <p class="c-p">סורקת תשובות AI ודירוגי גוגל ומזהה איפה המתחרים לוקחים לכם קונים.</p>
+          <p class="c-out"><b class="num">8</b> מילות מפתח צעד מעמוד 1</p>
+        </article>
+
+        <!-- technical · the rotated sharp ticket -->
+        <article class="cell cell-tech fade-up">
+          <div class="c-top">
+            <span class="c-ic" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a3.5 3.5 0 0 0-4.9 4.2L4 16.3V20h3.7l5.6-5.6a3.5 3.5 0 0 0 4.2-4.9l-2.5 2.5-2.1-2.1z"/></svg>
+            </span>
+            <h3>טכני</h3>
+          </div>
+          <p class="c-p">סכמות, מטא ותיקוני 301 · בלי שתגעו בקוד.</p>
+          <p class="c-out fix"><b class="num">5</b> תיקוני 404 מוכנים <span class="ok" aria-hidden="true">✓</span></p>
+        </article>
+
+        <!-- the rest of the team · seven more specialists -->
+        <article class="cell cell-team fade-up">
+          <p class="tm-k">ועוד בצוות · כל אחד מומחה בתחום אחד</p>
+          <div class="tm-grid">
+            {team.map((t) => (
+              <div class="tm">
+                <span class="tm-ic" aria-hidden="true">
+                  {t.icon === 'seo' && (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-9"/><path d="M15 6h6v6"/></svg>
+                  )}
+                  {t.icon === 'qa' && (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5.2c0 4.4-2.9 7.4-7 8.8-4.1-1.4-7-4.4-7-8.8V6z"/><path d="M9 12l2 2 4-4.5"/></svg>
+                  )}
+                  {t.icon === 'proof' && (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h12M4 11h8"/><path d="M13 16l2.5 2.5L20 14"/></svg>
+                  )}
+                  {t.icon === 'editor' && (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10.5 5 8 4.5 4 4.5v13c4 0 6.5.5 8 2 1.5-1.5 4-2 8-2v-13c-4 0-6.5.5-8 2z"/><path d="M12 6.5v13"/></svg>
+                  )}
+                  {t.icon === 'data' && (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20v-7M12 20V5M19 20v-10"/></svg>
+                  )}
+                  {t.icon === 'design' && (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="8.5" r="4.5"/><rect x="12.5" y="12.5" width="7.5" height="7.5" rx="1.5"/></svg>
+                  )}
+                  {t.icon === 'ux' && (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 4.5l14 6.5-6.2 1.8L9.5 19z"/></svg>
+                  )}
+                </span>
+                <b>{t.name}</b>
+                <small>{t.desc}</small>
+              </div>
+            ))}
+          </div>
+        </article>
+
+        <!-- proof · counters -->
+        <article class="cell cell-proof fade-up">
+          <p class="pr-k">מה המכונה כבר עשתה בחנות אחת · 90 יום</p>
+          <div class="pr-grid">
+            <div class="pr"><b class="num" data-count="18">18</b><span>מאמרים חיים</span></div>
+            <div class="pr"><b class="num" data-count="47">47</b><span>מוצרים שופרו</span></div>
+            <div class="pr"><b class="num" data-count="12">12</b><span>תיקוני 301</span></div>
+            <div class="pr big"><b class="num">+<i data-count="28">28</i></b><span>נק' נראות ב-AI</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FAQ · moved to the home since it left the nav ═══ -->
+  <section id="faq" class="faq-sec">
+    <div class="wrap narrow-faq">
+      <div class="faq-head fade-up">
+        <p class="q-kicker">שאלות נפוצות</p>
+        <h2 class="faq-h2">מה שרציתם לדעת · תשובות ישרות</h2>
+        <p class="faq-lead">לא מצאתם תשובה? <a href="/faq">כל השאלות כאן</a> · או <a href="/contact">דברו איתנו</a>.</p>
+      </div>
+      <div class="fade-up">
+        <FaqAccordion items={homeFaq} schema={true} />
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FINAL · editorial close ═══ -->
+  <section class="fin">
+    <div class="wrap">
+      <p class="fin-k fade-up">ההמלצות של מחר נבנות היום</p>
+      <p class="fin-h fade-up">כשה-AI ממליץ עליכם, הלקוחות מגיעים מוכנים לקנות<span class="dot-accent">.</span></p>
+      <div class="fin-cta fade-up">
+        <InstallCtaPair center gold />
+      </div>
+      <p class="fine center fade-up">אבחון חינם · חיוב דרך Shopify · ביטול בכל עת</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hasIO = 'IntersectionObserver' in window;
+
+  /* ── dashboard "loads" on scroll · gauge arc + staggered count-ups ──
+     The numbers count UP from 0 to illustrate results rising. Springy ease-out,
+     staggered. Reduced-motion / no-IO → final values shown immediately. */
+  const dm = document.querySelector<HTMLElement>('.dm');
+  if (dm) {
+    const gnum = dm.querySelector<HTMLElement>('[data-dm-gauge-num]');
+    // every other rising number in the mockup (visits, analysis %, ▲+6, +18%)
+    const dmCounts = Array.from(dm.querySelectorAll<HTMLElement>('[data-dm-count]'));
+    const fmt = (el: HTMLElement, v: number) =>
+      el.hasAttribute('data-group') ? v.toLocaleString('en-US') : String(v);
+    // near-target start so a counter caught mid-scroll never shows a big "0"
+    const nearStart = (to: number) => Math.max(0, Math.min(to - 1, Math.round(to * 0.62)));
+
+    const animateCount = (el: HTMLElement, from: number, to: number, dur: number, delay: number) => {
+      const t0 = performance.now() + delay;
+      const tick = (t: number) => {
+        if (t < t0) { requestAnimationFrame(tick); return; }
+        const p = Math.min(1, (t - t0) / dur);
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = fmt(el, Math.round(from + (to - from) * eased));
+        if (p < 1) requestAnimationFrame(tick);
+        else el.textContent = fmt(el, to);
+      };
+      requestAnimationFrame(tick);
+    };
+
+    if (reduce || !hasIO) {
+      dm.classList.add('in');
+      // final values already in the DOM · nothing to reset
+    } else {
+      // rewind to near-target start values (never 0)
+      const gTarget = Number(dm.querySelector<HTMLElement>('[data-dm-gauge]')?.dataset.target || '34');
+      if (gnum) gnum.textContent = String(nearStart(gTarget));
+      dmCounts.forEach((el) => { el.textContent = fmt(el, nearStart(Number(el.dataset.to || '0'))); });
+
+      let done = false;
+      const settle = () => {
+        done = true;
+        if (gnum) gnum.textContent = String(gTarget);
+        dmCounts.forEach((el) => { el.textContent = fmt(el, Number(el.dataset.to || '0')); });
+        dm.classList.add('in');
+      };
+
+      const io = new IntersectionObserver((es) => {
+        es.forEach((e) => {
+          if (!e.isIntersecting || done) return;
+          done = true;
+          io.disconnect();
+          window.clearTimeout(fallbackT);
+          dm.classList.add('in'); // fires arc + progress bar (CSS)
+
+          // gauge headline · near-target → 34 over 1300ms (matches the arc)
+          if (gnum) {
+            const gFrom = nearStart(gTarget);
+            const t0 = performance.now();
+            const tick = (t: number) => {
+              const p = Math.min(1, (t - t0) / 1300);
+              gnum.textContent = String(Math.round(gFrom + (gTarget - gFrom) * (1 - Math.pow(1 - p, 3))));
+              if (p < 1) requestAnimationFrame(tick);
+              else gnum.textContent = String(gTarget);
+            };
+            requestAnimationFrame(tick);
+          }
+
+          // the rest · staggered so results appear to rise one after another
+          dmCounts.forEach((el, i) => {
+            const to = Number(el.dataset.to || '0');
+            animateCount(el, nearStart(to), to, 1100, 220 + i * 160);
+          });
+        });
+      }, { threshold: 0.2 });
+      io.observe(dm);
+      // guaranteed settle-to-final if the observer never fires
+      const fallbackT = window.setTimeout(() => { if (!done) { io.disconnect(); settle(); } }, 4000);
+    }
+  }
+
+  /* ── subtle hero parallax · transform only, rAF-throttled ── */
+  const par = document.querySelector<HTMLElement>('[data-parallax]');
+  if (par && !reduce) {
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const y = Math.min(window.scrollY, 700);
+        par.style.setProperty('--py', `${y * -0.045}px`);
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  /* ── rotating question word ──
+     The width is always fitted to the CURRENT word (so the glued "?" hugs it);
+     the rotation itself runs only when motion is allowed. */
+  const rot = document.querySelector<HTMLElement>('[data-rot]');
+  if (rot) {
+    const words = Array.from(rot.querySelectorAll('b'));
+    let i = 0;
+    const fit = () => rot.style.setProperty('--rw', `${words[i].offsetWidth}px`);
+    rot.classList.add('managed');
+    fit();
+    window.addEventListener('resize', fit, { passive: true });
+    if (!reduce) {
+      setInterval(() => {
+        words[i].classList.remove('on');
+        i = (i + 1) % words.length;
+        words[i].classList.add('on');
+        fit();
+      }, 2600);
+    }
+  }
+
+  /* ── THE CLIMB · your store overtakes מתחרה שתיים, then מתחרה אחד ──
+     HTML ships the FINAL 1st-place state (no-JS + reduced-motion safe).
+     With motion: rewind to the start grid, fill bars on scroll-into-view,
+     then two staggered overtakes (transform swaps + count-up + bar growth). */
+  const climb = document.querySelector<HTMLElement>('[data-climb]');
+  if (climb) {
+    const rows = Array.from(climb.querySelectorAll<HTMLElement>('.rb'));
+    const selfRow = climb.querySelector<HTMLElement>('.rb.self');
+    const W = 2.4; // pct → bar-width scale
+    const setPct = (row: HTMLElement, pct: number) =>
+      row.style.setProperty('--pct', `${(pct * W).toFixed(1)}%`);
+
+    if (reduce || !hasIO || !selfRow) {
+      climb.classList.add('go', 'crowned');
+    } else {
+      // rewind to the start state
+      rows.forEach((r) => {
+        r.style.setProperty('--slot', r.dataset.startSlot || '0');
+        setPct(r, Number(r.dataset.startPct || '0'));
+        const v = r.querySelector('[data-val]');
+        if (v) v.textContent = r.dataset.startPct || '0';
+      });
+
+      const selfVal = selfRow.querySelector<HTMLElement>('[data-val]');
+      const countTo = (from: number, to: number, dur = 560) => {
+        const t0 = performance.now();
+        const tick = (t: number) => {
+          const p = Math.min(1, (t - t0) / dur);
+          if (selfVal) selfVal.textContent = String(Math.round(from + (to - from) * (1 - Math.pow(1 - p, 3))));
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      };
+
+      const bySlot = (s: string) => rows.find((r) => r.dataset.startSlot === s);
+      const comp1 = bySlot('0');
+      const comp2 = bySlot('1');
+      const mid = 25;
+      const fin = Number(selfRow.dataset.finalPct || '34');
+
+      const io = new IntersectionObserver((es) => {
+        es.forEach((e) => {
+          if (!e.isIntersecting) return;
+          io.disconnect();
+          climb.classList.add('go'); // bars fill, staggered by lane
+
+          window.setTimeout(() => { // overtake #1 · past מתחרה שתיים
+            selfRow.style.setProperty('--d', '0ms');
+            selfRow.style.setProperty('--slot', '1');
+            comp2?.style.setProperty('--slot', '2');
+            setPct(selfRow, mid);
+            countTo(Number(selfRow.dataset.startPct || '12'), mid);
+          }, 1350);
+
+          window.setTimeout(() => { // overtake #2 · past מתחרה אחד → מקום 1
+            selfRow.style.setProperty('--slot', '0');
+            comp1?.style.setProperty('--slot', '1');
+            setPct(selfRow, fin);
+            countTo(mid, fin);
+            window.setTimeout(() => climb.classList.add('crowned'), 640);
+          }, 2500);
+        });
+      }, { threshold: 0.45 });
+      io.observe(climb);
+    }
+  }
+
+  /* ── count-ups (race stat + proof cell) ──
+     The FINAL value already ships in the HTML (resting / no-JS state is never "0").
+     With motion: rewind only to a near-target start (~62% of target, min target-3)
+     so a counter caught mid-scroll never shows a big "0", then animate the last
+     stretch on scroll-in. A guaranteed settle-to-final fallback covers the case
+     where the IntersectionObserver never fires. */
+  const counters = document.querySelectorAll<HTMLElement>('[data-count]');
+  const runCount = (el: HTMLElement, from: number, target: number) => {
+    const t0 = performance.now();
+    const tick = (t: number) => {
+      const p = Math.min(1, (t - t0) / 900);
+      el.textContent = String(Math.round(from + (target - from) * (1 - Math.pow(1 - p, 3))));
+      if (p < 1) requestAnimationFrame(tick);
+      else el.textContent = String(target);
+    };
+    requestAnimationFrame(tick);
+  };
+  counters.forEach((el) => {
+    const target = Number(el.dataset.count || '0');
+    if (reduce || !hasIO) { el.textContent = String(target); return; }
+    // start near the target, never at 0
+    const from = Math.max(0, Math.min(target - 1, Math.round(target * 0.62)));
+    el.textContent = String(from);
+    let done = false;
+    const settle = () => { done = true; el.textContent = String(target); };
+    const io = new IntersectionObserver((es) => {
+      es.forEach((e) => {
+        if (!e.isIntersecting || done) return;
+        done = true;
+        io.disconnect();
+        window.clearTimeout(fallbackT);
+        runCount(el, from, target);
+      });
+    }, { threshold: 0.2 });
+    io.observe(el);
+    // guaranteed settle-to-final if the observer never fires (e.g. never scrolled into view fully)
+    const fallbackT = window.setTimeout(() => { if (!done) { io.disconnect(); settle(); } }, 4000);
+  });
+</script>
+
+<style>
+  .fine { font-size: 13px; color: var(--sc-disabled); margin-block-start: 16px; }
+
+  /* ═══ HERO ═══ */
+  .hero {
+    position: relative;
+    padding-block-start: clamp(52px, 7vw, 104px);
+    padding-block-end: clamp(40px, 6vw, 80px);
+    overflow-x: clip;
+    /* stronger Picktime-style light gradient surface · color lives in the CANVAS, not a blob behind text */
+    background:
+      radial-gradient(1100px 700px at 82% -14%, rgba(139, 118, 242, .32), transparent 62%),
+      radial-gradient(860px 620px at -8% 34%, rgba(85, 70, 214, .13), transparent 55%),
+      linear-gradient(180deg, #e9e4fa 0%, var(--sc-paper) 82%);
+  }
+  :global([data-theme='dark']) .hero {
+    background:
+      radial-gradient(1100px 700px at 82% -14%, rgba(139, 118, 242, .2), transparent 62%),
+      radial-gradient(860px 620px at -8% 34%, rgba(85, 70, 214, .14), transparent 55%),
+      linear-gradient(180deg, #221c3a 0%, var(--sc-paper) 82%);
+  }
+  .hero-in {
+    max-inline-size: 1200px; margin-inline: auto;
+    padding-inline: clamp(18px, 5vw, 48px);
+    display: grid;
+    grid-template-columns: minmax(0, 6.4fr) minmax(0, 5.6fr);
+    gap: clamp(24px, 4vw, 56px);
+    align-items: end;
+  }
+  /* hero install/demo pair sits SIDE-BY-SIDE like the final section (same-size
+     buttons, differ only by fill); stacks only on small mobile (handled in the
+     component's own ≤480px rule). */
+  @media (min-width: 481px) {
+    .hero-side :global(.cta-pair) { flex-wrap: nowrap; }
+  }
+  .hero h1 {
+    font-size: clamp(38px, 6.2vw, 68px);
+    font-weight: 900;
+    line-height: 1.04;
+    letter-spacing: -.025em;
+  }
+  /* the payoff line · the brand gradient carries the "automatic, today" promise */
+  .grad-word {
+    background: var(--sc-grad); -webkit-background-clip: text; background-clip: text;
+    color: transparent; -webkit-text-fill-color: transparent;
+  }
+  .hero-side { padding-block-end: 10px; }
+  .sub { font-size: clamp(16px, 1.8vw, 19px); color: var(--sc-mv); margin-block-end: 20px; max-inline-size: 44ch; }
+  .sub strong { color: var(--sc-ink); font-weight: 700; }
+
+  /* ═══ SHOWCASE · dedicated, centered, near-full-width dashboard ═══ */
+  .showcase {
+    position: relative;
+    padding-block: clamp(48px, 7vw, 104px);
+    /* soft continuation of the hero wash so the section feels intentional */
+    background: linear-gradient(180deg, var(--sc-paper) 0%, var(--sc-paper) 100%);
+    overflow-x: clip;
+  }
+  /* stage · centered, large; the tilt is balanced around the center */
+  .stage {
+    max-inline-size: 1240px; margin-inline: auto;
+    padding-inline: clamp(18px, 5vw, 56px);
+    position: relative;
+    z-index: 2;
+    /* leave room for the escaping live-answer card + tilt without clipping */
+    padding-block-end: clamp(40px, 6vw, 96px);
+  }
+  .tilt-wrap {
+    position: relative;
+    /* much larger · near full container width, with breathing room, centered */
+    max-inline-size: 1080px;
+    margin-inline: auto;
+    transform: translateY(var(--py, 0));
+  }
+  .tilt {
+    /* balanced tilt · symmetric origin so it reads centered, not drifting */
+    transform: perspective(2000px) rotateX(6deg) rotateY(-6deg) rotate(.5deg);
+    transform-origin: 50% 30%;
+    border-radius: 19px;
+    box-shadow:
+      0 2px 4px rgba(29, 29, 31, .06),
+      0 28px 56px -26px rgba(33, 28, 134, .4),
+      0 72px 140px -54px rgba(29, 29, 31, .4);
+    transition: transform 420ms var(--sc-ease);
+  }
+  .tilt-wrap:hover .tilt { transform: perspective(2000px) rotateX(3deg) rotateY(-3deg) rotate(.25deg); }
+  @media (prefers-reduced-motion: reduce) { .tilt, .tilt-wrap:hover .tilt { transform: perspective(2000px) rotateX(6deg) rotateY(-6deg) rotate(.5deg); } }
+  /* the dashboard itself scales up inside the larger stage */
+  .tilt :global(.dm) { font-size: 1.06em; }
+
+  /* floating live answer · escapes the frame */
+  .live {
+    position: absolute;
+    inset-inline-end: calc(-1 * clamp(0px, 3vw, 44px));
+    inset-block-end: 8%;
+    inline-size: min(380px, 86%);
+    background: var(--sc-card);
+    border: 1px solid var(--sc-hair);
+    border-radius: 16px;
+    box-shadow: var(--sc-sh-lift), var(--sc-sh-deep);
+    padding: 18px 20px;
+  }
+  .live-top {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 11.5px; font-weight: 700; letter-spacing: .04em; color: var(--sc-accent-text);
+    margin-block-end: 10px;
+  }
+  /* live pulse · soft gold = the warm "on air" accent */
+  .lv-dot {
+    inline-size: 8px; block-size: 8px; border-radius: 50%; background: var(--accent-gold); flex: none;
+    box-shadow: 0 0 0 0 rgba(255, 194, 75, .55); animation: lvp 2.2s infinite;
+  }
+  @keyframes lvp { 70% { box-shadow: 0 0 0 7px rgba(255, 194, 75, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 194, 75, 0); } }
+  .live-q { font-size: 13px; font-weight: 700; color: var(--sc-ink); margin-block-end: 8px; }
+  .live-a { font-size: 14px; line-height: 1.7; color: var(--sc-muted); }
+  .live-b { font-size: 12px; font-weight: 700; color: var(--sc-pos-deep); margin-block-start: 12px; padding-block-start: 11px; border-block-start: 1px solid var(--sc-div); }
+
+  /* floating content-writer card · escapes the TOP of the frame ·
+     same size/treatment family as the bottom .live card */
+  .writer {
+    position: absolute;
+    inset-block-start: clamp(-56px, -4vw, -30px);
+    inset-inline-start: clamp(-48px, -3vw, -20px);
+    inline-size: min(360px, 84%);
+    background: var(--sc-card);
+    border: 1px solid var(--sc-hair);
+    border-radius: 16px;
+    box-shadow: var(--sc-sh-lift), var(--sc-sh-deep);
+    padding: 16px 18px;
+  }
+  .wr-top {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 11.5px; font-weight: 700; letter-spacing: .04em; color: var(--sc-accent-text);
+    margin-block-end: 9px;
+  }
+  .wr-ic {
+    inline-size: 24px; block-size: 24px; border-radius: 8px; flex: none;
+    background: var(--sc-wash); color: var(--sc-accent-text);
+    display: grid; place-items: center;
+  }
+  .wr-top .lv-dot { margin-inline-start: auto; }
+  .wr-t { font-size: 13px; font-weight: 700; color: var(--sc-ink); margin-block-end: 7px; }
+  .wr-line { font-size: 13px; line-height: 1.65; color: var(--sc-muted); }
+  /* the typing hint · a soft blinking caret at the end of the line */
+  .wr-caret {
+    display: inline-block; inline-size: 2px; block-size: .95em;
+    margin-inline-start: 2px; vertical-align: text-bottom;
+    background: var(--sc-accent-text); border-radius: 1px;
+    animation: wrBlink 1.1s steps(2, jump-none) infinite;
+  }
+  @keyframes wrBlink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .wr-caret { animation: none; } }
+  /* the "still being written" skeleton lines */
+  .wr-skel { display: flex; flex-direction: column; gap: 6px; margin-block-start: 9px; }
+  .wr-skel i { display: block; block-size: 7px; border-radius: 999px; background: var(--sc-div); inline-size: var(--w, 80%); }
+  .wr-b { font-size: 11.5px; font-weight: 700; color: var(--sc-pos-deep); margin-block-start: 11px; padding-block-start: 10px; border-block-start: 1px solid var(--sc-div); }
+
+  @media (max-width: 900px) {
+    .hero-in { grid-template-columns: 1fr; align-items: start; }
+    .hero-side { padding-block-end: 0; }
+    .live { position: relative; inset: auto; inline-size: auto; margin-block-start: 16px; }
+    .writer { position: relative; inset: auto; inline-size: auto; margin-block-start: 12px; }
+    .tilt, .tilt-wrap:hover .tilt { transform: perspective(1600px) rotateX(4deg) rotateY(-4deg); }
+  }
+  @media (max-width: 900px) and (prefers-reduced-motion: reduce) {
+    .tilt, .tilt-wrap:hover .tilt { transform: perspective(1600px) rotateX(4deg) rotateY(-4deg); }
+  }
+
+  /* ═══ THE QUESTION ═══ */
+  .q-sec {
+    position: relative;
+    padding-block: clamp(64px, 9vw, 120px) clamp(64px, 9vw, 120px);
+  }
+  /* two-column on desktop: text block · engines card · vertically centered */
+  .q-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(28px, 4vw, 48px);
+    align-items: center;
+  }
+  @media (min-width: 900px) {
+    .q-grid {
+      grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+      gap: clamp(48px, 6vw, 88px);
+    }
+  }
+  .q-kicker { font-size: 13px; font-weight: 700; letter-spacing: .05em; color: var(--sc-accent-text); margin-block-end: 18px; }
+  .q-line {
+    font-size: clamp(26px, 4.4vw, 52px);
+    font-weight: 800; letter-spacing: -.02em; line-height: 1.18;
+    color: var(--sc-ink);
+    max-inline-size: 20ch;
+  }
+  /* the rotating word + closing ?" travel as ONE unbreakable unit ·
+     the "?" can never drop to a line of its own, so the heading caps at 2 lines */
+  .q-tail { white-space: nowrap; }
+  .rot { position: relative; display: inline-grid; vertical-align: baseline; justify-items: start; }
+  .rot.managed { inline-size: var(--rw, auto); transition: inline-size 320ms var(--sc-ease); }
+  .qm { color: var(--sc-ink); }
+  .rot b {
+    grid-area: 1 / 1;
+    color: var(--sc-accent-text);
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 320ms var(--sc-ease), transform 320ms var(--sc-ease);
+    white-space: nowrap;
+  }
+  .rot b.on { opacity: 1; transform: none; }
+  /* the problem→action paragraph · now sits directly under the heading */
+  .q-intro {
+    font-size: clamp(16px, 1.9vw, 19px);
+    line-height: 1.7; color: var(--sc-mv);
+    max-inline-size: 60ch;
+    margin-block-start: clamp(22px, 3vw, 34px);
+  }
+  .q-intro strong { color: var(--sc-ink); font-weight: 800; }
+  /* engines panel · shares a grid cell beside the text on wide screens */
+  .q-foot {
+    display: flex; justify-content: flex-start;
+  }
+  @media (max-width: 899px) {
+    /* stacked · card flows under the text, spanned to full width */
+    .q-foot { justify-content: stretch; }
+  }
+  /* engines panel · a tidy card of AI-model rows (logo · name · state) · never dumped loose */
+  .engines {
+    display: flex; flex-direction: column; gap: 8px;
+    inline-size: min(420px, 100%);
+    background: var(--sc-card); border: 1px solid var(--sc-hair);
+    border-radius: 16px; padding: 16px; box-shadow: var(--sc-sh-subtle);
+  }
+  .eng-lead {
+    font-size: 11.5px; font-weight: 700; letter-spacing: .04em;
+    color: var(--sc-mv); margin-block-end: 4px;
+  }
+  .eng {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 14px; font-weight: 700; color: var(--sc-ink);
+    background: var(--sc-paper); border: 1px solid var(--sc-hair);
+    border-radius: 12px; padding: 9px 13px;
+  }
+  .eng-logo {
+    inline-size: 24px; block-size: 24px; flex: none;
+    display: grid; place-items: center;
+  }
+  .eng-logo svg { inline-size: 22px; block-size: 22px; display: block; }
+  .eng-nm { flex: 1 1 auto; min-inline-size: 0; }
+  .eng-state {
+    font-size: 11px; font-weight: 700; letter-spacing: .02em; flex: none;
+  }
+  .live-txt { color: var(--sc-pos-deep); }
+  .eng.is-live .live-dot {
+    inline-size: 8px; block-size: 8px; border-radius: 50%; flex: none;
+    background: var(--sc-pos);
+    box-shadow: 0 0 0 0 rgba(23, 132, 58, .5);
+    animation: lvpGrn 2.2s infinite;
+  }
+  @keyframes lvpGrn { 70% { box-shadow: 0 0 0 6px rgba(23, 132, 58, 0); } 100% { box-shadow: 0 0 0 0 rgba(23, 132, 58, 0); } }
+  @media (prefers-reduced-motion: reduce) { .eng.is-live .live-dot { animation: none; } }
+  .eng.soon { opacity: .9; }
+  .eng.soon .eng-nm { color: var(--sc-muted); }
+  /* "בקרוב" · a small soft-gold tag on the row's inline-end · warm, not a warning */
+  .soon-tag {
+    flex: none;
+    background: var(--accent-gold);
+    color: var(--sc-gold-ink);
+    font-size: 10.5px; font-weight: 800; letter-spacing: .02em; line-height: 1;
+    padding: 4px 9px;
+    border-radius: 999px;
+    box-shadow: 0 4px 10px -4px rgba(240, 173, 46, .5);
+  }
+  @media (max-width: 899px) {
+    .engines { inline-size: 100%; }
+  }
+  @media (min-width: 900px) {
+    /* fill the grid column edge-to-edge so the card matches the text column height rhythm */
+    .engines { inline-size: 100%; max-inline-size: 460px; }
+  }
+
+  /* ═══ THE CLIMB · diagonal gradient band ═══ */
+  .race-sec {
+    color: #fff;
+    background: var(--sc-grad-rich);
+    clip-path: polygon(0 clamp(28px, 4.5vw, 72px), 100% 0, 100% 100%, 0 100%);
+    padding-block: calc(clamp(28px, 4.5vw, 72px) + clamp(56px, 7vw, 96px)) clamp(64px, 8vw, 104px);
+  }
+  .race-grid {
+    display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(30px, 5vw, 80px); align-items: center;
+  }
+  .r-kicker { font-size: 12.5px; font-weight: 700; letter-spacing: .06em; color: rgba(255, 255, 255, .72); margin-block-end: 14px; }
+  .race-sec h2 { color: #fff; }
+  .r-sub { color: rgba(255, 255, 255, .82); margin-block-start: 16px; max-inline-size: 44ch; }
+  .r-stat { display: flex; align-items: baseline; gap: 16px; margin-block-start: 30px; flex-wrap: wrap; }
+  .r-num { font-size: clamp(52px, 6vw, 84px); font-weight: 800; letter-spacing: -.03em; line-height: 1; color: #fff; }
+  .r-lbl { font-size: 14px; color: rgba(255, 255, 255, .85); font-weight: 500; max-inline-size: 22ch; }
+  .r-lbl b { color: #b9f6cf; font-weight: 800; }
+
+  /* the leaderboard · fixed lanes, rows slide between them */
+  .climb { display: flex; gap: 14px; --row-h: 76px; }
+  .lanes { display: flex; flex-direction: column; flex: none; }
+  .lanes span {
+    block-size: var(--row-h);
+    inline-size: 30px;
+    display: grid; place-items: center;
+    font-size: 14px; font-weight: 800; color: rgba(255, 255, 255, .65);
+  }
+  .board {
+    position: relative; flex: 1; min-inline-size: 0;
+    block-size: calc(var(--row-h) * 3);
+    list-style: none; margin: 0; padding: 0;
+  }
+  .rb {
+    position: absolute; inset-inline: 0; inset-block-start: 0;
+    block-size: var(--row-h);
+    display: grid; grid-template-columns: 128px 1fr 52px;
+    align-items: center; gap: 13px;
+    transform: translateY(calc(var(--slot) * var(--row-h)));
+  }
+  /* the overtake · springy ease-out, transform only */
+  .climb.go .rb { transition: transform 680ms cubic-bezier(.3, 1.28, .45, 1); }
+  .rb-name { min-inline-size: 0; }
+  .rb-nm {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 13.5px; font-weight: 600; color: rgba(255, 255, 255, .88);
+    white-space: nowrap; overflow: hidden;
+  }
+  .rb-nm em {
+    font-style: normal; font-size: 10.5px; font-weight: 800;
+    background: #fff; color: var(--sc-accent);
+    border-radius: 999px; padding: 2px 8px; flex: none;
+  }
+  .rb.self .rb-nm { color: #fff; font-weight: 800; }
+  .rb-track { block-size: 13px; border-radius: 999px; background: rgba(255, 255, 255, .16); overflow: hidden; }
+  .rb-track i {
+    display: block; block-size: 100%; border-radius: 999px;
+    background: rgba(255, 255, 255, .55);
+    inline-size: var(--pct);
+  }
+  .rb.self .rb-track i { background: #fff; box-shadow: 0 0 18px rgba(255, 255, 255, .45); }
+  .rb-val { font-size: 14px; font-weight: 800; color: rgba(255, 255, 255, .9); }
+  /* bars fill on scroll · then keep transitioning through the overtakes */
+  html.js .climb:not(.go) .rb-track i { inline-size: 0; }
+  .climb.go .rb-track i { transition: inline-size 900ms var(--sc-ease); transition-delay: var(--d, 0ms); }
+  @media (prefers-reduced-motion: reduce) { html.js .climb:not(.go) .rb-track i { inline-size: var(--pct); } }
+
+  /* מקום 1 · POSITIVE green (reaching #1 is a win) · pops after the final overtake.
+     Design-system positive: text #17843a, bg #eaf9ef, border #cdeed7. */
+  .rank-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    margin-block-start: 5px;
+    background: var(--sc-pos-bg); color: var(--sc-pos);
+    border: 1px solid var(--sc-pos-bd);
+    font-size: 10.5px; font-weight: 800; line-height: 1;
+    padding: 3.5px 9px; border-radius: 999px;
+    box-shadow: 0 5px 14px -5px rgba(23, 132, 58, .45);
+  }
+  html.js .climb:not(.crowned) .rank-badge { opacity: 0; transform: translateY(4px) scale(.6); }
+  .climb.crowned .rank-badge {
+    opacity: 1; transform: none;
+    transition: opacity 300ms var(--sc-ease), transform 460ms cubic-bezier(.3, 1.6, .5, 1);
+  }
+
+  @media (max-width: 860px) {
+    .race-grid { grid-template-columns: 1fr; }
+    .climb { --row-h: 70px; gap: 8px; }
+    .rb { grid-template-columns: 120px 1fr 44px; gap: 10px; }
+    .rb-nm { font-size: 12.5px; }
+    .lanes span { inline-size: 20px; }
+  }
+
+  /* ═══ BENTO · intentionally unequal ═══ */
+  .bento-sec { padding-block: clamp(72px, 9vw, 120px) clamp(48px, 6vw, 80px); }
+  .b-head { margin-block-end: clamp(34px, 4vw, 52px); }
+  /* the big statement · עשרות עובדים */
+  .b-big {
+    font-size: clamp(36px, 5.8vw, 72px);
+    font-weight: 900;
+    letter-spacing: -.025em;
+    line-height: 1.06;
+  }
+  .tens { position: relative; display: inline-block; }
+  .tens::after {
+    content: '';
+    position: absolute; inset-inline: -2%; inset-block-end: .04em;
+    block-size: .14em; background: var(--accent-gold); border-radius: 3px;
+    transform: rotate(-1.2deg); transform-origin: center;
+    opacity: .9;
+    z-index: -1;
+  }
+  .b-sub { margin-block-start: 16px; max-inline-size: 52ch; }
+  .b-lead { font-size: clamp(17px, 2vw, 21px); font-weight: 700; color: var(--sc-ink); margin-block-start: 18px; }
+  .b-lead + .b-sub { margin-block-start: 10px; }
+  /* the "אתם בוחרים" line · one line on desktop, wraps only on small mobile */
+  .b-choice { max-inline-size: none; }
+
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-auto-rows: minmax(120px, auto);
+    gap: 16px;
+  }
+  .cell {
+    background: var(--sc-card);
+    border: 1px solid var(--sc-hair);
+    border-radius: 18px;
+    box-shadow: var(--sc-sh-subtle);
+    padding: 24px;
+    transition: transform var(--sc-fast) var(--sc-ease), box-shadow 220ms var(--sc-ease);
+  }
+  .cell:hover { transform: translateY(-4px); box-shadow: var(--sc-sh-lift); }
+  .cell-writer { grid-column: span 3; grid-row: span 2; }
+  .cell-research { grid-column: span 3; }
+  .cell-tech {
+    grid-column: span 3;
+    border-radius: 3px;                /* the sharp one */
+    transform: rotate(-1.6deg);        /* the crooked one · a work ticket on the pile */
+    background: var(--sc-paper);
+  }
+  .cell-tech:hover { transform: rotate(-1.6deg) translateY(-4px); }
+  .cell-team { grid-column: span 6; }
+  .cell-proof {
+    grid-column: span 6;
+    background: var(--sc-wash);
+    border-color: var(--sc-soft);
+  }
+  .c-top { display: flex; align-items: center; gap: 12px; margin-block-end: 12px; }
+  .c-ic {
+    inline-size: 42px; block-size: 42px; border-radius: 12px; flex: none;
+    background: var(--sc-wash); color: var(--sc-accent-text);
+    display: grid; place-items: center;
+  }
+  .cell-tech .c-ic { border-radius: 3px; background: var(--sc-card); border: 1px solid var(--sc-hair); }
+  .cell h3 { font-size: 17px; }
+  .c-p { font-size: 14px; color: var(--sc-muted); line-height: 1.6; }
+  .c-out {
+    margin-block-start: 14px;
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13.5px; font-weight: 600; color: var(--sc-ink);
+    background: var(--sc-paper); border: 1px solid var(--sc-hair);
+    border-radius: 10px; padding: 9px 13px;
+  }
+  .c-out b { color: var(--sc-accent-text); font-weight: 800; font-size: 16px; }
+  .cell-tech .c-out { background: var(--sc-card); border-radius: 3px; }
+  .c-out .ok { color: var(--sc-pos); font-weight: 800; }
+
+  /* writer draft preview */
+  .draft {
+    margin-block-start: 18px;
+    background: var(--sc-paper); border: 1px solid var(--sc-hair);
+    border-radius: 13px; padding: 17px 18px;
+  }
+  .d-t { font-size: 14.5px; font-weight: 800; color: var(--sc-ink); margin-block-end: 11px; }
+  .d-l {
+    display: block; block-size: 8px; border-radius: 999px;
+    background: var(--sc-div); inline-size: var(--w, 90%);
+    margin-block-end: 8px;
+  }
+  .d-badge {
+    display: inline-block; margin-block-start: 8px;
+    font-size: 11.5px; font-weight: 700;
+    color: var(--sc-accent-text); background: var(--sc-wash);
+    border: 1px solid var(--sc-soft); border-radius: 999px; padding: 4px 11px;
+  }
+
+  /* the rest of the team · seven compact specialists */
+  .tm-k { font-size: 12.5px; font-weight: 700; letter-spacing: .04em; color: var(--sc-mv); margin-block-end: 18px; }
+  .tm-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+    gap: 16px 12px;
+  }
+  .tm { display: flex; flex-direction: column; gap: 6px; min-inline-size: 0; }
+  .tm-ic {
+    inline-size: 36px; block-size: 36px; border-radius: 11px;
+    background: var(--sc-wash); color: var(--sc-accent-text);
+    display: grid; place-items: center;
+    margin-block-end: 2px;
+  }
+  .tm b { font-size: 13.5px; font-weight: 800; color: var(--sc-ink); letter-spacing: -.01em; }
+  .tm small { font-size: 11.5px; color: var(--sc-muted); font-weight: 500; line-height: 1.45; }
+
+  /* proof counters */
+  .pr-k { font-size: 12.5px; font-weight: 700; letter-spacing: .04em; color: var(--sc-mv); margin-block-end: 16px; }
+  .pr-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .pr b { display: block; font-size: clamp(24px, 2.6vw, 34px); font-weight: 800; letter-spacing: -.02em; color: var(--sc-ink); line-height: 1.1; }
+  .pr b i { font-style: normal; }
+  .pr.big b { color: var(--sc-accent-text); }
+  .pr span { font-size: 12px; color: var(--sc-mv); font-weight: 600; }
+  @media (max-width: 860px) {
+    .bento { grid-template-columns: repeat(2, 1fr); }
+    .cell-writer, .cell-research, .cell-tech, .cell-team, .cell-proof { grid-column: span 2; grid-row: auto; }
+    .cell-tech { grid-column: span 1; }
+    .cell-research { grid-column: span 1; }
+    .pr-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    .tm-grid { grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); }
+  }
+  @media (max-width: 540px) {
+    .cell-tech, .cell-research { grid-column: span 2; }
+  }
+
+  /* ═══ FAQ · home ═══ */
+  .faq-sec { padding-block: clamp(56px, 7vw, 96px) clamp(20px, 3vw, 40px); }
+  .narrow-faq { max-inline-size: 820px; }
+  .faq-head { margin-block-end: clamp(24px, 3vw, 36px); }
+  .faq-h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 900; letter-spacing: -.02em; line-height: 1.1; margin-block-start: 12px; }
+  .faq-lead { font-size: 15px; color: var(--sc-muted); margin-block-start: 12px; }
+  .faq-lead a { font-weight: 700; }
+
+  /* ═══ FINAL ═══ */
+  .fin { padding-block: clamp(44px, 6vw, 88px) clamp(64px, 9vw, 130px); text-align: center; }
+  .fin-k { font-size: 13.5px; font-weight: 700; letter-spacing: .05em; color: var(--sc-mv); margin-block-end: 14px; }
+  .fin-h {
+    font-size: clamp(34px, 5.6vw, 68px);
+    font-weight: 900; letter-spacing: -.025em; line-height: 1.08;
+    color: var(--sc-ink);
+    max-inline-size: 20ch; margin-inline: auto;
+    text-wrap: balance;
+    margin-block-end: clamp(26px, 3.5vw, 40px);
+  }
+  .dot-accent { color: var(--sc-accent-text); }
+  .fin-cta { display: flex; justify-content: center; }
+</style>

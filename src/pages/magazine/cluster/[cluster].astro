@@ -1,0 +1,149 @@
+---
+import { getCollection } from 'astro:content';
+import { CLUSTERS, CLUSTER_SLUGS, clusterPath } from '../../../content.config';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import CtaBand from '../../../components/CtaBand.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('magazine', ({ data }) => !data.draft);
+  return CLUSTERS.map((cluster) => ({
+    params: { cluster: CLUSTER_SLUGS[cluster] },
+    props: {
+      cluster,
+      posts: posts
+        .filter((p) => p.data.cluster === cluster)
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+    },
+  }));
+}
+
+const { cluster, posts } = Astro.props;
+const fmt = new Intl.DateTimeFormat('he-IL', { day: 'numeric', month: 'long', year: 'numeric' });
+
+// Short human intro per cluster · sets topical context for the silo page.
+const intros: Record<string, string> = {
+  'GEO ואופטימיזציה למנועי AI':
+    'איך נכנסים לתשובות של ChatGPT, Gemini ו-Perplexity · מה שונה מ-SEO רגיל, מה מודדים, ומאיפה מתחילים.',
+  'SEO לחנויות שופיפיי':
+    'קידום אורגני לחנות Shopify · מבנה קטגוריות, תיאורי מוצר, סכמות ומהירות · המדריכים שהופכים ביקורים לתנועה חוזרת.',
+  'שיווק לאיקומרס ישראלי':
+    'מה עובד בשיווק לחנויות ישראליות · מהתנועה האורגנית ועד ההמרה, עם הדגשים המקומיים של השוק בעברית.',
+  'מדריכים וכלים':
+    'מדריכים מעשיים וכלים לבדיקה עצמית · צעד-אחר-צעד, בלי ז\'רגון, כדי שתדעו בדיוק מה לעשות.',
+};
+const intro = intros[cluster] ?? '';
+
+const title = `${cluster} · הבלוג של Scayla`;
+const description =
+  intro.length <= 130 ? intro : `${cluster} · מדריכים מבוססי מחקר בעברית ילידית מהבלוג של Scayla.`;
+
+const clusterUrl = clusterPath(cluster);
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  breadcrumbs={[
+    { name: 'בלוג', path: '/magazine' },
+    { name: cluster, path: clusterUrl },
+  ]}
+>
+  <section class="cl-hero">
+    <div class="narrow center">
+      <nav class="crumbs" aria-label="פירורי לחם">
+        <a href="/magazine">בלוג</a>
+        <span aria-hidden="true">‹</span>
+        <span>{cluster}</span>
+      </nav>
+      <span class="eyebrow">אשכול תוכן</span>
+      <h1>{cluster}</h1>
+      {intro && <p class="lede">{intro}</p>}
+      <p class="count"><span class="num">{posts.length}</span> מאמרים באשכול</p>
+    </div>
+  </section>
+
+  <section class="cl-list">
+    <div class="wrap">
+      {posts.length > 0 ? (
+        <div class="grid">
+          {posts.map((post) => (
+            <article class="post card fade-up">
+              <a href={`/magazine/${post.id}`} class="post-link">
+                {post.data.coverImage ? (
+                  <div class="thumb has-img">
+                    <img src={post.data.coverImage} alt={post.data.title} loading="lazy" width="600" height="240" />
+                  </div>
+                ) : (
+                  <div class="thumb" aria-hidden="true"><span class="cat">{post.data.cluster}</span></div>
+                )}
+                <div class="body">
+                  <h2>{post.data.title}</h2>
+                  <p>{post.data.description}</p>
+                  <div class="meta">
+                    <time datetime={post.data.pubDate.toISOString()}>{fmt.format(post.data.pubDate)}</time>
+                    <span aria-hidden="true">·</span>
+                    <span><span class="num">{post.data.readingMinutes}</span> דקות קריאה</span>
+                  </div>
+                </div>
+              </a>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <p class="empty">עוד אין מאמרים באשכול הזה · מכונת התוכן של Scayla תזרים אותם בקרוב.</p>
+      )}
+      <p class="back"><a href="/magazine">‹ חזרה לכל הבלוג</a></p>
+    </div>
+  </section>
+
+  <section class="cl-cta">
+    <div class="wrap">
+      <CtaBand
+        title="רוצים מגזין כזה בחנות שלכם?"
+        body="מכונת התוכן של Scayla כותבת מאמרים מבוססי מחקר בעברית ילידית · מכוונים בדיוק לשאלות שהקונים שלכם שואלים את ה-AI."
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .cl-hero { padding-block-end: 12px; }
+  .crumbs {
+    display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;
+    font-size: 13px; color: var(--sc-muted); margin-block-end: 18px;
+  }
+  .crumbs a:hover { color: var(--sc-accent-text); }
+  .cl-hero .lede { max-inline-size: 56ch; margin-inline: auto; }
+  .count { font-size: 13.5px; color: var(--sc-disabled); margin-block-start: 14px; }
+
+  .cl-list { padding-block-start: 24px; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+  .post { overflow: hidden; border-radius: 18px; transition: transform .18s var(--sc-ease), box-shadow .18s var(--sc-ease); }
+  .post:hover { transform: translateY(-3px); box-shadow: var(--sc-sh-lift); }
+  .post-link { display: flex; flex-direction: column; block-size: 100%; color: inherit; }
+  .thumb {
+    block-size: 130px;
+    background: radial-gradient(300px 160px at 80% -30%, rgba(139, 118, 242, .45), transparent 65%), var(--sc-grad);
+    display: flex; align-items: flex-end; padding: 14px;
+  }
+  .thumb.has-img { padding: 0; }
+  .thumb.has-img img { inline-size: 100%; block-size: 100%; object-fit: cover; }
+  .cat {
+    background: rgba(255, 255, 255, .92); color: var(--sc-accent);
+    font-size: 11px; font-weight: 800; border-radius: var(--sc-r-pill); padding: 4px 12px;
+  }
+  .body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .body h2 { font-size: 17px; line-height: 1.4; color: var(--sc-ink); font-weight: 800; }
+  .post:hover h2 { color: var(--sc-accent-text); }
+  .body p { font-size: 13.5px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .meta {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    font-size: 12.5px; color: var(--sc-disabled); margin-block-start: auto; padding-block-start: 8px;
+  }
+  .empty { text-align: center; color: var(--sc-muted); font-size: 15px; padding-block: 24px; }
+  .back { text-align: center; margin-block-start: 32px; }
+  .back a { font-weight: 700; font-size: 14px; }
+  .cl-cta { padding-block-start: 8px; }
+</style>

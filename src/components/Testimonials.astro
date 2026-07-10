@@ -1,0 +1,74 @@
+---
+/**
+ * Real testimonials · approved by Noy (source: ai.busymom.co.il).
+ * IMPORTANT framing: these speak about the TEAM behind Scayla (Noy's client work),
+ * not about the app itself (it is new) · per the brief's social-proof rule.
+ */
+const quotes = [
+  {
+    text: 'אין מדהימה כמוך! הכי שירותית, סבלנית, התוצאות שהבאת לאתר שלנו מטורפות.',
+    name: 'סנדרה תמרוב',
+    role: 'מנהלת שיווק, Mutztzim',
+  },
+  {
+    text: 'סופר מקצועית. נוי עובדת איתי כבר כמה שנים, סופר מקצועית ואחראית.',
+    name: 'שי זלוה',
+    role: 'בעלים, StarGet',
+  },
+  {
+    text: 'את מעולה. מכל הבחינות · השירות, החיוך, המקצועיות.',
+    name: 'ענת מבורך',
+    role: 'מנהלת שיווק, באר בר',
+  },
+];
+---
+
+<div class="testimonials">
+  <div class="trust-chips" aria-label="נתוני אמון">
+    <span class="chip"><b class="num">30+</b> עסקים בליווי</span>
+    <span class="chip"><b class="num">4</b> מנועי AI</span>
+    <span class="chip"><b class="num">15+</b> שנות שיווק</span>
+  </div>
+  <div class="tgrid">
+    {quotes.map((q) => (
+      <figure class="t card fade-up">
+        <svg class="qmark" width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M9.6 6C6.9 7.2 5 9.6 5 12.9V18h5.4v-5.4H7.9c0-1.9 1-3.3 2.8-4.2zM19 6c-2.7 1.2-4.6 3.6-4.6 6.9V18h5.4v-5.4h-2.5c0-1.9 1-3.3 2.8-4.2z"/>
+        </svg>
+        <blockquote>{q.text}</blockquote>
+        <figcaption>
+          <span class="name">{q.name}</span>
+          <span class="role">{q.role}</span>
+        </figcaption>
+      </figure>
+    ))}
+  </div>
+  <p class="t-note">עדויות אמיתיות על עבודת הצוות שמאחורי Scayla · האפליקציה חדשה, הניסיון לא.</p>
+</div>
+
+<style>
+  .trust-chips {
+    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+    margin-block-end: 26px;
+  }
+  .chip {
+    display: inline-flex; align-items: baseline; gap: 7px;
+    background: var(--sc-wash); border: 1px solid var(--sc-soft);
+    color: var(--sc-mv); font-size: 13.5px; font-weight: 600;
+    border-radius: var(--sc-r-pill); padding: 8px 16px;
+  }
+  .chip b { font-size: 18px; font-weight: 800; color: var(--sc-accent-text); }
+
+  .tgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 820px) { .tgrid { grid-template-columns: 1fr; max-inline-size: 520px; margin-inline: auto; } }
+  .t { padding: 24px; border-radius: 18px; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+  .qmark { color: var(--sc-soft); }
+  [data-theme='dark'] .qmark { color: var(--sc-mv); }
+  blockquote {
+    font-size: 15px; line-height: 1.75; color: var(--sc-ink); font-weight: 500;
+  }
+  figcaption { margin-block-start: auto; display: grid; gap: 1px; }
+  .name { font-weight: 700; font-size: 14px; color: var(--sc-ink); }
+  .role { font-size: 12.5px; color: var(--sc-muted); }
+  .t-note { text-align: center; font-size: 12.5px; color: var(--sc-disabled); margin-block-start: 20px; }
+</style>

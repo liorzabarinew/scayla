@@ -1,0 +1,454 @@
+---
+// Sticky site header · logo, nav (with the "פיצרים" mega-menu), primary CTA.
+// The light/dark theme is automatic by Israel time (see BaseLayout) · no toggle.
+// Desktop: hovering/clicking "פיצרים" opens a full-width panel where every feature
+// shows a small sneak-peek preview. Mobile: hamburger opens a FULL-SCREEN menu with
+// the same feature previews expanded inline.
+import { SHOPIFY_APP_URL } from '../data/pricing';
+
+const linksBefore = [
+  { href: '#how', label: 'איך זה עובד' },
+];
+const linksAfter = [
+  { href: '/pricing', label: 'מחירון' },
+  { href: '/magazine', label: 'בלוג' },
+];
+
+// The mega-menu features · each with a mini sneak-peek preview (pure CSS/SVG).
+const features = [
+  { href: '/ai-visibility', title: 'כמה ה-AI ממליץ עליכם', desc: 'בכל שבוע מודדים כמה מהתשובות ב-AI מזכירות את החנות שלכם', peek: 'gauge' },
+  { href: '/ai-visibility', title: 'מה ה-AI עונה עליכם', desc: 'רואים בעיניים את התשובות האמיתיות של ChatGPT ו-Gemini · בעברית', peek: 'answer' },
+  { href: '/geo', title: 'אתם מול המתחרים', desc: 'על כל שאלה של קונה · מי מגיע ראשון, אתם או המתחרה', peek: 'race' },
+  { href: '/seo-shopify', title: 'כותבים לכם את התוכן', desc: 'מאמרים ותשובות שמושכים קונים מגוגל ומ-AI · אתם רק מאשרים', peek: 'draft' },
+  { href: '#features', title: 'מתקנים לכם את החנות', desc: 'כותרות, עמודים וקישורים שבורים · מסודר בשבילכם בלי לגעת בקוד', peek: 'fix' },
+  { href: '#features', title: 'רואים כמה זה מכניס', desc: 'לפני ואחרי · יותר תנועה, יותר פניות, יותר מכירות · שחור על גבי לבן', peek: 'roi' },
+];
+// Per-engine landing pages · the GEO cluster. Shown as a compact row inside the
+// mega-menu, under the feature previews.
+const engines = [
+  { href: '/chatgpt-seo', label: 'ChatGPT' },
+  { href: '/gemini-seo', label: 'Gemini' },
+  { href: '/perplexity-seo', label: 'Perplexity' },
+  { href: '/claude-seo', label: 'Claude' },
+];
+const current = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<header class="site-header">
+  <nav class="nav wrap" aria-label="ניווט ראשי">
+    <a class="logo" href="/" aria-label="Scayla · לעמוד הבית">
+      <span class="mk" aria-hidden="true">S</span>
+      <span>Scayla</span>
+    </a>
+
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="navlinks" aria-label="פתיחת תפריט">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path class="i-open" d="M4 7h16M4 12h16M4 17h16" />
+        <path class="i-close" d="M6 6l12 12M18 6L6 18" style="display:none" />
+      </svg>
+    </button>
+
+    <div class="navlinks" id="navlinks" role="dialog" aria-modal="true" aria-label="תפריט ניווט">
+      {linksBefore.map((l) => (
+        <a class="nl" href={l.href} aria-current={current === l.href ? 'page' : undefined}>{l.label}</a>
+      ))}
+
+      <!-- ═══ פיצרים · jumbo mega-menu ═══ -->
+      <div class="mega" data-mega>
+        <button class="mega-btn nl" type="button" aria-expanded="false" aria-controls="mega-panel">
+          פיצרים
+          <svg class="chev" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <p class="mega-mlabel" aria-hidden="true">פיצרים</p>
+
+        <div class="mega-panel" id="mega-panel">
+          <div class="mega-in">
+            {features.map((f) => (
+              <a class="mg-card" href={f.href}>
+                <span class:list={['mg-peek', `pk-${f.peek}`]} aria-hidden="true">
+                  {f.peek === 'gauge' && (
+                    <svg viewBox="0 0 72 44">
+                      <path d="M10 40a26 26 0 0 1 52 0" fill="none" stroke="var(--sc-div)" stroke-width="7" stroke-linecap="round"/>
+                      <path d="M10 40a26 26 0 0 1 24-16" fill="none" stroke="var(--sc-accent)" stroke-width="7" stroke-linecap="round"/>
+                      <text x="36" y="40" text-anchor="middle" font-size="15" font-weight="800" fill="var(--sc-ink)">34</text>
+                    </svg>
+                  )}
+                  {f.peek === 'answer' && (
+                    <span class="pk-lines">
+                      <i style="--w:88%"></i>
+                      <i class="grn" style="--w:56%"></i>
+                      <i style="--w:74%"></i>
+                    </span>
+                  )}
+                  {f.peek === 'race' && (
+                    <span class="pk-bars">
+                      <i class="you" style="--w:86%"></i>
+                      <i style="--w:60%"></i>
+                      <i style="--w:38%"></i>
+                    </span>
+                  )}
+                  {f.peek === 'draft' && (
+                    <span class="pk-lines">
+                      <b>מדריך קנייה 2026</b>
+                      <i style="--w:92%"></i>
+                      <i style="--w:70%"></i>
+                    </span>
+                  )}
+                  {f.peek === 'fix' && (
+                    <span class="pk-checks">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>
+                      <em class="num">5</em>
+                      <span>תיקונים מוכנים</span>
+                    </span>
+                  )}
+                  {f.peek === 'roi' && (
+                    <svg viewBox="0 0 72 44">
+                      <polyline points="6,36 22,30 38,32 52,18 66,10" fill="none" stroke="var(--sc-pos)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                      <circle cx="66" cy="10" r="3.5" fill="var(--sc-pos)"/>
+                    </svg>
+                  )}
+                </span>
+                <span class="mg-txt">
+                  <b>{f.title}</b>
+                  <small>{f.desc}</small>
+                </span>
+              </a>
+            ))}
+          </div>
+          <div class="mega-engines">
+            <span class="me-label">איך להופיע בכל מנוע</span>
+            <div class="me-links">
+              {engines.map((e) => (
+                <a class="me-chip num" href={e.href} aria-current={current === e.href ? 'page' : undefined}>{e.label}</a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {linksAfter.map((l) => (
+        <a class="nl" href={l.href} aria-current={current === l.href ? 'page' : undefined}>{l.label}</a>
+      ))}
+
+      <!-- full-screen mobile menu · bottom CTA -->
+      <div class="ov-cta">
+        <a href={SHOPIFY_APP_URL} class="btn btn-solid btn-lg">התקינו ב-Shopify</a>
+        <span class="ov-micro">14 יום חינם | ללא כרטיס אשראי</span>
+      </div>
+    </div>
+
+    <div class="nav-sp"></div>
+
+    <a href={SHOPIFY_APP_URL} class="btn btn-solid btn-sm nav-cta">התקינו ב-Shopify</a>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--sc-paper) 82%, transparent);
+    backdrop-filter: saturate(1.4) blur(14px);
+    -webkit-backdrop-filter: saturate(1.4) blur(14px);
+    border-block-end: 1px solid var(--sc-hair);
+  }
+  .nav { display: flex; align-items: center; gap: 18px; padding-block: 13px; }
+  .logo {
+    display: flex; align-items: center; gap: 9px;
+    font-weight: 800; font-size: 19px; letter-spacing: -.02em; color: var(--sc-ink);
+  }
+  .logo:hover { color: var(--sc-ink); }
+  .mk {
+    inline-size: 30px; block-size: 30px; border-radius: 9px;
+    background: var(--sc-grad); color: #fff; font-weight: 800;
+    display: grid; place-items: center; box-shadow: var(--sc-sh-hero);
+  }
+  .navlinks { display: flex; align-items: center; gap: 22px; margin-inline-start: 10px; }
+  .nl {
+    font-size: 14.5px; color: var(--sc-muted); font-weight: 600;
+    background: none; border: none; padding: 0; cursor: pointer;
+    font-family: var(--sc-font);
+    display: inline-flex; align-items: center; gap: 5px;
+  }
+  .nl:hover, .nl[aria-current='page'] { color: var(--sc-ink); }
+  .nav-sp { flex: 1; }
+  .menu-btn { display: none; }
+  .mega-mlabel { display: none; }
+  .ov-cta { display: none; }
+
+  /* ═══ Mega-menu · desktop ═══ */
+  .chev { transition: transform 220ms var(--sc-ease); }
+  .mega.open .mega-btn { color: var(--sc-ink); }
+  .mega.open .chev { transform: rotate(180deg); }
+  .mega-panel {
+    /* anchored to the sticky header itself · full header width */
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 100%;
+    background: var(--sc-paper);
+    border-block-end: 1px solid var(--sc-hair);
+    box-shadow: var(--sc-sh-lift), var(--sc-sh-deep);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity 220ms var(--sc-ease), transform 220ms var(--sc-ease), visibility 0s linear 220ms;
+  }
+  .mega.open .mega-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: opacity 220ms var(--sc-ease), transform 220ms var(--sc-ease), visibility 0s;
+  }
+  .mega-in {
+    max-inline-size: 1080px; margin-inline: auto;
+    padding: 22px clamp(18px, 5vw, 40px) 26px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .mg-card {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--sc-card);
+    border: 1px solid var(--sc-hair);
+    border-radius: 14px;
+    padding: 12px 14px;
+    color: var(--sc-ink);
+    transition: transform var(--sc-fast) var(--sc-ease), box-shadow 200ms var(--sc-ease), border-color 200ms;
+  }
+  .mg-card:hover {
+    color: var(--sc-ink);
+    transform: translateY(-2px);
+    border-color: var(--sc-soft);
+    box-shadow: var(--sc-sh-lift);
+  }
+  /* the sneak-peek preview · a tiny living snippet of the product */
+  .mg-peek {
+    flex: none;
+    inline-size: 86px; block-size: 56px;
+    border-radius: 10px;
+    background: var(--sc-wash);
+    border: 1px solid var(--sc-soft);
+    display: grid; place-items: center;
+    overflow: hidden;
+    padding: 8px;
+  }
+  .mg-peek svg { inline-size: 100%; block-size: auto; }
+  .pk-lines { display: flex; flex-direction: column; gap: 5px; inline-size: 100%; }
+  .pk-lines b { font-size: 8.5px; font-weight: 800; color: var(--sc-ink); line-height: 1; white-space: nowrap; overflow: hidden; }
+  .pk-lines i { display: block; block-size: 5px; border-radius: 99px; background: var(--sc-soft); inline-size: var(--w, 80%); }
+  .pk-lines i.grn { background: var(--sc-pos); opacity: .55; }
+  .pk-bars { display: flex; flex-direction: column; gap: 5px; inline-size: 100%; }
+  .pk-bars i { display: block; block-size: 7px; border-radius: 99px; background: var(--sc-soft); inline-size: var(--w, 60%); }
+  .pk-bars i.you { background: var(--sc-accent); }
+  .pk-checks { display: flex; align-items: center; gap: 5px; color: var(--sc-pos); }
+  .pk-checks svg { inline-size: 16px; block-size: 16px; flex: none; }
+  .pk-checks em { font-style: normal; font-size: 15px; font-weight: 800; color: var(--sc-ink); }
+  .pk-checks span { font-size: 8.5px; font-weight: 700; color: var(--sc-mv); white-space: nowrap; }
+
+  /* ═══ feature-card hover · the peek comes "alive" (desktop, motion-safe) ═══
+     Each preview animates on hover of its own card · 150-300ms, transform/opacity
+     only. Premium micro-motion, never gimmicky. */
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    /* gauge · the accent arc draws itself in */
+    .pk-gauge svg path:nth-of-type(2) {
+      stroke-dasharray: 78; stroke-dashoffset: 0;
+      transition: stroke-dashoffset 420ms var(--sc-ease);
+    }
+    .mg-card:hover .pk-gauge svg path:nth-of-type(2) { stroke-dashoffset: 39; animation: pkGaugeDraw 520ms var(--sc-ease); }
+    @keyframes pkGaugeDraw { from { stroke-dashoffset: 78; } to { stroke-dashoffset: 39; } }
+    /* answer / draft lines · each bar sweeps in from the inline-start, staggered */
+    .pk-lines i { transform-origin: right center; transition: transform 260ms var(--sc-ease); }
+    .mg-card:hover .pk-lines i { animation: pkLine 320ms var(--sc-ease) backwards; }
+    .mg-card:hover .pk-lines i:nth-child(2) { animation-delay: 60ms; }
+    .mg-card:hover .pk-lines i:nth-child(3) { animation-delay: 120ms; }
+    @keyframes pkLine { from { transform: scaleX(.2); opacity: .4; } to { transform: scaleX(1); opacity: 1; } }
+    /* race bars · the "you" bar grows past the others */
+    .pk-bars i { transform-origin: right center; transition: transform 260ms var(--sc-ease); }
+    .mg-card:hover .pk-bars i.you { animation: pkYou 340ms cubic-bezier(.3,1.28,.45,1) backwards; }
+    @keyframes pkYou { from { transform: scaleX(.55); } 60% { transform: scaleX(1.04); } to { transform: scaleX(1); } }
+    /* checks · the check pulses, the number pops */
+    .mg-card:hover .pk-checks svg { animation: pkPulse 380ms var(--sc-ease); }
+    .mg-card:hover .pk-checks em { animation: pkPop 380ms cubic-bezier(.3,1.6,.5,1); }
+    @keyframes pkPulse { 0% { transform: scale(.6); opacity: .5; } 60% { transform: scale(1.12); } 100% { transform: scale(1); opacity: 1; } }
+    @keyframes pkPop { 0% { transform: translateY(3px) scale(.7); } 100% { transform: none; } }
+    /* roi · the trend line redraws upward */
+    .pk-roi polyline { stroke-dasharray: 120; transition: stroke-dashoffset 460ms var(--sc-ease); }
+    .mg-card:hover .pk-roi polyline { animation: pkTrend 520ms var(--sc-ease); }
+    .mg-card:hover .pk-roi circle { animation: pkPop 520ms 300ms cubic-bezier(.3,1.6,.5,1) backwards; }
+    @keyframes pkTrend { from { stroke-dashoffset: 120; } to { stroke-dashoffset: 0; } }
+  }
+  .mg-txt { display: flex; flex-direction: column; gap: 3px; min-inline-size: 0; }
+  .mg-txt b { font-size: 14px; font-weight: 800; letter-spacing: -.01em; }
+  .mg-txt small { font-size: 12px; color: var(--sc-muted); font-weight: 500; line-height: 1.45; }
+
+  /* per-engine landing links · compact row under the feature grid */
+  .mega-engines {
+    max-inline-size: 1080px; margin-inline: auto;
+    padding: 0 clamp(18px, 5vw, 40px) 22px;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+    margin-block-start: -6px;
+  }
+  .me-label { font-size: 12.5px; font-weight: 700; color: var(--sc-muted); }
+  .me-links { display: flex; gap: 8px; flex-wrap: wrap; }
+  .me-chip {
+    font-size: 13px; font-weight: 700; color: var(--sc-accent-text);
+    background: var(--sc-wash); border: 1px solid var(--sc-soft);
+    border-radius: var(--sc-r-pill); padding: 5px 14px;
+    transition: background var(--sc-fast), border-color var(--sc-fast), color var(--sc-fast);
+  }
+  .me-chip:hover { background: var(--sc-card); border-color: var(--sc-accent-text); color: var(--sc-accent-text); }
+  .me-chip[aria-current='page'] { background: var(--sc-accent); color: #fff; border-color: var(--sc-accent); }
+
+  /* ═══ Mobile · full-screen hamburger menu ═══ */
+  @media (max-width: 880px) {
+    .menu-btn {
+      display: grid; place-items: center; order: 3;
+      inline-size: 38px; block-size: 38px; border-radius: 10px;
+      border: 1px solid var(--sc-hair); background: var(--sc-card);
+      color: var(--sc-ink); cursor: pointer;
+    }
+    /* fixed inside the sticky header's containing block → fills the viewport
+       below the header bar. block-size uses dvh so it survives URL-bar resize. */
+    .navlinks {
+      display: none;
+      position: fixed;
+      inset-inline: 0;
+      inset-block-start: 100%;
+      block-size: calc(100dvh - 65px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      margin-inline-start: 0;
+      background: var(--sc-paper);
+      padding: 18px clamp(18px, 5vw, 40px) 36px;
+    }
+    .navlinks.open { display: flex; }
+    .nl {
+      font-size: 24px; font-weight: 800; color: var(--sc-ink);
+      padding-block: 13px;
+      border-block-end: 1px solid var(--sc-div);
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .navlinks.open > * { animation: ovIn 360ms var(--sc-ease) backwards; }
+      .navlinks.open > :nth-child(2) { animation-delay: 40ms; }
+      .navlinks.open > :nth-child(3) { animation-delay: 80ms; }
+      .navlinks.open > :nth-child(4) { animation-delay: 120ms; }
+      .navlinks.open > :nth-child(5) { animation-delay: 160ms; }
+      .navlinks.open > :nth-child(6) { animation-delay: 200ms; }
+      .navlinks.open > :nth-child(7) { animation-delay: 240ms; }
+      @keyframes ovIn { from { opacity: 0; transform: translateY(10px); } }
+    }
+    /* the mega group flattens: label + always-expanded previews */
+    .mega-btn { display: none; }
+    .mega-mlabel {
+      display: block;
+      font-size: 24px; font-weight: 800; color: var(--sc-ink);
+      padding-block: 13px 4px;
+      margin: 0;
+    }
+    .mega-panel {
+      position: static;
+      opacity: 1; visibility: visible; transform: none;
+      background: none; border: none; box-shadow: none;
+    }
+    .mega-in {
+      padding: 6px 0 14px;
+      grid-template-columns: 1fr;
+      gap: 9px;
+    }
+    .mega { border-block-end: 1px solid var(--sc-div); padding-block-end: 6px; }
+    .mega-engines { padding: 0 0 12px; margin-block-start: 2px; }
+    .me-label { inline-size: 100%; font-size: 13.5px; }
+    .mg-peek { inline-size: 72px; block-size: 48px; }
+    .mg-txt b { font-size: 14.5px; }
+    .ov-cta {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      margin-block-start: 26px;
+    }
+    .ov-cta .btn { inline-size: 100%; }
+    .ov-micro { font-size: 11.5px; font-weight: 600; color: var(--sc-muted); }
+    .nav-cta { display: none; }
+  }
+</style>
+
+<script>
+  // Mobile menu · full-screen, with body scroll lock + focus trap (dialog)
+  const btn = document.querySelector<HTMLButtonElement>('.menu-btn');
+  const menu = document.getElementById('navlinks');
+  const focusablesIn = (el: HTMLElement) =>
+    Array.from(
+      el.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )
+    ).filter((n) => n.offsetParent !== null || n === document.activeElement);
+
+  const setMenu = (open: boolean) => {
+    const wasOpen = menu?.classList.contains('open');
+    menu?.classList.toggle('open', open);
+    btn?.setAttribute('aria-expanded', String(open));
+    btn?.setAttribute('aria-label', open ? 'סגירת תפריט' : 'פתיחת תפריט');
+    const iOpen = btn?.querySelector<SVGPathElement>('.i-open');
+    const iClose = btn?.querySelector<SVGPathElement>('.i-close');
+    if (iOpen && iClose) {
+      iOpen.style.display = open ? 'none' : '';
+      iClose.style.display = open ? '' : 'none';
+    }
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+    if (open && menu) {
+      // move focus to the first interactive item inside the dialog
+      const first = focusablesIn(menu)[0];
+      requestAnimationFrame(() => first?.focus());
+    } else if (wasOpen) {
+      // return focus to the hamburger on close
+      btn?.focus();
+    }
+  };
+  btn?.addEventListener('click', () => setMenu(!menu?.classList.contains('open')));
+  menu?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) setMenu(false);
+  });
+  // trap focus within the open menu + Escape to close
+  document.addEventListener('keydown', (e) => {
+    if (!menu?.classList.contains('open')) return;
+    if (e.key === 'Escape') { setMenu(false); return; }
+    if (e.key !== 'Tab') return;
+    const items = focusablesIn(menu);
+    if (!items.length) return;
+    const firstEl = items[0];
+    const lastEl = items[items.length - 1];
+    const active = document.activeElement as HTMLElement;
+    if (e.shiftKey && active === firstEl) { e.preventDefault(); lastEl.focus(); }
+    else if (!e.shiftKey && active === lastEl) { e.preventDefault(); firstEl.focus(); }
+    else if (!menu.contains(active)) { e.preventDefault(); firstEl.focus(); }
+  });
+
+  // ═══ פיצרים mega-menu · hover-intent on pointer devices + click/tap + keyboard ═══
+  const mega = document.querySelector<HTMLElement>('[data-mega]');
+  const megaBtn = mega?.querySelector<HTMLButtonElement>('.mega-btn');
+  if (mega && megaBtn) {
+    let closeT = 0;
+    const setMega = (open: boolean) => {
+      mega.classList.toggle('open', open);
+      megaBtn.setAttribute('aria-expanded', String(open));
+    };
+    megaBtn.addEventListener('click', () => setMega(!mega.classList.contains('open')));
+    if (window.matchMedia('(hover: hover)').matches) {
+      mega.addEventListener('mouseenter', () => { clearTimeout(closeT); setMega(true); });
+      mega.addEventListener('mouseleave', () => { closeT = window.setTimeout(() => setMega(false), 160); });
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && mega.classList.contains('open')) { setMega(false); megaBtn.focus(); }
+    });
+    document.addEventListener('click', (e) => {
+      if (mega.classList.contains('open') && !mega.contains(e.target as Node)) setMega(false);
+    });
+    // close when tabbing out of the panel
+    mega.addEventListener('focusout', (e) => {
+      const to = (e as FocusEvent).relatedTarget as Node | null;
+      if (to && !mega.contains(to)) setMega(false);
+    });
+  }
+</script>

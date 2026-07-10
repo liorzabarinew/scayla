@@ -1,0 +1,266 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Scayla · global base styles (RTL-first, logical properties only)
+   ═══════════════════════════════════════════════════════════════════════════ */
+@import './tokens.css';
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--sc-font);
+  background: var(--sc-paper);
+  color: var(--sc-ink);
+  line-height: 1.6;
+  overflow-x: clip; /* safety guard · no horizontal scroll from escaping decorative elements */
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  transition: background-color var(--sc-slow) var(--sc-ease), color var(--sc-slow) var(--sc-ease);
+}
+
+h1, h2, h3, h4, p, ul, ol, figure, blockquote { margin: 0; }
+
+h1 {
+  font-size: clamp(30px, 5.5vw, 50px);
+  font-weight: 800;
+  letter-spacing: -.015em;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+h2 {
+  font-size: clamp(24px, 3.6vw, 36px);
+  font-weight: 800;
+  letter-spacing: -.015em;
+  line-height: 1.22;
+  text-wrap: balance;
+}
+h3 { font-size: 18px; font-weight: 800; letter-spacing: -.01em; }
+
+p { font-size: clamp(15px, 1.6vw, 17px); color: var(--sc-muted); font-weight: 500; }
+
+a { color: var(--sc-accent-text); text-decoration: none; }
+a:hover { color: var(--sc-deep); }
+[data-theme='dark'] a:hover { color: var(--sc-lav); }
+
+img, svg { max-inline-size: 100%; block-size: auto; }
+
+button { font-family: inherit; }
+
+/* Numbers / Latin / currency: always LTR-isolated + tabular */
+.num {
+  direction: ltr;
+  unicode-bidi: isolate;
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Visible focus · WCAG AA */
+:focus-visible {
+  outline: 3px solid var(--sc-accent-text);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  inset-block-start: -48px;
+  inset-inline-start: 16px;
+  z-index: 100;
+  background: var(--sc-accent);
+  color: #fff;
+  font-weight: 700;
+  padding: 10px 18px;
+  border-radius: var(--sc-r-pill);
+  transition: inset-block-start var(--sc-fast) var(--sc-ease);
+}
+.skip-link:focus-visible { inset-block-start: 12px; color: #fff; }
+
+/* ── Layout primitives ── */
+.wrap { max-inline-size: 1080px; margin-inline: auto; padding-inline: clamp(18px, 5vw, 40px); }
+.narrow { max-inline-size: 720px; margin-inline: auto; padding-inline: clamp(18px, 5vw, 40px); }
+section { padding-block: clamp(48px, 7vw, 88px); }
+.center { text-align: center; }
+
+.eyebrow {
+  display: inline-block;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: .05em;
+  color: var(--sc-accent-text);
+  text-transform: uppercase;
+  margin-block-end: 16px;
+}
+
+.lede {
+  font-size: clamp(16px, 1.9vw, 20px);
+  color: var(--sc-mv);
+  margin-block-start: 20px;
+}
+
+/* Section heading block */
+.sh { text-align: center; margin-block-end: 44px; }
+.sh p { max-inline-size: 58ch; margin: 16px auto 0; }
+
+/* ── Buttons (pill · from design system) ── */
+.btn {
+  font-family: var(--sc-font);
+  font-weight: 700;
+  font-size: 15px;
+  border: none;
+  border-radius: var(--sc-r-pill);
+  padding: 12px 24px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: transform var(--sc-fast) var(--sc-ease), box-shadow 200ms var(--sc-ease), background 200ms, color 200ms, border-color 200ms;
+}
+.btn-solid {
+  background: var(--sc-accent);
+  color: #fff;
+  box-shadow: 0 8px 22px -10px rgba(85, 70, 214, .7);
+}
+.btn-solid:hover {
+  background: var(--sc-deep);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px -10px rgba(85, 70, 214, .8);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--sc-ink);
+  border: 1px solid var(--sc-soft);
+}
+.btn-ghost:hover { border-color: var(--sc-accent-text); color: var(--sc-accent-text); }
+.btn-white {
+  background: #fff;
+  color: var(--sc-accent);
+  box-shadow: 0 8px 22px -12px rgba(29, 29, 31, .4);
+}
+.btn-white:hover { transform: translateY(-1px); color: var(--sc-deep); }
+/* soft-gold primary · warm, premium, distinct from green/red · dark ink for AA */
+.btn-gold, .btn-coral {
+  background: var(--accent-gold);
+  color: var(--sc-gold-ink);
+  box-shadow: 0 8px 22px -10px rgba(240, 173, 46, .55);
+}
+.btn-gold:hover, .btn-coral:hover {
+  background: var(--sc-gold-deep);
+  color: var(--sc-gold-ink);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 30px -10px rgba(240, 173, 46, .65);
+}
+.btn-sm { padding: 9px 17px; font-size: 14px; }
+.btn-lg { padding: 14px 30px; font-size: 16px; }
+
+/* The one loud surface · the primary "התקינו ב-Shopify" conversion CTA.
+   Deliberately larger/bolder/heavier than everything around it. */
+.btn-hero {
+  font-size: clamp(17px, 2.1vw, 20px);
+  font-weight: 800;
+  padding: 18px 40px;
+  letter-spacing: -.01em;
+  box-shadow: 0 14px 34px -12px rgba(85, 70, 214, .75);
+}
+.btn-hero.btn-solid:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 44px -12px rgba(85, 70, 214, .85);
+}
+/* white-on-gradient variant (inside gradient CTA bands) keeps the same heft */
+.btn-hero.btn-white { box-shadow: 0 14px 34px -12px rgba(0, 0, 0, .4); }
+/* gold hero variant · the v2 warm-soft-yellow primary that pops off the indigo */
+.btn-hero.btn-gold, .btn-hero.btn-coral { box-shadow: 0 14px 34px -12px rgba(240, 173, 46, .6); }
+.btn-hero.btn-gold:hover, .btn-hero.btn-coral:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 44px -12px rgba(240, 173, 46, .72);
+}
+
+/* Secondary demo button · calm, clearly subordinate to the hero install CTA */
+.btn-demo { font-weight: 700; }
+
+/* CTA pair layout · install dominant, demo beside it */
+.cta-pair {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.cta-pair.center { justify-content: center; }
+
+/* ── Card ── */
+.card {
+  background: var(--sc-card);
+  border: 1px solid var(--sc-hair);
+  border-radius: var(--sc-r-card);
+  box-shadow: var(--sc-sh-subtle);
+}
+
+/* Trend pill (▲/▼ to the visual left of the number via LTR isolation) */
+.trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--sc-pos-bg);
+  color: var(--sc-pos-deep);
+  border: 1px solid var(--sc-pos-bd);
+  border-radius: var(--sc-r-pill);
+  padding: 6px 13px;
+  font-size: 13.5px;
+  font-weight: 700;
+}
+.trend.down { background: var(--sc-red-bg); color: var(--sc-red-text); border-color: var(--sc-red-bd); }
+
+/* Answer-viewer highlights (green = you exist, red = the gap) */
+.hl-grn {
+  background: var(--sc-pos-bg);
+  color: var(--sc-pos-deep);
+  border-block-end: 1.5px solid var(--sc-pos);
+  border-radius: 3px;
+  padding: 0 4px;
+  font-weight: 700;
+}
+.hl-red {
+  background: var(--sc-red-bg);
+  color: var(--sc-red-text);
+  border-block-end: 1.5px solid var(--sc-red);
+  border-radius: 3px;
+  padding: 0 4px;
+  font-weight: 700;
+}
+
+/* Placeholder frame · clearly marked, replaced at implementation */
+.placeholder-box {
+  border: 2px dashed var(--sc-soft);
+  border-radius: var(--sc-r-card);
+  background: var(--sc-wash);
+  color: var(--sc-mv);
+  padding: 28px 22px;
+  text-align: center;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.placeholder-box b { color: var(--sc-accent-text); display: block; margin-block-end: 4px; font-size: 12px; letter-spacing: .06em; }
+
+/* Fade-up on scroll (JS adds .in; motion-safe only; html.js guard = content
+   stays visible when JS is unavailable) */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .fade-up { opacity: 0; transform: translateY(14px); transition: opacity .55s var(--sc-ease), transform .55s var(--sc-ease); }
+  html.js .fade-up.in { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}

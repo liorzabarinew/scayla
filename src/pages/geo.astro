@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import InstallCtaPair from '../components/InstallCtaPair.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+
+const title = 'אופטימיזציה למנועי AI · GEO · Scayla';
+const description =
+  'GEO · אופטימיזציה למנועי AI: כך נכנסים לתשובות של ChatGPT, Gemini, Perplexity ו-Claude. מדידה, אבחון ופעולה · אוטומטית.';
+
+const faq = [
+  {
+    q: 'מה זה GEO?',
+    a: 'GEO (Generative Engine Optimization) הוא הדור הבא של הקידום האורגני: אופטימיזציה למנועי AI כדי להופיע בתשובות של ChatGPT, Gemini, Perplexity ו-Claude. במקום לדרג בעמוד תוצאות · נכנסים לתשובה עצמה.',
+  },
+  {
+    q: 'במה GEO שונה מ-SEO?',
+    a: 'SEO מכוון לדירוג בתוצאות גוגל. GEO מכוון לציטוט בתשובה של מנוע AI · שם אין עמוד 2, יש תשובה אחת. הכלים דומים (תוכן, סכמות, סמכות) אבל המדידה שונה לגמרי: צריך לבדוק מה ה-AI באמת עונה. Scayla עושה את שניהם יחד.',
+  },
+  {
+    q: 'איך עושים אופטימיזציה למנועי AI בעברית?',
+    a: 'מתחילים ממדידה: מה ChatGPT ו-Gemini עונים על השאלות של הקטגוריה שלכם, בעברית. משם Scayla מזהה את הפערים ובונה תוכן ציטוטבילי, סכמות ועמודי FAQ שמנועי ה-AI אוהבים להסתמך עליהם · והכל נמדד שוב, שבוע אחרי שבוע.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="svc-hero">
+    <div class="narrow center">
+      <span class="eyebrow">GEO · Generative Engine Optimization</span>
+      <h1>אופטימיזציה למנועי AI · כי אין עמוד 2 בתשובה של ChatGPT</h1>
+      <p class="lede">
+        הקונים שואלים את מנועי ה-AI "מה הכי טוב ל___" ומקבלים תשובה אחת. GEO זה מה שמכניס
+        אתכם אליה · ו-Scayla היא האפליקציה היחידה ל-Shopify שמודדת, מאבחנת ופועלת,
+        אוטומטית ובעברית.
+      </p>
+      <InstallCtaPair center variant="hero" />
+      <p class="cta-note">אבחון נראות ב-AI חינם · חיוב דרך Shopify</p>
+    </div>
+  </section>
+
+  <section class="svc-body alt-bg">
+    <div class="wrap">
+      <div class="sh">
+        <span class="eyebrow">איך זה עובד</span>
+        <h2>GEO בפועל · שלושה מהלכים שהמכונה עושה בשבילכם</h2>
+      </div>
+      <div class="bgrid three">
+        <div class="b card fade-up">
+          <h3>מודדים את התשובות האמיתיות</h3>
+          <p>Scayla שואלת את ChatGPT ואת Gemini את השאלות של הקונים שלכם, בעברית, ובודקת: אתם בתשובה או שהמתחרה שם במקומכם?</p>
+        </div>
+        <div class="b card fade-up">
+          <h3>בונים תוכן ציטוטבילי</h3>
+          <p>מאמרים, FAQ וסכמות במבנה שמנועי AI אוהבים לצטט · תשובות ישירות, נתונים ברורים, סמכות. זה ההבדל בין להיות מקור לבין להיות שקופים.</p>
+        </div>
+        <div class="b card fade-up">
+          <h3>עוקבים ומוכיחים</h3>
+          <p>ציון נראות ב-AI, מרוץ נתח-קול מול מתחרים בשם, וטרנד שבועי · רואים את ההתקדמות במספרים, לא בהבטחות.</p>
+        </div>
+      </div>
+      <p class="svc-note center">
+        רוצים לראות איך זה נראה על מנוע ספציפי? כך עובדת
+        <a href="/ai-visibility">ההופעה ב-ChatGPT וב-Gemini</a> ·
+        וכל זה מתחבר ל<a href="/seo-shopify">קידום האורגני של החנות בגוגל</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="svc-faq">
+    <div class="narrow">
+      <div class="sh"><span class="eyebrow">שאלות נפוצות</span><h2>GEO ואופטימיזציה למנועי AI · תשובות מהירות</h2></div>
+      <FaqAccordion items={faq} schema={true} />
+    </div>
+  </section>
+
+  <section class="svc-cta">
+    <div class="wrap">
+      <CtaBand
+        title="המומלצים של מחר נבנים היום."
+        body="החנויות שמתחילות GEO עכשיו יהיו התשובות של השנים הקרובות. התקינו, מדדו, ותראו איפה אתם עומדים · תוך דקות."
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .svc-hero { padding-block-end: 16px; }
+  .cta-note { font-size: 13px; color: var(--sc-disabled); margin-block-start: 14px; }
+  .alt-bg { background: var(--sc-card); }
+  :global([data-theme='dark']) .alt-bg { background: #17141d; }
+  .bgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .bgrid.three { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 820px) { .bgrid, .bgrid.three { grid-template-columns: 1fr; } }
+  .b { padding: 24px; background: var(--sc-paper); }
+  .b h3 { margin-block-end: 6px; font-size: 17px; }
+  .b p { font-size: 14.5px; }
+  .svc-note { margin-block-start: 26px; font-size: 15px; max-inline-size: 60ch; margin-inline: auto; }
+  .svc-cta { padding-block-end: clamp(24px, 4vw, 48px); }
+</style>

@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import InstallCtaPair from '../components/InstallCtaPair.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+
+const title = 'קידום אורגני ל-Shopify · Scayla';
+const description =
+  'קידום אורגני לחנות שופיפיי בלי סוכנות: מחקר מילים, תוכן, סכמות ותיקוני 404 · אוטומטית ובאישור שלכם. מ-$49 לחודש.';
+
+const faq = [
+  {
+    q: 'איך עושים קידום אורגני לחנות שופיפיי בלי לדעת SEO?',
+    a: 'עם Scayla אתם לא צריכים לדעת SEO. המכונה סורקת את החנות, מזהה מה חוסם אתכם בגוגל · כותרות חלשות, תיאורים חסרים, סכמות, 404 · ומכינה את התיקונים. אתם מאשרים בקליק, והכל הפיך.',
+  },
+  {
+    q: 'כמה עולה קידום חנות שופיפיי?',
+    a: 'סוכנות SEO גובה בדרך כלל אלפי שקלים בחודש. Scayla מתחילה ב-$49 לחודש, בחיוב דרך Shopify, עם 14 יום ניסיון חינם · והיא היחידה שמקדמת אתכם גם במנועי ה-AI, לא רק בגוגל.',
+  },
+  {
+    q: 'מה ההבדל בין Scayla לאפליקציות SEO אחרות ל-Shopify?',
+    a: 'רוב האפליקציות עוצרות בגוגל: מטא, מילות מפתח, סיטמאפ. Scayla עושה את כל זה · ובנוסף מודדת ומנצחת את הנראות שלכם בתשובות של ChatGPT ו-Gemini, ששם הקונים כבר נמצאים.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="svc-hero">
+    <div class="narrow center">
+      <span class="eyebrow">קידום אורגני ל-Shopify</span>
+      <h1>קידום אורגני לחנות שופיפיי · בלי סוכנות, בלי כאב ראש</h1>
+      <p class="lede">
+        Scayla היא מכונת קידום אורגני שעובדת בתוך החנות שלכם: מחקר מילות מפתח בעברית,
+        מאמרים מבוססי מחקר, SEO למוצרים ולקטגוריות, סכמות ותיקוני 404 · הכל באישור שלכם,
+        הכל הפיך, מ-<span class="num">$49</span> לחודש.
+      </p>
+      <InstallCtaPair center variant="hero" />
+      <p class="cta-note">אבחון חינם · חיוב דרך Shopify · ביטול בכל עת</p>
+    </div>
+  </section>
+
+  <section class="svc-body alt-bg">
+    <div class="wrap">
+      <div class="sh">
+        <span class="eyebrow">מה תקבלו</span>
+        <h2>כל העבודה של סוכנות · בקצב של מכונה</h2>
+      </div>
+      <div class="bgrid">
+        <div class="b card fade-up">
+          <h3>מחקר מילות מפתח בעברית</h3>
+          <p>המכונה מוצאת את השאילתות ששוות לכם הכי הרבה · כולל מילים שאתם צעד אחד מעמוד 1 בהן.</p>
+        </div>
+        <div class="b card fade-up">
+          <h3>SEO למוצרים ולקטגוריות</h3>
+          <p>כותרות, מטא ותיאורים משופרים בכמות, עם לפני/אחרי ליד כל הצעה. קידום חנות שופיפיי בקליק אחד.</p>
+        </div>
+        <div class="b card fade-up">
+          <h3>תוכן שמביא תנועה</h3>
+          <p>מאמרים מבוססי מחקר בעברית ילידית, מכוונים למילות המפתח שלכם · מתפרסמים רק באישורכם.</p>
+        </div>
+        <div class="b card fade-up">
+          <h3>תיקונים טכניים</h3>
+          <p>סכמות, FAQ, תיקוני 301 לעמודי 404 · מחובר ישירות ל-Google Search Console ול-GA4.</p>
+        </div>
+      </div>
+      <p class="svc-note center">
+        והבונוס שאף אפליקציית SEO אחרת לא נותנת: כל מה שהמכונה בונה לגוגל משרת גם את
+        <a href="/geo">האופטימיזציה למנועי ה-AI</a> · כי המומלצים של מחר נבנים היום.
+      </p>
+    </div>
+  </section>
+
+  <section class="svc-faq">
+    <div class="narrow">
+      <div class="sh"><span class="eyebrow">שאלות נפוצות</span><h2>קידום אורגני לשופיפיי · תשובות מהירות</h2></div>
+      <FaqAccordion items={faq} schema={true} />
+    </div>
+  </section>
+
+  <section class="svc-cta">
+    <div class="wrap">
+      <CtaBand
+        title="החנות שלכם יכולה לעבוד יותר קשה בגוגל."
+        body="התקינו את Scayla, קבלו אבחון חינם, ותראו בדיוק אילו תיקונים ממתינים לכם · עוד היום."
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .svc-hero { padding-block-end: 16px; }
+  .cta-note { font-size: 13px; color: var(--sc-disabled); margin-block-start: 14px; }
+  .alt-bg { background: var(--sc-card); }
+  :global([data-theme='dark']) .alt-bg { background: #17141d; }
+  .bgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px) { .bgrid { grid-template-columns: 1fr; } }
+  .b { padding: 24px; background: var(--sc-paper); }
+  .b h3 { margin-block-end: 6px; font-size: 17px; }
+  .b p { font-size: 14.5px; }
+  .svc-note { margin-block-start: 26px; font-size: 15px; max-inline-size: 60ch; margin-inline: auto; }
+  .svc-cta { padding-block-end: clamp(24px, 4vw, 48px); }
+</style>

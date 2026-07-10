@@ -1,0 +1,265 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import InstallCtaPair from '../components/InstallCtaPair.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import AnswerViewer from '../components/AnswerViewer.astro';
+
+const title = 'איך להופיע ב-Claude · קידום · Scayla';
+const description =
+  'איך להופיע ב-Claude עם חנות שופיפיי: קהל מקצועי שמברר לעומק לפני קנייה · קטגוריה עדיין פנויה. Scayla מודדת ומכניסה אתכם לתשובה.';
+
+const canonicalPath = '/claude-seo';
+
+const faq = [
+  {
+    q: 'מי בכלל משתמש ב-Claude בישראל?',
+    a: 'פחות אנשים מ-ChatGPT, אבל פרופיל שונה: אנשי מקצוע, קונים עסקיים ומי שמברר לעומק לפני החלטה גדולה. Claude מוכר על תשובות זהירות ומדויקות, אז מי שבוחר בו בדרך כלל מחפש ייעוץ רציני · לא תשובה מהירה. עבור חלק מהחנויות זה בדיוק הקהל הנכון.',
+  },
+  {
+    q: 'מה מכניס חנות לתשובה של Claude?',
+    a: 'Claude שם דגש על מקורות מדויקים, מובנים וברורים, ונזהר מלהמליץ על משהו שהוא לא בטוח בו. עמוד מבולגן או טענה בלי גיבוי פשוט לא ייבחר. Scayla בונה עמודים עם תשובות ישירות, נתונים וסכמות · בדיוק הסוג שמנוע זהיר מוכן להסתמך עליו.',
+  },
+  {
+    q: 'למה בכלל להשקיע במנוע קטן יותר?',
+    a: 'כי הקטגוריה עדיין פנויה. רוב החנויות בישראל אפילו לא בדקו איך הן נראות ב-Claude, אז מי שמתחיל עכשיו תופס עמדה לפני שיש תחרות. פחות רעש, יותר מקום להיות המומלץ. וזו אותה עבודת תוכן שמשרתת גם את שאר המנועים.',
+  },
+  {
+    q: 'איך Scayla מודדת הופעה ב-Claude?',
+    a: 'Scayla מריצה את שאלות הקטגוריה שלכם מול Claude בעברית ובודקת אם אתם בתשובה או שהמתחרה במקומכם. את זה משווים לשאר המנועים ומודדים כל שבוע · ככה רואים תמונה מלאה, לא מנוע בודד.',
+  },
+];
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'איך להופיע ב-Claude · קידום חנות שופיפיי',
+  description,
+  inLanguage: 'he',
+  mainEntityOfPage: `https://scayla.co.il${canonicalPath}`,
+  author: { '@type': 'Person', name: 'נוי קייטל', url: 'https://scayla.co.il/experts/noy-keitel' },
+  publisher: { '@type': 'Organization', name: 'Scayla', url: 'https://scayla.co.il/' },
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  breadcrumbs={[{ name: 'הופעה ב-Claude', path: canonicalPath }]}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(articleLd)} slot="head" />
+
+  <section class="svc-hero">
+    <div class="narrow center">
+      <span class="eyebrow">קידום ל-Claude</span>
+      <h1>איך להופיע ב-Claude · הקהל שמברר לעומק, הקטגוריה שעדיין פנויה</h1>
+      <p class="lede">
+        Claude מושך פחות אנשים מ-ChatGPT, אבל פרופיל אחר: אנשי מקצוע וקונים שמבררים ברצינות
+        לפני שהם קונים. רוב החנויות בישראל עוד לא בדקו איך הן נראות שם · מי שמתחיל עכשיו
+        תופס עמדה לפני התחרות. Scayla מודדת ומכניסה אתכם.
+      </p>
+      <InstallCtaPair center variant="hero" />
+      <p class="cta-note">אבחון נראות ב-Claude חינם · תוך דקות מההתקנה</p>
+    </div>
+  </section>
+
+  <section class="svc-body alt-bg">
+    <div class="wrap">
+      <div class="sh">
+        <span class="eyebrow">למה Claude שווה תשומת לב</span>
+        <h2>פחות תנועה · אבל קהל שקונה אחרי בירור, ומעט מאוד מתחרים</h2>
+        <p>
+          לא כל מנוע צריך להיות הראשון שתקדמו בו. Claude נבחר על ידי מי שמנהל בירור רציני
+          · השוואה, שאלות המשך, החלטה שקולה. הקהל קטן יותר, הכוונה גבוהה יותר, והתחרות על
+          הופעה עדיין דלילה. זה חלון הזדמנות, לא נישה שולית.
+        </p>
+      </div>
+      <div class="stat-row">
+        <div class="stat card fade-up">
+          <div class="stat-n">פנוי</div>
+          <p>רוב החנויות בישראל עוד לא בדקו איך הן נראות ב-Claude · מי שמתחיל עכשיו לפני התחרות.</p>
+        </div>
+        <div class="stat card fade-up">
+          <div class="stat-n">בירור</div>
+          <p>המשתמשים שואלים שאלות המשך ומשווים לעומק · הם מגיעים אליכם אחרי שקילה, לא באימפולס.</p>
+        </div>
+        <div class="stat card fade-up">
+          <div class="stat-n">דיוק</div>
+          <p>Claude נזהר מלהמליץ על מה שהוא לא בטוח בו · עמוד ברור ומגובה בנתונים מנצח טקסט שיווקי.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-demo">
+    <div class="wrap">
+      <div class="sh">
+        <span class="eyebrow">ככה זה נראה</span>
+        <h2>שאלה של בירור · אתם בתשובה או שהמתחרה שם</h2>
+        <p>Scayla מציגה את תשובת Claude על הקטגוריה שלכם, עם השם שלכם מודגש · או חסר.</p>
+      </div>
+      <div class="engines">
+        <div class="engine-panel card fade-up">
+          <AnswerViewer
+            question="איזו חנות מומלצת לריהוט משרדי ארגונומי?"
+            engine="Claude"
+            gapText="<b>נעדרים מהתשובה.</b> הבירור הזהיר לא הגיע אליכם · Scayla בונה את המקור שכן."
+          >
+            לריהוט משרדי ארגונומי כדאי לשקול את <span class="hl-red">ארגו וורק</span> ואת
+            <span class="hl-red">אופיס פרו</span>, לפי תמיכה גבית ומדיניות החזרה.
+          </AnswerViewer>
+        </div>
+        <div class="engine-panel card fade-up">
+          <AnswerViewer
+            question="איזו חנות מומלצת לריהוט משרדי ארגונומי?"
+            engine="Claude"
+            presentText="<b>אתם בתשובה.</b> העמוד המדויק והמגובה נבחר על ידי מנוע זהיר."
+          >
+            שווה לבדוק את <span class="hl-grn">החנות שלכם</span> עם מפרט ארגונומי מלא
+            ותקופת ניסיון, וגם את <span class="hl-red">ארגו וורק</span>.
+          </AnswerViewer>
+        </div>
+      </div>
+      <p class="svc-note center">
+        התשובות כאן להמחשה. באפליקציה תראו את התמונה על החנות שלכם על פני
+        <a href="/ai-visibility">כל המנועים יחד</a>, לא רק אחד.
+      </p>
+    </div>
+  </section>
+
+  <section class="svc-body alt-bg">
+    <div class="wrap">
+      <div class="sh">
+        <span class="eyebrow">איך Scayla עוזרת</span>
+        <h2>שלושה מהלכים שמכניסים אתכם לתשובה של Claude</h2>
+      </div>
+      <div class="bgrid three">
+        <div class="b card fade-up">
+          <h3>מודדת בזמן שאף אחד עוד לא מסתכל</h3>
+          <p>Scayla בודקת את הנראות שלכם ב-Claude ומשווה למתחרים · בשלב שבו רובם עוד לא נכנסו למרוץ, אז יש עמדה לתפוס.</p>
+        </div>
+        <div class="b card fade-up">
+          <h3>בונה תוכן מדויק ומגובה</h3>
+          <p>Claude מעדיף מקור ברור עם נתונים על פני הבטחות. Scayla כותבת עמודים ו-FAQ במבנה הזה, בעברית, ומפרסמת רק באישורכם.</p>
+        </div>
+        <div class="b card fade-up">
+          <h3>מסדרת את מה שמבלבל מנוע זהיר</h3>
+          <p>סכמות, מבנה עמוד ברור ותיקון שברים · כל מה שנותן ל-Claude ביטחון לצטט אתכם במקום לדלג עליכם.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-guide">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">מדריך מהיר</span>
+        <h2>ארבעה צעדים להופעה ב-Claude</h2>
+      </div>
+      <ol class="guide">
+        <li class="card fade-up">
+          <span class="gn num">1</span>
+          <div>
+            <h3>כתבו לקהל שמברר, לא שגולש</h3>
+            <p>Claude מושך שאלות רציניות. עמוד שעונה על "מה ההבדל בין ___ ל___" או "למי מתאים ___" מדבר בדיוק לקהל הזה.</p>
+          </div>
+        </li>
+        <li class="card fade-up">
+          <span class="gn num">2</span>
+          <div>
+            <h3>גבו כל טענה בנתון</h3>
+            <p>מנוע זהיר לא ממליץ על מה שהוא לא בטוח בו. מספרים, מפרט ותנאים מדויקים נותנים לו סיבה לבחור בכם.</p>
+          </div>
+        </li>
+        <li class="card fade-up">
+          <span class="gn num">3</span>
+          <div>
+            <h3>שמרו על מבנה עמוד נקי</h3>
+            <p>כותרות הגיוניות, פסקאות קצרות וסכמות. עמוד מסודר קל להבנה · ומנוע שמבין אתכם הוא מנוע שמצטט אתכם.</p>
+          </div>
+        </li>
+        <li class="card fade-up">
+          <span class="gn num">4</span>
+          <div>
+            <h3>תפסו עמדה עכשיו</h3>
+            <p>הקטגוריה עדיין דלילת תחרות. כל שבוע שאתם מקדימים בו הוא שבוע שבו מתחרה עדיין לא נכנס · מדדו והתחילו לצבור.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="svc-faq">
+    <div class="narrow">
+      <div class="sh"><span class="eyebrow">שאלות נפוצות</span><h2>הופעה ב-Claude · תשובות מהירות</h2></div>
+      <FaqAccordion items={faq} schema={true} />
+    </div>
+  </section>
+
+  <section class="svc-links alt-bg">
+    <div class="wrap">
+      <div class="sh"><span class="eyebrow">להמשיך מכאן</span><h2>אותה שיטה · מנועים אחרים</h2></div>
+      <div class="lgrid">
+        <a class="lcard card fade-up" href="/chatgpt-seo"><b>הופעה ב-ChatGPT</b><small>המנוע עם הכי הרבה קונים ששואלים בישראל</small></a>
+        <a class="lcard card fade-up" href="/gemini-seo"><b>הופעה ב-Gemini</b><small>המנוע של גוגל, מחובר לחיפוש שכבר יש לכם בו נוכחות</small></a>
+        <a class="lcard card fade-up" href="/perplexity-seo"><b>הופעה ב-Perplexity</b><small>המנוע שמצרף מקורות עם קישור · ציטוט שהופך לתנועה</small></a>
+        <a class="lcard card fade-up" href="/ai-visibility"><b>נראות ב-ChatGPT וב-Gemini</b><small>שני המנועים זה לצד זה, עם המותג שלכם מודגש או חסר</small></a>
+        <a class="lcard card fade-up" href="/geo"><b>אופטימיזציה למנועי AI · GEO</b><small>העיקרון שמאחורי כל המנועים · מדידה, אבחון ופעולה</small></a>
+        <a class="lcard card fade-up" href="/"><b>Scayla · לעמוד הבית</b><small>נראות ב-Google וב-AI, אוטומטית, מתוך החנות שלכם</small></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-cta">
+    <div class="wrap">
+      <CtaBand
+        title="ב-Claude הקטגוריה עדיין פנויה · תפסו את המקום לפני התחרות."
+        body="התקינו את Scayla ותראו איך החנות נראית ב-Claude · בזמן שרוב המתחרים עוד לא בדקו."
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .svc-hero { padding-block-end: 16px; }
+  .cta-note { font-size: 13px; color: var(--sc-disabled); margin-block-start: 14px; }
+  .alt-bg { background: var(--sc-card); }
+  :global([data-theme='dark']) .alt-bg { background: #17141d; }
+
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 820px) { .stat-row { grid-template-columns: 1fr; } }
+  .stat { padding: 24px; background: var(--sc-paper); }
+  .stat-n { font-size: 36px; font-weight: 800; color: var(--sc-accent-text); letter-spacing: -.02em; line-height: 1; margin-block-end: 10px; }
+  .stat p { font-size: 14.5px; }
+
+  .engines { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 820px) { .engines { grid-template-columns: 1fr; } }
+  .engine-panel { padding: 14px; border-radius: 18px; }
+
+  .bgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 820px) { .bgrid { grid-template-columns: 1fr; } }
+  .b { padding: 24px; background: var(--sc-paper); }
+  .b h3 { margin-block-end: 6px; font-size: 17px; }
+  .b p { font-size: 14.5px; }
+
+  .guide { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .guide li { display: flex; gap: 16px; align-items: flex-start; padding: 20px 22px; }
+  .gn {
+    flex: none; inline-size: 34px; block-size: 34px; border-radius: 10px;
+    background: var(--sc-wash); color: var(--sc-accent-text);
+    display: grid; place-items: center; font-size: 16px; font-weight: 800;
+  }
+  .guide h3 { font-size: 16.5px; margin-block-end: 4px; }
+  .guide p { font-size: 14.5px; }
+
+  .lgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 820px) { .lgrid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .lgrid { grid-template-columns: 1fr; } }
+  .lcard { display: flex; flex-direction: column; gap: 5px; padding: 18px 20px; color: var(--sc-ink); transition: transform var(--sc-fast) var(--sc-ease), border-color 200ms, box-shadow 200ms; }
+  .lcard:hover { color: var(--sc-ink); transform: translateY(-2px); border-color: var(--sc-soft); box-shadow: var(--sc-sh-lift); }
+  .lcard b { font-size: 15.5px; font-weight: 800; letter-spacing: -.01em; }
+  .lcard small { font-size: 13px; color: var(--sc-muted); font-weight: 500; line-height: 1.5; }
+
+  .svc-note { margin-block-start: 26px; font-size: 15px; max-inline-size: 62ch; margin-inline: auto; }
+  .svc-cta { padding-block-end: clamp(24px, 4vw, 48px); }
+</style>

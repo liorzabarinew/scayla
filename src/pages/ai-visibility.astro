@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import InstallCtaPair from '../components/InstallCtaPair.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import AnswerViewer from '../components/AnswerViewer.astro';
+
+const title = 'הופעה ב-ChatGPT וב-Gemini · Scayla';
+const description =
+  'אופטימיזציה ל-ChatGPT, קידום בג\'ימיני ובקלוד: בדקו אם מנועי ה-AI ממליצים על החנות שלכם · וסגרו את הפער אוטומטית.';
+
+const faq = [
+  {
+    q: 'איך בודקים אם ChatGPT ממליץ על החנות שלנו?',
+    a: 'אפשר לשאול ידנית · אבל התשובות משתנות בין שאילתות, ניסוחים וימים. Scayla מריצה מדגם שאילתות קבוע בעברית מול ChatGPT ו-Gemini, ומחשבת ציון נראות: באיזה אחוז מהתשובות אתם מופיעים, ומי מופיע במקומכם.',
+  },
+  {
+    q: 'אפשר "לקדם" חנות ב-ChatGPT או בג\'ימיני?',
+    a: 'אין קנייה של מיקום · אבל יש אופטימיזציה. מנועי ה-AI בוחרים את מי לצטט לפי תוכן סמכותי, מובנה ועדכני. Scayla בונה בדיוק את זה: מאמרים ציטוטביליים, סכמות, FAQ ועמודי מוצר ברורים · ואז מודדת אם זה עבד.',
+  },
+  {
+    q: 'מה עם Perplexity ו-Claude?',
+    a: 'המדידה הרב-מנועית מציגה היום את ChatGPT ואת Gemini זה לצד זה · המנועים הנפוצים בישראל. קידום בקלוד (Claude) וב-Perplexity נמצא במפת הדרכים, והעקרונות זהים: תוכן שמנועי AI בוחרים לצטט.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="svc-hero">
+    <div class="narrow center">
+      <span class="eyebrow">נראות ב-AI</span>
+      <h1>ChatGPT ו-Gemini כבר ממליצים · השאלה אם עליכם</h1>
+      <p class="lede">
+        Scayla בודקת מה מנועי ה-AI באמת עונים לקונים שלכם, בעברית · זה לצד זה, מול מתחרים
+        בשם. ואז היא סוגרת את הפער: אופטימיזציה ל-ChatGPT, לג'ימיני ולמנועים הבאים, באישור שלכם.
+      </p>
+      <InstallCtaPair center variant="hero" />
+      <p class="cta-note">אבחון נראות חינם · תוך דקות מההתקנה</p>
+    </div>
+  </section>
+
+  <section class="svc-demo alt-bg">
+    <div class="wrap">
+      <div class="sh">
+        <span class="eyebrow">ככה זה נראה</span>
+        <h2>אותה שאלה · שני מנועים · שתי תוצאות שונות</h2>
+        <p>Scayla מציגה את התשובות זו לצד זו, עם המותג שלכם מודגש · או חסר.</p>
+      </div>
+      <div class="engines">
+        <div class="engine-panel card fade-up">
+          <AnswerViewer
+            question="איזו חנות מומלצת לכלי מטבח מעוצבים?"
+            engine="ChatGPT"
+            gapText="<b>נעדרים מהתשובה.</b> המכונה מזהה למה · ובונה את התוכן שיכניס אתכם."
+          >
+            לכלי מטבח מעוצבים כדאי לבדוק את <span class="hl-red">קוקינה שופ</span> ואת
+            <span class="hl-red">בית הבישול</span>, שמציעות מבחר רחב ומשלוחים מהירים.
+          </AnswerViewer>
+        </div>
+        <div class="engine-panel card fade-up">
+          <AnswerViewer
+            question="איזו חנות מומלצת לכלי מטבח מעוצבים?"
+            engine="Gemini"
+            presentText="<b>אתם בתשובה.</b> עכשיו המטרה: להופיע גם ב-ChatGPT · ולהישאר."
+          >
+            בין החנויות המומלצות: <span class="hl-grn">החנות שלכם</span> עם קולקציה מעוצבת
+            ודירוגי לקוחות גבוהים, וגם <span class="hl-red">קוקינה שופ</span>.
+          </AnswerViewer>
+        </div>
+      </div>
+      <p class="svc-note center">
+        המספרים והתשובות כאן להמחשה · בתוך האפליקציה תראו את התשובות האמיתיות על החנות שלכם.
+        רוצים להבין את השיטה? קראו על <a href="/geo">אופטימיזציה למנועי AI · GEO</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="svc-faq">
+    <div class="narrow">
+      <div class="sh"><span class="eyebrow">שאלות נפוצות</span><h2>נראות ב-ChatGPT וב-Gemini · תשובות מהירות</h2></div>
+      <FaqAccordion items={faq} schema={true} />
+    </div>
+  </section>
+
+  <section class="svc-cta">
+    <div class="wrap">
+      <CtaBand
+        title="כשקונה שואל AI · שתהיו בתשובה."
+        body="התקינו את Scayla ותוך דקות תדעו בדיוק מה ChatGPT ו-Gemini אומרים על הקטגוריה שלכם · ומה עושים עם זה."
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .svc-hero { padding-block-end: 16px; }
+  .cta-note { font-size: 13px; color: var(--sc-disabled); margin-block-start: 14px; }
+  .alt-bg { background: var(--sc-card); }
+  :global([data-theme='dark']) .alt-bg { background: #17141d; }
+  .engines { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 820px) { .engines { grid-template-columns: 1fr; } }
+  .engine-panel { padding: 14px; border-radius: 18px; }
+  .svc-note { margin-block-start: 26px; font-size: 15px; max-inline-size: 62ch; margin-inline: auto; }
+  .svc-cta { padding-block-end: clamp(24px, 4vw, 48px); }
+</style>

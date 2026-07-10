@@ -1,0 +1,19 @@
+{
+  "name": "scayla-website",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Scayla · אתר השיווק · Astro static site (RTL Hebrew, light+dark)",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "machine": "node scripts/machine-vertex.mjs",
+    "machine:publish": "node scripts/machine-vertex.mjs --publish"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.4.1",
+    "astro": "^5.12.0"
+  }
+}

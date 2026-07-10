@@ -1,0 +1,456 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PricingCards from '../components/PricingCards.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { fullFaq } from '../data/faq';
+import { tiers } from '../data/pricing';
+
+const billingFaq = fullFaq.filter((f) =>
+  ['איך עובד החיוב?', 'יש תוכנית חינם?', 'מה ההבדל בין Scayla לסוכנות SEO?', 'מה קורה לתוכן אם נבטל את המנוי?'].includes(f.q)
+);
+
+// ═══ The showdown · Scayla vs the three alternatives (cinematic compare) ═══
+// Each rival reveals on scroll, gets a red ✗ stamped on its pain, then Scayla
+// sweeps in with a glow and cascading green ✓ · reduced-motion → final state.
+const rivals = [
+  {
+    name: 'סוכנות SEO',
+    pain: 'יקר ואיטי',
+    cons: [
+      'אלפי שקלים בחודש, בהתחייבות',
+      'מחכים שבועות לכל שינוי',
+      'לא תמיד ברור מה נעשה בפועל',
+    ],
+    cost: 'אלפי ₪ בחודש',
+    more: 'ובסוף · הידע נשאר אצלם, לא אצלכם.',
+  },
+  {
+    name: 'אפליקציות SEO רגילות',
+    pain: 'עיוורות ל-AI',
+    cons: [
+      'מטפלות רק במטא ומילות מפתח',
+      'לא יודעות מה ChatGPT עונה עליכם',
+      'העבודה עצמה נשארת אצלכם',
+    ],
+    cost: 'עוד כלי · אותה עבודה',
+    more: 'הקונים כבר שואלים AI · הן עדיין מסתכלות רק על גוגל.',
+  },
+  {
+    name: 'לעשות לבד',
+    pain: 'אין זמן',
+    cons: [
+      'מחקר מילים, מאמרים, סכמות, תיקוני 404',
+      'שעות למידה על חשבון העסק',
+      'וזה אף פעם לא נגמר',
+    ],
+    cost: 'הזמן שלכם · היקר מכולם',
+    more: 'כל שעה על SEO היא שעה שלא ניהלתם בה את החנות.',
+  },
+];
+const wins = [
+  'גם גוגל וגם ChatGPT + Gemini · במקום אחד',
+  'עובדת לבד, מסביב לשעון · אתם רק מאשרים',
+  'שקופה · כל פעולה מוצגת לפני שהיא עולה',
+  'מתחברת ל-Shopify בקליק · בלי לגעת בקוד',
+];
+
+const title = 'מחירון · Scayla';
+const description =
+  'Growth $49 · Scale $69 · Max $99 לחודש. 14 יום ניסיון חינם, אבחון חינם, חיוב דרך Shopify וביטול בכל עת.';
+
+// SoftwareApplication + the 3 pricing Offers (Noy · question 9)
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Scayla',
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Web (Shopify)',
+  inLanguage: 'he',
+  url: 'https://scayla.co.il',
+  publisher: { '@type': 'Organization', name: 'Scayla', url: 'https://scayla.co.il' },
+  offers: tiers.map((t) => ({
+    '@type': 'Offer',
+    name: `Scayla ${t.name}`,
+    price: String(t.price),
+    priceCurrency: 'USD',
+    description: t.tagline,
+    url: 'https://scayla.co.il/pricing',
+  })),
+};
+---
+
+<BaseLayout title={title} description={description}>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <section class="price-hero">
+    <div class="narrow center">
+      <h1>מחירון שמחזיר את עצמו מהלקוח הראשון שמגיע מ-AI</h1>
+      <p class="lede">
+        מערכת אוטומטית שעובדת בשביל העסק שלך, וצוות שלא באמת צריך לישון בלילה.
+        החל מ-<span class="num">$49</span> לחודש ו-<span class="num">14</span> יום ללא עלות.
+      </p>
+    </div>
+  </section>
+
+  <section class="plans">
+    <div class="wrap">
+      <PricingCards />
+    </div>
+  </section>
+
+  <!-- ═══ THE SHOWDOWN · cinematic dark stage · rivals fall, Scayla wins ═══ -->
+  <section class="cin" data-cin aria-label="Scayla מול סוכנות, מול אפליקציות SEO רגילות ומול לעשות לבד">
+    <div class="wrap">
+      <div class="cin-head">
+        <p class="cin-k">למה Scayla</p>
+        <h2 class="cin-h">שלוש דרכים לקדם חנות.<br /><span class="cin-grad">רק אחת עובדת בשבילכם.</span></h2>
+        <p class="cin-sub">מול סוכנות · מול אפליקציות SEO רגילות · מול לעשות לבד</p>
+      </div>
+
+      <div class="cin-rivals">
+        {rivals.map((r, i) => (
+          <article class="rv" style={`--i:${i}`} tabindex="0">
+            <span class="rv-x" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+            </span>
+            <h3 class="rv-nm">{r.name}</h3>
+            <p class="rv-pain">{r.pain}</p>
+            <ul class="rv-list">
+              {r.cons.map((c) => (
+                <li>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                  {c}
+                </li>
+              ))}
+            </ul>
+            <p class="rv-cost">{r.cost}</p>
+            <p class="rv-more">{r.more}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="cin-vs" aria-hidden="true"><span>VS</span></div>
+
+      <article class="win">
+        <span class="win-badge">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 8l4.5 3.5L12 4l4.5 7.5L21 8l-1.8 10.2a1.5 1.5 0 0 1-1.48 1.3H6.28a1.5 1.5 0 0 1-1.48-1.3z"/></svg>
+          המנצחת
+        </span>
+        <div class="win-grid">
+          <div class="win-main">
+            <h3 class="win-nm"><span class="win-mk" aria-hidden="true">S</span>Scayla</h3>
+            <p class="win-tag">מכונה אחת שעושה את הכול · ואתם רק מאשרים</p>
+            <ul class="win-list">
+              {wins.map((w, i) => (
+                <li style={`--i:${i}`}>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg>
+                  {w}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div class="win-value">
+            <p class="wv-old">בשוק · <s>אלפי ₪ בחודש</s></p>
+            <p class="wv-new"><span class="num">$49</span><small>/חודש</small></p>
+            <p class="wv-note">14 יום ניסיון חינם · ביטול בכל עת</p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="billing-faq">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">שאלות על תשלום</span>
+        <h2>הכל על החיוב</h2>
+      </div>
+      <FaqAccordion items={billingFaq} firstOpen={false} />
+      <p class="center more-faq"><a href="/faq">לכל השאלות והתשובות ←</a></p>
+    </div>
+  </section>
+
+  <section class="price-cta">
+    <div class="wrap">
+      <CtaBand
+        title="מתחילים ב-14 יום חינם · כולל אבחון מלא."
+        body="בסוף הניסיון תדעו בדיוק איפה אתם עומדים ב-AI ובגוגל · גם אם תחליטו לא להמשיך. אין התחייבות, הביטול דרך Shopify."
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .price-hero { padding-block-end: 8px; }
+  .plans { padding-block-start: 20px; }
+  .more-faq { margin-block-start: 8px; font-weight: 600; }
+  .price-cta { padding-block-end: clamp(24px, 4vw, 48px); }
+
+  /* ═══════════════════════════════════════════════════════════════════
+     THE SHOWDOWN · a cinematic dark stage, identical in light+dark.
+     Rivals reveal staggered → each gets a red ✗ stamped → Scayla sweeps
+     in with a rotating glow border, cascading ✓, and the $49 knockout.
+     Reduced-motion / no-JS → the final winning state, no animation.
+     ═══════════════════════════════════════════════════════════════════ */
+  .cin {
+    /* stage-local palette · deep indigo night, on-brand */
+    --st-bg1: #14102a;
+    --st-bg2: #0e0b1d;
+    --st-card: rgba(255, 255, 255, .045);
+    --st-hair: rgba(255, 255, 255, .12);
+    --st-ink: #f3f1fa;
+    --st-dim: rgba(243, 241, 250, .68);
+    --st-red: #ff8a80;
+    --st-grn: #5fe090;
+    position: relative;
+    overflow: hidden;
+    color: var(--st-ink);
+    background:
+      radial-gradient(900px 520px at 84% -10%, rgba(139, 118, 242, .28), transparent 60%),
+      radial-gradient(760px 520px at 4% 108%, rgba(85, 70, 214, .3), transparent 55%),
+      linear-gradient(178deg, var(--st-bg1), var(--st-bg2));
+    padding-block: clamp(72px, 9vw, 128px);
+  }
+  /* faint cinema grain-line · pure CSS, zero assets */
+  .cin::before {
+    content: '';
+    position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(0deg, rgba(255, 255, 255, .022) 0 1px, transparent 1px 4px);
+    mix-blend-mode: overlay;
+  }
+
+  .cin-head { text-align: center; margin-block-end: clamp(40px, 5vw, 64px); }
+  .cin-k {
+    font-size: 13px; font-weight: 800; letter-spacing: .14em;
+    color: var(--accent-gold);
+    margin-block-end: 16px;
+  }
+  .cin-h {
+    font-size: clamp(34px, 5.4vw, 64px);
+    font-weight: 900; letter-spacing: -.025em; line-height: 1.08;
+    color: #fff;
+  }
+  .cin-grad {
+    background: linear-gradient(100deg, #ffd98a, var(--accent-gold) 38%, #b9a7ff 100%);
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent; -webkit-text-fill-color: transparent;
+  }
+  .cin-sub { font-size: 15px; font-weight: 600; color: var(--st-dim); margin-block-start: 16px; }
+
+  /* ── the three rivals ── */
+  .cin-rivals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .rv {
+    position: relative;
+    background: var(--st-card);
+    border: 1px solid var(--st-hair);
+    border-radius: 18px;
+    padding: 26px 24px 22px;
+    backdrop-filter: blur(6px);
+    transition: transform 240ms var(--sc-ease), border-color 240ms, background 240ms;
+  }
+  .rv:hover, .rv:focus-visible { transform: translateY(-4px); border-color: rgba(255, 138, 128, .38); background: rgba(255, 255, 255, .06); outline: none; }
+  .rv:focus-visible { box-shadow: 0 0 0 2px rgba(255, 255, 255, .55); }
+  /* the stamped ✗ · top-start corner */
+  .rv-x {
+    position: absolute;
+    inset-block-start: 18px; inset-inline-end: 18px;
+    inline-size: 34px; block-size: 34px; border-radius: 50%;
+    display: grid; place-items: center;
+    color: var(--st-red);
+    background: rgba(255, 59, 48, .12);
+    border: 1px solid rgba(255, 138, 128, .4);
+  }
+  .rv-nm { font-size: 16px; font-weight: 700; color: var(--st-dim); padding-inline-end: 44px; }
+  .rv-pain {
+    font-size: clamp(24px, 2.4vw, 31px);
+    font-weight: 900; letter-spacing: -.02em; line-height: 1.1;
+    color: #fff;
+    margin-block: 6px 16px;
+  }
+  .rv-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 9px; }
+  .rv-list li {
+    display: flex; align-items: baseline; gap: 9px;
+    font-size: 13.5px; line-height: 1.55; color: var(--st-dim);
+  }
+  .rv-list svg { flex: none; color: var(--st-red); translate: 0 2px; }
+  .rv-cost {
+    margin-block-start: 18px;
+    display: inline-block;
+    font-size: 12.5px; font-weight: 800;
+    color: var(--st-red);
+    background: rgba(255, 59, 48, .1);
+    border: 1px solid rgba(255, 138, 128, .32);
+    border-radius: 999px; padding: 5px 13px;
+  }
+  /* hover-to-reveal · the extra twist of the knife */
+  .rv-more {
+    max-block-size: 0; opacity: 0; overflow: hidden;
+    font-size: 12.5px; font-weight: 600; font-style: italic; color: var(--st-dim);
+    transition: max-block-size 320ms var(--sc-ease), opacity 320ms var(--sc-ease), margin-block-start 320ms var(--sc-ease);
+  }
+  .rv:hover .rv-more, .rv:focus-visible .rv-more, .rv:focus-within .rv-more {
+    max-block-size: 4.5em; opacity: 1; margin-block-start: 12px;
+  }
+  @media (hover: none) {
+    .rv-more { max-block-size: none; opacity: 1; margin-block-start: 12px; }
+  }
+
+  /* ── VS · the pivot ── */
+  .cin-vs { display: grid; place-items: center; margin-block: clamp(26px, 3.6vw, 40px); }
+  .cin-vs span {
+    inline-size: 58px; block-size: 58px; border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 17px; font-weight: 900; letter-spacing: .04em;
+    color: var(--sc-gold-ink);
+    background: var(--accent-gold);
+    box-shadow: 0 0 0 7px rgba(255, 194, 75, .14), 0 14px 34px -10px rgba(240, 173, 46, .55);
+  }
+
+  /* ── Scayla · the winner ── */
+  .win {
+    position: relative;
+    border-radius: 22px;
+    padding: clamp(26px, 3.4vw, 40px);
+    background:
+      radial-gradient(120% 150% at 88% -20%, rgba(167, 139, 250, .38), transparent 55%),
+      linear-gradient(135deg, #241d75, #4d3fc7 55%, #6a58e0);
+    border: 1.5px solid transparent;
+    box-shadow: 0 34px 80px -30px rgba(85, 70, 214, .75);
+  }
+  /* rotating conic glow border · motion-safe only */
+  @property --cin-a { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+  .win::before {
+    content: '';
+    position: absolute; inset: -1.5px; border-radius: 23px; z-index: -1;
+    background: conic-gradient(from var(--cin-a, 0deg), rgba(255, 194, 75, .9), rgba(185, 167, 255, .35), rgba(255, 194, 75, .9));
+  }
+  /* spotlight wash behind the winner */
+  .win::after {
+    content: '';
+    position: absolute; inset: -70px -40px; z-index: -2; pointer-events: none;
+    background: radial-gradient(58% 74% at 50% 46%, rgba(139, 118, 242, .34), transparent 70%);
+  }
+  @keyframes cinSpin { to { --cin-a: 360deg; } }
+  .win-badge {
+    position: absolute;
+    inset-block-start: -15px; inset-inline-start: clamp(24px, 3.4vw, 40px);
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--accent-gold); color: var(--sc-gold-ink);
+    font-size: 12px; font-weight: 900; letter-spacing: .03em;
+    border-radius: 999px; padding: 6px 15px;
+    box-shadow: 0 10px 24px -8px rgba(240, 173, 46, .6);
+  }
+  .win-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    gap: clamp(24px, 4vw, 56px);
+    align-items: center;
+  }
+  .win-nm {
+    display: flex; align-items: center; gap: 11px;
+    font-size: clamp(24px, 2.6vw, 32px); font-weight: 900; letter-spacing: -.02em; color: #fff;
+  }
+  .win-mk {
+    inline-size: 38px; block-size: 38px; border-radius: 11px; flex: none;
+    display: grid; place-items: center;
+    font-size: 20px; font-weight: 800;
+    background: rgba(255, 255, 255, .95); color: var(--sc-accent);
+    box-shadow: 0 8px 22px -8px rgba(0, 0, 0, .45);
+  }
+  .win-tag { font-size: 15px; font-weight: 700; color: rgba(255, 255, 255, .88); margin-block-start: 8px; }
+  .win-list {
+    list-style: none; margin: 20px 0 0; padding: 0;
+    display: flex; flex-direction: column; gap: 11px;
+  }
+  .win-list li {
+    display: flex; align-items: baseline; gap: 10px;
+    font-size: 15px; font-weight: 600; line-height: 1.5; color: #fff;
+  }
+  .win-list svg { flex: none; color: #b9f6cf; translate: 0 2px; filter: drop-shadow(0 0 6px rgba(95, 224, 144, .55)); }
+  /* the knockout number */
+  .win-value {
+    text-align: center;
+    border-inline-start: 1px solid rgba(255, 255, 255, .18);
+    padding-inline-start: clamp(24px, 4vw, 56px);
+  }
+  .wv-old { font-size: 14.5px; font-weight: 600; color: rgba(255, 255, 255, .72); }
+  .wv-old s { text-decoration-color: var(--st-red); text-decoration-thickness: 2px; }
+  .wv-new {
+    font-size: clamp(56px, 6vw, 84px);
+    font-weight: 900; letter-spacing: -.03em; line-height: 1;
+    color: #fff;
+    margin-block: 8px 6px;
+    text-shadow: 0 0 34px rgba(255, 194, 75, .35);
+  }
+  .wv-new small { font-size: 17px; font-weight: 700; color: rgba(255, 255, 255, .78); }
+  .wv-note { font-size: 12.5px; font-weight: 700; color: var(--accent-gold); }
+
+  /* ── choreography · JS adds .go on scroll-into-view ──
+     Entrances are one-shot ANIMATIONS (backwards fill covers the stagger delay),
+     so the hover transitions above stay instant. no-JS keeps everything visible;
+     reduced-motion snaps straight to the final state. */
+  @media (prefers-reduced-motion: no-preference) {
+    /* hidden until the section enters the viewport (JS only) */
+    :global(html.js) .cin:not(.go) :is(.rv, .rv-x, .cin-vs span, .win, .win-badge, .win-list li, .win-value) { opacity: 0; }
+    :global(html.js) .cin:not(.go) .win::before,
+    :global(html.js) .cin:not(.go) .win::after { opacity: 0; }
+
+    .cin.go .rv { animation: cinRise 520ms var(--sc-ease) calc(var(--i) * 150ms) backwards; }
+    /* the ✗ stamps down after its card lands · like a rubber stamp */
+    .cin.go .rv-x { animation: cinStamp 380ms cubic-bezier(.3, 1.4, .5, 1) calc(680ms + var(--i) * 170ms) backwards; }
+    .cin.go .cin-vs span { animation: cinPop 420ms cubic-bezier(.3, 1.6, .5, 1) 1250ms backwards; }
+    /* Scayla sweeps in from the side and lights up */
+    .cin.go .win { animation: cinSweep 720ms cubic-bezier(.24, 1.18, .4, 1) 1500ms backwards; }
+    .cin.go .win::before { animation: cinSpin 7s linear infinite, cinFade 900ms var(--sc-ease) 1900ms backwards; }
+    .cin.go .win::after { animation: cinFade 900ms var(--sc-ease) 1900ms backwards; }
+    .cin.go .win-badge { animation: cinPop 420ms cubic-bezier(.3, 1.6, .5, 1) 2150ms backwards; }
+    /* cascading green ✓ */
+    .cin.go .win-list li { animation: cinRiseSm 380ms var(--sc-ease) calc(2050ms + var(--i) * 140ms) backwards; }
+    /* the $49 knockout pops last */
+    .cin.go .win-value { animation: cinKO 560ms cubic-bezier(.3, 1.5, .5, 1) 2450ms backwards; }
+  }
+  @keyframes cinRise { from { opacity: 0; transform: translateY(28px); } }
+  @keyframes cinRiseSm { from { opacity: 0; transform: translateY(12px); } }
+  @keyframes cinStamp { from { opacity: 0; transform: scale(2.1) rotate(-16deg); } }
+  @keyframes cinPop { from { opacity: 0; transform: scale(.4); } }
+  @keyframes cinSweep { from { opacity: 0; transform: translateX(-64px) scale(.97); } }
+  @keyframes cinFade { from { opacity: 0; } }
+  @keyframes cinKO { from { opacity: 0; transform: scale(.82); } }
+  /* the settled ✗ keeps a tiny stamp-tilt in every state */
+  .rv-x { transform: rotate(-8deg); }
+
+  @media (max-width: 900px) {
+    .cin-rivals { grid-template-columns: 1fr; max-inline-size: 520px; margin-inline: auto; }
+    .win-grid { grid-template-columns: 1fr; }
+    .win-value {
+      border-inline-start: none; padding-inline-start: 0;
+      border-block-start: 1px solid rgba(255, 255, 255, .18);
+      padding-block-start: 22px;
+    }
+  }
+</style>
+
+<script>
+  // THE SHOWDOWN · one-shot scroll trigger. Reduced-motion / no-IO → final state.
+  const cin = document.querySelector<HTMLElement>('[data-cin]');
+  if (cin) {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce || !('IntersectionObserver' in window)) {
+      cin.classList.add('go');
+    } else {
+      let done = false;
+      const io = new IntersectionObserver((es) => {
+        es.forEach((e) => {
+          if (!e.isIntersecting || done) return;
+          done = true;
+          io.disconnect();
+          window.clearTimeout(fallbackT);
+          cin.classList.add('go');
+        });
+      }, { threshold: 0.18 });
+      io.observe(cin);
+      // guaranteed settle if the observer never fires
+      const fallbackT = window.setTimeout(() => { if (!done) { io.disconnect(); cin.classList.add('go'); } }, 8000);
+    }
+  }
+</script>

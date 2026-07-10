@@ -1,0 +1,102 @@
+---
+/**
+ * Legal page shell · renders the real legal body passed as the default <slot />.
+ * Source text lives in src/legal/{privacy,terms,accessibility}.md and is
+ * injected by the matching page under src/pages/. Prose is token-based and
+ * dark-aware, RTL with LTR-isolated numbers (matches the site design system).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+interface Props {
+  title: string;       // page H1 (Hebrew)
+  metaTitle: string;
+  description: string;
+}
+const { title, metaTitle, description } = Astro.props;
+---
+
+<BaseLayout title={metaTitle} description={description}>
+  <section class="legal">
+    <div class="narrow">
+      <h1>{title}</h1>
+      <div class="legal-body">
+        <slot />
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal { padding-block: clamp(48px, 8vw, 96px); min-block-size: 60vh; }
+  h1 {
+    font-size: clamp(28px, 4.5vw, 40px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--sc-ink);
+    margin-block-end: 32px;
+  }
+
+  /* ── Prose · legal copy ─────────────────────────────────────────── */
+  .legal-body {
+    color: var(--sc-ink);
+    font-size: 16.5px;
+    line-height: 1.85;
+  }
+  .legal-body :global(h2) {
+    font-size: clamp(20px, 2.6vw, 24px);
+    font-weight: 700;
+    color: var(--sc-ink);
+    letter-spacing: -0.01em;
+    margin-block: 40px 14px;
+    padding-block-end: 10px;
+    border-block-end: 1px solid var(--sc-hair);
+  }
+  .legal-body :global(h3) {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--sc-ink);
+    margin-block: 26px 8px;
+  }
+  .legal-body :global(p) { margin-block: 14px; color: var(--sc-muted); }
+  .legal-body :global(strong) { color: var(--sc-ink); font-weight: 700; }
+  .legal-body :global(a) {
+    color: var(--sc-accent-text);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .legal-body :global(a:hover) { color: var(--sc-deep); }
+  .legal-body :global(ul),
+  .legal-body :global(ol) {
+    margin-block: 14px;
+    padding-inline-start: 24px;
+    color: var(--sc-muted);
+  }
+  .legal-body :global(li) { margin-block: 7px; }
+  .legal-body :global(li::marker) { color: var(--sc-accent-text); }
+  .legal-body :global(code) {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.88em;
+    background: var(--sc-wash);
+    border: 1px solid var(--sc-soft);
+    border-radius: 6px;
+    padding: 1px 6px;
+    /* keep code (Shopify scopes, Google API paths) readable LTR inside RTL */
+    unicode-bidi: isolate;
+    direction: ltr;
+  }
+  .legal-body :global(blockquote) {
+    margin-block: 20px;
+    padding: 14px 18px;
+    background: var(--sc-wash);
+    border-inline-start: 3px solid var(--sc-accent);
+    border-radius: 10px;
+    color: var(--sc-mv);
+    font-size: 15px;
+  }
+  .legal-body :global(blockquote p) { color: inherit; margin-block: 0; }
+  .legal-body :global(hr) {
+    border: 0;
+    border-block-start: 1px solid var(--sc-hair);
+    margin-block: 32px;
+  }
+</style>

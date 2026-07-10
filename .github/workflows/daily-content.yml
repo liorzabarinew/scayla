@@ -1,0 +1,64 @@
+name: daily-content
+
+# ריצה יומית של מכונת התוכן · כל בוקר ~08:00 שעון ישראל (05:00 UTC).
+# מריצה 4 אשכולות → כותבת מאמרים + קאברים (Gemini/Vertex) → בונה → פורסת ל-Cloudflare
+# Pages → מדווחת לטלגרם. ניתן להריץ ידנית מ-Actions (workflow_dispatch).
+on:
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: daily-content
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # כדי לדחוף בחזרה את המאמרים + הקאברים החדשים
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      # ── מוח התוכן: 4 אשכולות → מאמרים + קאברים · מדווח לטלגרם ──
+      - name: Run content machine (4 clusters)
+        env:
+          GOOGLE_SA: ${{ secrets.GOOGLE_SA }}
+          GCP_PROJECT: scayla-prod
+          GCP_REGION: us-central1
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: node scripts/daily.mjs
+
+      # ── two-phase: קודם דוחפים את התוכן לגיט, ורק אז פורסים ──
+      - name: Commit new content
+        run: |
+          git config user.name  "scayla-machine"
+          git config user.email "machine@scayla.co.il"
+          git add src/content/magazine public/covers
+          git commit -m "content: daily run $(date -u +%F)" || echo "nothing to commit"
+          git push || echo "nothing to push"
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name scayla --branch main
+
+      - name: Notify deploy result
+        if: always()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: node scripts/notify.mjs "🚀 פריסת scayla.co.il הושלמה (${{ job.status }})"

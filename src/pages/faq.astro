@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { fullFaq } from '../data/faq';
+
+const title = 'שאלות נפוצות · Scayla';
+const description =
+  'מה זה GEO, איך מדידת הנראות ב-AI עובדת, איך החיוב דרך Shopify ולמה זה בטוח לחנות · כל התשובות במקום אחד.';
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="faq-hero">
+    <div class="narrow center">
+      <span class="eyebrow">שאלות נפוצות</span>
+      <h1>מה שרציתם לדעת · תשובות ישרות</h1>
+      <p class="lede">לא מצאתם תשובה? <a href="/contact">דברו איתנו</a> · עונים מהר.</p>
+    </div>
+  </section>
+
+  <section class="faq-body">
+    <div class="narrow">
+      <FaqAccordion items={fullFaq} schema={true} />
+    </div>
+  </section>
+
+  <section class="faq-cta">
+    <div class="wrap">
+      <CtaBand
+        title="הדרך הכי מהירה לתשובה · לראות את זה חי."
+        body="התקינו את Scayla ב-14 יום ניסיון חינם, או קבעו דמו קצר ונענה על הכל אחד על אחד."
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .faq-hero { padding-block-end: 16px; }
+  .faq-body { padding-block-start: 8px; }
+  .faq-cta { padding-block-end: clamp(24px, 4vw, 48px); }
+</style>

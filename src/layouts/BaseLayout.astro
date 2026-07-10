@@ -1,0 +1,161 @@
+---
+import '../styles/global.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+interface Crumb {
+  name: string;
+  path: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  /** Optional path override for canonical (defaults to current URL) */
+  ogType?: string;
+  noIndex?: boolean;
+  /** Per-page social share image · path or absolute URL. Defaults to the branded /og.png */
+  ogImage?: string;
+  /** Alt text for the social share image */
+  ogImageAlt?: string;
+  /** Social share image pixel dimensions · default to the branded /og.png (1200×630) */
+  ogImageWidth?: number;
+  ogImageHeight?: number;
+  /** Breadcrumb trail after Home · defaults to one crumb derived from the title */
+  breadcrumbs?: Crumb[];
+}
+
+const {
+  title,
+  description,
+  ogType = 'website',
+  noIndex = false,
+  ogImage = '/og.png',
+  ogImageAlt = 'Scayla · נראות ב-Google וב-AI לחנויות שופיפיי',
+  ogImageWidth = 1200,
+  ogImageHeight = 630,
+  breadcrumbs,
+} = Astro.props;
+
+// Absolute URL for the social share image (og:image requires an absolute URL)
+const ogImageUrl = new URL(ogImage, Astro.site).href;
+
+// Clean URL · Vercel cleanUrls serves /about (no .html), so the canonical must
+// match the served URL. build.format:'file' gives us pathnames like /about.html;
+// strip the .html suffix (home "/" stays "/").
+const cleanPathname = Astro.url.pathname.replace(/\.html$/, '');
+const canonical = new URL(cleanPathname, Astro.site);
+
+// BreadcrumbList JSON-LD · sitewide (Noy · question 9)
+const path = cleanPathname.replace(/\/$/, '') || '/';
+const trail: Crumb[] =
+  breadcrumbs ??
+  (path === '/' ? [] : [{ name: title.split('·')[0].trim(), path }]);
+const breadcrumbLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'בית', item: 'https://scayla.co.il/' },
+    ...trail.map((c, i) => ({
+      '@type': 'ListItem',
+      position: i + 2,
+      name: c.name,
+      item: new URL(c.path, Astro.site).href,
+    })),
+  ],
+};
+---
+
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {/* hreflang scaffold (Noy · question 10): Hebrew only today. When the English
+        locale launches, add: <link rel="alternate" hreflang="en" href=".../en/..." />
+        and hreflang="x-default" pointing at the primary version. */}
+    <link rel="alternate" hreflang="he" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+    <script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="he_IL" />
+    <meta property="og:site_name" content="Scayla" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content={String(ogImageWidth)} />
+    <meta property="og:image:height" content={String(ogImageHeight)} />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+    <link rel="preload" href="/fonts/heebo-hebrew.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/heebo-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <meta name="theme-color" content="#f6f4fb" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#121016" media="(prefers-color-scheme: dark)" />
+    <script is:inline>
+      // Theme boot · runs before paint to avoid a flash.
+      // PURELY AUTOMATIC by Israel time (Asia/Jerusalem), for every visitor,
+      // regardless of their own timezone: dark 20:00–07:00 · light 07:00–20:00.
+      // There is no manual toggle and no saved preference · time always wins.
+      (function () {
+        document.documentElement.classList.add('js');
+        function israelHour() {
+          try {
+            // Read the current hour in Asia/Jerusalem via Intl (handles DST for us).
+            var h = new Intl.DateTimeFormat('en-US', {
+              timeZone: 'Asia/Jerusalem', hour: 'numeric', hour12: false,
+            }).format(new Date());
+            var n = parseInt(h, 10);
+            return n === 24 ? 0 : n; // some engines emit "24" for midnight
+          } catch (e) {
+            return new Date().getHours(); // fallback · local hour
+          }
+        }
+        var h = israelHour();
+        // dark from 20:00 up to (not including) 07:00 · light otherwise
+        var theme = (h >= 20 || h < 7) ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+        // clean up the preference saved by the old (removed) manual toggle,
+        // so nothing anywhere can override the time-based theme.
+        try { localStorage.removeItem('sc-theme'); } catch (e) {}
+      })();
+    </script>
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">דילוג לתוכן הראשי</a>
+    <SiteHeader />
+    <main id="main">
+      <slot />
+    </main>
+    <SiteFooter />
+    <script>
+      // Fade-up on scroll · motion-safe only
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const els = document.querySelectorAll('.fade-up');
+      if (reduce || !('IntersectionObserver' in window)) {
+        els.forEach((el) => el.classList.add('in'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add('in');
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.12 }
+        );
+        els.forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>

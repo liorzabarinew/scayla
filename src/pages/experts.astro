@@ -1,0 +1,195 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Testimonials from '../components/Testimonials.astro';
+import { experts } from '../data/experts';
+
+const title = 'המומחים מאחורי Scayla · נוי קייטל וליאור צברי';
+const description =
+  'מי כותב את התוכן ובונה את המכונה של Scayla: נוי קייטל · מומחית SEO ו-GEO, וליאור צברי · שיווק ביצועים וטכנולוגיה. לא אנונימי.';
+
+// ProfilePage + a Person for each expert · each works for the Scayla Organization.
+const pageUrl = new URL('/experts', Astro.site).href;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  name: 'המומחים מאחורי Scayla',
+  url: pageUrl,
+  inLanguage: 'he',
+  about: {
+    '@type': 'Organization',
+    '@id': 'https://scayla.co.il/#organization',
+    name: 'Scayla',
+    url: 'https://scayla.co.il/',
+  },
+  mainEntity: experts.map((e) => ({
+    '@type': 'Person',
+    '@id': `${new URL(`/experts/${e.slug}`, Astro.site).href}#person`,
+    name: e.name,
+    alternateName: e.latin,
+    jobTitle: e.roleLong,
+    description: e.bioShort,
+    knowsAbout: e.knowsAbout,
+    sameAs: e.sameAs,
+    worksFor: { '@id': 'https://scayla.co.il/#organization' },
+    url: new URL(`/experts/${e.slug}`, Astro.site).href,
+    alumniOf: e.credentials.map((c) => ({ '@type': 'EducationalOrganization', name: c.from })),
+  })),
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogType="profile"
+  breadcrumbs={[{ name: 'המומחים', path: '/experts' }]}
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <section class="ex-hero">
+    <div class="narrow center">
+      <span class="eyebrow">המומחים</span>
+      <h1>המומחים מאחורי Scayla</h1>
+      <p class="lede">לא עוד סטארטאפ אנונימי · שני אנשים עם היסטוריה אמיתית בשיווק ובמסחר הישראלי.</p>
+    </div>
+  </section>
+
+  <section class="ex-cards">
+    <div class="wrap">
+      <div class="egrid">
+        {experts.map((e) => (
+          <article class={`expert card fade-up accent-${e.accent}`} id={e.slug}>
+            <div class="topline" aria-hidden="true"></div>
+            <a class="head" href={`/experts/${e.slug}`} aria-label={`הפרופיל המלא של ${e.name}`}>
+              <div class="av" aria-hidden="true" title="תמונה · placeholder">
+                <span class="av-letter">{e.initial}</span>
+                <span class="av-note">תמונה בקרוב</span>
+              </div>
+              <div class="who">
+                <h2>{e.name}</h2>
+                <p class="role">{e.role}</p>
+                <p class="years"><span class="num">{e.years}</span> שנות ניסיון</p>
+              </div>
+            </a>
+            <p class="bio">{e.cardBio}</p>
+            <div class="tags">
+              {e.tags.map((t) => <span>{t}</span>)}
+            </div>
+            <div class="foot">
+              <a class="profile-link" href={`/experts/${e.slug}`}>
+                לפרופיל המלא של {e.name.split(' ')[0]}
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M15 18 9 12l6-6" />
+                </svg>
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="why alt-bg">
+    <div class="narrow">
+      <div class="why-box card fade-up">
+        <svg class="why-ic" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          <path d="m9 12 2 2 4-4" />
+        </svg>
+        <h2>למה זה משנה</h2>
+        <p>
+          כשגוגל או מנוע AI בוחרים למי להמליץ, הם בודקים מי עומד מאחורי התוכן.
+          Scayla נבנתה בידי אנשים עם היסטוריה מוכחת בשיווק ישראלי · וזה מה שמייצר
+          אמון, גם אצל המנוע וגם אצל הקונה.
+        </p>
+      </div>
+      <div class="testi">
+        <Testimonials />
+      </div>
+    </div>
+  </section>
+
+  <section class="ex-cta">
+    <div class="wrap">
+      <CtaBand
+        title="אותם אנשים · עכשיו בתוך אפליקציה."
+        body="התקינו את Scayla וקבלו אבחון נראות חינם, או קבעו דמו ונעבור יחד על החנות שלכם."
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .ex-hero { padding-block-end: 16px; }
+  .ex-hero .lede { max-inline-size: 52ch; margin-inline: auto; }
+
+  .ex-cards { padding-block-start: 8px; }
+  .egrid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 760px) { .egrid { grid-template-columns: 1fr; } }
+
+  .expert {
+    position: relative;
+    padding: 30px 28px 24px;
+    border-radius: var(--sc-r-hero);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: transform .18s var(--sc-ease), box-shadow .18s var(--sc-ease);
+  }
+  .expert:hover { transform: translateY(-3px); box-shadow: var(--sc-sh-lift); }
+  .topline {
+    position: absolute; inset-block-start: 0; inset-inline: 0; block-size: 4px;
+    background: var(--sc-grad);
+  }
+  .accent-gold .topline { background: linear-gradient(135deg, var(--sc-accent), var(--accent-gold)); }
+
+  .head { display: flex; align-items: center; gap: 16px; color: inherit; }
+  .av {
+    inline-size: 76px; block-size: 76px; flex-shrink: 0;
+    border-radius: 20px; background: var(--sc-grad); color: #fff;
+    display: grid; place-items: center; align-content: center; gap: 2px;
+    outline: 2px dashed var(--sc-soft); outline-offset: 3px;
+  }
+  .accent-gold .av { background: linear-gradient(135deg, var(--sc-accent), var(--accent-gold)); }
+  .av-letter { font-weight: 800; font-size: 26px; line-height: 1; }
+  .av-note { font-size: 8.5px; font-weight: 700; opacity: .85; letter-spacing: .03em; }
+  .who h2 { font-size: clamp(20px, 2.4vw, 24px); }
+  .expert:hover .who h2 { color: var(--sc-accent-text); }
+  .role { font-size: 14px; font-weight: 700; color: var(--sc-accent-text); margin-block-start: 4px; }
+  .years { font-size: 12.5px; font-weight: 600; color: var(--sc-muted); margin-block-start: 3px; }
+  .years .num { font-weight: 800; color: var(--sc-ink); }
+
+  .bio { font-size: 15px; line-height: 1.8; color: var(--sc-muted); }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 7px; }
+  .tags span {
+    font-size: 12.5px; font-weight: 600; color: var(--sc-mv);
+    background: var(--sc-wash); border: 1px solid var(--sc-soft);
+    padding: 4px 12px; border-radius: var(--sc-r-pill);
+  }
+
+  .foot {
+    margin-block-start: auto; padding-block-start: 14px;
+    border-block-start: 1px solid var(--sc-div);
+  }
+  .profile-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 14px; font-weight: 700; color: var(--sc-accent-text);
+  }
+  .profile-link:hover { color: var(--sc-deep); }
+  :global([data-theme='dark']) .profile-link:hover { color: var(--sc-lav); }
+  .profile-link svg { transition: transform var(--sc-fast) var(--sc-ease); }
+  .profile-link:hover svg { transform: translateX(3px); }
+
+  .alt-bg { background: var(--sc-card); }
+  :global([data-theme='dark']) .alt-bg { background: #17141d; }
+
+  .why-box { background: var(--sc-paper); padding: 28px 26px; text-align: center; border-radius: var(--sc-r-hero); }
+  .why-ic { color: var(--sc-accent-text); margin-block-end: 10px; }
+  .why-box h2 { font-size: clamp(19px, 2.4vw, 24px); margin-block-end: 10px; }
+  .why-box p { font-size: 15.5px; line-height: 1.85; max-inline-size: 56ch; margin-inline: auto; }
+
+  .testi { margin-block-start: 44px; }
+  .ex-cta { padding-block-end: clamp(24px, 4vw, 48px); }
+</style>

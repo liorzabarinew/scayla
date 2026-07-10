@@ -1,0 +1,73 @@
+---
+/**
+ * FAQ accordion · native <details>/<summary> (keyboard + screen-reader friendly).
+ * Optionally emits FAQPage JSON-LD schema.
+ */
+interface Item {
+  q: string;
+  a: string; // plain text / minimal HTML
+}
+interface Props {
+  items: Item[];
+  schema?: boolean;
+  firstOpen?: boolean;
+}
+const { items, schema = false, firstOpen = true } = Astro.props;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((i) => ({
+    '@type': 'Question',
+    name: i.q,
+    acceptedAnswer: { '@type': 'Answer', text: i.a.replace(/<[^>]+>/g, '') },
+  })),
+};
+---
+
+<div class="faq">
+  {items.map((item, idx) => (
+    <details open={firstOpen && idx === 0}>
+      <summary>
+        <span>{item.q}</span>
+        <span class="marker" aria-hidden="true"></span>
+      </summary>
+      <p set:html={item.a} />
+    </details>
+  ))}
+</div>
+
+{schema && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+
+<style>
+  .faq details {
+    background: var(--sc-card);
+    border: 1px solid var(--sc-hair);
+    border-radius: 14px;
+    margin-block-end: 12px;
+    overflow: hidden;
+    transition: border-color var(--sc-fast);
+  }
+  .faq details[open] { border-color: var(--sc-soft); }
+  .faq summary {
+    padding: 18px 20px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--sc-ink);
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .marker { margin-inline-start: auto; position: relative; inline-size: 14px; block-size: 14px; flex: none; }
+  .marker::before, .marker::after {
+    content: ''; position: absolute; background: var(--sc-accent-text);
+    border-radius: 2px; transition: transform var(--sc-fast) var(--sc-ease);
+  }
+  .marker::before { inset-inline: 0; inset-block-start: 6px; block-size: 2px; }
+  .marker::after { inset-block: 0; inset-inline-start: 6px; inline-size: 2px; }
+  details[open] .marker::after { transform: scaleY(0); }
+  .faq details p { padding: 0 20px 18px; font-size: 14.5px; }
+</style>

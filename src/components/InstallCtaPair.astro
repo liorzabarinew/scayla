@@ -1,0 +1,102 @@
+---
+/**
+ * The primary conversion pair · "התקינו ב-Shopify" (filled) + "קבעו דמו" (outline).
+ *
+ * The two buttons are ALWAYS the SAME SIZE · identical height, padding and
+ * min-width (both are .btn-hero + .btn-pair). The demo button is only visually
+ * lighter (outline/ghost), never smaller. The primary is the loud filled surface;
+ * the demo is the calm outline beside it.
+ *
+ * Under the primary: tight microcopy "14 יום חינם | ללא כרטיס אשראי" ·
+ * width-locked to the button (inline-size:0 + min-inline-size:100% trick),
+ * so it may wrap to two lines but can never grow wider than the button.
+ * Demo link pulls from DEMO_URL (single config value · opens in a new tab).
+ */
+import { SHOPIFY_APP_URL, DEMO_URL } from '../data/pricing';
+
+interface Props {
+  center?: boolean;
+  /** 'hero' = extra-large prominent primary; 'onGradient' = white primary for gradient bands */
+  variant?: 'hero' | 'onGradient';
+  /** gold primary (v2 bold) · warm soft yellow that pops off the indigo-violet */
+  gold?: boolean;
+  /** legacy alias · maps to gold (coral was retired for a soft gold) */
+  coral?: boolean;
+  demoLabel?: string;
+}
+const {
+  center = false,
+  variant = 'hero',
+  gold = false,
+  coral = false,
+  demoLabel = 'קבעו דמו',
+} = Astro.props;
+
+const useGold = gold || coral;
+const onGradient = variant === 'onGradient';
+// both buttons share .btn-hero + .btn-pair → identical size; only the fill differs
+const primaryClass = onGradient
+  ? 'btn btn-hero btn-pair btn-white'
+  : useGold
+    ? 'btn btn-hero btn-pair btn-gold'
+    : 'btn btn-hero btn-pair btn-solid';
+const demoClass = onGradient
+  ? 'btn btn-hero btn-pair btn-demo cta-ghost'
+  : 'btn btn-hero btn-pair btn-demo btn-ghost';
+---
+
+<div class:list={['cta-pair', { center }]}>
+  <span class="cta-col">
+    <a href={SHOPIFY_APP_URL} class={primaryClass}>התקינו ב-Shopify</a>
+    <span class:list={['cta-micro', { grad: onGradient }]}>14 יום חינם | ללא כרטיס אשראי</span>
+  </span>
+  <span class="cta-col">
+    <a href={DEMO_URL} class={demoClass} target="_blank" rel="noopener">{demoLabel}</a>
+    <!-- invisible spacer mirrors the microcopy so both button centers stay aligned -->
+    <span class="cta-micro ghost" aria-hidden="true">&nbsp;</span>
+  </span>
+</div>
+
+<style>
+  .cta-col {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 7px;
+  }
+  /* Both buttons IDENTICAL: same min-width, full-width within their equal columns,
+     so filled + outline are the exact same box. Demo is only lighter, never smaller. */
+  .cta-pair :global(.btn-pair) {
+    min-inline-size: 232px;
+    inline-size: 100%;
+  }
+  /* never wider than the button above it · may wrap, never overflow */
+  .cta-micro {
+    inline-size: 0;
+    min-inline-size: 100%;
+    text-align: center;
+    font-size: 11.5px;
+    font-weight: 600;
+    line-height: 1.45;
+    color: var(--sc-muted);
+  }
+  .cta-micro.grad { color: rgba(255, 255, 255, .88); }
+  .cta-micro.ghost { visibility: hidden; user-select: none; }
+
+  /* Ghost demo button when sitting on a gradient band (matches CtaBand's .cta-ghost) */
+  .cta-ghost {
+    background: transparent;
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, .55);
+    box-shadow: none;
+  }
+  .cta-ghost:hover { background: rgba(255, 255, 255, .12); color: #fff; }
+
+  @media (max-width: 480px) {
+    /* stack cleanly on the smallest screens · still identical width to each other */
+    .cta-pair { flex-direction: column; align-items: stretch; }
+    .cta-pair.center { align-items: stretch; }
+    .cta-col { inline-size: 100%; }
+    .cta-pair :global(.btn-pair) { min-inline-size: 0; }
+  }
+</style>

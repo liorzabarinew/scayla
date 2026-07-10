@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import DemoWidget from '../components/DemoWidget.astro';
+import CtaBand from '../components/CtaBand.astro';
+
+const title = 'בדיקה חינם · האם ChatGPT ממליץ על החנות שלכם? · Scayla';
+const description =
+  'בדקו בחינם, בדקה, אם ChatGPT ממליץ על החנות שלכם או על המתחרים. הדגמה אינטראקטיבית · הכניסו את הנישה שלכם וראו את הפער.';
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="check-hero">
+    <div class="narrow center">
+      <span class="eyebrow">בדיקה חינם</span>
+      <h1>גלו בדקה אם ה-AI ממליץ עליכם · או על המתחרים</h1>
+      <p class="lede">
+        קונים כבר שואלים את ChatGPT "איזו חנות מומלצת?" · והתשובה מזכירה שמות של חנויות.
+        הריצו את ההדגמה למטה, בחינם, וראו איפה החנות שלכם עומדת.
+      </p>
+    </div>
+  </section>
+
+  <section class="check-widget">
+    <div class="wrap">
+      <DemoWidget />
+    </div>
+  </section>
+
+  <!-- ═══ מה עכשיו? · pitch the real product ═══ -->
+  <section class="check-next alt-bg">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">מה עכשיו?</span>
+        <h2>ההדגמה מראה את הבעיה · Scayla פותרת אותה</h2>
+        <p>
+          מה שראיתם למעלה זו הדמיה. בתוך Scayla אנחנו מריצים את זה על החנות האמיתית שלכם ·
+          וסוגרים את הפער, צעד אחר צעד.
+        </p>
+      </div>
+
+      <div class="steps">
+        <div class="step card fade-up">
+          <span class="step-ic" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 3a8 8 0 1 0 0 16 8 8 0 0 0 0-16z"/><path d="M21 21l-4.3-4.3"/></svg>
+          </span>
+          <h3>מודדים באמת</h3>
+          <p>מדגם שאילתות קבוע בעברית מול ChatGPT ו-Gemini · ציון נראות אמיתי, לא הרגשה.</p>
+        </div>
+        <div class="step card fade-up">
+          <span class="step-ic" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V6a2 2 0 0 1 2-2h11l3 3v12.5a1.5 1.5 0 0 1-1.5 1.5H5.5A1.5 1.5 0 0 1 4 19.5z"/><path d="M8 10h8M8 14h5"/></svg>
+          </span>
+          <h3>בונים תוכן ציטוטבילי</h3>
+          <p>מאמרים, FAQ, סכמות ועמודי מוצר שמנועי ה-AI אוהבים לצטט · לאישור שלכם בקליק.</p>
+        </div>
+        <div class="step card fade-up">
+          <span class="step-ic" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18l5-5 3 3 8-8"/><path d="M20 8v5M20 8h-5"/></svg>
+          </span>
+          <h3>רואים את ההשפעה</h3>
+          <p>לפני ואחרי · עלייה בנראות, בתנועה ובמכירות. הפער נסגר · ואתם רואים את זה במספרים.</p>
+        </div>
+      </div>
+
+      <p class="check-note center">
+        רוצים להבין את השיטה לעומק? קראו על
+        <a href="/geo">אופטימיזציה למנועי AI · GEO</a>
+        או על <a href="/ai-visibility">הופעה ב-ChatGPT וב-Gemini</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="check-cta">
+    <div class="wrap">
+      <CtaBand
+        title="מוכנים לסגור את הפער?"
+        body="התקינו את Scayla ב-Shopify · אבחון נראות חינם תוך דקות, בלי כרטיס אשראי."
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .check-hero { padding-block-end: 8px; }
+  .check-widget { padding-block-start: 24px; }
+
+  .alt-bg { background: var(--sc-card); }
+  :global([data-theme='dark']) .alt-bg { background: #17141d; }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 760px) { .steps { grid-template-columns: 1fr; } }
+  .step { padding: 24px 22px; text-align: start; }
+  .step-ic {
+    display: grid; place-items: center;
+    inline-size: 44px; block-size: 44px;
+    border-radius: 12px;
+    background: var(--sc-wash);
+    border: 1px solid var(--sc-soft);
+    color: var(--sc-accent-text);
+    margin-block-end: 14px;
+  }
+  .step h3 { margin-block-end: 7px; }
+  .step p { font-size: 14px; }
+
+  .check-note { margin-block-start: 32px; font-size: 15px; max-inline-size: 62ch; margin-inline: auto; }
+  .check-cta { padding-block-start: 8px; }
+</style>

@@ -1,0 +1,253 @@
+---
+import { getCollection } from 'astro:content';
+import { CLUSTERS } from '../../content.config';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { authorMap } from '../../data/experts';
+
+const posts = (await getCollection('magazine', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+// Featured = newest post; the rest fill the grid.
+const [featured, ...rest] = posts;
+
+// Only show filter tabs for clusters that actually have posts.
+const activeClusters = CLUSTERS.filter((name) => posts.some((p) => p.data.cluster === name));
+
+const fmt = new Intl.DateTimeFormat('he-IL', { day: 'numeric', month: 'long', year: 'numeric' });
+const title = 'הבלוג של Scayla · GEO ו-SEO לחנויות';
+const description =
+  'GEO, קידום אורגני לשופיפיי ושיווק לאיקומרס ישראלי · מדריכים מבוססי מחקר, כתובים כמו שמנועי AI אוהבים לצטט.';
+
+const featuredAuthor = featured?.data.author ? authorMap[featured.data.author] : undefined;
+---
+
+<BaseLayout title={title} description={description} breadcrumbs={[{ name: 'בלוג', path: '/magazine' }]}>
+  <section class="mag-hero">
+    <div class="wrap center">
+      <span class="eyebrow">הבלוג</span>
+      <h1>הבלוג</h1>
+      <p class="lede">
+        GEO ואופטימיזציה למנועי AI, קידום אורגני לחנויות שופיפיי ושיווק לאיקומרס הישראלי ·
+        נכתב על ידי מכונת התוכן של Scayla, אותה מכונה שכותבת עבור החנות שלכם.
+      </p>
+    </div>
+  </section>
+
+  {featured && (
+    <section class="mag-featured">
+      <div class="wrap">
+        <a class="feat card fade-up" href={`/magazine/${featured.id}`}>
+          <div class="feat-media">
+            {featured.data.coverImage ? (
+              <img src={featured.data.coverImage} alt={featured.data.title} width="720" height="440" />
+            ) : (
+              <div class="feat-ph" aria-hidden="true"></div>
+            )}
+            <span class="feat-flag">מומלץ</span>
+          </div>
+          <div class="feat-body">
+            <span class="cat">{featured.data.cluster}</span>
+            <h2>{featured.data.title}</h2>
+            <p>{featured.data.description}</p>
+            <div class="meta">
+              {featuredAuthor && <span class="by">מאת {featuredAuthor.name}</span>}
+              {featuredAuthor && <span aria-hidden="true">·</span>}
+              <time datetime={featured.data.pubDate.toISOString()}>{fmt.format(featured.data.pubDate)}</time>
+              <span aria-hidden="true">·</span>
+              <span><span class="num">{featured.data.readingMinutes}</span> דקות קריאה</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+  )}
+
+  <section class="mag-list">
+    <div class="wrap">
+      <div class="filters" role="tablist" aria-label="סינון לפי נושא">
+        <button class="tab is-active" role="tab" aria-selected="true" data-filter="all" type="button">הכל</button>
+        {activeClusters.map((c) => (
+          <button class="tab" role="tab" aria-selected="false" data-filter={c} type="button">{c}</button>
+        ))}
+      </div>
+
+      <div class="grid" id="post-grid">
+        {rest.map((post) => {
+          const a = post.data.author ? authorMap[post.data.author] : undefined;
+          return (
+            <article class="post card fade-up" data-cluster={post.data.cluster}>
+              <a href={`/magazine/${post.id}`} class="post-link">
+                {post.data.coverImage ? (
+                  <div class="thumb has-img"><img src={post.data.coverImage} alt={post.data.title} loading="lazy" width="400" height="200" /></div>
+                ) : (
+                  <div class="thumb" aria-hidden="true"><span class="cat">{post.data.cluster}</span></div>
+                )}
+                <div class="body">
+                  <span class="cl-pill">{post.data.cluster}</span>
+                  <h3>{post.data.title}</h3>
+                  <p>{post.data.description}</p>
+                  <div class="meta">
+                    {a && <span class="by">{a.name}</span>}
+                    {a && <span aria-hidden="true">·</span>}
+                    <time datetime={post.data.pubDate.toISOString()}>{fmt.format(post.data.pubDate)}</time>
+                    <span aria-hidden="true">·</span>
+                    <span><span class="num">{post.data.readingMinutes}</span> דק׳</span>
+                    {post.data.demo && <span class="demo-tag">דמו</span>}
+                  </div>
+                </div>
+              </a>
+            </article>
+          );
+        })}
+      </div>
+      <p class="empty" id="empty-note" hidden>אין מאמרים באשכול הזה עדיין.</p>
+
+      <p class="feed-note">
+        התוכן כאן נכתב ומתעדכן אוטומטית על ידי מכונת התוכן של Scayla · מבוסס מחקר ומקורות אמיתיים.
+      </p>
+    </div>
+  </section>
+
+  <section class="mag-cta">
+    <div class="wrap">
+      <CtaBand
+        title="רוצים מגזין כזה בחנות שלכם?"
+        body="מכונת התוכן של Scayla כותבת מאמרים מבוססי מחקר בעברית ילידית · מכוונים בדיוק לשאלות שהקונים שלכם שואלים את ה-AI."
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Cluster filter · client-side, keyboard-accessible tablist.
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('.filters .tab'));
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('#post-grid .post'));
+  const empty = document.getElementById('empty-note');
+
+  function apply(filter: string) {
+    let shown = 0;
+    cards.forEach((card) => {
+      const match = filter === 'all' || card.dataset.cluster === filter;
+      card.hidden = !match;
+      if (match) shown++;
+    });
+    if (empty) empty.hidden = shown !== 0;
+  }
+
+  function select(tab: HTMLButtonElement) {
+    tabs.forEach((t) => {
+      const on = t === tab;
+      t.classList.toggle('is-active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    apply(tab.dataset.filter || 'all');
+  }
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => select(tab));
+    tab.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        // RTL: ArrowLeft = next, ArrowRight = previous
+        const dir = e.key === 'ArrowLeft' ? 1 : -1;
+        const next = tabs[(i + dir + tabs.length) % tabs.length];
+        next.focus();
+        select(next);
+      }
+    });
+  });
+</script>
+
+<style>
+  .mag-hero { padding-block-end: 8px; }
+  .mag-hero .lede { max-inline-size: 58ch; margin-inline: auto; }
+
+  /* Featured */
+  .mag-featured { padding-block: 8px; }
+  .feat {
+    display: grid; grid-template-columns: 1.05fr 1fr; gap: 0; overflow: hidden;
+    border-radius: var(--sc-r-hero); color: inherit;
+    transition: transform .2s var(--sc-ease), box-shadow .2s var(--sc-ease);
+  }
+  .feat:hover { transform: translateY(-3px); box-shadow: var(--sc-sh-lift); }
+  @media (max-width: 760px) { .feat { grid-template-columns: 1fr; } }
+  .feat-media { position: relative; min-block-size: 260px; }
+  .feat-media img, .feat-ph {
+    position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover;
+  }
+  .feat-ph {
+    background:
+      radial-gradient(420px 260px at 80% -20%, rgba(139, 118, 242, .55), transparent 60%),
+      var(--sc-grad-rich);
+  }
+  @media (max-width: 760px) { .feat-media { min-block-size: 200px; } }
+  .feat-flag {
+    position: absolute; inset-block-start: 14px; inset-inline-start: 14px;
+    background: var(--accent-gold); color: var(--sc-gold-ink);
+    font-size: 11.5px; font-weight: 800; border-radius: var(--sc-r-pill); padding: 4px 13px;
+  }
+  .feat-body { padding: clamp(22px, 3vw, 34px); display: flex; flex-direction: column; gap: 10px; justify-content: center; }
+  .feat-body h2 { font-size: clamp(20px, 2.8vw, 28px); line-height: 1.3; color: var(--sc-ink); }
+  .feat:hover .feat-body h2 { color: var(--sc-accent-text); }
+  .feat-body p { font-size: 15px; line-height: 1.7; }
+
+  .cat, .cl-pill {
+    align-self: start; background: var(--sc-wash); color: var(--sc-accent-text);
+    font-size: 11.5px; font-weight: 800; border-radius: var(--sc-r-pill);
+    padding: 4px 12px; border: 1px solid var(--sc-soft);
+  }
+
+  /* Filter tabs */
+  .mag-list { padding-block-start: 24px; }
+  .filters {
+    display: flex; flex-wrap: wrap; gap: 9px; margin-block-end: 24px;
+    justify-content: center;
+  }
+  .tab {
+    font-family: var(--sc-font); font-size: 13.5px; font-weight: 700;
+    color: var(--sc-muted); background: var(--sc-card);
+    border: 1px solid var(--sc-hair); border-radius: var(--sc-r-pill);
+    padding: 8px 18px; cursor: pointer;
+    transition: color var(--sc-fast), background var(--sc-fast), border-color var(--sc-fast);
+  }
+  .tab:hover { color: var(--sc-accent-text); border-color: var(--sc-soft); }
+  .tab.is-active { color: #fff; background: var(--sc-accent); border-color: var(--sc-accent); }
+
+  /* Grid */
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
+  .post { overflow: hidden; border-radius: 18px; transition: transform .18s var(--sc-ease), box-shadow .18s var(--sc-ease); }
+  .post:hover { transform: translateY(-3px); box-shadow: var(--sc-sh-lift); }
+  .post[hidden] { display: none; }
+  .post-link { display: flex; flex-direction: column; block-size: 100%; color: inherit; }
+  .thumb {
+    block-size: 120px;
+    background: radial-gradient(300px 160px at 80% -30%, rgba(139, 118, 242, .45), transparent 65%), var(--sc-grad);
+    display: flex; align-items: flex-end; padding: 14px;
+  }
+  .thumb.has-img { padding: 0; }
+  .thumb.has-img img { inline-size: 100%; block-size: 100%; object-fit: cover; }
+  .thumb .cat { background: rgba(255, 255, 255, .92); color: var(--sc-accent); border: none; }
+  .body { padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; align-items: start; }
+  .body h3 { font-size: 17px; line-height: 1.4; color: var(--sc-ink); font-weight: 800; }
+  .post:hover h3 { color: var(--sc-accent-text); }
+  .body p {
+    font-size: 13.5px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .meta {
+    display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
+    font-size: 12.5px; color: var(--sc-disabled); margin-block-start: auto; padding-block-start: 8px;
+  }
+  .meta .by { font-weight: 700; color: var(--sc-muted); }
+  .demo-tag {
+    font-size: 10.5px; font-weight: 800; color: var(--sc-mv);
+    background: var(--sc-wash); border: 1px solid var(--sc-soft);
+    border-radius: var(--sc-r-pill); padding: 2px 9px;
+  }
+  .empty { text-align: center; color: var(--sc-muted); font-size: 15px; padding-block: 20px; }
+  .feed-note { text-align: center; font-size: 13px; color: var(--sc-disabled); margin-block-start: 36px; }
+  .mag-cta { padding-block-start: 0; }
+</style>

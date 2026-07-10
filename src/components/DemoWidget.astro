@@ -1,0 +1,490 @@
+---
+/**
+ * DemoWidget · a zero-backend, front-end-only "mini-Scayla" lead magnet.
+ *
+ * The visitor types (or picks) a niche and the widget SIMULATES a ChatGPT
+ * query: a fake "sending query" state, a typewriter answer that recommends
+ * 2-3 generic competitors with the visitor's store ABSENT, then a result card
+ * (store 0% · competitors ~40%) and the InstallCtaPair conversion CTAs.
+ *
+ * NO fetch / XHR / API / backend / external request · everything is simulated
+ * in the browser from a small template set (see the inline <script>). It is
+ * clearly labelled "הדגמה" and honest that it is not a live query.
+ *
+ * Accessibility: labelled input, keyboard-operable chips + buttons, aria-live
+ * on the running/result region, visible focus (global), and a full
+ * prefers-reduced-motion path that skips the typewriter/animations and shows
+ * the final state immediately.
+ */
+import InstallCtaPair from './InstallCtaPair.astro';
+---
+
+<section class="demo-widget card" aria-labelledby="dw-heading" data-demo-widget>
+  <span class="dw-badge" aria-hidden="true">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/></svg>
+    הדגמה
+  </span>
+
+  <div class="dw-head">
+    <h2 id="dw-heading">בדקו בחינם: האם ChatGPT ממליץ על החנות שלכם?</h2>
+    <p class="dw-sub">הקלידו את הנישה שלכם · נדמה שאילתה ל-ChatGPT ונראה מי מופיע בתשובה · ומי חסר.</p>
+  </div>
+
+  <!-- ═══ Stage 1 · the input form ═══ -->
+  <form class="dw-form" data-dw-form novalidate>
+    <label class="dw-label" for="dw-niche">הנישה או קטגוריית המוצר שלכם</label>
+    <div class="dw-inputrow">
+      <input
+        id="dw-niche"
+        name="niche"
+        type="text"
+        class="dw-input"
+        placeholder="למשל: מנורות לסלון"
+        autocomplete="off"
+        maxlength="60"
+        aria-describedby="dw-hint"
+      />
+      <button type="submit" class="btn btn-solid dw-go">
+        בדקו עכשיו
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <p id="dw-hint" class="dw-hint">בחרו דוגמה מהירה:</p>
+    <div class="dw-chips" role="group" aria-label="דוגמאות נישה מהירות">
+      <button type="button" class="dw-chip" data-niche="מנורות לסלון">מנורות לסלון</button>
+      <button type="button" class="dw-chip" data-niche="תכשיטים">תכשיטים</button>
+      <button type="button" class="dw-chip" data-niche="נעליים">נעליים</button>
+      <button type="button" class="dw-chip" data-niche="מוצרי טיפוח">מוצרי טיפוח</button>
+    </div>
+  </form>
+
+  <!-- ═══ Stage 2 · running + result (aria-live) ═══ -->
+  <div class="dw-stage" data-dw-stage aria-live="polite" hidden>
+    <!-- pulsing "sending query" indicator -->
+    <div class="dw-loading" data-dw-loading hidden>
+      <span class="dw-radar" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="dw-loading-txt">שולחים שאילתה ל-ChatGPT<span class="dw-dots" aria-hidden="true"><i>.</i><i>.</i><i>.</i></span></span>
+    </div>
+
+    <!-- the simulated ChatGPT answer, styled like AnswerViewer -->
+    <div class="dw-answer" data-dw-answer hidden>
+      <div class="dw-q">
+        <span data-dw-question>"החנות המומלצת ל…"</span>
+        <span class="dw-eng num">ChatGPT</span>
+      </div>
+      <p class="dw-atext" data-dw-atext></p>
+    </div>
+
+    <!-- result card -->
+    <div class="dw-result" data-dw-result hidden>
+      <div class="dw-rgrid">
+        <div class="dw-rcell dw-you">
+          <span class="dw-rlabel">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            החנות שלכם
+          </span>
+          <span class="dw-rval num">0%</span>
+          <span class="dw-rnote">לא מופיעה באף תשובה</span>
+        </div>
+        <div class="dw-rcell dw-them">
+          <span class="dw-rlabel">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+            המתחרים שלכם
+          </span>
+          <span class="dw-rval num">~40%</span>
+          <span class="dw-rnote">מופיעים בתשובות במקומכם</span>
+        </div>
+      </div>
+
+      <p class="dw-punch">זה בדיוק הפער ש-Scayla סוגרת.</p>
+      <p class="dw-punch-sub">אנחנו בונים את התוכן והמבנה שמכניסים דווקא אתכם לתשובה · ומודדים אם זה עבד.</p>
+
+      <div class="dw-cta">
+        <InstallCtaPair center variant="hero" />
+      </div>
+
+      <button type="button" class="dw-again" data-dw-reset>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+        בדיקה נוספת
+      </button>
+    </div>
+  </div>
+
+  <p class="dw-honesty">
+    זו הדגמה להמחשה · לא שאילתה חיה. התשובות והמתחרים נוצרים בדפדפן שלכם.
+    בתוך Scayla תראו את התשובות האמיתיות על החנות שלכם.
+  </p>
+</section>
+
+<style>
+  .demo-widget {
+    position: relative;
+    max-inline-size: 680px;
+    margin-inline: auto;
+    padding: clamp(22px, 4vw, 36px);
+    text-align: start;
+    overflow: hidden;
+  }
+  /* soft violet wash behind the top of the card */
+  .demo-widget::before {
+    content: '';
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    block-size: 130px;
+    background: radial-gradient(120% 130% at 88% -30%, rgba(139, 118, 242, .16), transparent 60%);
+    pointer-events: none;
+  }
+  .dw-badge {
+    position: absolute;
+    inset-block-start: 16px;
+    inset-inline-end: 16px;
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 700; letter-spacing: .04em;
+    color: var(--sc-gold-text);
+    background: var(--sc-gold-bg);
+    border: 1px solid var(--sc-gold-bd);
+    border-radius: var(--sc-r-pill);
+    padding: 4px 11px;
+  }
+  .dw-badge svg { color: var(--sc-gold); }
+
+  .dw-head { position: relative; max-inline-size: 46ch; }
+  .dw-head h2 {
+    font-size: clamp(20px, 3vw, 27px);
+    line-height: 1.25;
+    padding-inline-end: 64px; /* clear the badge */
+  }
+  .dw-sub { margin-block-start: 12px; font-size: 14.5px; }
+
+  /* ── form ── */
+  .dw-form { margin-block-start: 22px; }
+  .dw-label {
+    display: block;
+    font-size: 12.5px; font-weight: 700; letter-spacing: .02em;
+    color: var(--sc-muted);
+    margin-block-end: 8px;
+  }
+  .dw-inputrow { display: flex; gap: 10px; flex-wrap: wrap; }
+  .dw-input {
+    flex: 1 1 220px;
+    min-inline-size: 0;
+    font-family: var(--sc-font);
+    font-size: 16px; /* >=16px · no iOS zoom */
+    font-weight: 600;
+    color: var(--sc-ink);
+    background: var(--sc-paper);
+    border: 1.5px solid var(--sc-hair);
+    border-radius: var(--sc-r-chip);
+    padding: 13px 16px;
+    transition: border-color var(--sc-fast), box-shadow var(--sc-fast);
+  }
+  .dw-input::placeholder { color: var(--sc-disabled); font-weight: 500; }
+  .dw-input:focus {
+    outline: none;
+    border-color: var(--sc-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--sc-accent) 22%, transparent);
+  }
+  .dw-go { flex: 0 0 auto; padding-inline: 22px; }
+
+  .dw-hint { font-size: 12.5px; font-weight: 600; color: var(--sc-muted); margin-block: 16px 9px; }
+  .dw-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+  .dw-chip {
+    font-family: var(--sc-font);
+    font-size: 13.5px; font-weight: 700;
+    color: var(--sc-accent-text);
+    background: var(--sc-wash);
+    border: 1px solid var(--sc-soft);
+    border-radius: var(--sc-r-pill);
+    padding: 7px 15px;
+    cursor: pointer;
+    transition: background var(--sc-fast), border-color var(--sc-fast), color var(--sc-fast), transform var(--sc-fast);
+  }
+  .dw-chip:hover { background: var(--sc-card); border-color: var(--sc-accent-text); transform: translateY(-1px); }
+
+  /* ── running / result stage ── */
+  .dw-stage { margin-block-start: 22px; }
+
+  .dw-loading {
+    display: flex; align-items: center; gap: 14px;
+    background: var(--sc-wash);
+    border: 1px solid var(--sc-soft);
+    border-radius: 14px;
+    padding: 18px 18px;
+  }
+  .dw-radar {
+    position: relative; flex: none;
+    inline-size: 26px; block-size: 26px;
+    display: grid; place-items: center;
+  }
+  .dw-radar i {
+    position: absolute; inset: 0;
+    border-radius: 50%;
+    border: 2px solid var(--sc-accent);
+    opacity: 0;
+    animation: dwPulse 1.6s var(--sc-ease) infinite;
+  }
+  .dw-radar i:nth-child(2) { animation-delay: .5s; }
+  .dw-radar i:nth-child(3) { animation-delay: 1s; }
+  @keyframes dwPulse {
+    0% { transform: scale(.35); opacity: .9; }
+    70% { opacity: .15; }
+    100% { transform: scale(1); opacity: 0; }
+  }
+  .dw-loading-txt { font-size: 14.5px; font-weight: 700; color: var(--sc-mv); }
+  .dw-dots i { animation: dwDot 1.4s steps(1) infinite; opacity: 0; }
+  .dw-dots i:nth-child(2) { animation-delay: .25s; }
+  .dw-dots i:nth-child(3) { animation-delay: .5s; }
+  @keyframes dwDot { 0%, 60% { opacity: 0; } 30% { opacity: 1; } }
+
+  /* simulated answer · mirrors AnswerViewer look */
+  .dw-answer {
+    background: var(--sc-wash);
+    border: 1px solid var(--sc-soft);
+    border-radius: 14px;
+    padding: 16px;
+  }
+  .dw-q {
+    font-size: 12.5px; color: var(--sc-mv);
+    margin-block-end: 10px; padding-block-end: 10px;
+    border-block-end: 1px dashed var(--sc-soft);
+    display: flex; gap: 8px; align-items: center;
+  }
+  .dw-eng { margin-inline-start: auto; font-size: 10.5px; font-weight: 700; color: var(--sc-accent-text); letter-spacing: .04em; }
+  .dw-atext {
+    font-size: 14.5px; line-height: 1.85; color: var(--sc-ink); font-weight: 500;
+    min-block-size: 3.5em;
+  }
+  /* caret while typing */
+  .dw-atext.typing::after {
+    content: '';
+    display: inline-block;
+    inline-size: 2px; block-size: 1.05em;
+    background: var(--sc-accent);
+    margin-inline-start: 2px;
+    vertical-align: text-bottom;
+    animation: dwCaret 1s steps(1) infinite;
+  }
+  @keyframes dwCaret { 50% { opacity: 0; } }
+  .dw-atext :global(.dw-comp) {
+    background: var(--sc-red-bg);
+    color: var(--sc-red-text);
+    border-block-end: 1.5px solid var(--sc-red);
+    border-radius: 3px;
+    padding: 0 4px;
+    font-weight: 700;
+  }
+
+  /* result card */
+  .dw-result { margin-block-start: 16px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .dw-result:not([hidden]) { animation: dwSlide .5s var(--sc-ease) backwards; }
+    @keyframes dwSlide { from { opacity: 0; transform: translateY(12px); } }
+  }
+  .dw-rgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 460px) { .dw-rgrid { grid-template-columns: 1fr; } }
+  .dw-rcell {
+    border-radius: 14px;
+    padding: 16px;
+    display: flex; flex-direction: column; gap: 4px;
+    border: 1px solid var(--sc-hair);
+    background: var(--sc-card);
+  }
+  .dw-rlabel { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; }
+  .dw-rval { font-size: 30px; font-weight: 800; line-height: 1.1; margin-block-start: 4px; }
+  .dw-rnote { font-size: 12px; color: var(--sc-muted); font-weight: 500; }
+  /* you = the problem (red) */
+  .dw-you { border-color: var(--sc-red-bd); background: var(--sc-red-bg); }
+  .dw-you .dw-rlabel, .dw-you .dw-rval { color: var(--sc-red-text); }
+  .dw-you .dw-rnote { color: var(--sc-red-text); opacity: .85; }
+  /* them present (positive-green indicator · they got cited) */
+  .dw-them { border-color: var(--sc-pos-bd); background: var(--sc-pos-bg); }
+  .dw-them .dw-rlabel, .dw-them .dw-rval { color: var(--sc-pos-deep); }
+  .dw-them .dw-rnote { color: var(--sc-pos-deep); opacity: .85; }
+
+  .dw-punch {
+    margin-block-start: 20px;
+    font-size: clamp(18px, 2.4vw, 22px);
+    font-weight: 800; letter-spacing: -.01em;
+    color: var(--sc-ink);
+    text-align: center;
+  }
+  .dw-punch-sub {
+    margin-block-start: 8px;
+    font-size: 14px; text-align: center;
+    max-inline-size: 46ch; margin-inline: auto;
+  }
+  .dw-cta { margin-block-start: 22px; display: flex; justify-content: center; }
+
+  .dw-again {
+    display: inline-flex; align-items: center; gap: 7px;
+    margin: 18px auto 0;
+    font-family: var(--sc-font);
+    font-size: 13.5px; font-weight: 700;
+    color: var(--sc-muted);
+    background: none; border: none; cursor: pointer;
+    padding: 8px 12px; border-radius: var(--sc-r-pill);
+  }
+  .dw-again { display: flex; }
+  .dw-again:hover { color: var(--sc-accent-text); }
+
+  .dw-honesty {
+    margin-block-start: 22px;
+    padding-block-start: 16px;
+    border-block-start: 1px dashed var(--sc-hair);
+    font-size: 12px; line-height: 1.6;
+    color: var(--sc-disabled);
+    text-align: center;
+  }
+</style>
+
+<script>
+  // ═══ Front-end-only simulation · NO network calls whatsoever ═══
+  type Tpl = { comps: string[]; verb: string };
+
+  // Loose per-niche template sets. A keyword match picks a themed set; anything
+  // else falls back to generic. Competitor names are invented + generic.
+  const SETS: Record<string, Tpl> = {
+    מנורות: { comps: ['אורות הבית', 'לומינה דקו', 'גלריית התאורה'], verb: 'עיצוב תאורה לבית' },
+    תאורה:  { comps: ['אורות הבית', 'לומינה דקו', 'גלריית התאורה'], verb: 'עיצוב תאורה לבית' },
+    תכשיט:  { comps: ['זהב וכסף סטודיו', 'ליאור תכשיטים', 'אבן חן'], verb: 'תכשיטים מעוצבים' },
+    נעל:    { comps: ['סטפ סטייל', 'נעלי העיר', 'קומפורט שוז'], verb: 'נעליים איכותיות' },
+    טיפוח:  { comps: ['גלואו ביוטי', 'טבע ועור', 'סקין לאב'], verb: 'מוצרי טיפוח לעור' },
+    קוסמטיק:{ comps: ['גלואו ביוטי', 'טבע ועור', 'סקין לאב'], verb: 'מוצרי טיפוח לעור' },
+    ריהוט:  { comps: ['בית ועיצוב', 'לובן ריהוט', 'הום סטוריז'], verb: 'ריהוט מעוצב לבית' },
+    בגד:    { comps: ['אורבן וייב', 'קלוזט סטייל', 'מוד בוטיק'], verb: 'אופנה ובגדים' },
+    צעצוע:  { comps: ['עולם הילדים', 'פלייטיים', 'קסם הצעצועים'], verb: 'צעצועים לילדים' },
+  };
+  const GENERIC: Tpl = { comps: ['החנות המובילה', 'שופ פלוס', 'מרקט פרו'], verb: 'הקטגוריה שלכם' };
+
+  const pickSet = (raw: string): Tpl => {
+    const n = raw.trim();
+    for (const key of Object.keys(SETS)) if (n.includes(key)) return SETS[key];
+    return GENERIC;
+  };
+
+  // A few answer templates · {niche}/{verb}/{comps} interpolated. Competitors are
+  // wrapped in .dw-comp so the visitor's absence reads red.
+  const TEMPLATES = [
+    (n: string, t: Tpl) =>
+      `למי שמחפש ${n}, כדאי לבדוק כמה חנויות מובילות: ${wrap(t.comps[0])}, שמציעה מבחר רחב, וגם ${wrap(t.comps[1])} ו${wrap(t.comps[2])} עם משלוחים מהירים ודירוגים גבוהים.`,
+    (n: string, t: Tpl) =>
+      `בין ההמלצות הפופולריות ל${n} תמצאו את ${wrap(t.comps[0])} ואת ${wrap(t.comps[1])}, המוכרות בזכות איכות ושירות. ${wrap(t.comps[2])} מצוינת גם היא לחיפוש של ${t.verb}.`,
+    (n: string, t: Tpl) =>
+      `לרכישת ${n} אונליין, החנויות שעולות שוב ושוב הן ${wrap(t.comps[0])}, ${wrap(t.comps[1])} ו${wrap(t.comps[2])} · כולן עם מוניטין טוב וקהל לקוחות מרוצה.`,
+  ];
+
+  const esc = (s: string) =>
+    s.replace(/[&<>"']/g, (c) => (
+      { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c] as string
+    ));
+  const wrap = (name: string) => `<span class="dw-comp">${esc(name)}</span>`;
+
+  const reduce = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll<HTMLElement>('[data-demo-widget]').forEach((root) => {
+    const form = root.querySelector<HTMLFormElement>('[data-dw-form]')!;
+    const input = root.querySelector<HTMLInputElement>('#dw-niche')!;
+    const stage = root.querySelector<HTMLElement>('[data-dw-stage]')!;
+    const loading = root.querySelector<HTMLElement>('[data-dw-loading]')!;
+    const answer = root.querySelector<HTMLElement>('[data-dw-answer]')!;
+    const qEl = root.querySelector<HTMLElement>('[data-dw-question]')!;
+    const aEl = root.querySelector<HTMLElement>('[data-dw-atext]')!;
+    const result = root.querySelector<HTMLElement>('[data-dw-result]')!;
+
+    let timers: number[] = [];
+    const clearTimers = () => { timers.forEach(clearTimeout); timers = []; };
+    const after = (ms: number, fn: () => void) => { timers.push(window.setTimeout(fn, ms)); };
+
+    const run = (rawNiche: string) => {
+      const niche = (rawNiche || 'המוצרים שלכם').trim().slice(0, 60);
+      const set = pickSet(niche);
+      const tpl = TEMPLATES[Math.floor(Math.random() * TEMPLATES.length)];
+      const html = tpl(esc(niche), set);
+
+      clearTimers();
+      // reveal stage · hide form
+      form.hidden = true;
+      stage.hidden = false;
+      loading.hidden = false;
+      answer.hidden = true;
+      result.hidden = true;
+      qEl.textContent = `"החנות המומלצת ל${niche}?"`;
+      aEl.classList.remove('typing');
+      aEl.innerHTML = '';
+
+      const showAnswerThenResult = () => {
+        loading.hidden = true;
+        answer.hidden = false;
+        if (reduce()) {
+          aEl.innerHTML = html;
+          result.hidden = false;
+        } else {
+          typewrite(aEl, html, () => after(450, () => { result.hidden = false; }));
+        }
+      };
+
+      if (reduce()) showAnswerThenResult();
+      else after(1200, showAnswerThenResult);
+    };
+
+    // Typewriter that renders HTML progressively without splitting tags.
+    const typewrite = (el: HTMLElement, html: string, done: () => void) => {
+      // Tokenize into [text-char | full-tag] units so tags appear atomically.
+      const tokens: string[] = [];
+      let i = 0;
+      while (i < html.length) {
+        if (html[i] === '<') {
+          const end = html.indexOf('>', i);
+          tokens.push(html.slice(i, end + 1));
+          i = end + 1;
+        } else {
+          tokens.push(html[i]);
+          i++;
+        }
+      }
+      el.classList.add('typing');
+      let out = '';
+      let k = 0;
+      const step = () => {
+        if (k >= tokens.length) {
+          el.classList.remove('typing');
+          done();
+          return;
+        }
+        out += tokens[k++];
+        el.innerHTML = out;
+        // faster over tags, human-ish over chars
+        const isTag = tokens[k - 1].startsWith('<');
+        after(isTag ? 0 : 16, step);
+      };
+      step();
+    };
+
+    const reset = () => {
+      clearTimers();
+      stage.hidden = true;
+      loading.hidden = true;
+      answer.hidden = true;
+      result.hidden = true;
+      aEl.innerHTML = '';
+      aEl.classList.remove('typing');
+      form.hidden = false;
+      input.value = '';
+      input.focus();
+    };
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      run(input.value);
+    });
+    root.querySelectorAll<HTMLButtonElement>('.dw-chip').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        input.value = chip.dataset.niche || '';
+        run(input.value);
+      });
+    });
+    root.querySelector<HTMLButtonElement>('[data-dw-reset]')
+      ?.addEventListener('click', reset);
+  });
+</script>

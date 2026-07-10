@@ -1,0 +1,165 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Testimonials from '../components/Testimonials.astro';
+
+const title = 'מי אנחנו · Scayla';
+const description =
+  '15 שנות שיווק ביצועים ומומחיות SEO/GEO · הסיפור של ליאור צברי ונוי קייטל והדרך ל-SaaS של הנראות בעידן ה-AI.';
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="about-hero">
+    <div class="narrow center">
+      <span class="eyebrow">מי אנחנו</span>
+      <h1>שני עולמות שיווק · מכונה אחת</h1>
+      <p class="lede">
+        Scayla נולדה מהחיבור בין 15 שנות שיווק ביצועים לבין מומחיות SEO ו-GEO מהשורה הראשונה ·
+        ומההבנה ששני העולמות האלה חייבים להפוך למוצר אחד, שכל חנות ישראלית יכולה להרשות לעצמה.
+      </p>
+    </div>
+  </section>
+
+  <section class="story alt-bg">
+    <div class="narrow">
+      <h2>למה בכלל בנינו את זה</h2>
+      <p class="prose">
+        במשך שנים ליווינו עסקים ישראליים · כל אחד מהצד שלו. ליאור בנה קמפיינים ואוטומציות
+        לתאגידים ולאלפי לקוחות. נוי קידמה מותגים בגוגל, מאמר אחרי מאמר, סכמה אחרי סכמה.
+        ואז המשחק השתנה: הקונים התחילו לשאול את ChatGPT ואת Gemini "מה הכי טוב ל___"
+        במקום לגלול תוצאות חיפוש.
+      </p>
+      <p class="prose">
+        ראינו את זה קודם אצל הלקוחות שלנו: חנויות מצוינות, עם מוצרים מצוינים, שפשוט לא
+        קיימות בתשובות של ה-AI · בזמן שהמתחרים שלהן כן. והבנו שאין היום אף כלי שמודד את זה
+        בעברית, מול מתחרים אמיתיים, ועושה משהו בנידון.
+      </p>
+      <p class="prose">
+        אז בנינו אותו. Scayla היא המכונה שהיינו רוצים לתת לכל לקוח שלנו: היא מודדת, מאבחנת,
+        פועלת ומוכיחה · במחיר של אפליקציה, לא של סוכנות. בגובה העיניים, בלי קסמים ובלי
+        הבטחות ריקות: מה שנעשה מוצג, מה שהשתפר נמדד.
+      </p>
+    </div>
+  </section>
+
+  <section class="team">
+    <div class="wrap">
+      <div class="sh">
+        <span class="eyebrow">הצוות</span>
+        <h2>האנשים שמאחורי המכונה</h2>
+      </div>
+      <div class="founders">
+        <article class="fo card fade-up">
+          <div class="av" aria-hidden="true">ל</div>
+          <h3>ליאור צברי · Mr. Make</h3>
+          <p class="role">Co-Founder · שיווק ביצועים, מסחר וטכנולוגיה</p>
+          <p>
+            15 שנות שיווק ביצועים: ניהול תקציבי מדיה של <span class="num">$1M+</span>,
+            קמפיינים לתאגידי ענק ושותפות רשמית עם Google ו-Apple. בשנים האחרונות ליאור
+            בונה אוטומציות שיווק בקנה מידה · יותר ממיליון שיחות בוט · והביא ל-Scayla את
+            ה-DNA של מכונה שעובדת לבד ומדווחת במספרים.
+          </p>
+          <div class="tags">
+            <span>15+ שנות שיווק ביצועים</span><span>$1M+ תקציבי מדיה</span><span>Google & Apple Partner</span><span>1M+ שיחות בוט</span>
+          </div>
+          <a class="fo-link" href="/experts/lior-tzabari">לפרופיל המלא של ליאור ›</a>
+        </article>
+        <article class="fo card fade-up">
+          <div class="av" aria-hidden="true">נ</div>
+          <h3>נוי קייטל · BusyMom</h3>
+          <p class="role">Co-Founder · מומחית SEO & GEO</p>
+          <p>
+            מומחית SEO ו-GEO שקידמה מותגים כמו Toys R Us, מגזין Femina, Mustela ומותגי
+            e-commerce ישראליים. מנטורית ומרצה ל-SEO, ומהראשונות בישראל שהתמחו ב-GEO ·
+            האופטימיזציה למנועי התשובות של ה-AI. נוי בונה את המתודולוגיה שמזינה את המכונה:
+            מה למדוד, מה לכתוב, ואיך מנצחים תשובה.
+          </p>
+          <div class="tags">
+            <span>SEO & GEO</span><span>Toys R Us · Femina · Mustela</span><span>מנטורית ומרצה ל-SEO</span>
+          </div>
+          <a class="fo-link" href="/experts/noy-keitel">לפרופיל המלא של נוי ›</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="values alt-bg">
+    <div class="wrap">
+      <div class="sh">
+        <span class="eyebrow">איך אנחנו עובדים</span>
+        <h2>שלושה עקרונות שלא מתפשרים עליהם</h2>
+      </div>
+      <div class="vgrid">
+        <div class="v card fade-up">
+          <h3>שקיפות מלאה</h3>
+          <p>כל פעולה שהמכונה עושה מוצגת · לפני ואחרי, עם הסבר למה. אין קופסה שחורה.</p>
+        </div>
+        <div class="v card fade-up">
+          <h3>אתם מחליטים</h3>
+          <p>שום שינוי לא עולה לאוויר בלי אישור שלכם, וכל שינוי הפיך בקליק. החנות שלכם, השליטה שלכם.</p>
+        </div>
+        <div class="v card fade-up">
+          <h3>בלי הבטחות ריקות</h3>
+          <p>אנחנו לא מבטיחים "מקום ראשון בגוגל". אנחנו מודדים, פועלים ומראים לכם בדיוק מה השתנה.</p>
+        </div>
+      </div>
+      <div class="testi">
+        <Testimonials />
+      </div>
+      <div class="logos placeholder-box fade-up">
+        <b>PLACEHOLDER · לוגו לקוחות</b>
+        כאן ייכנסו לוגו מותגים (Toys R Us · Femina · Mustela ועוד) · ממתין לאישור שימוש. עד אז: מוקדמים מקבלים גישה ראשונים.
+      </div>
+    </div>
+  </section>
+
+  <section class="about-cta">
+    <div class="wrap">
+      <CtaBand
+        title="בואו נראה לכם איפה אתם עומדים."
+        body="התקינו את Scayla וקבלו אבחון נראות חינם · או קבעו דמו ונעבור יחד על החנות שלכם."
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-hero { padding-block-end: 24px; }
+  .alt-bg { background: var(--sc-card); }
+  :global([data-theme='dark']) .alt-bg { background: #17141d; }
+  .story h2 { margin-block-end: 18px; }
+  .prose { margin-block-end: 16px; font-size: 16px; line-height: 1.85; }
+
+  .founders { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width: 720px) { .founders { grid-template-columns: 1fr; } }
+  .fo { padding: 26px; border-radius: 18px; }
+  .av {
+    inline-size: 52px; block-size: 52px; border-radius: 14px;
+    background: var(--sc-grad); color: #fff; font-weight: 800; font-size: 20px;
+    display: grid; place-items: center; margin-block-end: 14px;
+  }
+  .fo h3 { font-size: 19px; }
+  .role { font-size: 13.5px; color: var(--sc-accent-text); font-weight: 700; margin: 2px 0 12px; }
+  .fo p:not(.role) { font-size: 14.5px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-block-start: 14px; }
+  .tags span {
+    font-size: 12px; font-weight: 600; color: var(--sc-mv);
+    background: var(--sc-wash); border: 1px solid var(--sc-soft);
+    padding: 4px 10px; border-radius: var(--sc-r-pill);
+  }
+  .fo-link {
+    display: inline-block; margin-block-start: 16px;
+    font-size: 14px; font-weight: 700; color: var(--sc-accent-text);
+  }
+  .fo-link:hover { color: var(--sc-deep); }
+  :global([data-theme='dark']) .fo-link:hover { color: var(--sc-lav); }
+
+  .vgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 720px) { .vgrid { grid-template-columns: 1fr; } }
+  .v { padding: 22px; background: var(--sc-paper); }
+  .v h3 { margin-block-end: 6px; font-size: 16.5px; }
+  .v p { font-size: 14px; }
+  .testi { margin-block-start: 34px; }
+  .logos { margin-block-start: 26px; }
+  .about-cta { padding-block-end: clamp(24px, 4vw, 48px); }
+</style>

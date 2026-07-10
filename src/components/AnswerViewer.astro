@@ -1,0 +1,70 @@
+---
+/**
+ * Live AI answer viewer · shows the real answer a buyer got from an AI engine.
+ * The brand is highlighted green when present, competitors red / marked as the gap.
+ * Pass the answer as HTML via the default slot (use .hl-grn / .hl-red spans).
+ */
+interface Props {
+  question: string;
+  engine: 'ChatGPT' | 'Gemini' | 'Perplexity' | 'Claude';
+  gapText?: string;      // optional "you are missing" note
+  presentText?: string;  // optional "you are in the answer" note
+}
+const { question, engine, gapText, presentText } = Astro.props;
+---
+
+<div class="answer">
+  <div class="q">
+    <span>"{question}"</span>
+    <span class="eng num">{engine}</span>
+  </div>
+  <div class="txt"><slot /></div>
+  {gapText && (
+    <p class="gap" role="note">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" class="gap-ic"><path d="M12 3.5l9 16h-18z" stroke-linejoin="round"/><path d="M12 10v4.4"/><circle cx="12" cy="17" r=".4" fill="currentColor"/></svg>
+      <span set:html={gapText} />
+    </p>
+  )}
+  {presentText && (
+    <p class="present" role="note">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="gap-ic"><path d="M20 6L9 17l-5-5"/></svg>
+      <span set:html={presentText} />
+    </p>
+  )}
+</div>
+
+<style>
+  .answer {
+    background: var(--sc-wash);
+    border: 1px solid var(--sc-soft);
+    border-radius: 14px;
+    padding: 15px;
+    text-align: start;
+  }
+  .q {
+    font-size: 12.5px; color: var(--sc-mv);
+    margin-block-end: 10px; padding-block-end: 10px;
+    border-block-end: 1px dashed var(--sc-soft);
+    display: flex; gap: 8px; align-items: center;
+  }
+  .eng {
+    margin-inline-start: auto;
+    font-size: 10.5px; font-weight: 700; color: var(--sc-accent-text);
+    letter-spacing: .04em;
+  }
+  .txt { font-size: 14px; line-height: 1.85; color: var(--sc-ink); }
+  .gap, .present {
+    margin-block-start: 12px;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-size: 12.5px;
+    color: var(--sc-muted);
+    display: flex; align-items: flex-start; gap: 10px;
+    background: var(--sc-card);
+  }
+  .gap { border: 1px solid var(--sc-red-bd); }
+  .gap .gap-ic { color: var(--sc-red); flex: none; margin-block-start: 2px; }
+  .present { border: 1px solid var(--sc-pos-bd); }
+  .present .gap-ic { color: var(--sc-pos); flex: none; margin-block-start: 2px; }
+  .gap :global(b), .present :global(b) { color: var(--sc-ink); }
+</style>

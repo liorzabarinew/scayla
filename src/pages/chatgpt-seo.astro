@@ -1,0 +1,272 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import InstallCtaPair from '../components/InstallCtaPair.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import AnswerViewer from '../components/AnswerViewer.astro';
+
+const title = 'קידום ל-ChatGPT · איך להופיע · Scayla';
+const description =
+  'איך להופיע ולהתקדם ב-ChatGPT עם חנות שופיפיי: מדידה של מה ChatGPT עונה על הקטגוריה שלכם, השוואה למתחרים ותיקונים אוטומטיים.';
+
+const canonicalPath = '/chatgpt-seo';
+
+const faq = [
+  {
+    q: 'איך בודקים אם ChatGPT ממליץ על החנות שלנו?',
+    a: 'אפשר לשאול ידנית, אבל התשובה משתנה בין ניסוחים וימים ואי אפשר להסיק ממנה. Scayla מריצה מדגם קבוע של שאילתות בעברית מול ChatGPT, סופרת באיזה אחוז מהתשובות אתם מוזכרים, ומראה מי מופיע במקומכם. את זה מריצים כל שבוע כדי לראות תנועה אמיתית ולא מקרה בודד.',
+  },
+  {
+    q: 'אפשר לקנות מיקום ב-ChatGPT?',
+    a: 'לא. אין פרסום ממומן שמכניס חנות לתשובה. ChatGPT בוחר את מי להזכיר לפי תוכן ברור, מובנה ומצוטט במקומות אחרים. אופטימיזציה ל-ChatGPT היא בניית התוכן הזה: עמודי מוצר מדויקים, FAQ, סכמות ומאמרים עם תשובות ישירות שקל לצטט.',
+  },
+  {
+    q: 'למה דווקא ChatGPT ולא Gemini או Perplexity?',
+    a: 'ChatGPT הוא המנוע עם הכי הרבה משתמשים בישראל, אז הוא נותן את מספר ההזדמנויות הגדול ביותר להופיע בתשובה של קונה. Scayla מודדת אותו ראשונה, ואת אותם עקרונות מיישמת גם על Gemini, Perplexity ו-Claude. כדאי להתחיל היכן שהקהל כבר נמצא.',
+  },
+  {
+    q: 'תוך כמה זמן רואים שינוי בהופעה ב-ChatGPT?',
+    a: 'תלוי בקטגוריה ובכמות התוכן. תיקונים טכניים וסכמות נכנסים תוך ימים; ציטוט בתשובה על מוצר או קטגוריה לוקח שבועות, אחרי שהתוכן החדש נסרק ומצטבר. הציון השבועי מראה לכם אם הכיוון נכון בלי לנחש.',
+  },
+];
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'קידום ל-ChatGPT · איך להופיע ולהתקדם ב-ChatGPT עם חנות שופיפיי',
+  description,
+  inLanguage: 'he',
+  mainEntityOfPage: `https://scayla.co.il${canonicalPath}`,
+  author: { '@type': 'Person', name: 'נוי קייטל', url: 'https://scayla.co.il/experts/noy-keitel' },
+  publisher: { '@type': 'Organization', name: 'Scayla', url: 'https://scayla.co.il/' },
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  breadcrumbs={[{ name: 'קידום ל-ChatGPT', path: canonicalPath }]}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(articleLd)} slot="head" />
+
+  <section class="svc-hero">
+    <div class="narrow center">
+      <span class="eyebrow">קידום ל-ChatGPT</span>
+      <h1>איך להופיע ולהתקדם ב-ChatGPT · כשקונה שואל, שתהיו בתשובה</h1>
+      <p class="lede">
+        המשתמשים בישראל כבר שואלים את ChatGPT "מה הכי טוב ל___" ומקבלים תשובה אחת עם כמה
+        שמות. Scayla בודקת אם החנות שלכם אחד מהם, מראה מי תופס את מקומכם, ובונה את התוכן
+        שמכניס אתכם פנימה · הכל בתוך Shopify.
+      </p>
+      <InstallCtaPair center variant="hero" />
+      <p class="cta-note">אבחון נראות ב-ChatGPT חינם · תוך דקות מההתקנה</p>
+    </div>
+  </section>
+
+  <section class="svc-body alt-bg">
+    <div class="wrap">
+      <div class="sh">
+        <span class="eyebrow">למה זה המנוע להתחיל בו</span>
+        <h2>ChatGPT זה הכי הרבה קונים ששואלים · והכי הרבה הזדמנויות להיות בתשובה</h2>
+        <p>
+          לא כל מנוע שווה אותו דבר לחנות ישראלית. ChatGPT מוביל בשימוש בעברית, ומי שמגיע
+          ממנו כבר שאל שאלת קנייה ממוקדת · לא גלישה סתמית. משם ההיגיון הפשוט: יותר שאלות
+          שבהן אתם יכולים להיות מוזכרים, ולקוח שכבר בשל להחלטה.
+        </p>
+      </div>
+      <div class="stat-row">
+        <div class="stat card fade-up">
+          <div class="stat-n num">×5</div>
+          <p>ההמרה של מבקר שמגיע מתשובת AI, לעומת קליק ממוצע מגוגל · הוא בא עם כוונה, לא כדי לגלוש.</p>
+        </div>
+        <div class="stat card fade-up">
+          <div class="stat-n num">1</div>
+          <p>תשובה אחת לשאלה. אין עמוד <span class="num">2</span> ואין גלילה · או שאתם בשלושת השמות, או שאתם שקופים.</p>
+        </div>
+        <div class="stat card fade-up">
+          <div class="stat-n">שבועי</div>
+          <p>מדידה קבועה של אותן שאילתות בעברית · ככה מבדילים בין התקדמות אמיתית לבין תשובה מקרית שהשתנתה.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-demo">
+    <div class="wrap">
+      <div class="sh">
+        <span class="eyebrow">ככה זה נראה</span>
+        <h2>אותה שאלה · לפני ואחרי שנכנסתם לתשובה</h2>
+        <p>Scayla מציגה את התשובה האמיתית של ChatGPT על הקטגוריה שלכם, עם השם שלכם מודגש · או חסר.</p>
+      </div>
+      <div class="engines">
+        <div class="engine-panel card fade-up">
+          <AnswerViewer
+            question="איזו חנות מומלצת לרהיטי גינה בישראל?"
+            engine="ChatGPT"
+            gapText="<b>נעדרים מהתשובה.</b> Scayla מזהה למה · ובונה את התוכן שיכניס אתכם."
+          >
+            לרהיטי גינה כדאי לבדוק את <span class="hl-red">גן ובית דיזיין</span> ואת
+            <span class="hl-red">אאוטדור פלוס</span>, עם מבחר רחב ומשלוח עד הבית.
+          </AnswerViewer>
+        </div>
+        <div class="engine-panel card fade-up">
+          <AnswerViewer
+            question="איזו חנות מומלצת לרהיטי גינה בישראל?"
+            engine="ChatGPT"
+            presentText="<b>אתם בתשובה.</b> עכשיו המטרה: להישאר שם · ולהיות ראשונים ברשימה."
+          >
+            בין החנויות המומלצות: <span class="hl-grn">החנות שלכם</span> עם קולקציה עמידה
+            לחוץ ואחריות ארוכה, וגם <span class="hl-red">גן ובית דיזיין</span>.
+          </AnswerViewer>
+        </div>
+      </div>
+      <p class="svc-note center">
+        המספרים והתשובות כאן להמחשה. בתוך האפליקציה תראו את התשובה האמיתית על החנות שלכם ·
+        וגם את <a href="/ai-visibility">ההשוואה בין ChatGPT ל-Gemini</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="svc-body alt-bg">
+    <div class="wrap">
+      <div class="sh">
+        <span class="eyebrow">איך Scayla עוזרת</span>
+        <h2>שלושה מהלכים שמזיזים אתכם בתוך ChatGPT</h2>
+      </div>
+      <div class="bgrid three">
+        <div class="b card fade-up">
+          <h3>מודדת מול מתחרים בשם</h3>
+          <p>לא רק אם אתם מופיעים, אלא מי מופיע במקומכם. Scayla סופרת נתח-קול על כל שאלה של קונים, ומראה בדיוק את המתחרה שצריך לעקוף.</p>
+        </div>
+        <div class="b card fade-up">
+          <h3>בונה תוכן שקל לצטט</h3>
+          <p>ChatGPT אוהב תשובות ישירות ומספרים ברורים. Scayla כותבת FAQ, מאמרים ועמודי מוצר במבנה הזה, בעברית ילידית · ומפרסמת רק באישורכם.</p>
+        </div>
+        <div class="b card fade-up">
+          <h3>מתקנת את מה שחוסם</h3>
+          <p>סכמות חסרות, כותרות חלשות, עמודי 404 · כל מה שמקשה על מנוע להבין את החנות. התיקונים מוכנים לאישור בקליק, והכל הפיך.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-guide">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">מדריך מהיר</span>
+        <h2>חמישה צעדים להופעה ב-ChatGPT</h2>
+      </div>
+      <ol class="guide">
+        <li class="card fade-up">
+          <span class="gn num">1</span>
+          <div>
+            <h3>כתבו את השאלות שקונה באמת שואל</h3>
+            <p>לא מילות מפתח יבשות. "מה הכי טוב ל___", "המלצה על ___ בישראל". אלה השאילתות שבהן ChatGPT מחזיר שמות של חנויות.</p>
+          </div>
+        </li>
+        <li class="card fade-up">
+          <span class="gn num">2</span>
+          <div>
+            <h3>בדקו מה קורה כשמריצים אותן</h3>
+            <p>הריצו כל שאלה כמה פעמים. אם השם שלכם לא חוזר · יש פער. אם חוזר מתחרה · יש את מי לעקוף.</p>
+          </div>
+        </li>
+        <li class="card fade-up">
+          <span class="gn num">3</span>
+          <div>
+            <h3>ענו על השאלה בעמוד ברור</h3>
+            <p>עמוד או FAQ שנותן תשובה ישירה ומספרים, בלי מסביב. זה המבנה שמנוע לוקח ממנו ציטוט.</p>
+          </div>
+        </li>
+        <li class="card fade-up">
+          <span class="gn num">4</span>
+          <div>
+            <h3>הוסיפו סכמות ותקנו שברים</h3>
+            <p>Product, FAQPage ו-Organization עוזרים למנוע להבין מה אתם מוכרים. עמוד 404 באמצע נתיב הקנייה פשוט מפיל אתכם מהמפה.</p>
+          </div>
+        </li>
+        <li class="card fade-up">
+          <span class="gn num">5</span>
+          <div>
+            <h3>מדדו שוב בעוד שבוע</h3>
+            <p>שינוי בתשובת AI לא מיידי. הציון השבועי אומר לכם אם הכיוון עובד · לפני שאתם משקיעים עוד.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="svc-faq">
+    <div class="narrow">
+      <div class="sh"><span class="eyebrow">שאלות נפוצות</span><h2>קידום ל-ChatGPT · תשובות מהירות</h2></div>
+      <FaqAccordion items={faq} schema={true} />
+    </div>
+  </section>
+
+  <section class="svc-links alt-bg">
+    <div class="wrap">
+      <div class="sh"><span class="eyebrow">להמשיך מכאן</span><h2>אותה שיטה · מנועים אחרים</h2></div>
+      <div class="lgrid">
+        <a class="lcard card fade-up" href="/gemini-seo"><b>הופעה ב-Gemini</b><small>המנוע של גוגל, מחובר לחיפוש שכבר יש לכם בו נוכחות</small></a>
+        <a class="lcard card fade-up" href="/perplexity-seo"><b>הופעה ב-Perplexity</b><small>המנוע שמצרף מקורות עם קישור · ציטוט שהופך לתנועה</small></a>
+        <a class="lcard card fade-up" href="/claude-seo"><b>הופעה ב-Claude</b><small>קהל מקצועי, מחקר לעומק · פחות רעש, יותר כוונה</small></a>
+        <a class="lcard card fade-up" href="/ai-visibility"><b>נראות ב-ChatGPT וב-Gemini</b><small>שני המנועים זה לצד זה, עם המותג שלכם מודגש או חסר</small></a>
+        <a class="lcard card fade-up" href="/geo"><b>אופטימיזציה למנועי AI · GEO</b><small>העיקרון שמאחורי כל המנועים · מדידה, אבחון ופעולה</small></a>
+        <a class="lcard card fade-up" href="/"><b>Scayla · לעמוד הבית</b><small>נראות ב-Google וב-AI, אוטומטית, מתוך החנות שלכם</small></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-cta">
+    <div class="wrap">
+      <CtaBand
+        title="כשקונה שואל את ChatGPT · שתהיו בתשובה."
+        body="התקינו את Scayla ותוך דקות תדעו בדיוק מה ChatGPT עונה על הקטגוריה שלכם · ומה עושים עם זה."
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .svc-hero { padding-block-end: 16px; }
+  .cta-note { font-size: 13px; color: var(--sc-disabled); margin-block-start: 14px; }
+  .alt-bg { background: var(--sc-card); }
+  :global([data-theme='dark']) .alt-bg { background: #17141d; }
+
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 820px) { .stat-row { grid-template-columns: 1fr; } }
+  .stat { padding: 24px; background: var(--sc-paper); }
+  .stat-n { font-size: 40px; font-weight: 800; color: var(--sc-accent-text); letter-spacing: -.02em; line-height: 1; margin-block-end: 10px; }
+  .stat p { font-size: 14.5px; }
+
+  .engines { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 820px) { .engines { grid-template-columns: 1fr; } }
+  .engine-panel { padding: 14px; border-radius: 18px; }
+
+  .bgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 820px) { .bgrid { grid-template-columns: 1fr; } }
+  .b { padding: 24px; background: var(--sc-paper); }
+  .b h3 { margin-block-end: 6px; font-size: 17px; }
+  .b p { font-size: 14.5px; }
+
+  .guide { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .guide li { display: flex; gap: 16px; align-items: flex-start; padding: 20px 22px; }
+  .gn {
+    flex: none; inline-size: 34px; block-size: 34px; border-radius: 10px;
+    background: var(--sc-wash); color: var(--sc-accent-text);
+    display: grid; place-items: center; font-size: 16px; font-weight: 800;
+  }
+  .guide h3 { font-size: 16.5px; margin-block-end: 4px; }
+  .guide p { font-size: 14.5px; }
+
+  .lgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 820px) { .lgrid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .lgrid { grid-template-columns: 1fr; } }
+  .lcard { display: flex; flex-direction: column; gap: 5px; padding: 18px 20px; color: var(--sc-ink); transition: transform var(--sc-fast) var(--sc-ease), border-color 200ms, box-shadow 200ms; }
+  .lcard:hover { color: var(--sc-ink); transform: translateY(-2px); border-color: var(--sc-soft); box-shadow: var(--sc-sh-lift); }
+  .lcard b { font-size: 15.5px; font-weight: 800; letter-spacing: -.01em; }
+  .lcard small { font-size: 13px; color: var(--sc-muted); font-weight: 500; line-height: 1.5; }
+
+  .svc-note { margin-block-start: 26px; font-size: 15px; max-inline-size: 62ch; margin-inline: auto; }
+  .svc-cta { padding-block-end: clamp(24px, 4vw, 48px); }
+</style>

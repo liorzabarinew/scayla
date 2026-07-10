@@ -1,0 +1,265 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import InstallCtaPair from '../components/InstallCtaPair.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import AnswerViewer from '../components/AnswerViewer.astro';
+
+const title = 'איך להופיע ב-Perplexity · Scayla';
+const description =
+  'איך להופיע ב-Perplexity עם חנות שופיפיי: המנוע מצרף לכל תשובה מקורות עם קישור · ציטוט שם מביא לכם תנועה אמיתית, לא רק אזכור.';
+
+const canonicalPath = '/perplexity-seo';
+
+const faq = [
+  {
+    q: 'מה מיוחד ב-Perplexity לעומת ChatGPT?',
+    a: 'Perplexity מצרף לכל תשובה רשימת מקורות עם קישור ומספר הערה. אזכור שם הוא לא רק קרדיט · הוא קליק אפשרי לחנות. ב-ChatGPT קונה קורא את התשובה ולפעמים מחפש אתכם אחר כך; ב-Perplexity הוא לוחץ על ההערה ומגיע ישר אליכם.',
+  },
+  {
+    q: 'איך נכנסים לרשימת המקורות של Perplexity?',
+    a: 'Perplexity שולף מקורות שנחשבים אמינים ורלוונטיים לשאלה: עמודים שעונים ישירות, מצוטטים במקומות אחרים ובנויים היטב. Scayla בונה בדיוק את התוכן הזה · מאמרים עם נתונים, FAQ וסכמות · ובודקת אם אתם מופיעים כמקור ובאיזה מיקום.',
+  },
+  {
+    q: 'האם תנועה מ-Perplexity נמדדת?',
+    a: 'כן. קליק ממקור ב-Perplexity מגיע לחנות כמו כל מבקר, ונרשם ב-GA4 שאליו Scayla מחוברת. אז מלבד ציון הנראות אתם רואים גם אם הציטוט הפך לביקורים אמיתיים · לא רק אזכור על המסך.',
+  },
+  {
+    q: 'כמה קונים בישראל משתמשים ב-Perplexity?',
+    a: 'פחות מ-ChatGPT, אבל מי שכן משתמש נמצא בדרך כלל בשלב מחקר עמוק · משווה, בודק מקורות, קרוב להחלטה. פחות תנועה, כוונה גבוהה יותר. לכן זה מנוע ששווה להיות בו מקור, גם אם הוא לא הראשון שתקדמו בו.',
+  },
+];
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'איך להופיע ב-Perplexity · קידום חנות שופיפיי',
+  description,
+  inLanguage: 'he',
+  mainEntityOfPage: `https://scayla.co.il${canonicalPath}`,
+  author: { '@type': 'Person', name: 'נוי קייטל', url: 'https://scayla.co.il/experts/noy-keitel' },
+  publisher: { '@type': 'Organization', name: 'Scayla', url: 'https://scayla.co.il/' },
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  breadcrumbs={[{ name: 'הופעה ב-Perplexity', path: canonicalPath }]}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(articleLd)} slot="head" />
+
+  <section class="svc-hero">
+    <div class="narrow center">
+      <span class="eyebrow">קידום ל-Perplexity</span>
+      <h1>איך להופיע ב-Perplexity · המנוע שבו ציטוט הופך לקליק</h1>
+      <p class="lede">
+        Perplexity שונה משאר המנועים: לכל תשובה הוא מצרף מקורות עם קישור. כשאתם מופיעים שם,
+        הקונה לא רק קורא את השם שלכם · הוא לוחץ ומגיע לחנות. Scayla בודקת אם אתם ברשימת
+        המקורות ובונה את התוכן שמכניס אתכם אליה.
+      </p>
+      <InstallCtaPair center variant="hero" />
+      <p class="cta-note">אבחון נראות ב-Perplexity חינם · תוך דקות מההתקנה</p>
+    </div>
+  </section>
+
+  <section class="svc-body alt-bg">
+    <div class="wrap">
+      <div class="sh">
+        <span class="eyebrow">למה Perplexity שווה מקום</span>
+        <h2>המנוע היחיד שבו אזכור הוא קישור · לא רק קרדיט</h2>
+        <p>
+          ChatGPT ו-Gemini מזכירים שם, ואז הקונה צריך לחפש אתכם בעצמו. Perplexity שם ליד
+          כל טענה מספר הערה עם קישור למקור. להיות אחד מהמקורות זה להיות כפתור לחיץ בתוך
+          התשובה · הדרך הכי קצרה מ-AI לחנות.
+        </p>
+      </div>
+      <div class="stat-row">
+        <div class="stat card fade-up">
+          <div class="stat-n">קישור</div>
+          <p>כל מקור בתשובה הוא קליק ישיר לחנות · לא צריך שהקונה יזכור את השם ויחפש אתכם אחר כך.</p>
+        </div>
+        <div class="stat card fade-up">
+          <div class="stat-n">מחקר</div>
+          <p>מי שמשתמש ב-Perplexity בדרך כלל משווה לעומק וקרוב להחלטה · פחות תנועה, כוונה גבוהה.</p>
+        </div>
+        <div class="stat card fade-up">
+          <div class="stat-n">GA4</div>
+          <p>קליק ממקור נרשם ב-Google Analytics שאליו Scayla מחוברת · רואים אם הציטוט הפך לביקורים.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-demo">
+    <div class="wrap">
+      <div class="sh">
+        <span class="eyebrow">ככה זה נראה</span>
+        <h2>שאלה עם מקורות · אתם ברשימה או מחוצה לה</h2>
+        <p>Scayla מציגה את תשובת Perplexity על הקטגוריה שלכם, עם השם שלכם כמקור · או חסר.</p>
+      </div>
+      <div class="engines">
+        <div class="engine-panel card fade-up">
+          <AnswerViewer
+            question="מה החנויות המומלצות לציוד קמפינג בישראל?"
+            engine="Perplexity"
+            gapText="<b>לא ברשימת המקורות.</b> אין קישור אליכם · Scayla בונה את התוכן שנכנס אליה."
+          >
+            לציוד קמפינג בולטות <span class="hl-red">אוטדור זון</span> ו
+            <span class="hl-red">טרק שופ</span>, לפי מדריכי ציוד וביקורות משתמשים.
+          </AnswerViewer>
+        </div>
+        <div class="engine-panel card fade-up">
+          <AnswerViewer
+            question="מה החנויות המומלצות לציוד קמפינג בישראל?"
+            engine="Perplexity"
+            presentText="<b>אתם מקור עם קישור.</b> הערת המקור הפכה לכפתור לחיץ לחנות."
+          >
+            בין המומלצות: <span class="hl-grn">החנות שלכם</span> עם מדריך ציוד מפורט
+            ואחריות שטח, וגם <span class="hl-red">אוטדור זון</span>.
+          </AnswerViewer>
+        </div>
+      </div>
+      <p class="svc-note center">
+        התשובות כאן להמחשה. באפליקציה תראו אם אתם מקור על השאלות של הקטגוריה · והעיקרון
+        המלא ב<a href="/geo">אופטימיזציה למנועי AI · GEO</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="svc-body alt-bg">
+    <div class="wrap">
+      <div class="sh">
+        <span class="eyebrow">איך Scayla עוזרת</span>
+        <h2>שלושה מהלכים שהופכים אתכם למקור ב-Perplexity</h2>
+      </div>
+      <div class="bgrid three">
+        <div class="b card fade-up">
+          <h3>בודקת אם אתם ברשימה</h3>
+          <p>Scayla מריצה את שאלות הקטגוריה ובודקת לא רק אם הוזכרתם, אלא אם אתם אחד המקורות עם קישור · ומי כן, במקומכם.</p>
+        </div>
+        <div class="b card fade-up">
+          <h3>בונה עמודים שראויים לציטוט</h3>
+          <p>Perplexity שולף מקורות עם נתונים ותשובות ישירות. Scayla כותבת מאמרים ו-FAQ במבנה הזה, בעברית, ומפרסמת רק באישורכם.</p>
+        </div>
+        <div class="b card fade-up">
+          <h3>מודדת את הקליקים, לא רק את האזכור</h3>
+          <p>דרך החיבור ל-GA4 רואים אם הופעה כמקור הפכה לביקורים בפועל · ההוכחה שהמנוע הזה מחזיר תנועה.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-guide">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">מדריך מהיר</span>
+        <h2>ארבעה צעדים להפוך למקור ב-Perplexity</h2>
+      </div>
+      <ol class="guide">
+        <li class="card fade-up">
+          <span class="gn num">1</span>
+          <div>
+            <h3>ענו על שאלה שלמה בעמוד אחד</h3>
+            <p>Perplexity אוהב עמוד שמכסה נושא לעומק · לא פסקה קצרה. מדריך קנייה מלא הופך אתכם למקור טבעי לצטט.</p>
+          </div>
+        </li>
+        <li class="card fade-up">
+          <span class="gn num">2</span>
+          <div>
+            <h3>שימו נתונים ומספרים אמיתיים</h3>
+            <p>המנוע מעדיף מקור שאפשר לצטט ממנו עובדה מדויקת · טווח מחירים, כמות, זמן משלוח · על פני טקסט שיווקי כללי.</p>
+          </div>
+        </li>
+        <li class="card fade-up">
+          <span class="gn num">3</span>
+          <div>
+            <h3>ודאו שהעמוד נטען ונסרק</h3>
+            <p>מקור שלא נטען מהר או חסום מסריקה לא ייכנס לרשימה. תיקונים טכניים וסכמות עושים את ההבדל בין להיות מקור לבין להיות בלתי נראה.</p>
+          </div>
+        </li>
+        <li class="card fade-up">
+          <span class="gn num">4</span>
+          <div>
+            <h3>עקבו אחרי הקליקים, לא רק האזכור</h3>
+            <p>ההופעה כמקור שווה רק אם היא מביאה ביקורים. בדקו ב-GA4 אם התנועה מ-Perplexity עולה · ושם ההוכחה.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="svc-faq">
+    <div class="narrow">
+      <div class="sh"><span class="eyebrow">שאלות נפוצות</span><h2>הופעה ב-Perplexity · תשובות מהירות</h2></div>
+      <FaqAccordion items={faq} schema={true} />
+    </div>
+  </section>
+
+  <section class="svc-links alt-bg">
+    <div class="wrap">
+      <div class="sh"><span class="eyebrow">להמשיך מכאן</span><h2>אותה שיטה · מנועים אחרים</h2></div>
+      <div class="lgrid">
+        <a class="lcard card fade-up" href="/chatgpt-seo"><b>הופעה ב-ChatGPT</b><small>המנוע עם הכי הרבה קונים ששואלים בישראל</small></a>
+        <a class="lcard card fade-up" href="/gemini-seo"><b>הופעה ב-Gemini</b><small>המנוע של גוגל, מחובר לחיפוש שכבר יש לכם בו נוכחות</small></a>
+        <a class="lcard card fade-up" href="/claude-seo"><b>הופעה ב-Claude</b><small>קהל מקצועי, מחקר לעומק · פחות רעש, יותר כוונה</small></a>
+        <a class="lcard card fade-up" href="/ai-visibility"><b>נראות ב-ChatGPT וב-Gemini</b><small>שני המנועים זה לצד זה, עם המותג שלכם מודגש או חסר</small></a>
+        <a class="lcard card fade-up" href="/geo"><b>אופטימיזציה למנועי AI · GEO</b><small>העיקרון שמאחורי כל המנועים · מדידה, אבחון ופעולה</small></a>
+        <a class="lcard card fade-up" href="/"><b>Scayla · לעמוד הבית</b><small>נראות ב-Google וב-AI, אוטומטית, מתוך החנות שלכם</small></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-cta">
+    <div class="wrap">
+      <CtaBand
+        title="ב-Perplexity ציטוט הוא קליק · דאגו שהוא יגיע אליכם."
+        body="התקינו את Scayla ותראו אם אתם ברשימת המקורות על השאלות של הקטגוריה · ואם הציטוט מביא ביקורים."
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .svc-hero { padding-block-end: 16px; }
+  .cta-note { font-size: 13px; color: var(--sc-disabled); margin-block-start: 14px; }
+  .alt-bg { background: var(--sc-card); }
+  :global([data-theme='dark']) .alt-bg { background: #17141d; }
+
+  .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 820px) { .stat-row { grid-template-columns: 1fr; } }
+  .stat { padding: 24px; background: var(--sc-paper); }
+  .stat-n { font-size: 36px; font-weight: 800; color: var(--sc-accent-text); letter-spacing: -.02em; line-height: 1; margin-block-end: 10px; }
+  .stat p { font-size: 14.5px; }
+
+  .engines { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 820px) { .engines { grid-template-columns: 1fr; } }
+  .engine-panel { padding: 14px; border-radius: 18px; }
+
+  .bgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 820px) { .bgrid { grid-template-columns: 1fr; } }
+  .b { padding: 24px; background: var(--sc-paper); }
+  .b h3 { margin-block-end: 6px; font-size: 17px; }
+  .b p { font-size: 14.5px; }
+
+  .guide { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .guide li { display: flex; gap: 16px; align-items: flex-start; padding: 20px 22px; }
+  .gn {
+    flex: none; inline-size: 34px; block-size: 34px; border-radius: 10px;
+    background: var(--sc-wash); color: var(--sc-accent-text);
+    display: grid; place-items: center; font-size: 16px; font-weight: 800;
+  }
+  .guide h3 { font-size: 16.5px; margin-block-end: 4px; }
+  .guide p { font-size: 14.5px; }
+
+  .lgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 820px) { .lgrid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .lgrid { grid-template-columns: 1fr; } }
+  .lcard { display: flex; flex-direction: column; gap: 5px; padding: 18px 20px; color: var(--sc-ink); transition: transform var(--sc-fast) var(--sc-ease), border-color 200ms, box-shadow 200ms; }
+  .lcard:hover { color: var(--sc-ink); transform: translateY(-2px); border-color: var(--sc-soft); box-shadow: var(--sc-sh-lift); }
+  .lcard b { font-size: 15.5px; font-weight: 800; letter-spacing: -.01em; }
+  .lcard small { font-size: 13px; color: var(--sc-muted); font-weight: 500; line-height: 1.5; }
+
+  .svc-note { margin-block-start: 26px; font-size: 15px; max-inline-size: 62ch; margin-inline: auto; }
+  .svc-cta { padding-block-end: clamp(24px, 4vw, 48px); }
+</style>
