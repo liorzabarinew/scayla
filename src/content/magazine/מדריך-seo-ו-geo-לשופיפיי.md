@@ -5,13 +5,13 @@ pubDate: 2026-07-10
 coverImage: "/covers/מדריך-seo-ו-geo-לשופיפיי.webp"
 draft: false
 cluster: "SEO לחנויות שופיפיי"
-readingMinutes: 8
+readingMinutes: 6
 demo: false
 author: "נוי קייטל"
 updatedDate: 2026-07-10
 takeaways:
   - "בעידן ה-AI, אסטרטגיית הקידום דורשת שילוב של SEO קלאסי ו-GEO (אופטימיזציה למנועי תשובות)."
-  - "נתונים מובנים (סכמת מוצר) הם קריטיים כדי 'לדבר' ישירות עם גוגל ומנועי AI ולהציג את המוצרים שלך בצורה עשירה."
+  - "נתונים מובנים (סכמת מוצר) הם קריטיים כדי 'לדבר' ישירות עם גוגל ומנועי AI ולהציג את המוצרים שלכם בצורה עשירה."
   - "תוכן איכותי, עובדתי וממוקד-שאלות, יחד עם בניית סמכות (E-E-A-T), מגדילים את הסיכוי לקבל ציטוט במנועי AI."
 faq:
   - q: "האם חובה להשתמש באפליקציית SEO ייעודית לשופיפיי?"
@@ -21,12 +21,18 @@ faq:
   - q: "מה לעשות עם דף מוצר שאזל מהמלאי לצמיתות?"
     a: "אסור למחוק אותו וליצור שגיאת 404, במיוחד אם הדף צבר קישורים חיצוניים או תנועה אורגנית. הפתרון הנכון הוא לבצע הפניית 301 קבועה לעמוד הקטגוריה הרלוונטי ביותר או למוצר חלופי דומה, כדי לשמר את 'כוח ה-SEO' שהצטבר."
   - q: "מה ההבדל המרכזי בין SEO ל-GEO?"
-    a: "SEO (אופטימיזציה למנועי חיפוש) מתמקד בדירוג האתר שלך גבוה ככל האפשר ברשימת תוצאות החיפוש. GEO (אופטימיזציה למנועי תשובות) מתמקד בהפיכת התוכן שלך למובנה, עובדתי ואמין מספיק כדי שמנועי AI יבחרו לצטט אותו ישירות בתוך התשובות שהם מייצרים."
+    a: "SEO (אופטימיזציה למנועי חיפוש) מתמקד בדירוג האתר שלכם גבוה ככל האפשר ברשימת תוצאות החיפוש. GEO (אופטימיזציה למנועי תשובות) מתמקד בהפיכת התוכן שלכם למובנה, עובדתי ואמין מספיק כדי שמנועי AI יבחרו לצטט אותו ישירות בתוך התשובות שהם מייצרים."
 sources:
-  - title: "thehopefactory.com"
+  - title: "GEO + AI SEO for Shopify Store Visibility"
     url: "https://thehopefactory.com/blogs/ecommerce-insights/geo-ai-seo-shopify-store-visibility"
-  - title: "niccos.com"
+  - title: "GEO for Shopify: Practical Guide to AI Search & ChatGPT Visibility"
     url: "https://www.niccos.com/en/blog/geo-for-shopify-practical-guide-to-ai-search-chatgpt-visibility-and-scalable-commerce-architecture"
+  - title: "Site Speed is (Still) Impacting Your Conversion Rate (Portent)"
+    url: "https://portent.com/blog/analytics/research-site-speed-hurting-everyones-revenue.htm"
+  - title: "ChatGPT Traffic Converts 31% Better than Non-Branded Organic Search (Visibility Labs)"
+    url: "https://visibilitylabs.com/blog/chatgpt-vs-organic-search-conversion-rates/"
+  - title: "Product (Product, Review, Offer) structured data (Google Search Central)"
+    url: "https://developers.google.com/search/docs/appearance/structured-data/product"
   - title: "Generative Engine Optimization (GEO): Dominate AI Search Before Your Competitors Do"
     url: "https://meditodigital.com/blogs/shopify/generative-engine-optimization"
   - title: "SEO + Shopify GEO optimization Guide 2026"
@@ -137,4 +143,4 @@ sources:
 המעבר לעולם החיפוש מבוסס AI הוא לא איום, הוא הזדמנות אדירה. חנויות שישכילו להתאים את עצמן, לבנות בסיס טכני חזק ולהפוך למקור מידע אמין, לא רק ישרדו את השינוי, הן יובילו אותו.
 
 ---
-**רוצים לראות איפה החנות שלכם עומדת?** Scayla מודדת את הנראות של החנות בגוגל ובמנועי ה-AI, מאבחנת פערים, ובונה את התוכן שסוגר אותם. [כך זה עובד](/how)
+**רוצים לראות איפה החנות שלכם עומדת?** Scayla מודדת את הנראות של החנות בגוגל ובמנועי ה-AI, מאבחנת פערים, ובונה את התוכן שסוגר אותם. [כך זה עובד](/#how)

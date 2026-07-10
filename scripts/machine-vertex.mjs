@@ -24,13 +24,30 @@ import { dirname, join } from 'path'
 import { createRequire } from 'module'
 
 // js-yaml (מ-node_modules של הפרויקט) לוולידציית-frontmatter אמיתית — שומר קשיח נגד תקלת-build שקטה.
+// js-yaml is a DECLARED dependency (package.json). require('js-yaml') resolves via normal
+// node resolution — no fragile hardcoded path. If it somehow can't load we FAIL CLOSED.
 let _yaml = null
-try { _yaml = createRequire(import.meta.url)(join(dirname(fileURLToPath(import.meta.url)), '..', 'node_modules', 'js-yaml')) } catch { /* no-op */ }
+try { _yaml = createRequire(import.meta.url)('js-yaml') } catch (e) { console.error('⚠ js-yaml failed to load — fmParses fails CLOSED:', String(e).slice(0, 120)) }
 const fmParses = (md) => {
-  if (!_yaml) return true
+  if (!_yaml) return false // fail-CLOSED: better to hold than ship content whose YAML we can't verify
   const m = String(md).match(/^---\n([\s\S]*?)\n---/)
   if (!m) return false
   try { _yaml.load(m[1]); return true } catch { return false }
+}
+
+// Deterministic Astro-schema check (beyond YAML syntax): the exact fields content.config.ts requires.
+// A model that leaves `readingMinutes: <מספר>` or emits a cluster with a stray space passes YAML but
+// breaks `astro build` — and with commit-before-build that poisons main. This catches it pre-publish.
+const VALID_CLUSTER_TITLES = new Set(['GEO ואופטימיזציה למנועי AI', 'SEO לחנויות שופיפיי', 'שיווק לאיקומרס ישראלי', 'מדריכים וכלים'])
+function schemaViolations(md) {
+  const out = []
+  const fm = (md.match(/^---\n([\s\S]*?)\n---/) || [])[1] || ''
+  const clusterV = (fm.match(/^cluster:\s*["']?(.+?)["']?\s*$/m) || [])[1] || ''
+  if (!VALID_CLUSTER_TITLES.has(clusterV)) out.push(`cluster לא-חוקי ("${clusterV}") — חייב אחד מ: ${[...VALID_CLUSTER_TITLES].join(' | ')}.`)
+  const rm = (fm.match(/^readingMinutes:\s*(.+)$/m) || [])[1] || ''
+  if (!/^\d+$/.test(rm.trim())) out.push(`readingMinutes חייב מספר שלם (התקבל "${rm.trim()}").`)
+  for (const f of ['title', 'description', 'pubDate']) if (!new RegExp(`^${f}:\\s*\\S`, 'm').test(fm)) out.push(`חסר שדה חובה: ${f}.`)
+  return out
 }
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
@@ -95,6 +112,31 @@ async function getToken() {
 
 const ENDPOINT = () => `https://${REGION}-aiplatform.googleapis.com/v1/projects/${PROJECT}/locations/${REGION}/publishers/google/models/${MODEL}:generateContent`
 
+// fetch עם timeout (AbortController) — כל קריאת-רשת חסומה נהרגת, לא תוקעת את הריצה.
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
+async function fetchTimeout(url, opts = {}, timeoutMs = 90_000) {
+  const ac = new AbortController()
+  const t = setTimeout(() => ac.abort(), timeoutMs)
+  try { return await fetch(url, { ...opts, signal: ac.signal }) }
+  finally { clearTimeout(t) }
+}
+// קריאת-מודל עם retry על שגיאות חולפות (429/5xx/רשת/timeout) · backoff. שגיאת-תוכן (4xx אחר) לא חוזרת.
+async function postJSONRetry(url, headers, body, { timeoutMs = 90_000, retries = 2 } = {}) {
+  let lastErr
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const res = await fetchTimeout(url, { method: 'POST', headers, body: JSON.stringify(body) }, timeoutMs)
+      if ((res.status === 429 || res.status >= 500) && attempt < retries) { lastErr = new Error('HTTP ' + res.status); await sleep(1500 * (attempt + 1)); continue }
+      return await res.json()
+    } catch (e) {
+      lastErr = e
+      if (attempt < retries) { await sleep(1500 * (attempt + 1)); continue }
+      throw e
+    }
+  }
+  throw lastErr
+}
+
 let CALLS = 0
 async function callGemini(prompt, { search = false, maxTokens = 8000, temperature = 0.7, thinkingBudget } = {}) {
   CALLS++
@@ -103,11 +145,7 @@ async function callGemini(prompt, { search = false, maxTokens = 8000, temperatur
     generationConfig: { maxOutputTokens: maxTokens, temperature, ...(thinkingBudget != null ? { thinkingConfig: { thinkingBudget } } : {}) },
     ...(search ? { tools: [{ googleSearch: {} }] } : {}),
   }
-  const res = await fetch(ENDPOINT(), {
-    method: 'POST', headers: { authorization: `Bearer ${await getToken()}`, 'content-type': 'application/json' },
-    body: JSON.stringify(body),
-  })
-  const j = await res.json()
+  const j = await postJSONRetry(ENDPOINT(), { authorization: `Bearer ${await getToken()}`, 'content-type': 'application/json' }, body, { timeoutMs: 120_000, retries: 2 })
   if (j.error) throw new Error(`gemini ${j.error.code || ''}: ${j.error.message || JSON.stringify(j).slice(0, 200)}`)
   const cand = j.candidates?.[0]
   const text = (cand?.content?.parts || []).map((p) => p.text || '').join('').trim()
@@ -163,6 +201,17 @@ function markDone(keyword) {
   if (done.has(keyword)) return
   done.add(keyword)
   writeFileSync(DONE_FILE, JSON.stringify([...done]))
+}
+
+// הנושא-הבא-שלא-נעשה מ-topics.json עבור אשכול נתון (המאגר הרחב מזין את הבחירה כשהאשכול ידוע).
+function nextTopicForCluster(clusterSlug) {
+  if (!existsSync(TOPICS_FILE)) return null
+  try {
+    const topics = JSON.parse(readFileSync(TOPICS_FILE, 'utf8'))
+    const done = loadDone()
+    const t = topics.find((x) => x && x.cluster === clusterSlug && x.keyword && !done.has(x.keyword))
+    return t ? { keyword: t.keyword, title: t.title || t.angle || '', seeds: Array.isArray(t.seeds) ? t.seeds : [] } : null
+  } catch (e) { console.error('topics.json parse error:', String(e)); return null }
 }
 
 // בוחר נושא: הנושא הבא בתוכנית שעדיין לא טופל (topics.json); אחרת האשכול הכי פחות מכוסה.
@@ -324,9 +373,11 @@ const sanitizeSlug = (s) => s.replace(/["'`]/g, '').replace(/[^֐-׿a-zA-Z0-9-]+
 function tidyMarkdown(md) {
   return md
     .replace(/(?<=\d)\s*[–—]\s*(?=\d)/g, '-')          // מקף-טווח מספרי (5–7 → 5-7)
-    .replace(/(?<![0-9])\s*[—–]\s*(?![0-9])/g, ' · ')  // קו-מפריד ארוך (נראה "AI") → נקודה-מפרידה
+    .replace(/(?<![0-9])\s*[—–]\s*(?![0-9])/g, ', ')   // קו-מפריד ארוך (נראה "AI") → פסיק (· באמצע-פרוזה נקרא לא-טבעי)
+    .replace(/,(\s*,)+/g, ',')                          // פסיקים כפולים שנוצרו
     .replace(/ ·(?: ·)+ /g, ' · ')
     .replace(/https?:\/\/(?:www\.)?scayla\.co\.il(\/magazine\/[^\s)"'\]]*)/g, '$1') // קישור-פנים מוחלט → יחסי
+    .replace(/\]\(\s*https?[-:]\s*(?:\/\/)?\s*scayla[-.]co[-.]il(\/magazine\/[^\s)"'\]]*)\)/gi, ']($1)') // קישור-פנים מעוות (https-scayla-co-il/…) → יחסי תקין
     .replace(/(?<!\.)\.\.(?!\.)/g, '.')
     .replace(/\]\(\s+/g, '](')
     .replace(/^([ \t]*[-*])[ \t]*\n(?=\S)/gm, '$1 ')
@@ -362,11 +413,12 @@ function looseJson(text) {
   return o === undefined ? null : o
 }
 
-const AUTHORITATIVE = ['developers.google.com', 'schema.org', 'shopify.com', 'web.dev', 'google.com', 'gov.il']
+const AUTHORITATIVE = ['developers.google.com', 'schema.org', 'shopify.com', 'web.dev', 'search.google.com', 'gov.il']
 const domainOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, '') } catch { return '' } }
 const isAuthoritative = (u) => { const d = domainOf(u); return d && AUTHORITATIVE.some((a) => d === a || d.endsWith('.' + a)) }
 
-const JUNK_TITLE = /just a moment|attention required|you are being redirected|are you a robot|access denied|verify you are human|current time information|enable javascript|momento|cloudflare/i
+// כותרות-זבל: דפי-חסימה/שגיאה/בוט שנגרפו במקום כותרת אמיתית (כולל שגיאות HTTP כמו "403 - Forbidden").
+const JUNK_TITLE = /just a moment|attention required|you are being redirected|are you a robot|access denied|verify you are human|current time information|enable javascript|momento|cloudflare|^\s*(4\d\d|5\d\d)\b|forbidden|not found|page not found|bad gateway|service unavailable|too many requests|error \d/i
 function cleanTitle(t) {
   t = String(t || '').replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/&#0?39;|&apos;|&#x27;/gi, "'").replace(/\s+/g, ' ').replace(/\s*[|–—].*$/, '').trim()
   if (!t || JUNK_TITLE.test(t)) return ''
@@ -375,7 +427,8 @@ function cleanTitle(t) {
 }
 async function pageTitle(url) {
   try {
-    const res = await fetch(url, { redirect: 'follow', headers: { 'user-agent': 'Mozilla/5.0 (compatible; scayla-bot)' } })
+    const res = await fetchTimeout(url, { redirect: 'follow', headers: { 'user-agent': 'Mozilla/5.0 (compatible; scayla-bot)' } }, 10_000)
+    if (!res.ok) return '' // 403/404/... → no title (the junk regex also catches error titles as backup)
     const html = (await res.text()).slice(0, 20000)
     const t = (html.match(/<meta[^>]+property=["']og:title["'][^>]*content=["']([^"']+)["']/i) || [])[1] ||
       (html.match(/<title[^>]*>([^<]+)<\/title>/i) || [])[1] || ''
@@ -390,7 +443,7 @@ async function resolveSources(sources) {
     if (/grounding-api-redirect/.test(url)) {
       url = null
       for (const opts of [{ method: 'HEAD', redirect: 'manual' }, { method: 'GET', redirect: 'manual' }]) {
-        try { const res = await fetch(s.url, opts); const loc = res.headers.get('location'); if (loc && /^https?:\/\//.test(loc)) { url = loc.split('#')[0]; break } } catch { /* next */ }
+        try { const res = await fetchTimeout(s.url, opts, 8_000); const loc = res.headers.get('location'); if (loc && /^https?:\/\//.test(loc)) { url = loc.split('#')[0]; break } } catch { /* next */ }
       }
       if (!url) continue
     }
@@ -451,9 +504,20 @@ function stampDates(md, today) {
   return out
 }
 
+// readingMinutes דטרמיניסטי · נגזר מספירת-מילים אמיתית (~200 מילים/דקה, מינימום 3), לא מהמודל
+// (שלפעמים כותב 8 למאמר של 400 מילים). מקבע/מוסיף את השדה.
+function stampReadingMinutes(md) {
+  const body = md.replace(/^---[\s\S]*?^---\s*$/m, '')
+  const words = body.split(/\s+/).filter(Boolean).length
+  const mins = Math.max(3, Math.round(words / 200))
+  return /^readingMinutes:/m.test(md)
+    ? md.replace(/^readingMinutes:.*$/m, `readingMinutes: ${mins}`)
+    : md.replace(/^(cluster:.*)$/m, `$1\nreadingMinutes: ${mins}`)
+}
+
 // CTA קבוע בסוף הגוף — רך, לא מכירתי. אידמפוטנטי.
 const CTA_MARK = 'רוצים לראות איפה החנות שלכם עומדת?'
-const CTA_BLOCK = `\n\n---\n\n**${CTA_MARK}** Scayla מודדת את הנראות של החנות בגוגל ובמנועי ה-AI, מאבחנת פערים, ובונה את התוכן שסוגר אותם. [כך זה עובד](/how)\n`
+const CTA_BLOCK = `\n\n---\n\n**${CTA_MARK}** Scayla מודדת את הנראות של החנות בגוגל ובמנועי ה-AI, מאבחנת פערים, ובונה את התוכן שסוגר אותם. [כך זה עובד](/#how)\n`
 function appendCta(md) {
   if (md.includes(CTA_MARK)) return md
   return md.replace(/\s*$/, '') + CTA_BLOCK
@@ -554,29 +618,51 @@ function lintArticle(md) {
   const fmBroken = /\\"/.test(fm) || /\\[״׳]/.test(fm)
   if (fmBroken) issues.push('frontmatter שובר YAML (מרכאה עם backslash) — החלף בגרש עברי ״ בלי backslash.')
   const titleLen = ((md.match(/^title:\s*"([^"]*)"/m) || [])[1] || '').trim().length
-  const titleBad = titleLen < 8
-  if (titleBad) issues.push('כותרת קצרה/פגומה — צור כותרת עברית מלאה 25-65 תווים במרכאות-כפולות.')
+  const titleBad = titleLen < 8 || titleLen > 68
+  if (titleLen < 8) issues.push('כותרת קצרה/פגומה — צור כותרת עברית מלאה 25-65 תווים במרכאות-כפולות.')
+  if (titleLen > 68) issues.push(`כותרת ${titleLen} תווים — תיחתך ב-SERP; קצר ל-25-65.`)
+  const descLen = ((md.match(/^description:\s*"([^"]*)"/m) || [])[1] || '').trim().length
+  if (descLen && (descLen < 110 || descLen > 160)) issues.push(`תיאור ${descLen} תווים — כוון ל-110-160 תווים (אורך-SERP אופטימלי).`)
   const bodyTrim = body.trim()
   const contentTrim = (bodyTrim.split(CTA_MARK)[0] || '').replace(/[\s*_-]+$/, '')
   const truncBody = contentTrim.length > 0 && !/[.!?…"'׳״)\]|>]\s*$/.test(contentTrim)
+  // קטיעה נסתרת: **מודגש** לא-סגור, סוגריים לא-מאוזנים, או סיום ב-":"/מרכאה-פותחת = טקסט שנחתך.
+  const boldUnclosed = ((body.match(/\*\*/g) || []).length % 2) !== 0
+  const parensUnbalanced = ((body.match(/\(/g) || []).length - (body.match(/\)/g) || []).length) > 1
+  const endsHanging = /[:"“״]\s*$/.test(contentTrim)
+  if (boldUnclosed || parensUnbalanced || endsHanging) issues.push('סימני-קטיעה: מודגש/סוגריים לא-סגורים או סיום בנקודתיים/מרכאה — השלם את המשפט/הסעיף עד הסוף.')
   const tplRaw = /\{\%|\{\{/.test(body)
-  const brokenLink = /\[\/[^\]\n]*\]/.test(body) || /\]\([^)\n]*\{\{/.test(body)
+  const brokenLink = /\[\/[^\]\n]*\]/.test(body) || /\]\([^)\n]*\{\{/.test(body) || /\]\(\s*https?[-:]\s*(?:\/\/)?\s*scayla[-.]co[-.]il/i.test(body)
   if (tplRaw) issues.push('קוד-תבנית גולמי ({% / {{) בגוף — החלף בתוכן בפועל.')
-  if (brokenLink) issues.push('קישור Markdown שבור — תקן לתחביר [טקסט](/path).')
+  if (brokenLink) issues.push('קישור Markdown שבור/מעוות (למשל https-scayla-co-il/…) — תקן לתחביר [טקסט](/magazine/slug).')
   const emptyTail = /##+[^\n]*\n+\s*$/.test(contentTrim)
   if (truncBody || emptyTail) issues.push('הגוף קטוע — נגמר באמצע משפט/טבלה או בכותרת ריקה. השלם עד סוף מלא (כולל "## מה חשוב לזכור").')
   if (!/##+\s*מה חשוב לזכור/.test(body)) issues.push('חסר סעיף "## מה חשוב לזכור" עם 3-4 נקודות תמצית.')
   if (/##+\s*שאלות נפוצות/.test(body)) issues.push('הסר את סעיף "## שאלות נפוצות" מהגוף — ה-FAQ נכנס רק לשדה faq.')
+  // ── שער-ייחוס (הבעיה המערכתית #1): מספר/עובדה מיוחסים לגוף לועזי שאינו ב-sources = חשד-המצאה. ──
+  const srcBlock = ((fm.match(/^sources:[\s\S]*/m) || [''])[0] || '').toLowerCase()
+  const attribRe = /(?:לפי|על[- ]פי|מחקר של|נתוני|סקר של|דו"?ח של|מבוסס על נתוני|נתונים של|מצטט את)\s+((?:[A-Z][A-Za-z0-9.&''-]*)(?:\s+(?:with\s+)?[A-Z][A-Za-z0-9.&''-]*){0,3})/g
+  const badAttrib = new Set()
+  let am
+  while ((am = attribRe.exec(body))) {
+    const name = (am[1] || '').trim()
+    const key = name.split(/\s+/).filter((w) => w.length >= 3)[0]
+    if (!key) continue
+    if (!srcBlock.includes(key.toLowerCase())) badAttrib.add(name)
+  }
+  if (badAttrib.size) issues.push(`ייחוס לא-נתמך: מספרים/עובדות מיוחסים ל-[${[...badAttrib].join(', ')}] שאינם מופיעים ב-sources. אמת מול חיפוש והוסף מקור תואם, או הסר את השם והמספר ורכך לאמירה כללית ("מחקרים מראים ש...").`)
   const factIssues = lintFacts(md)
   issues.push(...factIssues)
   const bodyWords = contentTrim ? contentTrim.split(/\s+/).filter(Boolean).length : 0
   const thin = bodyWords > 0 && bodyWords < 700
   if (thin) issues.push(`הגוף ${bodyWords} מילים — היעד 900-1,200. המאמר דק מדי; העמק בלי למרוח.`)
-  const truncated = truncBody || emptyTail || thin
+  const schemaV = schemaViolations(md)
+  issues.push(...schemaV.map((s) => 'סכמה: ' + s))
+  const truncated = truncBody || emptyTail || thin || boldUnclosed || parensUnbalanced || endsHanging
   const fmYamlBroken = !fmParses(md)
   if (fmYamlBroken) issues.push('frontmatter לא נתיח כ-YAML — עטוף כל ערך במרכאות-כפולות ASCII, והמר מרכאה-פנימית לגרש עברי ״.')
-  const broken = tplRaw || brokenLink || fmBroken || fmYamlBroken
-  return { issues, titleBad, truncated, broken, factWrong: factIssues.length > 0 }
+  const broken = tplRaw || brokenLink || fmBroken || fmYamlBroken || schemaV.length > 0
+  return { issues, titleBad, truncated, broken, factWrong: factIssues.length > 0 || badAttrib.size > 0 }
 }
 
 // ── run ──
@@ -588,8 +674,15 @@ try {
   const cliSeeds = (flag('seed') || flag('seeds')).split(',').map((s) => s.trim()).filter(Boolean)
   let cat, topicHint, planKeyword = null, seedUrls = cliSeeds
   if (process.argv[2] && !process.argv[2].startsWith('--')) {
-    cat = CLUSTER_BY_SLUG[process.argv[2]]; topicHint = cliTopic || ''
+    cat = CLUSTER_BY_SLUG[process.argv[2]]
     if (!cat) { result({ status: 'error', reason: `unknown cluster ${process.argv[2]}` }); process.exit(1) }
+    // אשכול ידוע → שואבים את הנושא הבא מהמאגר הרחב (topics.json), אלא אם ניתן --topic מפורש.
+    if (cliTopic) { topicHint = cliTopic }
+    else {
+      const nt = nextTopicForCluster(cat.slug)
+      if (nt) { topicHint = nt.title || nt.keyword; planKeyword = nt.keyword; if (!seedUrls.length && nt.seeds.length) seedUrls = nt.seeds }
+      else topicHint = ''
+    }
   } else {
     const picked = pickTopic(counts); cat = picked.cat; topicHint = cliTopic || picked.brief; planKeyword = picked.fromPlan ? picked.keyword : null
     if (!seedUrls.length && picked.seeds && picked.seeds.length) seedUrls = picked.seeds
@@ -612,7 +705,7 @@ try {
   if (!briefRes.text || briefRes.text.length < 80) { result({ status: 'error', cluster: cat.slug, reason: 'empty brief after 3 attempts' }); process.exit(1) }
 
   console.error(`→ [2/3] write (grounded, related links: ${related ? related.split('\n').length : 0})…`)
-  const writeRes = await callGemini(writePrompt(cat, briefRes.text, related, today), { search: true, maxTokens: 12000, temperature: 0.7 })
+  const writeRes = await callGemini(writePrompt(cat, briefRes.text, related, today), { search: true, maxTokens: 16000, temperature: 0.7 })
   const grounded = [...(briefRes.grounded || []), ...(writeRes.grounded || [])]
   let { slug, md } = parseArticle(writeRes.text)
   if (!slug || !md.startsWith('---') || md.split(/^---\s*$/m).length < 3) { result({ status: 'error', cluster: cat.slug, reason: 'write parse failed or truncated' }); process.exit(1) }
@@ -667,7 +760,7 @@ try {
   let qaNote = forcedDraft ? 'forced-draft' : (issues.length ? 'fixable' : 'pass')
   if (issues.length || suggestedSlug) {
     console.error(`→ revising per QA (${issues.length} issues${suggestedSlug ? ', + slug' : ''})…`)
-    const r = parseArticle((await callGemini(revisePrompt(`SLUG: ${suggestedSlug || slug}\n\n${md}`, issues, suggestedSlug), { maxTokens: 12000, temperature: 0.3 })).text)
+    const r = parseArticle((await callGemini(revisePrompt(`SLUG: ${suggestedSlug || slug}\n\n${md}`, issues, suggestedSlug), { maxTokens: 16000, temperature: 0.3 })).text)
     if (r.slug && r.md.startsWith('---')) {
       slug = r.slug; md = assemble(r.md); qaNote = 'fixed'
       const rl = lintArticle(md)
@@ -713,6 +806,7 @@ try {
   // needsReview:true = ה-drip מדלג, מוחזק לעין אנושית. שחרור: מוחקים את השורה.
   if (forcedDraft) md = md.replace(/^draft: true\s*$/m, `draft: true\nneedsReview: true`)
   md = stampDates(md, today) // תאריך דטרמיניסטי · המכונה קובעת, לא המודל
+  md = stampReadingMinutes(md) // readingMinutes דטרמיניסטי מספירת-מילים
   const title = (md.match(/^title:\s*"([^"]*)"/m) || [])[1] || ''
   const description = (md.match(/^description:\s*"([^"]*)"/m) || [])[1] || ''
   if (!fmParses(md)) {

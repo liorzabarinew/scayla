@@ -19,16 +19,19 @@ export async function notify(text) {
   } catch (e) { console.error('notify failed:', String(e).slice(0, 160)); return false }
 }
 
+// בריחת-HTML · parse_mode:HTML נכשל על < / > / & לא-מוברחים בכותרת/slug/סיבה.
+const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+
 // מנסח שורת-סיכום ידידותית פר-מאמר מתוך RESULT של המכונה (בשפה רגועה, כמו בנק-קט).
 export function articleLine(r) {
   if (!r || !r.status) return ''
-  const url = r.url ? ` · <a href="${r.url}">${r.slug || 'לינק'}</a>` : ''
+  const url = r.url ? ` · <a href="${encodeURI(r.url)}">${esc(r.slug || 'לינק')}</a>` : ''
   switch (r.status) {
-    case 'published': return `🎉 עלה: <b>${r.title || r.slug}</b>${url}`
-    case 'banked':    return `🏦 נכתב למאגר (מוחזק לבדיקה · ${r.qa || ''}): <b>${r.title || r.slug}</b>`
-    case 'skipped':   return `🛑 נפסל ב-QA: ${r.reason || r.slug}`
-    case 'error':     return `⚠️ שגיאה (${r.cluster || ''}): ${r.reason || ''}`
-    default:          return `• ${r.status}: ${r.slug || ''}`
+    case 'published': return `🎉 עלה: <b>${esc(r.title || r.slug)}</b>${url}`
+    case 'banked':    return `🏦 נכתב למאגר (מוחזק לבדיקה · ${esc(r.qa || '')}): <b>${esc(r.title || r.slug)}</b>`
+    case 'skipped':   return `🛑 נפסל ב-QA: ${esc(r.reason || r.slug)}`
+    case 'error':     return `⚠️ שגיאה (${esc(r.cluster || '')}): ${esc(r.reason || '')}`
+    default:          return `• ${esc(r.status)}: ${esc(r.slug || '')}`
   }
 }
 

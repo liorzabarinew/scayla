@@ -15,6 +15,7 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
+    timeout-minutes: 55   # תקרת-זמן קשיחה · ריצה תקועה לא שורפת שעות
     permissions:
       contents: write   # כדי לדחוף בחזרה את המאמרים + הקאברים החדשים
     steps:
@@ -37,17 +38,18 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: node scripts/daily.mjs
 
-      # ── two-phase: קודם דוחפים את התוכן לגיט, ורק אז פורסים ──
+      # ── fail-CLOSED: build FIRST · broken content must never land on main ──
+      - name: Build (gate — fails the run if any new article breaks the schema)
+        run: npm run build
+
+      # ── only after a green build: commit content to main, then deploy ──
       - name: Commit new content
         run: |
           git config user.name  "scayla-machine"
           git config user.email "machine@scayla.co.il"
-          git add src/content/magazine public/covers
+          git add src/content/magazine public/covers scripts/topics-done.json
           git commit -m "content: daily run $(date -u +%F)" || echo "nothing to commit"
           git push || echo "nothing to push"
-
-      - name: Build
-        run: npm run build
 
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
