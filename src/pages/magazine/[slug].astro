@@ -71,6 +71,10 @@ const articleLd = {
     logo: { '@type': 'ImageObject', url: 'https://scayla.co.il/scayla-icon-512.png', width: 512, height: 512 },
   },
   mainEntityOfPage: postUrl,
+  // Research sources as schema.org citation · the reciprocal-citation signal AI engines reward + E-E-A-T.
+  ...(post.data.sources && post.data.sources.length > 0 && {
+    citation: post.data.sources.map((s) => ({ '@type': 'CreativeWork', name: s.title, url: s.url })),
+  }),
 };
 
 // Share targets · WhatsApp / X / LinkedIn (copy-link is client-side).
@@ -239,6 +243,19 @@ const share = {
           <section class="post-faq" aria-label="שאלות נפוצות">
             <h2>שאלות נפוצות</h2>
             <FaqAccordion items={post.data.faq} schema={true} />
+          </section>
+        )}
+
+        {post.data.sources && post.data.sources.length > 0 && (
+          <section class="post-sources" aria-label="מקורות">
+            <h2>מקורות</h2>
+            <ol class="src-list">
+              {post.data.sources.map((s) => (
+                <li>
+                  <a href={s.url} target="_blank" rel="noopener nofollow ugc">{s.title}</a>
+                </li>
+              ))}
+            </ol>
           </section>
         )}
       </div>
@@ -576,6 +593,14 @@ const share = {
   /* Per-post FAQ */
   .post-faq { margin-block-start: 36px; }
   .post-faq h2 { font-size: clamp(20px, 2.6vw, 26px); margin-block-end: 16px; }
+
+  /* Research sources · E-E-A-T + reciprocal-citation signal */
+  .post-sources { margin-block-start: 36px; padding-block-start: 24px; border-block-start: 1px solid var(--sc-div); }
+  .post-sources h2 { font-size: 18px; margin-block-end: 12px; color: var(--sc-ink); }
+  .src-list { margin: 0; padding-inline-start: 22px; display: grid; gap: 8px; }
+  .src-list li { font-size: 14px; line-height: 1.6; color: var(--sc-muted); }
+  .src-list a { color: var(--sc-mv); font-weight: 600; overflow-wrap: anywhere; unicode-bidi: plaintext; }
+  .src-list a:hover { color: var(--sc-accent-text); text-decoration: underline; }
 
   /* Related · 3 cards */
   .related { padding-block: 40px 8px; }

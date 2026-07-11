@@ -753,7 +753,9 @@ if (isMain) try {
   md = assemble(md)
 
   // אימות-מספר-מול-מקור · מושכים את הטקסט האמיתי של המקורות פעם אחת (משמש גם ל-re-verify).
-  const srcTexts = await fetchSourceTexts(allSources).catch(() => [])
+  // אם השליפה החזירה ריק (חסימת-בוט/JS/timeout חולף) — ניסיון נוסף אחד לפני כניעה.
+  let srcTexts = await fetchSourceTexts(allSources).catch(() => [])
+  if (!srcTexts.length && allSources.length) { await sleep(1500); srcTexts = await fetchSourceTexts(allSources).catch(() => []) }
 
   const lint = lintArticle(md)
   let issues = [...lint.issues]
@@ -801,6 +803,14 @@ if (isMain) try {
   if (sg && !sg._skipped && Array.isArray(sg.unsupported) && sg.unsupported.length) {
     sourceUnsupported = true
     issues.push(...sg.unsupported.slice(0, 8).map((u) => `מספר לא-נתמך-במקור (${u.number || ''}): "${(u.claim || '').slice(0, 90)}" — לא מופיע בטקסט אף מקור שנשלף. הסר/החלף במספר שמצאת במקור אמיתי, או רכך לאמירה כללית.`))
+  } else if (sg && sg._skipped) {
+    // fail-CLOSED · לא נשלף אף מקור לאימות-מספרים. אם יש סטטיסטיקות בגוף (אחוזים / "פי N" / מספר עם מפריד-אלפים),
+    // אין להסתמך על שקט: מחזיקים לבדיקה אנושית במקום לפרסם מספר לא-מאומת (סיכון "URL אמיתי, מספר שגוי").
+    const bodyOnly = md.replace(/^---[\s\S]*?\n---\n?/, '')
+    if (/\d+(?:[.,]\d+)?\s*%|\bפי\s+\d|\d{1,3}(?:,\d{3})+/.test(bodyOnly)) {
+      forcedDraft = true
+      console.error('⚠ source-grounding skipped (0 sources fetchable) + article has stats → holding for human glance (fail-closed)')
+    }
   }
 
   issues = [...new Set(issues.filter(Boolean))]
