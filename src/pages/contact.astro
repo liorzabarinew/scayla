@@ -31,11 +31,20 @@ const description =
         <a class="btn btn-solid" href="#contact-form">לטופס ←</a>
       </div>
 
-      <form id="contact-form" class="form card fade-up" method="post" action="/api/contact">
+      <form
+        id="contact-form"
+        class="form card fade-up"
+        method="post"
+        action="https://formsubmit.co/lior@mrmake.co.il"
+      >
         <h2>שלחו הודעה</h2>
         <p class="form-note">נענה מהר, בעברית · בדרך כלל תוך יום עסקים.</p>
-        {/* honeypot · בוטים ממלאים, בני אדם לא רואים */}
-        <input type="text" name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <input type="hidden" name="_subject" value="Scayla · פנייה חדשה מהאתר" />
+        <input type="hidden" name="_template" value="table" />
+        <input type="hidden" name="_captcha" value="false" />
+        <input type="hidden" name="_next" value="https://scayla.co.il/contact?sent=1" />
+        {/* honeypot · FormSubmit drops any submission where this hidden field is filled */}
+        <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
         <div class="field">
           <label for="cf-name">שם מלא</label>
           <input id="cf-name" name="name" type="text" autocomplete="name" required />
@@ -99,10 +108,19 @@ const description =
 </style>
 
 <script>
-  // Progressive enhancement · POST the form as JSON to the CF Pages Function,
-  // show inline success/error. Native POST to /api/contact is the no-JS fallback.
+  // Progressive enhancement · submit straight to FormSubmit from the browser
+  // (a real Origin, so no CF-to-CF issues), show inline success/error.
+  // No-JS fallback = native POST to the same address, which redirects to ?sent=1.
   const form = document.getElementById('contact-form');
   const statusEl = document.getElementById('form-status');
+  const SUCCESS = 'תודה! ההודעה נשלחה · נחזור אליכם מהר.';
+
+  // no-JS users land back here via _next redirect
+  if (statusEl && new URLSearchParams(location.search).get('sent') === '1') {
+    statusEl.textContent = SUCCESS;
+    statusEl.classList.add('ok');
+  }
+
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = form.querySelector('button[type="submit"]');
@@ -113,18 +131,21 @@ const description =
     btn.disabled = true;
     btn.textContent = 'שולח…';
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch('https://formsubmit.co/ajax/lior@mrmake.co.il', {
         method: 'POST',
-        headers: { 'content-type': 'application/json' },
+        headers: { 'content-type': 'application/json', accept: 'application/json' },
         body: JSON.stringify(data),
       });
       const j = await res.json().catch(() => ({}));
-      if (res.ok && j.ok) {
+      // success:"true" = delivered · "Activation" message = pending the one-time
+      // activation click (submission is still recorded once the form is active).
+      const ok = j.success === 'true' || j.success === true || /activation/i.test(j.message || '');
+      if (ok) {
         form.reset();
-        statusEl.textContent = 'תודה! ההודעה נשלחה · נחזור אליכם מהר.';
+        statusEl.textContent = SUCCESS;
         statusEl.classList.add('ok');
       } else {
-        statusEl.textContent = j.error || 'משהו השתבש · נסו שוב או כתבו ל-lior@mrmake.co.il';
+        statusEl.textContent = 'משהו השתבש · נסו שוב או כתבו ישירות ל-lior@mrmake.co.il';
         statusEl.classList.add('err');
       }
     } catch {
