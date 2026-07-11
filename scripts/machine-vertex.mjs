@@ -19,7 +19,7 @@ import { readFileSync, writeFileSync, readdirSync, existsSync } from 'fs'
 import { normalizeBrands, glossaryForPrompt } from './brand-glossary.mjs'
 import { factsForPrompt, lintFacts } from './fact-glossary.mjs'
 import { sourceBankForPrompt } from './source-bank.mjs'
-import { fileURLToPath } from 'url'
+import { fileURLToPath, pathToFileURL } from 'url'
 import { dirname, join } from 'path'
 import { createRequire } from 'module'
 
@@ -28,7 +28,7 @@ import { createRequire } from 'module'
 // node resolution — no fragile hardcoded path. If it somehow can't load we FAIL CLOSED.
 let _yaml = null
 try { _yaml = createRequire(import.meta.url)('js-yaml') } catch (e) { console.error('⚠ js-yaml failed to load — fmParses fails CLOSED:', String(e).slice(0, 120)) }
-const fmParses = (md) => {
+export const fmParses = (md) => {
   if (!_yaml) return false // fail-CLOSED: better to hold than ship content whose YAML we can't verify
   const m = String(md).match(/^---\n([\s\S]*?)\n---/)
   if (!m) return false
@@ -39,7 +39,7 @@ const fmParses = (md) => {
 // A model that leaves `readingMinutes: <מספר>` or emits a cluster with a stray space passes YAML but
 // breaks `astro build` — and with commit-before-build that poisons main. This catches it pre-publish.
 const VALID_CLUSTER_TITLES = new Set(['GEO ואופטימיזציה למנועי AI', 'SEO לחנויות שופיפיי', 'שיווק לאיקומרס ישראלי', 'מדריכים וכלים'])
-function schemaViolations(md) {
+export function schemaViolations(md) {
   const out = []
   const fm = (md.match(/^---\n([\s\S]*?)\n---/) || [])[1] || ''
   const clusterV = (fm.match(/^cluster:\s*["']?(.+?)["']?\s*$/m) || [])[1] || ''
@@ -58,12 +58,12 @@ const SA = process.env.GOOGLE_SA
 const PROJECT = process.env.GCP_PROJECT
 const REGION = process.env.GCP_REGION || 'us-central1'
 const MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-pro'
-// שכבת-QA שנייה עצמאית (חוצת-משפחה): Claude על Vertex Model Garden, דרך אותו service-account.
-// ריק = כבוי → הצינור מתנהג כמו Gemini-QA בלבד. הפעלה: QA_CLAUDE_MODEL=claude-sonnet-4-5@YYYYMMDD
-const QA_CLAUDE_MODEL = process.env.QA_CLAUDE_MODEL || ''
-const QA_CLAUDE_REGION = process.env.QA_CLAUDE_REGION || 'us-east5'
+// המכונה כולה על Google/Vertex בלבד (Gemini). המבקר הצולב הוא מודל-Gemini שני (Flash@global),
+// לא Claude — בכוונה: מיצוי מלא של Vertex, אפס תלות חיצונית.
 const PUBLISH_NOW = process.argv.includes('--publish') // אחרת: נכתב למאגר (draft:true)
-if (!SA || !PROJECT) { console.error('GOOGLE_SA and GCP_PROJECT are required'); process.exit(1) }
+// כשמייבאים את המודול (למשל בבדיקות-יחידה) — לא מריצים את הצינור, רק חושפים את הפונקציות.
+const isMain = !!process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href
+if (isMain && (!SA || !PROJECT)) { console.error('GOOGLE_SA and GCP_PROJECT are required'); process.exit(1) }
 
 // משוכפל מ-src/content.config.ts כדי שהסקריפט עצמאי. slug = ה-URL הנקי של האשכול.
 const CLUSTERS = [
@@ -110,7 +110,14 @@ async function getToken() {
   return _token
 }
 
-const ENDPOINT = () => `https://${REGION}-aiplatform.googleapis.com/v1/projects/${PROJECT}/locations/${REGION}/publishers/google/models/${MODEL}:generateContent`
+// endpoint פר-מודל/אזור. region==='global' → host גלובלי (שם זמין gemini-2.5-flash שאינו ב-us-central1).
+const endpointFor = (model, region) => region === 'global'
+  ? `https://aiplatform.googleapis.com/v1/projects/${PROJECT}/locations/global/publishers/google/models/${model}:generateContent`
+  : `https://${region}-aiplatform.googleapis.com/v1/projects/${PROJECT}/locations/${region}/publishers/google/models/${model}:generateContent`
+const ENDPOINT = () => endpointFor(MODEL, REGION)
+// המבקר הצולב · מודל שונה מהכותב (Gemini 2.5 Flash על global) → מפחית blind-spots מתואמים, בלי Claude.
+const CRITIC_MODEL = process.env.CRITIC_MODEL || 'gemini-2.5-flash'
+const CRITIC_REGION = process.env.CRITIC_REGION || 'global'
 
 // fetch עם timeout (AbortController) — כל קריאת-רשת חסומה נהרגת, לא תוקעת את הריצה.
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))
@@ -138,14 +145,14 @@ async function postJSONRetry(url, headers, body, { timeoutMs = 90_000, retries =
 }
 
 let CALLS = 0
-async function callGemini(prompt, { search = false, maxTokens = 8000, temperature = 0.7, thinkingBudget } = {}) {
+async function callGemini(prompt, { search = false, maxTokens = 8000, temperature = 0.7, thinkingBudget, model = MODEL, region = REGION } = {}) {
   CALLS++
   const body = {
     contents: [{ role: 'user', parts: [{ text: prompt }] }],
     generationConfig: { maxOutputTokens: maxTokens, temperature, ...(thinkingBudget != null ? { thinkingConfig: { thinkingBudget } } : {}) },
     ...(search ? { tools: [{ googleSearch: {} }] } : {}),
   }
-  const j = await postJSONRetry(ENDPOINT(), { authorization: `Bearer ${await getToken()}`, 'content-type': 'application/json' }, body, { timeoutMs: 120_000, retries: 2 })
+  const j = await postJSONRetry(endpointFor(model, region), { authorization: `Bearer ${await getToken()}`, 'content-type': 'application/json' }, body, { timeoutMs: 120_000, retries: 2 })
   if (j.error) throw new Error(`gemini ${j.error.code || ''}: ${j.error.message || JSON.stringify(j).slice(0, 200)}`)
   const cand = j.candidates?.[0]
   const text = (cand?.content?.parts || []).map((p) => p.text || '').join('').trim()
@@ -155,20 +162,6 @@ async function callGemini(prompt, { search = false, maxTokens = 8000, temperatur
   const grounded = (gm.groundingSupports || [])
     .map((s) => (s.segment?.text || '').trim()).filter((t) => t.length > 0)
   return { text, sources, grounded }
-}
-
-// ── מבקר עצמאי חוצה-משפחה: Claude על Vertex (publishers/anthropic), אותו service-account ──
-async function callClaude(prompt, { maxTokens = 4000 } = {}) {
-  CALLS++
-  const url = `https://${QA_CLAUDE_REGION}-aiplatform.googleapis.com/v1/projects/${PROJECT}/locations/${QA_CLAUDE_REGION}/publishers/anthropic/models/${QA_CLAUDE_MODEL}:rawPredict`
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { authorization: `Bearer ${await getToken()}`, 'content-type': 'application/json' },
-    body: JSON.stringify({ anthropic_version: 'vertex-2023-10-16', max_tokens: maxTokens, messages: [{ role: 'user', content: prompt }] }),
-  })
-  const j = await res.json()
-  if (j.error || j.type === 'error') throw new Error('claude: ' + JSON.stringify(j.error || j).slice(0, 200))
-  return (j.content || []).map((p) => p.text || '').join('').trim()
 }
 
 // ── מצאי קיים (לבחירת נושא + קישור פנימי) ──
@@ -368,9 +361,9 @@ function parseArticle(raw) {
   return { slug, md }
 }
 // slug בעברית: משמר אותיות עבריות/אנגליות/ספרות, מאחד רווחים/מפרידים למקף יחיד.
-const sanitizeSlug = (s) => s.replace(/["'`]/g, '').replace(/[^֐-׿a-zA-Z0-9-]+/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '')
+export const sanitizeSlug = (s) => s.replace(/["'`]/g, '').replace(/[^֐-׿a-zA-Z0-9-]+/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '')
 
-function tidyMarkdown(md) {
+export function tidyMarkdown(md) {
   return md
     .replace(/(?<=\d)\s*[–—]\s*(?=\d)/g, '-')          // מקף-טווח מספרי (5–7 → 5-7)
     .replace(/(?<![0-9])\s*[—–]\s*(?![0-9])/g, ', ')   // קו-מפריד ארוך (נראה "AI") → פסיק (· באמצע-פרוזה נקרא לא-טבעי)
@@ -435,6 +428,26 @@ async function pageTitle(url) {
     return cleanTitle(t)
   } catch { return '' }
 }
+// מושך את הטקסט הנראה של עמוד-מקור (להסרת תגיות) — לאימות-מספר-מול-מקור.
+async function fetchPageText(url) {
+  try {
+    const res = await fetchTimeout(url, { redirect: 'follow', headers: { 'user-agent': 'Mozilla/5.0 (compatible; scayla-bot)' } }, 12_000)
+    if (!res.ok) return ''
+    let html = (await res.text()).slice(0, 400_000)
+    html = html.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ')
+      .replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&#\d+;/g, ' ').replace(/\s+/g, ' ').trim()
+    return html.slice(0, 6000)
+  } catch { return '' }
+}
+async function fetchSourceTexts(sources) {
+  const out = []
+  for (const s of (sources || []).slice(0, 6)) {
+    const text = await fetchPageText(s.url)
+    if (text && text.length > 120) out.push({ url: s.url, title: s.title || '', text })
+  }
+  return out
+}
+
 async function resolveSources(sources) {
   const out = []
   const seen = new Set()
@@ -478,7 +491,7 @@ function simTokens(title, slug) {
   return { he: new Set(he), en: new Set(en) }
 }
 const jaccard = (a, b) => { if (!a.size || !b.size) return 0; const inter = [...a].filter((x) => b.has(x)).length; return inter / (new Set([...a, ...b]).size) }
-function mostSimilarArticle(title, slug, arts) {
+export function mostSimilarArticle(title, slug, arts) {
   const mine = simTokens(title, slug)
   let best = null
   for (const a of arts) {
@@ -506,7 +519,7 @@ function stampDates(md, today) {
 
 // readingMinutes דטרמיניסטי · נגזר מספירת-מילים אמיתית (~200 מילים/דקה, מינימום 3), לא מהמודל
 // (שלפעמים כותב 8 למאמר של 400 מילים). מקבע/מוסיף את השדה.
-function stampReadingMinutes(md) {
+export function stampReadingMinutes(md) {
   const body = md.replace(/^---[\s\S]*?^---\s*$/m, '')
   const words = body.split(/\s+/).filter(Boolean).length
   const mins = Math.max(3, Math.round(words / 200))
@@ -554,19 +567,43 @@ ${evBlock}
 המאמר:
 ${md}`
 }
-async function qaClaude(slug, md, grounded = []) {
-  const text = await callClaude(claimsPrompt(slug, md, grounded), { maxTokens: 6000 })
-  const o = looseJson(text)
-  if (o) return o
-  console.error('⚠ Claude QA parse failed. Raw start:', text.slice(0, 160))
-  return { verdict: 'pass', _parseFailed: true, issues: [] }
-}
 async function qaGeminiClaims(slug, md, grounded = []) {
   const { text } = await callGemini(claimsPrompt(slug, md, grounded), { search: true, maxTokens: 6000, temperature: 0 })
   const o = looseJson(text)
   if (o) return o
   console.error('⚠ Gemini-claims QA parse failed. Raw start:', text.slice(0, 140))
   return { verdict: 'pass', _parseFailed: true, issues: [], claims: [] }
+}
+// מבקר צולב תמיד-פעיל · אותו claimsPrompt היריב אבל על מודל אחר (Gemini 2.5 Flash@global).
+// שני מבקרים ממודלים שונים = פחות blind-spots מתואמים, הכל בתוך Google (בלי Claude).
+async function qaCrossModel(slug, md, grounded = []) {
+  const { text } = await callGemini(claimsPrompt(slug, md, grounded), { search: true, maxTokens: 6000, temperature: 0, model: CRITIC_MODEL, region: CRITIC_REGION })
+  const o = looseJson(text)
+  if (o) return o
+  console.error('⚠ cross-model (flash) QA parse failed. Raw start:', text.slice(0, 140))
+  return { verdict: 'pass', _parseFailed: true, issues: [], claims: [] }
+}
+
+// אימות-מספר-מול-מקור: מושכים את הטקסט האמיתי של עמודי-המקור, ו-Gemini בודק אילו מספרים/אחוזים
+// במאמר לא מופיעים באף אחד מהם (מספר "אמיתי" עם URL אמיתי אבל שגוי = סיכון-הזנב שהמדרגים ציינו).
+const sourceGroundPrompt = (md, srcTexts) => `אתה מאמת-עובדות. לפניך מאמר, ואחריו הטקסט האמיתי שנשלף מעמודי-המקור שצוטטו בו.
+משימתך: לאתר כל מספר/אחוז/סכום/סטטיסטיקה בגוף המאמר שאינו נתמך ישירות באף אחד מטקסטי-המקור למטה (המספר או ערך קרוב-מאוד אליו אינו מופיע בשום מקור). התעלם ממספרים כלליים שאינם טענה (מחירים לדוגמה, מספרי-סעיף, שנים בהקשר כללי).
+לכל טענה לא-נתמכת החזר את הטקסט המדויק מהמאמר + המספר.
+
+החזר אך ורק JSON: {"unsupported":[{"claim":"<טקסט מהמאמר>","number":"<המספר>"}]}. אם הכל נתמך: {"unsupported":[]}.
+
+=== המאמר ===
+${md.replace(/^---[\s\S]*?^---\s*$/m, '').slice(0, 9000)}
+
+=== טקסטי-המקור שנשלפו ===
+${srcTexts.map((s, i) => `--- מקור ${i + 1} (${s.url}) ---\n${s.text}`).join('\n\n').slice(0, 24000)}`
+async function qaSourceGrounding(md, srcTexts) {
+  if (!srcTexts.length) return { unsupported: [], _skipped: true }
+  const { text } = await callGemini(sourceGroundPrompt(md, srcTexts), { maxTokens: 3000, temperature: 0, thinkingBudget: 0, model: CRITIC_MODEL, region: CRITIC_REGION })
+  const o = looseJson(text)
+  if (o && Array.isArray(o.unsupported)) return o
+  console.error('⚠ source-grounding QA parse failed')
+  return { unsupported: [], _parseFailed: true }
 }
 
 const copyEditPrompt = (md) => `אתה מגיה ועורך-לשון בכיר של מגזין "Scayla" (SEO/GEO ל-Shopify, עברית, קול איש-מקצוע חם ופרקטי). קרא לאט ובקפדנות ומצא כל שגיאת-לשון אמיתית. אל תיגע בעובדות/מספרים/מבנה — שפה, דקדוק ועקביות בלבד.
@@ -606,7 +643,7 @@ async function qaCopyEdit(md) {
 }
 
 // ── בקרה דטרמיניסטית (regex, 0-עלות) ──
-function lintArticle(md) {
+export function lintArticle(md) {
   const issues = []
   // הבטחת-תוצאה (המקבילה של איסור "חינם" בבנק-קט) — פוגעת באמינות ובציות.
   if (/דירוג ראשון מובטח|מובטח\s+דירוג|תוצאות מובטחות|אנחנו מבטיחים|מבטיחים דירוג|תוך \d+ ימים תדורגו/.test(md)) {
@@ -665,8 +702,8 @@ function lintArticle(md) {
   return { issues, titleBad, truncated, broken, factWrong: factIssues.length > 0 || badAttrib.size > 0 }
 }
 
-// ── run ──
-try {
+// ── run (רק כשמריצים ישירות, לא ב-import) ──
+if (isMain) try {
   const today = new Date().toISOString().slice(0, 10)
   const { arts, counts } = scanArticles()
   const flag = (name) => { const a = process.argv.find((x) => x.startsWith(`--${name}=`)); return a ? a.slice(name.length + 3) : '' }
@@ -715,17 +752,21 @@ try {
   const assemble = (m) => appendCta(normalizeBrands(fixFmQuotes(validateLinks(injectSources(tidyMarkdown(m), allSources), validSlugs))).md)
   md = assemble(md)
 
+  // אימות-מספר-מול-מקור · מושכים את הטקסט האמיתי של המקורות פעם אחת (משמש גם ל-re-verify).
+  const srcTexts = await fetchSourceTexts(allSources).catch(() => [])
+
   const lint = lintArticle(md)
   let issues = [...lint.issues]
   let suggestedSlug = ''
   let forcedDraft = false
 
-  console.error(`→ [3/3] QA: Gemini fact-check + adversarial-claims + copy-edit${QA_CLAUDE_MODEL ? ' + Claude (cross-family)' : ''}… [${allSources.length} sources, ${grounded.length} grounded]`)
-  const [v, cp, gc, c] = await Promise.all([
+  console.error(`→ [3/3] QA: Gemini-Pro fact-check + adversarial-claims + copy-edit + Flash cross-model critic + source-grounding [${allSources.length} src, ${srcTexts.length} fetched, ${grounded.length} grounded]`)
+  const [v, cp, gc, c, sg] = await Promise.all([
     qa(slug, md),
     qaCopyEdit(md).catch((e) => { console.error('⚠ copy-edit QA error:', String(e).slice(0, 120)); return null }),
     qaGeminiClaims(slug, md, grounded).catch((e) => { console.error('⚠ Gemini-claims QA error:', String(e).slice(0, 120)); return null }),
-    QA_CLAUDE_MODEL ? qaClaude(slug, md, grounded).catch((e) => { console.error('⚠ Claude QA error, Gemini-only:', String(e).slice(0, 120)); return null }) : Promise.resolve(null),
+    qaCrossModel(slug, md, grounded).catch((e) => { console.error('⚠ cross-model (flash) QA error:', String(e).slice(0, 120)); return null }),
+    qaSourceGrounding(md, srcTexts).catch((e) => { console.error('⚠ source-grounding QA error:', String(e).slice(0, 120)); return null }),
   ])
 
   if (v.verdict === 'reject') {
@@ -740,7 +781,7 @@ try {
   if (c) {
     if (c._parseFailed) forcedDraft = true
     else {
-      if (c.verdict === 'reject') { forcedDraft = true; console.error('⚠ Claude reject (Gemini did not) — banking for human glance') }
+      if (c.verdict === 'reject') { forcedDraft = true; console.error('⚠ cross-model (flash) reject — banking for human glance') }
       issues.push(...(c.issues || []), ...((c.claims || []).filter((x) => x.verifiedBySearch === 'no').map((x) => `הסר או רכך טענה לא-מאומתת: ${x.claim}`)))
     }
   }
@@ -755,6 +796,12 @@ try {
     if (cp._parseFailed) forcedDraft = true
     else if (cp.hasIssues) issues.push(...(cp.issues || []).map((i) => `לשון: ${i}`))
   }
+  // אימות-מספר-מול-מקור: מספר שלא נמצא בטקסט אף מקור → הסר/החלף במספר נתמך. ממצא = חוסם (factWrong).
+  let sourceUnsupported = false
+  if (sg && !sg._skipped && Array.isArray(sg.unsupported) && sg.unsupported.length) {
+    sourceUnsupported = true
+    issues.push(...sg.unsupported.slice(0, 8).map((u) => `מספר לא-נתמך-במקור (${u.number || ''}): "${(u.claim || '').slice(0, 90)}" — לא מופיע בטקסט אף מקור שנשלף. הסר/החלף במספר שמצאת במקור אמיתי, או רכך לאמירה כללית.`))
+  }
 
   issues = [...new Set(issues.filter(Boolean))]
   let qaNote = forcedDraft ? 'forced-draft' : (issues.length ? 'fixable' : 'pass')
@@ -765,16 +812,15 @@ try {
       slug = r.slug; md = assemble(r.md); qaNote = 'fixed'
       const rl = lintArticle(md)
       const lintHard = rl.titleBad || rl.truncated || rl.broken || rl.factWrong
-      if (QA_CLAUDE_MODEL) {
-        const rc = await qaClaude(slug, md, grounded).catch(() => null)
-        const rcRan = rc && !rc._parseFailed
-        if ((rcRan && rc.verdict === 'reject') || lintHard) { forcedDraft = true; qaNote = 'fixed-needs-glance' }
-      } else {
-        const rq = await qaGeminiClaims(slug, md, grounded).catch(() => null)
-        const rqRan = rq && !rq._parseFailed
-        const claimsBad = rqRan && (rq.verdict === 'reject' || (rq.claims || []).some((x) => x.verifiedBySearch === 'no'))
-        if (claimsBad || lintHard) { forcedDraft = true; qaNote = 'fixed-needs-glance' }
-      }
+      // re-verify אחרי התיקון: מבקר-צולב (flash) + אימות-מספר-מול-מקור חוזר.
+      const [rq, rsg] = await Promise.all([
+        qaCrossModel(slug, md, grounded).catch(() => null),
+        qaSourceGrounding(md, srcTexts).catch(() => null),
+      ])
+      const rqRan = rq && !rq._parseFailed
+      const claimsBad = rqRan && (rq.verdict === 'reject' || (rq.claims || []).some((x) => x.verifiedBySearch === 'no'))
+      const stillUnsupported = rsg && !rsg._skipped && Array.isArray(rsg.unsupported) && rsg.unsupported.length > 0
+      if (claimsBad || lintHard || stillUnsupported) { forcedDraft = true; qaNote = 'fixed-needs-glance' }
     } else {
       forcedDraft = true; qaNote = 'revise-failed'
     }
@@ -835,7 +881,8 @@ try {
   result({
     status: publishNow ? 'published' : 'banked', cluster: cat.slug, slug, title, description,
     url: `https://scayla.co.il/magazine/${slug}`, qa: qaNote, model: MODEL,
-    claudeQa: c ? (c.verdict || (c._parseFailed ? 'parsefail' : '')) : 'off',
+    crossModelQa: c ? (c.verdict || (c._parseFailed ? 'parsefail' : '')) : 'off',
+    sourceGroundingQa: sg ? (sg._skipped ? 'no-src' : (sg._parseFailed ? 'parsefail' : `${(sg.unsupported || []).length} unsupported`)) : 'err',
     copyQa: cp ? (cp._parseFailed ? 'parsefail' : (cp.hasIssues ? `${(cp.issues || []).length} fixes` : 'clean')) : 'err',
     forcedDraft, dupOf: dupOf || undefined,
     sources: allSources.length, calls: CALLS,

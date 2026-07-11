@@ -23,12 +23,16 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - run: npm ci
 
-      # ── מוח התוכן: 4 אשכולות → מאמרים + קאברים · מדווח לטלגרם ──
+      # ── fail-CLOSED שער 1: בדיקות-היחידה של ה-guards · guard שבור מבטל את הריצה לפני שריפת קריאות-Gemini ──
+      - name: Unit tests (guards)
+        run: npm test
+
+      # ── מוח התוכן: רעיונות → 4 אשכולות → רענון → ביקורת · מדווח לטלגרם ──
       - name: Run content machine (4 clusters)
         env:
           GOOGLE_SA: ${{ secrets.GOOGLE_SA }}
@@ -47,7 +51,7 @@ jobs:
         run: |
           git config user.name  "scayla-machine"
           git config user.email "machine@scayla.co.il"
-          git add src/content/magazine public/covers scripts/topics-done.json
+          git add src/content/magazine public/covers public/llms.txt public/llms-full.txt scripts/topics.json scripts/topics-done.json
           git commit -m "content: daily run $(date -u +%F)" || echo "nothing to commit"
           git push || echo "nothing to push"
 

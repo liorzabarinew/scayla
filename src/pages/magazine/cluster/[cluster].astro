@@ -38,6 +38,34 @@ const description =
   intro.length <= 130 ? intro : `${cluster} · מדריכים מבוססי מחקר בעברית ילידית מהבלוג של Scayla.`;
 
 const clusterUrl = clusterPath(cluster);
+const SITE = 'https://scayla.co.il';
+
+// CollectionPage + ItemList · הופך את דף-האשכול ל-hub טופולוגי שגוגל ומנועי-AI
+// קוראים כאוסף מאמרים מוסמך סביב נושא. אות-pillar דטרמיניסטי (בלי תוכן חדש).
+const collectionLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  '@id': `${SITE}${clusterUrl}`,
+  name: cluster,
+  description,
+  inLanguage: 'he-IL',
+  isPartOf: { '@type': 'Blog', '@id': `${SITE}/magazine`, name: 'הבלוג של Scayla' },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Scayla',
+    logo: { '@type': 'ImageObject', url: `${SITE}/scayla-icon-512.png` },
+  },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: posts.length,
+    itemListElement: posts.map((post, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: `${SITE}/magazine/${post.id}`,
+      name: post.data.title,
+    })),
+  },
+};
 ---
 
 <BaseLayout
@@ -48,6 +76,8 @@ const clusterUrl = clusterPath(cluster);
     { name: cluster, path: clusterUrl },
   ]}
 >
+  <script type="application/ld+json" set:html={JSON.stringify(collectionLd)} />
+
   <section class="cl-hero">
     <div class="narrow center">
       <nav class="crumbs" aria-label="פירורי לחם">

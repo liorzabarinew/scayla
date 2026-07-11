@@ -6,7 +6,9 @@
   "description": "Scayla · אתר השיווק · Astro static site (RTL Hebrew, light+dark)",
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "node scripts/gen-llms.mjs",
     "build": "astro build",
+    "test": "node --test scripts/*.test.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "machine": "node scripts/machine-vertex.mjs",
