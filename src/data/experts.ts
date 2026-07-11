@@ -103,7 +103,7 @@ export const experts: Expert[] = [
     initial: 'ל',
     photo: '/experts/lior-zabari.jpg',
     name: 'ליאור צברי',
-    latin: 'Lior Tzabari',
+    latin: 'Lior Zabari',
     role: 'שיווק ביצועים וטכנולוגיה',
     roleLong: 'שיווק ביצועים וטכנולוגיה · Mr. Make',
     years: 15,

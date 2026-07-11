@@ -141,24 +141,37 @@ const breadcrumbLd = {
     </main>
     <SiteFooter />
     <script>
-      // Fade-up on scroll · motion-safe only
+      // Fade-up reveal · animates on scroll, but content must NEVER stay invisible
+      // (fast scroll or an observer hiccup could otherwise strand a section at opacity:0).
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      const els = document.querySelectorAll('.fade-up');
+      const els = [...document.querySelectorAll('.fade-up')];
+      const reveal = (el) => el.classList.add('in');
       if (reduce || !('IntersectionObserver' in window)) {
-        els.forEach((el) => el.classList.add('in'));
+        els.forEach(reveal);
       } else {
+        // Anything already in/above the viewport at load shows immediately (no flash).
+        let pending = els.filter((el) => {
+          if (el.getBoundingClientRect().top < window.innerHeight) { reveal(el); return false; }
+          return true;
+        });
         const io = new IntersectionObserver(
           (entries) => {
             entries.forEach((e) => {
-              if (e.isIntersecting) {
-                e.target.classList.add('in');
-                io.unobserve(e.target);
-              }
+              if (e.isIntersecting) { reveal(e.target); io.unobserve(e.target); }
             });
           },
-          { threshold: 0.12 }
+          { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
         );
-        els.forEach((el) => io.observe(el));
+        pending.forEach((el) => io.observe(el));
+        // Fallback: fast scroll can outrun the observer · reveal anything that entered view.
+        const sweep = () => {
+          pending = pending.filter((el) => {
+            if (el.getBoundingClientRect().top < window.innerHeight) { reveal(el); io.unobserve(el); return false; }
+            return true;
+          });
+          if (!pending.length) window.removeEventListener('scroll', sweep);
+        };
+        window.addEventListener('scroll', sweep, { passive: true });
       }
     </script>
 
