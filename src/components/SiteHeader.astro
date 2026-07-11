@@ -185,16 +185,6 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
   @media (prefers-reduced-motion: reduce) {
     .site-header, .nav { transition: none; }
   }
-  /* Over an always-dark hero (article covers) the transparent top-header text is
-     forced light, so it reads in light mode too. Once scrolled, the capsule has its
-     own surface and the text returns to the theme colours. */
-  :global(body.hero-dark) .site-header:not(.scrolled) .logo { color: #fff; }
-  :global(body.hero-dark) .site-header:not(.scrolled) .nl { color: rgba(255, 255, 255, .82); }
-  :global(body.hero-dark) .site-header:not(.scrolled) .nl:hover,
-  :global(body.hero-dark) .site-header:not(.scrolled) .nl[aria-current='page'] { color: #fff; }
-  :global(body.hero-dark) .site-header:not(.scrolled) .menu-btn {
-    color: #fff; border-color: rgba(255, 255, 255, .28); background: rgba(255, 255, 255, .08);
-  }
   .logo {
     display: flex; align-items: center; gap: 9px;
     font-weight: 800; font-size: 19px; letter-spacing: -.02em; color: var(--sc-ink);
@@ -499,5 +489,15 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
     const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 16);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
+    // publish the header's (top-state) height so heroes can bleed up behind it and
+    // merge with the transparent bar instead of leaving a solid strip above them.
+    const setHeaderH = () => {
+      const wasScrolled = header.classList.contains('scrolled');
+      header.classList.remove('scrolled');
+      document.documentElement.style.setProperty('--sc-header-h', header.offsetHeight + 'px');
+      if (wasScrolled) header.classList.add('scrolled');
+    };
+    setHeaderH();
+    window.addEventListener('resize', setHeaderH);
   }
 </script>

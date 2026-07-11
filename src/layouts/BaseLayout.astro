@@ -23,9 +23,6 @@ interface Props {
   ogImageHeight?: number;
   /** Breadcrumb trail after Home · defaults to one crumb derived from the title */
   breadcrumbs?: Crumb[];
-  /** Page opens on an always-dark hero band (e.g. article covers) · forces the
-   *  transparent top-header text to light so it stays readable in light mode too. */
-  darkHero?: boolean;
 }
 
 const {
@@ -38,7 +35,6 @@ const {
   ogImageWidth = 1200,
   ogImageHeight = 630,
   breadcrumbs,
-  darkHero = false,
 } = Astro.props;
 
 // Absolute URL for the social share image (og:image requires an absolute URL)
@@ -137,7 +133,7 @@ const breadcrumbLd = {
     <slot name="head" />
     <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css" />
   </head>
-  <body class:list={{ 'hero-dark': darkHero }}>
+  <body>
     <a class="skip-link" href="#main">דילוג לתוכן הראשי</a>
     <SiteHeader />
     <main id="main">

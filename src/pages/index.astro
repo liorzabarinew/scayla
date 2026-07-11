@@ -606,7 +606,10 @@ const team = [
   /* ═══ HERO ═══ */
   .hero {
     position: relative;
-    padding-block-start: clamp(52px, 7vw, 104px);
+    /* bleed up behind the transparent sticky header so the gradient reaches the very
+       top and the header merges with it — no solid strip above the hero. */
+    margin-block-start: calc(-1 * var(--sc-header-h, 64px));
+    padding-block-start: calc(clamp(52px, 7vw, 104px) + var(--sc-header-h, 64px));
     padding-block-end: clamp(40px, 6vw, 80px);
     overflow-x: clip;
     /* stronger Picktime-style light gradient surface · color lives in the CANVAS, not a blob behind text */
