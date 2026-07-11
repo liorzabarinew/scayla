@@ -1,0 +1,135 @@
+---
+/**
+ * FeaturePage · shared shell for the six /features/* pages. Same design language as
+ * the service pages (hero → how-it-works icon cards → why-Scayla + proof → FAQ → CTA),
+ * so every feature page is pixel-consistent. Content comes from code-grounded briefs.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBand from './CtaBand.astro';
+import InstallCtaPair from './InstallCtaPair.astro';
+import FaqAccordion from './FaqAccordion.astro';
+
+interface Step { title: string; body: string; icon: string; }
+interface Faq { q: string; a: string; }
+interface Props {
+  metaTitle: string;
+  metaDesc: string;
+  eyebrow: string;
+  h1: string;
+  wiifm: string;
+  directAnswer: string;
+  howTitle?: string;
+  steps: Step[];
+  uniqueness: string;
+  proofPoints: string[];
+  faq: Faq[];
+  ctaTitle: string;
+  ctaBody: string;
+}
+const {
+  metaTitle, metaDesc, eyebrow, h1, wiifm, directAnswer,
+  howTitle = 'איך זה עובד · שלושה צעדים', steps, uniqueness, proofPoints, faq, ctaTitle, ctaBody,
+} = Astro.props;
+
+// line-icon library (24×24 stroke) · matches the service-page icon set
+const ICONS: Record<string, string> = {
+  magnifier: '<path d="M11 3a8 8 0 1 0 0 16 8 8 0 0 0 0-16z"/><path d="M21 21l-4.3-4.3"/>',
+  document: '<path d="M4 19.5V6a2 2 0 0 1 2-2h11l3 3v12.5a1.5 1.5 0 0 1-1.5 1.5H5.5A1.5 1.5 0 0 1 4 19.5z"/><path d="M8 10h8M8 14h5"/>',
+  chart: '<path d="M4 18l5-5 3 3 8-8"/><path d="M20 8v5M20 8h-5"/>',
+  wrench: '<path d="M14.6 6.6a3.5 3.5 0 0 0-4.7 4.6L3 18.5V21h2.5l7.3-7.3a3.5 3.5 0 0 0 4.6-4.7l-2.3 2.3-2-.3-.3-2 2.4-2.4z"/>',
+  tag: '<path d="M20.6 13.4 12 22l-9-9V4h9l8.6 8.6a1 1 0 0 1 0 1.4z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
+  globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"/>',
+  target: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/>',
+  eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
+  bolt: '<path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/>',
+  shield: '<path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/>',
+};
+const iconOf = (k: string) => ICONS[k] ?? ICONS.target;
+---
+
+<BaseLayout title={metaTitle} description={metaDesc}>
+  <section class="svc-hero">
+    <div class="narrow center">
+      <span class="eyebrow">{eyebrow}</span>
+      <h1>{h1}</h1>
+      <p class="wiifm">{wiifm}</p>
+      <p class="lede">{directAnswer}</p>
+      <InstallCtaPair center variant="hero" />
+      <p class="cta-note">14 יום ניסיון חינם · ללא כרטיס אשראי · <a href="/pricing">לכל התוכניות והמחירים ›</a></p>
+    </div>
+  </section>
+
+  <section class="svc-body alt-bg">
+    <div class="wrap">
+      <div class="sh center"><span class="eyebrow">איך זה עובד</span><h2>{howTitle}</h2></div>
+      <div class="bgrid three">
+        {steps.map((s) => (
+          <div class="b card fade-up">
+            <span class="b-ic" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={iconOf(s.icon)} />
+            </span>
+            <h3>{s.title}</h3>
+            <p>{s.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-unique">
+    <div class="narrow center">
+      <span class="eyebrow">למה דווקא Scayla</span>
+      <p class="unique-p">{uniqueness}</p>
+      <ul class="proof">
+        {proofPoints.map((p) => <li>{p}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="svc-faq">
+    <div class="narrow">
+      <div class="sh"><span class="eyebrow">שאלות נפוצות</span><h2>תשובות מהירות</h2></div>
+      <FaqAccordion items={faq} schema={true} />
+    </div>
+  </section>
+
+  <section class="svc-cta">
+    <div class="wrap">
+      <CtaBand title={ctaTitle} body={ctaBody} />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .svc-hero { padding-block-end: 16px; }
+  .wiifm {
+    font-size: clamp(18px, 2.4vw, 22px); font-weight: 800; color: var(--sc-accent-text);
+    max-inline-size: 42ch; margin: 12px auto 0; text-wrap: balance; line-height: 1.5;
+  }
+  .lede { margin-block-start: 14px; }
+  .cta-note { font-size: 13px; color: var(--sc-disabled); margin-block-start: 14px; }
+  .alt-bg { background: var(--sc-card); }
+  :global([data-theme='dark']) .alt-bg { background: #17141d; }
+  .sh { margin-block-end: 22px; }
+  .sh.center { text-align: center; }
+  .bgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 820px) { .bgrid { grid-template-columns: 1fr; } }
+  .b { padding: 24px; background: var(--sc-paper); transition: transform .18s var(--sc-ease), box-shadow .18s var(--sc-ease); }
+  .b:hover { transform: translateY(-3px); box-shadow: var(--sc-sh-lift); }
+  .b-ic {
+    display: grid; place-items: center; inline-size: 44px; block-size: 44px;
+    border-radius: 12px; background: var(--sc-wash); border: 1px solid var(--sc-soft);
+    color: var(--sc-accent-text); margin-block-end: 14px;
+  }
+  .b h3 { margin-block-end: 6px; font-size: 17px; }
+  .b p { font-size: 14.5px; }
+  .svc-unique { padding-block: clamp(40px, 6vw, 72px); }
+  .unique-p { font-size: 16px; line-height: 1.85; max-inline-size: 62ch; margin-inline: auto; color: var(--sc-ink); }
+  .proof {
+    list-style: none; margin: 24px auto 0; padding: 0; max-inline-size: 60ch;
+    display: grid; gap: 11px; text-align: start;
+  }
+  .proof li { font-size: 14.5px; color: var(--sc-mv); font-weight: 500; display: flex; gap: 10px; align-items: flex-start; }
+  .proof li::before { content: '✓'; color: var(--sc-pos); font-weight: 800; flex: none; }
+  .svc-cta { padding-block-end: clamp(24px, 4vw, 48px); }
+</style>
