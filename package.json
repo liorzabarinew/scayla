@@ -12,6 +12,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "machine": "node scripts/machine-vertex.mjs",
+    "fixer": "node scripts/fixer.mjs",
     "machine:publish": "node scripts/machine-vertex.mjs --publish",
     "daily": "node scripts/daily.mjs"
   },

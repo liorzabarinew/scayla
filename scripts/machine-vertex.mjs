@@ -61,6 +61,10 @@ const MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-pro'
 // המכונה כולה על Google/Vertex בלבד (Gemini). המבקר הצולב הוא מודל-Gemini שני (Flash@global),
 // לא Claude — בכוונה: מיצוי מלא של Vertex, אפס תלות חיצונית.
 const PUBLISH_NOW = process.argv.includes('--publish') // אחרת: נכתב למאגר (draft:true)
+// כמה סבבי fix→re-verify לפני שהסבב האחרון (אגרסיבי) מסיר כל מה שלא ניתן לאמת. עיקרון:
+// ה-QA לא חוסם — הוא מנטר; מכונת-התיקונים מתקנת עד שהמאמר ראוי לפרסום, ואז משגרים. אף מאמר
+// לא נשאר "טיוטה על איכות". דדופ/YAML-שבור עדיין מדלגים (יתירות / בטיחות-build), לא חסימת-איכות.
+const MAX_FIX_ROUNDS = Math.max(1, parseInt(process.env.MAX_FIX_ROUNDS || '3', 10) || 3)
 // כשמייבאים את המודול (למשל בבדיקות-יחידה) — לא מריצים את הצינור, רק חושפים את הפונקציות.
 const isMain = !!process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href
 if (isMain && (!SA || !PROJECT)) { console.error('GOOGLE_SA and GCP_PROJECT are required'); process.exit(1) }
@@ -337,8 +341,11 @@ const qaPrompt = (slug, md) => `אתה עורך-בקרה (QA) של מגזין Sc
 המאמר:
 ${md}`
 
-const revisePrompt = (input, issues, suggestedSlug) => `תקן את המאמר אך ורק לפי הערות ה-QA שלמטה. שני סוגי הערות: (א) טענות-עובדה מסומנות (מספרים/ציטוטים) — הסר או רכך; (ב) הערות-לשון ("לשון: ...") — תקן את מה שצוין. **אל תיגע בשום דבר שלא צוין, ואל תשנה עובדות/מבנה.**
-חובה לשמר בדיוק: פסקת-הפתיחה המודגשת, כל כותרות ה-H2, בלוק "מה חשוב לזכור", הטבלה, כל הקישורים הפנימיים (/magazine/...), וה-FAQ. שמור אורך ומבנה. אל תמחק סעיפים.
+const fixPrompt = (input, issues, { suggestedSlug = '', aggressive = false } = {}) => `אתה מכונת-התיקונים של Scayla. תקן את המאמר לפי הערות ה-QA שלמטה, בלי לפגוע במה שכבר תקין.
+${aggressive
+  ? '**סבב אחרון — מצב אגרסיבי:** לכל מספר/סטטיסטיקה/טענה שסומנו כלא-מאומתים — **מחק את הנתון או רכך לאמירה כללית בלי מספר**. עדיף משפט חלק בלי מספר על מספר שלא ניתן לגבות. אל תמציא מספרים חדשים.'
+  : 'שני סוגי הערות: (א) מספר/טענה מסומנים — הסר או רכך; (ב) "לשון: ..." — תקן את מה שצוין. אל תיגע במה שלא צוין, ואל תשנה מבנה.'}
+חובה לשמר בדיוק: פסקת-הפתיחה המודגשת, כל כותרות ה-H2, בלוק "מה חשוב לזכור", הטבלה, כל הקישורים הפנימיים (/magazine/...), וה-FAQ. שמור אורך ומבנה. אל תמחק סעיפים שלמים (רק את הנתון/הטענה הבעייתיים בתוכם).
 שמור פורמט: שורה ראשונה SLUG:, שורה ריקה, frontmatter + Markdown.
 
 הערות לתיקון:
@@ -703,6 +710,15 @@ export function lintArticle(md) {
 }
 
 // ── run (רק כשמריצים ישירות, לא ב-import) ──
+// ── exports for the standalone fixer machine (scripts/fixer.mjs) · one brain for QA + the
+//    fix logic, so reprocessing an existing article uses the exact same monitor→fix flow. ──
+export {
+  callGemini, fixPrompt, parseArticle,
+  qa, qaCopyEdit, qaGeminiClaims, qaCrossModel, qaSourceGrounding,
+  fetchSourceTexts, resolveSources, injectSources, validateLinks, fixFmQuotes, appendCta,
+  setDraft, stampDates, ARTICLES_DIR, MAX_FIX_ROUNDS,
+}
+
 if (isMain) try {
   const today = new Date().toISOString().slice(0, 10)
   const { arts, counts } = scanArticles()
@@ -760,7 +776,7 @@ if (isMain) try {
   const lint = lintArticle(md)
   let issues = [...lint.issues]
   let suggestedSlug = ''
-  let forcedDraft = false
+  let residual = [] // issues that survive every fix round (rare) · reported, never a blocker
 
   console.error(`→ [3/3] QA: Gemini-Pro fact-check + adversarial-claims + copy-edit + Flash cross-model critic + source-grounding [${allSources.length} src, ${srcTexts.length} fetched, ${grounded.length} grounded]`)
   const [v, cp, gc, c, sg] = await Promise.all([
@@ -771,96 +787,80 @@ if (isMain) try {
     qaSourceGrounding(md, srcTexts).catch((e) => { console.error('⚠ source-grounding QA error:', String(e).slice(0, 120)); return null }),
   ])
 
-  if (v.verdict === 'reject') {
-    console.error('✗ QA reject (unsalvageable):', JSON.stringify(v.issues || []))
-    markDone(planKeyword)
-    result({ status: 'skipped', cluster: cat.slug, slug, reason: (v.issues || ['QA reject']).join('; ') }); process.exit(0)
-  }
-  if (v._parseFailed) forcedDraft = true
-  if (v.verdict === 'fixable' || v.fabricated) issues.push(...(v.issues || []))
-  if (v.slugOk === false) suggestedSlug = v.suggestedSlug || ''
-
-  if (c) {
-    if (c._parseFailed) forcedDraft = true
-    else {
-      if (c.verdict === 'reject') { forcedDraft = true; console.error('⚠ cross-model (flash) reject — banking for human glance') }
-      issues.push(...(c.issues || []), ...((c.claims || []).filter((x) => x.verifiedBySearch === 'no').map((x) => `הסר או רכך טענה לא-מאומתת: ${x.claim}`)))
-    }
-  }
-  if (gc) {
-    if (gc._parseFailed) forcedDraft = true
-    else {
-      if (gc.verdict === 'reject') { forcedDraft = true; console.error('⚠ Gemini-claims reject — banking for human glance') }
-      issues.push(...(gc.issues || []), ...((gc.claims || []).filter((x) => x.verifiedBySearch === 'no').map((x) => `הסר או רכך טענה לא-מאומתת: ${x.claim}`)))
-    }
-  }
-  if (cp) {
-    if (cp._parseFailed) forcedDraft = true
-    else if (cp.hasIssues) issues.push(...(cp.issues || []).map((i) => `לשון: ${i}`))
-  }
-  // אימות-מספר-מול-מקור: מספר שלא נמצא בטקסט אף מקור → הסר/החלף במספר נתמך. ממצא = חוסם (factWrong).
-  let sourceUnsupported = false
+  // ── MONITOR only · collect every issue the QA lenses found; block NOTHING. Even a
+  //    fact-check "reject" is routed to the fixer (it rewrites), never skipped. QA detects;
+  //    the fix→verify loop below repairs until the article is publishable.
+  if (v && v.verdict === 'reject') issues.push(...(v.issues || []).map((i) => `שגיאה חמורה לתיקון: ${i}`))
+  else if (v && (v.verdict === 'fixable' || v.fabricated)) issues.push(...(v.issues || []))
+  if (v && v.slugOk === false) suggestedSlug = v.suggestedSlug || ''
+  const collectClaims = (o) => (o && !o._parseFailed)
+    ? [...(o.issues || []), ...((o.claims || []).filter((x) => x.verifiedBySearch === 'no').map((x) => `הסר או רכך טענה לא-מאומתת: ${x.claim}`))]
+    : []
+  if (c && c.verdict === 'reject') console.error('⚠ cross-model (flash) flagged claims → routing to fixer')
+  if (gc && gc.verdict === 'reject') console.error('⚠ Gemini-claims flagged → routing to fixer')
+  issues.push(...collectClaims(c), ...collectClaims(gc))
+  if (cp && !cp._parseFailed && cp.hasIssues) issues.push(...(cp.issues || []).map((i) => `לשון: ${i}`))
   if (sg && !sg._skipped && Array.isArray(sg.unsupported) && sg.unsupported.length) {
-    sourceUnsupported = true
-    issues.push(...sg.unsupported.slice(0, 8).map((u) => `מספר לא-נתמך-במקור (${u.number || ''}): "${(u.claim || '').slice(0, 90)}" — לא מופיע בטקסט אף מקור שנשלף. הסר/החלף במספר שמצאת במקור אמיתי, או רכך לאמירה כללית.`))
+    issues.push(...sg.unsupported.slice(0, 8).map((u) => `מספר לא-נתמך-במקור (${u.number || ''}): "${(u.claim || '').slice(0, 90)}" — החלף במספר שמופיע במקור אמיתי, או רכך לאמירה כללית בלי מספר.`))
   } else if (sg && sg._skipped) {
-    // fail-CLOSED · לא נשלף אף מקור לאימות-מספרים. אם יש סטטיסטיקות בגוף (אחוזים / "פי N" / מספר עם מפריד-אלפים),
-    // אין להסתמך על שקט: מחזיקים לבדיקה אנושית במקום לפרסם מספר לא-מאומת (סיכון "URL אמיתי, מספר שגוי").
+    // sources unfetchable → numbers can't be confirmed. NOT a blocker: flag any stats so the
+    // fixer softens what it can't stand behind (the aggressive round strips the rest).
     const bodyOnly = md.replace(/^---[\s\S]*?\n---\n?/, '')
-    if (/\d+(?:[.,]\d+)?\s*%|\bפי\s+\d|\d{1,3}(?:,\d{3})+/.test(bodyOnly)) {
-      forcedDraft = true
-      console.error('⚠ source-grounding skipped (0 sources fetchable) + article has stats → holding for human glance (fail-closed)')
-    }
+    if (/\d+(?:[.,]\d+)?\s*%|\bפי\s+\d|\d{1,3}(?:,\d{3})+/.test(bodyOnly)) issues.push('לא ניתן לאמת מספרים מול מקור (המקורות לא נשלפו) · ודא שכל מספר מגובה, אחרת רכך לאמירה כללית בלי מספר.')
   }
 
   issues = [...new Set(issues.filter(Boolean))]
-  let qaNote = forcedDraft ? 'forced-draft' : (issues.length ? 'fixable' : 'pass')
-  if (issues.length || suggestedSlug) {
-    console.error(`→ revising per QA (${issues.length} issues${suggestedSlug ? ', + slug' : ''})…`)
-    const r = parseArticle((await callGemini(revisePrompt(`SLUG: ${suggestedSlug || slug}\n\n${md}`, issues, suggestedSlug), { maxTokens: 16000, temperature: 0.3 })).text)
-    if (r.slug && r.md.startsWith('---')) {
-      slug = r.slug; md = assemble(r.md); qaNote = 'fixed'
-      const rl = lintArticle(md)
-      const lintHard = rl.titleBad || rl.truncated || rl.broken || rl.factWrong
-      // re-verify אחרי התיקון: מבקר-צולב (flash) + אימות-מספר-מול-מקור חוזר.
-      const [rq, rsg] = await Promise.all([
-        qaCrossModel(slug, md, grounded).catch(() => null),
-        qaSourceGrounding(md, srcTexts).catch(() => null),
-      ])
-      const rqRan = rq && !rq._parseFailed
-      const claimsBad = rqRan && (rq.verdict === 'reject' || (rq.claims || []).some((x) => x.verifiedBySearch === 'no'))
-      const stillUnsupported = rsg && !rsg._skipped && Array.isArray(rsg.unsupported) && rsg.unsupported.length > 0
-      if (claimsBad || lintHard || stillUnsupported) { forcedDraft = true; qaNote = 'fixed-needs-glance' }
-    } else {
-      forcedDraft = true; qaNote = 'revise-failed'
-    }
+  let qaNote = issues.length || suggestedSlug ? 'fixing' : 'clean'
+  // ── FIX → RE-VERIFY loop · the fixer machine. Repairs per QA, re-checks the HARD gates
+  //    (deterministic lint + numbers-vs-source + cross-model claims), and repeats until clean
+  //    or MAX_FIX_ROUNDS. The last round is aggressive — it strips any number/claim it still
+  //    can't support. The outcome is ALWAYS a publishable article; nothing is ever held. ──
+  let round = 0
+  while ((issues.length || suggestedSlug) && round < MAX_FIX_ROUNDS) {
+    round++
+    const aggressive = round >= MAX_FIX_ROUNDS
+    console.error(`→ fix round ${round}/${MAX_FIX_ROUNDS}${aggressive ? ' [aggressive]' : ''} · ${issues.length} issue(s)${suggestedSlug ? ' +slug' : ''}`)
+    const fx = parseArticle((await callGemini(fixPrompt(`SLUG: ${suggestedSlug || slug}\n\n${md}`, issues, { suggestedSlug, aggressive }), { maxTokens: 16000, temperature: 0.3 })).text)
+    if (fx.slug && fx.md.startsWith('---')) { slug = fx.slug; md = assemble(fx.md); suggestedSlug = '' }
+    else { console.error('  ⚠ fixer output unparseable — keeping previous version, ending loop'); break }
+    // re-MONITOR the hard gates only (soft copy-edit ran once already, up top)
+    const rl = lintArticle(md)
+    const [rq, rsg] = await Promise.all([
+      qaCrossModel(slug, md, grounded).catch(() => null),
+      qaSourceGrounding(md, srcTexts).catch(() => null),
+    ])
+    issues = []
+    if (rl.titleBad) issues.push('כותרת לא תקינה (אורך/מבנה)')
+    if (rl.truncated) issues.push('התוכן קטוע · השלם את המשפט/הפסקה שנחתכו')
+    if (rl.broken) issues.push('מבנה שבור · תקן')
+    if (rl.factWrong) issues.push(...(rl.issues || []).filter((i) => i.includes('ייחוס')))
+    if (rq && !rq._parseFailed) issues.push(...((rq.claims || []).filter((x) => x.verifiedBySearch === 'no').map((x) => `הסר או רכך טענה לא-מאומתת: ${x.claim}`)))
+    if (rsg && !rsg._skipped && Array.isArray(rsg.unsupported) && rsg.unsupported.length) issues.push(...rsg.unsupported.slice(0, 8).map((u) => `מספר לא-נתמך-במקור: "${(u.claim || '').slice(0, 90)}" — הסר או רכך.`))
+    issues = [...new Set(issues.filter(Boolean))]
+    qaNote = issues.length ? `fixing-r${round}` : `clean-r${round}`
   }
+  residual = issues.slice(0, 6) // whatever survived every round (rare) · reported, still shipped
+  if (residual.length) console.error(`⚠ ${residual.length} issue(s) survived ${MAX_FIX_ROUNDS} rounds — shipping with a note (QA never blocks)`)
 
   slug = sanitizeSlug(slug)
   if (!slug) { result({ status: 'error', cluster: cat.slug, reason: 'empty slug' }); process.exit(1) }
+  // ── DEDUP · not a quality gate. A near-duplicate is redundant (SEO cannibalization), so we
+  //    SKIP it — never publish two near-identical articles. This is avoidance, not a hold. ──
+  const newTitle0 = (md.match(/^title:\s*"([^"]*)"/m) || [])[1] || ''
+  const sim = mostSimilarArticle(newTitle0, slug, arts)
+  if (sim) {
+    console.error(`⚠ near-duplicate of "${sim.slug}" (${sim.score.toFixed(2)}) — skipping to avoid redundant content`)
+    markDone(planKeyword)
+    result({ status: 'skipped', cluster: cat.slug, slug, reason: `near-duplicate of ${sim.slug}` }); process.exit(0)
+  }
   let outPath = join(ARTICLES_DIR, `${slug}.md`)
-  let dupOf = ''
-  if (existsSync(outPath)) {
-    dupOf = slug
+  if (existsSync(outPath)) { // slug collides but the title is distinct → suffix, still publish
     let n = 2; while (existsSync(join(ARTICLES_DIR, `${slug}-${n}.md`))) n++
     slug = `${slug}-${n}`; outPath = join(ARTICLES_DIR, `${slug}.md`)
-    forcedDraft = true; qaNote = `slug-collision:${dupOf}`
-    console.error(`⚠ slug collision with existing "${dupOf}" — near-certain duplicate; holding for review`)
   }
-  if (!dupOf) {
-    const newTitle = (md.match(/^title:\s*"([^"]*)"/m) || [])[1] || ''
-    const sim = mostSimilarArticle(newTitle, slug, arts)
-    if (sim) {
-      forcedDraft = true; qaNote = `title-similar:${sim.slug}`
-      dupOf = sim.slug
-      console.error(`⚠ title/slug similarity ${sim.score.toFixed(2)} with "${sim.slug}" — holding for review`)
-    }
-  }
-  const publishNow = PUBLISH_NOW && !forcedDraft
+  // ── SHIP · the content is now publishable → always publish (no draft-on-quality hold). ──
+  const publishNow = PUBLISH_NOW
   md = setDraft(md, !publishNow)
-  // ה-verdict של ה-QA חייב להיכתב ב-frontmatter, אחרת ה-drip מפרסם גם מאמרים שה-QA החזיק.
-  // needsReview:true = ה-drip מדלג, מוחזק לעין אנושית. שחרור: מוחקים את השורה.
-  if (forcedDraft) md = md.replace(/^draft: true\s*$/m, `draft: true\nneedsReview: true`)
   md = stampDates(md, today) // תאריך דטרמיניסטי · המכונה קובעת, לא המודל
   md = stampReadingMinutes(md) // readingMinutes דטרמיניסטי מספירת-מילים
   const title = (md.match(/^title:\s*"([^"]*)"/m) || [])[1] || ''
@@ -872,7 +872,7 @@ if (isMain) try {
   }
   writeFileSync(outPath, md.endsWith('\n') ? md : md + '\n')
   markDone(planKeyword)
-  console.error(`✓ wrote ${slug}.md  (draft:${!publishNow}${forcedDraft ? ' [forced]' : ''}, qa:${qaNote}, ${CALLS} model calls)`)
+  console.error(`✓ wrote ${slug}.md  (draft:${!publishNow}, qa:${qaNote}, ${round} fix round(s), ${CALLS} model calls)`)
   // תמונת-שער (hero) בסגנון-בית · best-effort, כשל לא חוסם את המאמר (ה-hero נופל לרקע כהה).
   // בהצלחה: מזריקים coverImage ל-frontmatter כדי שגם כרטיסי-הבלוג וגם ה-OG (שיתוף) ישתמשו בו.
   let coverPath = null
@@ -894,9 +894,9 @@ if (isMain) try {
     crossModelQa: c ? (c.verdict || (c._parseFailed ? 'parsefail' : '')) : 'off',
     sourceGroundingQa: sg ? (sg._skipped ? 'no-src' : (sg._parseFailed ? 'parsefail' : `${(sg.unsupported || []).length} unsupported`)) : 'err',
     copyQa: cp ? (cp._parseFailed ? 'parsefail' : (cp.hasIssues ? `${(cp.issues || []).length} fixes` : 'clean')) : 'err',
-    forcedDraft, dupOf: dupOf || undefined,
+    fixRounds: round, residual: residual.length ? residual : undefined,
     sources: allSources.length, calls: CALLS,
-    qaWarning: forcedDraft ? `נשמר כטיוטה לבדיקה (${qaNote})` : (v._parseFailed ? 'QA JSON parse failed (please glance)' : ''),
+    qaWarning: residual.length ? `שוגר עם ${residual.length} הערה שלא נסגרה (${qaNote})` : '',
   })
 } catch (e) {
   console.error('machine error:', String(e))

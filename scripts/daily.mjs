@@ -74,6 +74,14 @@ for (const c of only) {
   results.push(await runMachine(c))
 }
 
+// ── 2b. רשת-ביטחון · משגר כל מאמר שנתקע כ-needsReview (מנגנון ישן / מקרי-קצה).
+//    המכונה החדשה מתקנת-ומשגרת ולא יוצרת needsReview, אז זה בד"כ no-op מיידי. ──
+let fixer = null
+if (on('RUN_FIXER')) {
+  console.error('\n════════ fixer (safety-net) ════════')
+  fixer = await runScript('fixer.mjs', [], { timeoutMs: STAGE_TIMEOUT_MS, silentChild: true })
+}
+
 // ── 3. רענון המאמר הוותיק ביותר (best-effort) ──
 let refresh = null
 if (on('RUN_REFRESH')) {
@@ -106,6 +114,7 @@ if (refresh) lines.push('', refresh.status === 'refreshed'
   : refresh.status === 'verified'
     ? `✅ רענון: אומת ואין מה לעדכן · ${refresh.title || refresh.slug}`
     : `♻️ רענון: ⚠️ ${String(refresh.reason || 'נכשל').slice(0, 60)}`)
+if (fixer && fixer.status === 'ok' && fixer.fixed > 0) lines.push(`🛠 תיקונים: ${fixer.fixed} מאמר(ים) שנתקעו שוגרו לאוויר`)
 if (integrity) lines.push(integrity.ok === false
   ? `🛡 תקינות: ⚠️ שגיאת-ריצה`
   : (integrity.totalViolations > 0
@@ -115,5 +124,5 @@ if (integrity) lines.push(integrity.ok === false
 await notify(lines.join('\n'))
 
 // JSON מסכם ל-stdout (ה-workflow קורא כדי להחליט אם לפרוס).
-console.log('DAILY_SUMMARY:' + JSON.stringify({ published, banked, skipped, errored, results, ideas, refresh, integrity }))
+console.log('DAILY_SUMMARY:' + JSON.stringify({ published, banked, skipped, errored, results, ideas, fixer, refresh, integrity }))
 process.exit(errored === results.length && results.length > 0 ? 1 : 0)
