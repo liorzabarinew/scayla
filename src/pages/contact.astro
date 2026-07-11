@@ -31,12 +31,11 @@ const description =
         <a class="btn btn-solid" href="#contact-form">לטופס ←</a>
       </div>
 
-      <form id="contact-form" class="form card fade-up" method="post" action="#form-endpoint-placeholder">
+      <form id="contact-form" class="form card fade-up" method="post" action="/api/contact">
         <h2>שלחו הודעה</h2>
-        <p class="form-note" role="note">
-          PLACEHOLDER: הטופס סטטי · צוות הפיתוח יחבר את ה-endpoint (webhook / CF Pages
-          Function) בהטמעה. שדות: שם, אימייל, כתובת חנות, הודעה · לפי החלטת נוי (שאלה 8).
-        </p>
+        <p class="form-note">נענה מהר, בעברית · בדרך כלל תוך יום עסקים.</p>
+        {/* honeypot · בוטים ממלאים, בני אדם לא רואים */}
+        <input type="text" name="company" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
         <div class="field">
           <label for="cf-name">שם מלא</label>
           <input id="cf-name" name="name" type="text" autocomplete="name" required />
@@ -54,6 +53,7 @@ const description =
           <textarea id="cf-msg" name="message" rows="5" required></textarea>
         </div>
         <button type="submit" class="btn btn-solid">שליחה</button>
+        <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
       </form>
     </div>
   </section>
@@ -90,4 +90,49 @@ const description =
     border-color: var(--sc-accent-text);
   }
   textarea { resize: vertical; }
+  /* honeypot · off-screen, never shown to humans */
+  .hp { position: absolute; inset-inline-start: -9999px; inline-size: 1px; block-size: 1px; overflow: hidden; opacity: 0; }
+  .form-status { font-size: 14px; font-weight: 700; margin-block-start: 14px; min-block-size: 20px; }
+  .form-status.ok { color: var(--sc-pos); }
+  .form-status.err { color: #d3455b; }
+  button[disabled] { opacity: .6; cursor: progress; }
 </style>
+
+<script>
+  // Progressive enhancement · POST the form as JSON to the CF Pages Function,
+  // show inline success/error. Native POST to /api/contact is the no-JS fallback.
+  const form = document.getElementById('contact-form');
+  const statusEl = document.getElementById('form-status');
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector('button[type="submit"]');
+    const data = Object.fromEntries(new FormData(form));
+    statusEl.className = 'form-status';
+    statusEl.textContent = '';
+    const label = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'שולח…';
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const j = await res.json().catch(() => ({}));
+      if (res.ok && j.ok) {
+        form.reset();
+        statusEl.textContent = 'תודה! ההודעה נשלחה · נחזור אליכם מהר.';
+        statusEl.classList.add('ok');
+      } else {
+        statusEl.textContent = j.error || 'משהו השתבש · נסו שוב או כתבו ל-lior@mrmake.co.il';
+        statusEl.classList.add('err');
+      }
+    } catch {
+      statusEl.textContent = 'אין חיבור · נסו שוב או כתבו ישירות ל-lior@mrmake.co.il';
+      statusEl.classList.add('err');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = label;
+    }
+  });
+</script>
