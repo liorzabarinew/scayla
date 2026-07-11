@@ -131,6 +131,7 @@ const breadcrumbLd = {
       })();
     </script>
     <slot name="head" />
+    <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css" />
   </head>
   <body>
     <a class="skip-link" href="#main">דילוג לתוכן הראשי</a>
@@ -159,6 +160,21 @@ const breadcrumbLd = {
         );
         els.forEach((el) => io.observe(el));
       }
+    </script>
+
+    <!-- Calendly · demo popup. Any "קבעו דמו" link (href → calendly.com, from
+         DEMO_URL) opens the popup instead of navigating. If the widget hasn't
+         loaded, the link still works as a normal navigation (graceful fallback). -->
+    <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+    <script>
+      document.addEventListener('click', (e) => {
+        const a = e.target.closest('a[href*="calendly.com"]');
+        if (!a) return;
+        if (window.Calendly && typeof window.Calendly.initPopupWidget === 'function') {
+          e.preventDefault();
+          window.Calendly.initPopupWidget({ url: a.href });
+        }
+      });
     </script>
   </body>
 </html>

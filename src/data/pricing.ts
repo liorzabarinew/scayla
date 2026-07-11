@@ -20,10 +20,10 @@ export const annualPerMonth = (price: number) => Math.round(price * (1 - ANNUAL_
 /** Total charged once per year when billed annually, rounded to a whole dollar. */
 export const annualTotal = (price: number) => Math.round(price * 12 * (1 - ANNUAL_DISCOUNT));
 
-// PLACEHOLDER: the "קבעו דמו" destination · a Google URL Noy will provide later
-// (e.g. Google Calendar / Forms). Swap this one line to go live. Every "קבעו דמו"
-// button across the site pulls from here; it opens in a new tab (target=_blank).
-export const DEMO_URL = '#demo-placeholder';
+// The "קבעו דמו" destination · Lior's Calendly. Loaded site-wide (BaseLayout):
+// clicking any demo CTA opens the Calendly popup; if the widget script hasn't
+// loaded yet it falls back to opening this URL directly. One knob for every CTA.
+export const DEMO_URL = 'https://calendly.com/lior-mrmake/30min';
 
 export interface TierAxis {
   label: string;
