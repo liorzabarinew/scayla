@@ -8,7 +8,9 @@
 // (First-draft numbers · the client refines later.)
 
 // PLACEHOLDER: replace with the real Shopify App Store listing URL at launch.
-export const SHOPIFY_APP_URL = '#shopify-app-store-placeholder';
+// App not published to the Shopify App Store yet → "התקינו ב-Shopify" points to
+// /pricing meanwhile. Swap to the real listing URL the day the app goes live.
+export const SHOPIFY_APP_URL = '/pricing';
 
 // Annual billing · 20% off the monthly price (Lior's call, 2026-07-11). One knob:
 // change ANNUAL_DISCOUNT and every price + badge on the card updates automatically.
