@@ -13,6 +13,9 @@ const title = `${e.name} · ${e.role} | Scayla`;
 const description = e.bioShort;
 const pageUrl = new URL(`/experts/${e.slug}`, Astro.site).href;
 const photoUrl = e.photo ? new URL(e.photo, Astro.site).href : undefined;
+// The team testimonials are Noy's client work (one even names her) → show them only
+// on her profile, never on Lior's. His profile leans on the team stats instead.
+const showTeamQuotes = e.slug === 'noy-keitel';
 
 // Person + ProfilePage JSON-LD · full E-E-A-T signal for this individual.
 const person = {
@@ -146,8 +149,10 @@ const firstName = e.name.split(' ')[0];
         <div class="proof-band">
           <div class="proof-head">
             <div>
-              <h2>מה אומרים על העבודה</h2>
-              <p>עדויות אמיתיות על עבודת הצוות שמאחורי Scayla · האפליקציה חדשה, הניסיון לא.</p>
+              <h2>{showTeamQuotes ? 'מה אומרים על העבודה' : 'הצוות שמאחורי Scayla · במספרים'}</h2>
+              <p>{showTeamQuotes
+                ? 'עדויות אמיתיות על עבודת הצוות שמאחורי Scayla · האפליקציה חדשה, הניסיון לא.'
+                : 'שנים של קידום אורגני ותוכן שמביא תוצאות · הניסיון שמאחורי כל מה ש-Scayla עושה אוטומטית.'}</p>
             </div>
             <div class="proof-stats">
               {TEAM_STATS.map((s) => (
@@ -155,14 +160,16 @@ const firstName = e.name.split(' ')[0];
               ))}
             </div>
           </div>
-          <div class="quotes">
-            {TEAM_TESTIMONIALS.map((q) => (
-              <figure class="quote">
-                <blockquote>{q.text}</blockquote>
-                <figcaption><b>{q.name}</b> · {q.role}</figcaption>
-              </figure>
-            ))}
-          </div>
+          {showTeamQuotes && (
+            <div class="quotes">
+              {TEAM_TESTIMONIALS.map((q) => (
+                <figure class="quote">
+                  <blockquote>{q.text}</blockquote>
+                  <figcaption><b>{q.name}</b> · {q.role}</figcaption>
+                </figure>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

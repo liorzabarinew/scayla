@@ -61,9 +61,15 @@ const jsonLd = {
           <article class={`expert card fade-up accent-${e.accent}`} id={e.slug}>
             <div class="topline" aria-hidden="true"></div>
             <a class="head" href={`/experts/${e.slug}`} aria-label={`הפרופיל המלא של ${e.name}`}>
-              <div class="av" aria-hidden="true" title="תמונה · placeholder">
-                <span class="av-letter">{e.initial}</span>
-                <span class="av-note">תמונה בקרוב</span>
+              <div class:list={['av', { 'has-photo': e.photo }]} aria-hidden="true">
+                {e.photo ? (
+                  <img src={e.photo} alt="" width="76" height="76" loading="lazy" />
+                ) : (
+                  <Fragment>
+                    <span class="av-letter">{e.initial}</span>
+                    <span class="av-note">תמונה בקרוב</span>
+                  </Fragment>
+                )}
               </div>
               <div class="who">
                 <h2>{e.name}</h2>
@@ -154,6 +160,8 @@ const jsonLd = {
   .accent-gold .av { background: linear-gradient(135deg, var(--sc-accent), var(--accent-gold)); }
   .av-letter { font-weight: 800; font-size: 26px; line-height: 1; }
   .av-note { font-size: 8.5px; font-weight: 700; opacity: .85; letter-spacing: .03em; }
+  .av.has-photo { outline: none; background: none; gap: 0; }
+  .av img { inline-size: 100%; block-size: 100%; object-fit: cover; border-radius: 20px; display: block; }
   .who h2 { font-size: clamp(20px, 2.4vw, 24px); }
   .expert:hover .who h2 { color: var(--sc-accent-text); }
   .role { font-size: 14px; font-weight: 700; color: var(--sc-accent-text); margin-block-start: 4px; }
