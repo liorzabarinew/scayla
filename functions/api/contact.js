@@ -42,7 +42,13 @@ export async function onRequestPost({ request }) {
   try {
     const res = await fetch('https://formsubmit.co/ajax/' + encodeURIComponent(TO), {
       method: 'POST',
-      headers: { 'content-type': 'application/json', accept: 'application/json' },
+      headers: {
+        'content-type': 'application/json',
+        accept: 'application/json',
+        // FormSubmit rejects bare server calls — it wants a real web origin.
+        origin: 'https://scayla.co.il',
+        referer: 'https://scayla.co.il/contact',
+      },
       body: JSON.stringify({
         name,
         email, // FormSubmit uses this as the Reply-To, so Lior can reply directly
@@ -53,7 +59,11 @@ export async function onRequestPost({ request }) {
         _captcha: 'false',
       }),
     });
-    if (!res.ok) return json({ ok: false, error: 'שליחת המייל נכשלה, נסו שוב' }, 502);
+    const out = await res.json().catch(() => ({}));
+    // success:"true" = delivered · message with "Activation" = pending Lior's one-time
+    // click (form still records it once activated). Anything else = a real failure.
+    const ok = out.success === 'true' || out.success === true || /activation/i.test(out.message || '');
+    if (!ok) return json({ ok: false, error: 'שליחת המייל נכשלה, נסו שוב' }, 502);
     return json({ ok: true });
   } catch {
     return json({ ok: false, error: 'שגיאת שרת בשליחה' }, 502);
