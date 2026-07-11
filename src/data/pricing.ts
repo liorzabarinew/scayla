@@ -10,6 +10,16 @@
 // PLACEHOLDER: replace with the real Shopify App Store listing URL at launch.
 export const SHOPIFY_APP_URL = '#shopify-app-store-placeholder';
 
+// Annual billing · 20% off the monthly price (Lior's call, 2026-07-11). One knob:
+// change ANNUAL_DISCOUNT and every price + badge on the card updates automatically.
+export const ANNUAL_DISCOUNT = 0.2;
+/** % off, shown on the toggle + savings line (e.g. 20). */
+export const ANNUAL_DISCOUNT_PCT = Math.round(ANNUAL_DISCOUNT * 100);
+/** Effective per-month price when billed annually, rounded to a whole dollar. */
+export const annualPerMonth = (price: number) => Math.round(price * (1 - ANNUAL_DISCOUNT));
+/** Total charged once per year when billed annually, rounded to a whole dollar. */
+export const annualTotal = (price: number) => Math.round(price * 12 * (1 - ANNUAL_DISCOUNT));
+
 // PLACEHOLDER: the "קבעו דמו" destination · a Google URL Noy will provide later
 // (e.g. Google Calendar / Forms). Swap this one line to go live. Every "קבעו דמו"
 // button across the site pulls from here; it opens in a new tab (target=_blank).
