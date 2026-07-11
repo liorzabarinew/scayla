@@ -135,14 +135,23 @@ const articleLd = {
       </div>
       <div class="bgrid three">
         <div class="b card fade-up">
+          <span class="b-ic" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 3a8 8 0 1 0 0 16 8 8 0 0 0 0-16z"/><path d="M21 21l-4.3-4.3"/></svg>
+          </span>
           <h3>קוראת את ה-Search Console שלכם</h3>
           <p>Scayla מחוברת ל-GSC ורואה על אילו שאילתות אתם כבר בעמוד 1 אבל עדיין מחוץ לסקירה · אלה ההזדמנויות הכי מהירות.</p>
         </div>
         <div class="b card fade-up">
+          <span class="b-ic" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V6a2 2 0 0 1 2-2h11l3 3v12.5a1.5 1.5 0 0 1-1.5 1.5H5.5A1.5 1.5 0 0 1 4 19.5z"/><path d="M8 10h8M8 14h5"/></svg>
+          </span>
           <h3>בונה תוכן שגוגל שולף לסקירה</h3>
           <p>תשובות ישירות, טבלאות ו-FAQ במבנה שסקירת ה-AI אוהבת לצטט. מפורסם רק באישורכם, בעברית תקנית.</p>
         </div>
         <div class="b card fade-up">
+          <span class="b-ic" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.6 6.6a3.5 3.5 0 0 0-4.7 4.6L3 18.5V21h2.5l7.3-7.3a3.5 3.5 0 0 0 4.6-4.7l-2.3 2.3-2-.3-.3-2 2.4-2.4z"/></svg>
+          </span>
           <h3>מתקנת סכמות ושברים</h3>
           <p>Product, FAQ ו-301 לעמודי 404 · אותם תיקונים משפרים גם את הדירוג הרגיל וגם את הסיכוי להיכנס לסקירה.</p>
         </div>
@@ -239,6 +248,17 @@ const articleLd = {
   .bgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   @media (max-width: 820px) { .bgrid { grid-template-columns: 1fr; } }
   .b { padding: 24px; background: var(--sc-paper); }
+  .b { transition: transform .18s var(--sc-ease), box-shadow .18s var(--sc-ease); }
+  .b:hover { transform: translateY(-3px); box-shadow: var(--sc-sh-lift); }
+  .b-ic {
+    display: grid; place-items: center;
+    inline-size: 44px; block-size: 44px;
+    border-radius: 12px;
+    background: var(--sc-wash);
+    border: 1px solid var(--sc-soft);
+    color: var(--sc-accent-text);
+    margin-block-end: 14px;
+  }
   .b h3 { margin-block-end: 6px; font-size: 17px; }
   .b p { font-size: 14.5px; }
 
