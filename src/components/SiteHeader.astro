@@ -153,16 +153,48 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
 </header>
 
 <style>
+  /* At the top of the page the header is fully transparent — it blends into the
+     hero gradient. On scroll it detaches into a floating glass capsule. */
   .site-header {
     position: sticky;
     inset-block-start: 0;
     z-index: 50;
-    background: color-mix(in srgb, var(--sc-paper) 82%, transparent);
-    backdrop-filter: saturate(1.4) blur(14px);
-    -webkit-backdrop-filter: saturate(1.4) blur(14px);
-    border-block-end: 1px solid var(--sc-hair);
+    background: transparent;
+    transition: padding-block .32s var(--sc-ease);
   }
-  .nav { display: flex; align-items: center; gap: 18px; padding-block: 13px; }
+  .nav {
+    display: flex; align-items: center; gap: 18px;
+    padding-block: 13px;
+    border: 1px solid transparent;
+    transition: background .32s var(--sc-ease), border-color .32s var(--sc-ease),
+                box-shadow .32s var(--sc-ease), border-radius .32s var(--sc-ease),
+                padding .32s var(--sc-ease);
+  }
+  /* scrolled · the bar lifts off into a translucent glass capsule */
+  .site-header.scrolled { padding-block: 9px; }
+  .site-header.scrolled .nav {
+    background: color-mix(in srgb, var(--sc-paper) 66%, transparent);
+    -webkit-backdrop-filter: saturate(1.6) blur(16px);
+    backdrop-filter: saturate(1.6) blur(16px);
+    border-color: color-mix(in srgb, var(--sc-ink) 12%, transparent);
+    border-radius: 999px;
+    box-shadow: var(--sc-sh-lift);
+    padding-block: 9px;
+    padding-inline: 20px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .site-header, .nav { transition: none; }
+  }
+  /* Over an always-dark hero (article covers) the transparent top-header text is
+     forced light, so it reads in light mode too. Once scrolled, the capsule has its
+     own surface and the text returns to the theme colours. */
+  :global(body.hero-dark) .site-header:not(.scrolled) .logo { color: #fff; }
+  :global(body.hero-dark) .site-header:not(.scrolled) .nl { color: rgba(255, 255, 255, .82); }
+  :global(body.hero-dark) .site-header:not(.scrolled) .nl:hover,
+  :global(body.hero-dark) .site-header:not(.scrolled) .nl[aria-current='page'] { color: #fff; }
+  :global(body.hero-dark) .site-header:not(.scrolled) .menu-btn {
+    color: #fff; border-color: rgba(255, 255, 255, .28); background: rgba(255, 255, 255, .08);
+  }
   .logo {
     display: flex; align-items: center; gap: 9px;
     font-weight: 800; font-size: 19px; letter-spacing: -.02em; color: var(--sc-ink);
@@ -459,5 +491,13 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
       const to = (e as FocusEvent).relatedTarget as Node | null;
       if (to && !mega.contains(to)) setMega(false);
     });
+  }
+
+  // ═══ header · transparent at top, glass capsule once scrolled ═══
+  const header = document.querySelector<HTMLElement>('.site-header');
+  if (header) {
+    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 16);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
   }
 </script>
