@@ -8,7 +8,7 @@ cluster: "SEO לחנויות שופיפיי"
 readingMinutes: 8
 demo: false
 author: "נוי קייטל"
-updatedDate: 2026-07-10
+updatedDate: 2026-07-11
 takeaways:
   - "שיפור מדדי Core Web Vitals (LCP, INP, CLS) הוא קריטי לא רק ל-SEO, אלא ישירות להכנסות החנות."
   - "הגורם מספר אחת לאתר שופיפיי איטי הוא ריבוי אפליקציות או אפליקציות לא יעילות; בצעו ביקורת קבועה."
