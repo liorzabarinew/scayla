@@ -18,8 +18,10 @@ const { post } = Astro.props;
 const { Content, headings } = await render(post);
 const fmt = new Intl.DateTimeFormat('he-IL', { day: 'numeric', month: 'long', year: 'numeric' });
 
-// Table of contents · top-level H2 headings only (silo-friendly, not too deep).
-const toc = headings.filter((h) => h.depth === 2);
+// Table of contents · top-level H2 headings (silo-friendly). Fall back to H3 if the
+// post used H3 for its sections, so the TOC + two-column layout still populate.
+const h2s = headings.filter((h) => h.depth === 2);
+const toc = h2s.length ? h2s : headings.filter((h) => h.depth === 3);
 
 // Byline · resolve author name → expert profile (name, role, url, bioShort).
 const author = post.data.author ? authorMap[post.data.author] : undefined;
@@ -190,7 +192,7 @@ const share = {
       </>
     )}
 
-    <div class="layout narrow">
+    <div class:list={['layout', 'narrow', { 'has-toc': toc.length > 1 }]}>
       {toc.length > 1 && (
         <details class="toc" open>
           <summary>
@@ -489,7 +491,9 @@ const share = {
   /* Two-column layout · sticky TOC ≥1024px, stacked below */
   .layout { display: block; }
   @media (min-width: 1024px) {
-    .layout {
+    /* two-column ONLY when a TOC actually renders · otherwise the lone content column
+       collapses into the 230px TOC slot (that was the narrow-text bug). */
+    .layout.has-toc {
       display: grid; grid-template-columns: 230px 1fr; gap: 40px;
       align-items: start; max-inline-size: 940px;
     }
