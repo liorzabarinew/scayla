@@ -454,5 +454,125 @@
     "keyword": "A/B טסטים בשופיפיי",
     "title": "A/B Testing בשופיפיי: איך לבצע נכון ניסויים שמגדילים המרות",
     "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "אוטומציות AEO לשופיפיי",
+    "title": "אוטומציית AEO: חמש משימות אופטימיזציה ל-AI ש-Make/Zapier יכול לעשות במקומכם",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "חיפוש AI פנימי בשופיפיי",
+    "title": "החיפוש הפנימי החדש: איך אפליקציות חיפוש AI בחנות משפרות GEO חיצוני",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "פרסונליזציה מבוססת AI",
+    "title": "פרסונליזציה עמוקה: איך התאמה אישית של החנות מאותתת סמכות למנועי AI",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "שיווק שותפים וסוכני AI",
+    "title": "סוכני רכישה וקישורי שותפים: האם מודל האפיליאייט שלכם ישרוד את 2026?",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "זכויות יוצרים ביצירות AI",
+    "title": "משפטי-טק: איך להשתמש בתוכן AI בחנות שופיפיי בלי להסתבך בתביעות זכויות יוצרים",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "מעקב המרות מ-AI Overviews",
+    "title": "אפס קליקים, מקסימום מכירות: המדריך למדידת ROI מ-AI Overviews",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "ניהול מוניטין בבינה מלאכותית",
+    "title": "כש-AI משקר על המותג שלך: אסטרטגיית הגנה וניהול מוניטין במנועי תשובות",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "אסטרטגיית וידאו SEO לשופיפיי",
+    "title": "מ-TikTok לגוגל: אסטרטגיית SEO מבוססת וידאו (Shorts, Reels) לחנות שופיפיי",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "אופטימיזציה לחיפוש קולי שופיפיי",
+    "title": "\"היי גוגל, תקני לי\": איך להכין את חנות השופיפיי שלך למכירות דרך חיפוש קולי",
+    "intent": "transactional"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "קידום אתרים אחרי עידן הקוקיז",
+    "title": "עידן הפוסט-קוקיז: איך להשתמש בדאטה הפנימי של שופיפיי ל-SEO מנצח",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "פרסונליזציה גאוגרפית שופיפיי",
+    "title": "מעבר למבצעים: התאמת תוכן ומחירים בזמן אמת לפי מיקום הגולש",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שיווק בוואטסאפ לחנות שופיפיי",
+    "title": "משפך המכירות הבא שלך: מדריך לאוטומציות שיווק בוואטסאפ לשופיפיי",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "יצירת דפי נחיתה עם AI",
+    "title": "Programmatic SEO 2.0: איך לייצר מאות דפי נחיתה ממוקדים בעזרת AI",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "הפיכת UGC למכירות בשופיפיי",
+    "title": "מהאינסטגרם לדף המוצר: אוטומציות להטמעת תוכן גולשים (UGC) שממיר",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "מה זה Composable Commerce",
+    "title": "העתיד שאחרי Headless: האם חנות השופיפיי שלך מוכנה ל-Composable Commerce?",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "תיקון INP בשופיפיי",
+    "title": "מדריך מעשי: איך לאבחן ולתקן בעיות INP (Interaction to Next Paint) בשופיפיי.",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "חיפוש סמנטי בחנות שופיפיי",
+    "title": "שדרוג החיפוש הפנימי: מדריך להטמעת חיפוש סמנטי להגדלת המרות.",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "שיווק שותפים עם שופיפיי קולאבס",
+    "title": "Shopify Collabs: מדריך מלא להקמת תוכנית שותפים ומשפיענים בתוך שופיפיי.",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "אסטרטגיית דאטה צד ראשון שופיפיי",
+    "title": "מעידן הקוקיז לעידן הלקוח: אסטרטגיית דאטה צד-ראשון לחנות שופיפיי.",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "שימושי Shopify Functions למשווקים",
+    "title": "Shopify Functions למשווקים: 5 התאמות טכניות שישפרו לכם את ה-SEO וההמרות.",
+    "intent": "informational"
   }
 ]
