@@ -15,7 +15,7 @@ concurrency:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 55   # תקרת-זמן קשיחה · ריצה תקועה לא שורפת שעות
+    timeout-minutes: 75   # תקרת-זמן קשיחה · ריצה תקועה לא שורפת שעות (4×12ד׳ אשכולות + שלבי-לוואי + build)
     permissions:
       contents: write   # כדי לדחוף בחזרה את המאמרים + הקאברים החדשים
     steps:
@@ -40,6 +40,9 @@ jobs:
           GCP_REGION: us-central1
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # אשכול ממוצע כבר נוגע ב-8 הדקות (המאגר גדל → dedup/QA ארוכים יותר, וסבבי-התיקון
+          # המסלימים מוסיפים re-verify). 13.7 ריצה שלמה נפלה על "timeout after 8m" בכל האשכולות.
+          CLUSTER_TIMEOUT_MIN: 12
         run: node scripts/daily.mjs
 
       # ── fail-CLOSED: build FIRST · broken content must never land on main ──
