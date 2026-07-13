@@ -574,5 +574,95 @@
     "keyword": "שימושי Shopify Functions למשווקים",
     "title": "Shopify Functions למשווקים: 5 התאמות טכניות שישפרו לכם את ה-SEO וההמרות.",
     "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "אופטימיזציה לחנות ב-Claude",
+    "title": "המדריך המלא: כך חנות השופיפיי שלכם תהפוך למקור המלצות ב-Claude 3.5",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "ניהול מוניטין שופיפיי ב-AI",
+    "title": "המתחרה מופיע בתשובות AI על המותג שלך? כך תהפוך את היוצרות",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "אסטרטגיית מיתוג בעידן ה-AI",
+    "title": "Zero-Click Commerce: איך למכור בשופיפיי כשגולשים כבר לא נכנסים לאתר?",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "אופטימיזציה לחיפוש קולי שיחתי",
+    "title": "מעבר ל\"אוקיי גוגל\": אופטימיזציית מוצרים לשיחות מכירה עם AI קולי",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "פרסום ממומן במנועי AI",
+    "title": "GEO פוגש PPC: אסטרטגיית שילוב קידום אורגני וממומן במנועי תשובות",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "שופיפיי קולקטיב SEO",
+    "title": "מדריך SEO לשופיפיי קולקטיב: איך למכור מותגים אחרים בלי לפגוע בקידום",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "אופטימיזציה של תגיות שופיפיי",
+    "title": "מדריך SEO לתגיות (Tags) בשופיפיי: כך תפסיקו לייצר תוכן כפול ותתחילו להרוויח טראפיק",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "מעקב אירועים GA4 שופיפיי",
+    "title": "מדריך GA4 מתקדם: איך לעקוב אחר אירועים (Add to Cart) ולגלות הזדמנויות SEO",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "סכמת ProductGroup שופיפיי",
+    "title": "סכמת ProductGroup בשופיפיי: המדריך לקיבוץ וריאציות מוצר מורכבות בגוגל",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "ניתוח חיפוש פנימי שופיפיי",
+    "title": "מכרה הזהב הפנימי: איך לנתח את החיפושים בחנות ולשפר את אסטרטגיית התוכן",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "Shopify Collective איך זה עובד",
+    "title": "מדריך Shopify Collective ישראל",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "חיבור שופיפיי למערכות סליקה ישראליות",
+    "title": "איך לחבר את שופיפאי לסליקה והנהלת חשבונות בישראל",
+    "intent": "transactional"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "Shopify POS קידום לוקאלי",
+    "title": "מדריך לקידום חנות פיזית עם Shopify POS בישראל",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "אוטומציות שיווק עם Shopify Flow",
+    "title": "מדריך Shopify Flow: הגדלת מכירות עם אוטומציות חכמות",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "ניתוח התנהגות לקוחות ב-GA4",
+    "title": "מדריך ניתוח קוהורט ב-GA4 לחנויות שופיפיי",
+    "intent": "informational"
   }
 ]
