@@ -56,9 +56,21 @@ function runScript(script, args, { timeoutMs = STAGE_TIMEOUT_MS, silentChild = f
   })
 }
 
-const runMachine = (cluster) =>
-  runScript('machine-vertex.mjs', [cluster, '--publish'], { timeoutMs: CLUSTER_TIMEOUT_MS })
-    .then((r) => (r && r.cluster ? r : { ...r, cluster }))
+// כמה נושאים לנסות פר-אשכול לפני ויתור. יעד: 4 מאמרים ליום — נושא שנפסל (כפילות/בטיחות-build)
+// לא "הורג" את האשכול; מנסים את הנושא הבא (המכונה מסמנת את הנפסל כ-done ובוחרת חדש). ──
+const MAX_TOPIC_ATTEMPTS = Math.max(1, parseInt(process.env.MAX_TOPIC_ATTEMPTS || '2', 10) || 2)
+const runMachine = async (cluster) => {
+  let r
+  for (let attempt = 1; attempt <= MAX_TOPIC_ATTEMPTS; attempt++) {
+    r = await runScript('machine-vertex.mjs', [cluster, '--publish'], { timeoutMs: CLUSTER_TIMEOUT_MS })
+    r = r && r.cluster ? r : { ...r, cluster }
+    // רק 'skipped' (כפילות-קרובה / YAML-שבור) מייצר 0 מאמרים → מנסים נושא אחר. published/banked/
+    // shelved/error כבר "השתמשו" בנושא ואין טעם לחזור עליהם.
+    if (r.status !== 'skipped') break
+    if (attempt < MAX_TOPIC_ATTEMPTS) console.error(`↻ ${cluster}: ${r.reason || 'skipped'} — נושא הבא (ניסיון ${attempt + 1}/${MAX_TOPIC_ATTEMPTS})`)
+  }
+  return r
+}
 
 // ── 1. מנוע-רעיונות (best-effort) ──
 let ideas = null
@@ -99,6 +111,7 @@ if (on('RUN_AUDIT')) {
 // ── דיווח מאוחד אחד לטלגרם ──
 const published = results.filter((r) => r.status === 'published').length
 const banked = results.filter((r) => r.status === 'banked').length
+const shelved = results.filter((r) => r.status === 'shelved').length
 const skipped = results.filter((r) => r.status === 'skipped').length
 const errored = results.filter((r) => r.status === 'error').length
 
@@ -106,9 +119,12 @@ const lines = [`🏭 <b>מכונת התוכן · ריצה יומית</b>`]
 if (ideas) lines.push(ideas.status === 'ok'
   ? `💡 רעיונות: +${ideas.added || 0} חדשים · מאגר ${ideas.totalTopics || '?'}`
   : `💡 רעיונות: ⚠️ ${String(ideas.reason || 'נכשל').slice(0, 60)}`)
-lines.push(`📝 ${published} עלו · ${banked} למאגר · ${skipped} נפסלו · ${errored} שגיאות`)
+lines.push(`📝 ${published} עלו · ${banked} למאגר · ${shelved} נגנזו · ${skipped} נפסלו · ${errored} שגיאות`)
 const body = results.map(articleLine).filter(Boolean).join('\n')
 if (body) lines.push('', body)
+// מאמרים שנגנזו (לא עברו QA אחרי כל סבבי-התיקון המסלימים) · דיווח מפורש לליאור עם הסיבה.
+const shelvedBody = results.filter((r) => r.status === 'shelved').map((r) => `⛔ ${r.title || r.slug} — ${r.shelveReason || 'לא עבר QA'}`).join('\n')
+if (shelvedBody) lines.push('', shelvedBody)
 if (refresh) lines.push('', refresh.status === 'refreshed'
   ? `♻️ רענון: ${refresh.changes} נתונים · ${refresh.title || refresh.slug}`
   : refresh.status === 'verified'
@@ -124,5 +140,5 @@ if (integrity) lines.push(integrity.ok === false
 await notify(lines.join('\n'))
 
 // JSON מסכם ל-stdout (ה-workflow קורא כדי להחליט אם לפרוס).
-console.log('DAILY_SUMMARY:' + JSON.stringify({ published, banked, skipped, errored, results, ideas, fixer, refresh, integrity }))
+console.log('DAILY_SUMMARY:' + JSON.stringify({ published, banked, shelved, skipped, errored, results, ideas, fixer, refresh, integrity }))
 process.exit(errored === results.length && results.length > 0 ? 1 : 0)

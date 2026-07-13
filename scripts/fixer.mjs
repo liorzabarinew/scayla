@@ -23,6 +23,7 @@ import {
   fetchSourceTexts, injectSources, validateLinks, fixFmQuotes, appendCta,
   setDraft, ARTICLES_DIR, MAX_FIX_ROUNDS,
   tidyMarkdown, lintArticle, stampReadingMinutes, sanitizeSlug,
+  fixModelForRound, fixRegionForRound, hasHardIssue, HARD_ISSUE_RE,
 } from './machine-vertex.mjs'
 import { notify } from './notify.mjs'
 
@@ -85,13 +86,14 @@ async function refine(md0, slug0) {
   }
   issues = [...new Set(issues.filter(Boolean))]
 
-  // ── FIX → RE-VERIFY loop ──
+  // ── FIX → RE-VERIFY loop · המודל מטפס בכל סבב (סבב 1 = Flash · סבב 2+ = Pro) ──
   let round = 0, note = issues.length ? 'fixing' : 'clean'
   while (issues.length && round < MAX_FIX_ROUNDS) {
     round++
     const aggressive = round >= MAX_FIX_ROUNDS
-    console.error(`  fix round ${round}/${MAX_FIX_ROUNDS}${aggressive ? ' [aggressive]' : ''} · ${issues.length} issue(s)`)
-    const fx = parseArticle((await callGemini(fixPrompt(`SLUG: ${slug}\n\n${md}`, issues, { aggressive }), { maxTokens: 16000, temperature: 0.3 })).text)
+    const fixModel = fixModelForRound(round), fixRegion = fixRegionForRound(round)
+    console.error(`  fix round ${round}/${MAX_FIX_ROUNDS}${aggressive ? ' [aggressive]' : ''} · [${fixModel}] · ${issues.length} issue(s)`)
+    const fx = parseArticle((await callGemini(fixPrompt(`SLUG: ${slug}\n\n${md}`, issues, { aggressive }), { maxTokens: 16000, temperature: 0.3, model: fixModel, region: fixRegion })).text)
     if (fx.slug && fx.md.startsWith('---')) { slug = fx.slug; md = assemble(fx.md) }
     else { console.error('  ⚠ fixer output unparseable — ending loop'); break }
     const rl = lintArticle(md)
@@ -110,12 +112,14 @@ async function refine(md0, slug0) {
     note = issues.length ? `fixing-r${round}` : `clean-r${round}`
   }
 
-  // ── SHIP · הסרת needsReview + draft:false, אף פעם לא מחזיקים ──
-  md = md.replace(/^needsReview:.*\n?/m, '')
-  md = setDraft(md, false)
+  // ── SHIP or SHELVE · נותרה בעיה קשה (מבנה/ייחוס) אחרי כל הסבבים המסלימים → גניזה: draft:true
+  //    (מוסתר מהאתר) + יציאה מתור-הביקורת (לא מעובד לנצח). אחרת → שיגור: draft:false. ──
+  const shelved = hasHardIssue(issues)
+  md = md.replace(/^needsReview:.*\n?/m, '') // יוצא מהתור בכל מקרה — שוגר או נגנז-סופית
+  md = setDraft(md, shelved)
   md = bumpUpdated(md)
   md = stampReadingMinutes(md)
-  return { md, slug: sanitizeSlug(slug), note, residual: issues.slice(0, 6), rounds: round }
+  return { md, slug: sanitizeSlug(slug), note, residual: issues.slice(0, 6), rounds: round, shelved }
 }
 
 async function main() {
@@ -140,18 +144,19 @@ async function main() {
       const r = await refine(readFileSync(path, 'utf8'), slug)
       const outPath = join(ARTICLES_DIR, `${r.slug}.md`)
       writeFileSync(outPath, r.md.endsWith('\n') ? r.md : r.md + '\n')
-      console.error(`✓ שוגר ${r.slug} (${r.rounds} סבב, ${r.note}${r.residual.length ? `, ${r.residual.length} שרידי` : ''})`)
-      done.push({ slug: r.slug, rounds: r.rounds, note: r.note, residual: r.residual.length })
+      console.error(`${r.shelved ? '⛔ נגנז' : '✓ שוגר'} ${r.slug} (${r.rounds} סבב, ${r.note}${r.residual.length ? `, ${r.residual.length} שרידי` : ''})`)
+      done.push({ slug: r.slug, rounds: r.rounds, note: r.note, residual: r.residual.length, shelved: r.shelved })
     } catch (e) {
       console.error(`✗ ${slug}: ${String(e).slice(0, 160)}`)
       done.push({ slug, error: String(e).slice(0, 160) })
     }
   }
 
-  const shipped = done.filter((d) => !d.error).length
-  const withResidual = done.filter((d) => d.residual > 0).length
-  await notify(`🛠 <b>מכונת-התיקונים</b>\n${shipped}/${done.length} שוגרו לאוויר${withResidual ? ` · ${withResidual} עם שרידים` : ' · הכל נקי'}\n${done.map((d) => d.error ? `✗ ${d.slug}` : `✓ ${d.slug} (${d.rounds} סבב)`).join('\n')}`)
-  result({ status: 'ok', fixed: shipped, articles: done })
+  const shipped = done.filter((d) => !d.error && !d.shelved).length
+  const shelved = done.filter((d) => d.shelved).length
+  const withResidual = done.filter((d) => !d.shelved && d.residual > 0).length
+  await notify(`🛠 <b>מכונת-התיקונים</b>\n${shipped}/${done.length} שוגרו לאוויר${shelved ? ` · ⛔ ${shelved} נגנזו (לא עברו QA אחרי ${MAX_FIX_ROUNDS} סבבים)` : ''}${withResidual ? ` · ${withResidual} עם שרידים` : ''}\n${done.map((d) => d.error ? `✗ ${d.slug}` : d.shelved ? `⛔ ${d.slug} (נגנז · ${d.rounds} סבב)` : `✓ ${d.slug} (${d.rounds} סבב)`).join('\n')}`)
+  result({ status: 'ok', fixed: shipped, shelved, articles: done })
 }
 
 main().catch((e) => { console.error('fixer fatal:', String(e && e.stack ? e.stack : e).slice(0, 300)); result({ status: 'error', reason: String(e).slice(0, 200) }); process.exit(1) })

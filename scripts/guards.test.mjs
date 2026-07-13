@@ -4,6 +4,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import {
   schemaViolations, tidyMarkdown, sanitizeSlug, stampReadingMinutes, mostSimilarArticle, lintArticle,
+  fixModelForRound, fixRegionForRound, hasHardIssue,
 } from './machine-vertex.mjs'
 
 // frontmatter תקין לבנייה מהירה של fixtures
@@ -78,4 +79,26 @@ test('mostSimilarArticle: near-duplicate title ≥0.8 is detected', () => {
 test('mostSimilarArticle: unrelated title returns null', () => {
   const arts = [{ title: 'מהירות אתר Core Web Vitals', slug: 'core-web-vitals' }]
   assert.equal(mostSimilarArticle('בניית קישורים פנימיים', 'internal-links', arts), null)
+})
+
+// ── QA fix-ladder (בקשת ליאור): מודל מסלים פר-סבב + גניזה רק על בעיה קשה ──
+test('fixModelForRound: round 1 is Flash (cheap/fast), round 2+ is Pro (strong)', () => {
+  assert.match(fixModelForRound(1), /flash/)
+  assert.match(fixModelForRound(2), /pro/)
+  assert.match(fixModelForRound(3), /pro/)
+  assert.match(fixModelForRound(9), /pro/) // מעבר לאורך הסולם → נשאר על החזק
+  assert.match(fixModelForRound(0), /flash/) // הגנה: round<1 מתקבע ל-1
+})
+test('fixRegionForRound: Flash→global, Pro→us-central1 (endpoint per model)', () => {
+  assert.equal(fixRegionForRound(1), 'global')
+  assert.equal(fixRegionForRound(2), 'us-central1')
+})
+test('hasHardIssue: structural/attribution issues shelve; soft claims/numbers do not', () => {
+  assert.equal(hasHardIssue(['מבנה שבור · תקן']), true)
+  assert.equal(hasHardIssue(['כותרת לא תקינה (אורך/מבנה)']), true)
+  assert.equal(hasHardIssue(['התוכן קטוע · השלם']), true)
+  assert.equal(hasHardIssue(['ייחוס שגוי של מקור']), true)
+  assert.equal(hasHardIssue(['הסר או רכך טענה לא-מאומתת: x']), false) // מוסר בסבב האגרסיבי
+  assert.equal(hasHardIssue(['מספר לא-נתמך-במקור: "y"']), false)      // מוסר בסבב האגרסיבי
+  assert.equal(hasHardIssue([]), false)
 })
