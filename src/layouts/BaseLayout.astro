@@ -31,14 +31,19 @@ const {
   ogType = 'website',
   noIndex = false,
   ogImage = '/og.png',
-  ogImageAlt = 'Scayla · נראות ב-Google וב-AI לחנויות שופיפיי',
+  ogImageAlt = 'קידום אורגני בגוגל ובמנועי AI לחנויות · Scayla',
   ogImageWidth = 1200,
   ogImageHeight = 630,
   breadcrumbs,
 } = Astro.props;
 
+// ── Share card (Lior, 2026-07-13): SITE-WIDE fixed share copy + cover. Every page —
+//    home, features, magazine, legal — shares with the SAME branded card. Per-page
+//    ogImage props are intentionally ignored; the <title> tag stays per-page for SEO. ──
+const SHARE_TITLE = 'קידום אורגני בגוגל ובמנועי AI לחנויות · Scayla';
+const SHARE_DESCRIPTION = 'קידום אורגני אוטומטי בגוגל ובמנועי AI · נבנה ע״י אנשי שיווק עם 15 שנות ניסיון באיקומרס. 14 יום ניסיון בלי להכניס כרטיס אשראי.';
 // Absolute URL for the social share image (og:image requires an absolute URL)
-const ogImageUrl = new URL(ogImage, Astro.site).href;
+const ogImageUrl = new URL('/og.png', Astro.site).href;
 
 // Clean URL · Vercel cleanUrls serves /about (no .html), so the canonical must
 // match the served URL. build.format:'file' gives us pathnames like /about.html;
@@ -86,8 +91,8 @@ const breadcrumbLd = {
     {noIndex && <meta name="robots" content="noindex, nofollow" />}
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
     <meta property="og:type" content={ogType} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:title" content={SHARE_TITLE} />
+    <meta property="og:description" content={SHARE_DESCRIPTION} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="he_IL" />
     <meta property="og:site_name" content="Scayla" />
