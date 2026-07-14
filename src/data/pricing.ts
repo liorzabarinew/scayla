@@ -7,10 +7,11 @@
 // ניטור AI · מאמרים בחודש · מתחרים במעקב · מוצרים מנוטרים
 // (First-draft numbers · the client refines later.)
 
-// PLACEHOLDER: replace with the real Shopify App Store listing URL at launch.
-// App not published to the Shopify App Store yet → "התקינו ב-Shopify" points to
-// /pricing meanwhile. Swap to the real listing URL the day the app goes live.
-export const SHOPIFY_APP_URL = '/pricing';
+// TEMPORARY (Lior, 2026-07-14): the app is NOT public on the Shopify App Store yet,
+// so "התקינו ב-Shopify" opens the SAME Calendly demo popup as "קבעו דמו" (any
+// calendly.com link → popup, wired site-wide in BaseLayout). Keep this identical to
+// DEMO_URL below. REVERT the day the app goes live → set to the real App Store URL.
+export const SHOPIFY_APP_URL = 'https://calendly.com/lior-mrmake/30min';
 
 // Annual billing · 20% off the monthly price (Lior's call, 2026-07-11). One knob:
 // change ANNUAL_DISCOUNT and every price + badge on the card updates automatically.
