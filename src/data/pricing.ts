@@ -13,15 +13,9 @@
 // DEMO_URL below. REVERT the day the app goes live → set to the real App Store URL.
 export const SHOPIFY_APP_URL = 'https://calendly.com/lior-mrmake/30min';
 
-// Annual billing · 20% off the monthly price (Lior's call, 2026-07-11). One knob:
-// change ANNUAL_DISCOUNT and every price + badge on the card updates automatically.
-export const ANNUAL_DISCOUNT = 0.2;
-/** % off, shown on the toggle + savings line (e.g. 20). */
-export const ANNUAL_DISCOUNT_PCT = Math.round(ANNUAL_DISCOUNT * 100);
-/** Effective per-month price when billed annually, rounded to a whole dollar. */
-export const annualPerMonth = (price: number) => Math.round(price * (1 - ANNUAL_DISCOUNT));
-/** Total charged once per year when billed annually, rounded to a whole dollar. */
-export const annualTotal = (price: number) => Math.round(price * 12 * (1 - ANNUAL_DISCOUNT));
+// Monthly billing only · the Shopify app bills every 30 days (Shopify Billing API).
+// No annual plan yet — annual pricing was removed from the site to match the app
+// (2026-07-14). When an annual plan ships in the app, re-add the toggle + helpers here.
 
 // The "קבעו דמו" destination · Lior's Calendly. Loaded site-wide (BaseLayout):
 // clicking any demo CTA opens the Calendly popup; if the widget script hasn't
