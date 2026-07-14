@@ -13,72 +13,6 @@
   },
   {
     "cluster": "geo-ai",
-    "keyword": "המלצות מוצרים chatgpt",
-    "title": "איך ChatGPT בוחר אילו מוצרים להמליץ עליהם, ואיך להיכנס לרשימה",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "google ai overviews עברית",
-    "title": "אופטימיזציה ל-Google AI Overviews לדפי מוצר וקטגוריה בעברית",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "perplexity אופטימיזציה",
-    "title": "להופיע ב-Perplexity: מדריך ציטוט מקורות לחנויות ישראליות",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "llms.txt שופיפיי",
-    "title": "llms.txt לשופיפיי: מה זה, איך מטמיעים ומה זה נותן ל-AI",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "תוכן למנועי ai",
-    "title": "תוכן ידידותי ל-LLM: איך לכתוב שמנועי AI יצטטו אותך",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "faq למנועי ai",
-    "title": "פורמט שאלה-תשובה (FAQ) שמנצח בתשובות AI: תבנית מוכחת",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "entity seo מותג",
-    "title": "נתונים מובנים ו-Entities: איך לבנות ישות מותג ש-AI מזהה",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "למה ai לא מצטט אותי",
-    "title": "למה AI לא מצטט את החנות שלך, ו-9 סיבות טכניות לתקן",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "מעקב אזכורי מותג ai",
-    "title": "מעקב אזכורי מותג במנועי AI: אילו כלים ומה למדוד בעברית",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "geo בעברית",
-    "title": "GEO לשוק הישראלי: איך לנצח בתשובות AI בשאילתות בעברית",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "ביקורות ואמון ל-ai",
-    "title": "ביקורות ו-UGC כדלק לציטוטי AI: אסטרטגיית אמון למנועי תשובה",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
     "keyword": "סמכות נושאית geo",
     "title": "בניית סמכות נושאית (Topical Authority) שמנועי AI סומכים עליה",
     "intent": "informational"
@@ -663,6 +597,126 @@
     "cluster": "guides",
     "keyword": "ניתוח התנהגות לקוחות ב-GA4",
     "title": "מדריך ניתוח קוהורט ב-GA4 לחנויות שופיפיי",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "אופטימיזציה ל-Shopping Graph",
+    "title": "מעבר לפיד: איך להכניס את חנות שופיפיי ל-Shopping Graph של גוגל",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "מדידת סנטימנט מותג ב-AI",
+    "title": "מעבר לאזכורים: כלים ושיטות למדידת סנטימנט המותג שלך בתשובות AI בעברית",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "מניעת קניבליזציית AI",
+    "title": "ה-AI עונה במקומך? 7 אסטרטגיות למניעת קניבליזציית תשובות והחזרת התנועה לאתר",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "פרומפטים ל-Shopify Sidekick",
+    "title": "שאל את סיידקיק: 10 פרומפטים ל-Shopify Sidekick שישדרגו את ה-AEO שלכם עוד היום",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "הגנה מ-Negative AEO",
+    "title": "המתחרים תוקפים עם AI? מדריך הגנה, זיהוי וטיפול ב-Negative AEO נגד חנות השופיפיי שלך",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "E-E-A-T בשופיפיי",
+    "title": "איך להוכיח מומחיות ואמינות (E-E-A-T) בדפי מוצר וקטגוריה",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "אופטימיזציה לגוגל לנז",
+    "title": "איך להכין את תמונות המוצר בשופיפיי לחיפוש חזותי בגוגל",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "דאטה צד אפס ו-SEO",
+    "title": "איך להשתמש בקוויזים וסקרים בשופיפיי ליצירת תוכן מותאם אישית",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "אוטומציות שיווק עם שופיפיי",
+    "title": "מדריך לשימוש ב-Shopify Flow ואפליקציות ליצירת אוטומציות מכירה",
+    "intent": "transactional"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "שדרוג צ'קאאוט בשופיפיי",
+    "title": "איך לעבור ל-Checkout Extensibility בלי לאבד המרות ומעקב אנליטיקס",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שיפור חיפוש פנימי בשופיפיי",
+    "title": "\"לא מצאנו כלום\": מדריך לאופטימיזציית החיפוש הפנימי עם אפליקציית Search & Discovery",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "אסטרטגיית משלוחים ככלי שיווקי",
+    "title": "לא רק עלות: איך להפוך את המשלוחים (וההחזרות) למנוע צמיחה ובידול תחרותי",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "בניית קהילה לחנות שופיפיי",
+    "title": "לא רק לקוחות, קהילה: המדריך להקמת קהילת מותג פעילה סביב חנות השופיפיי שלך",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "אופטימיזציה לחיפוש ויזואלי",
+    "title": "מעבר ל-alt text: אסטרטגיית חיפוש ויזואלי (Lens, Pinterest) לחנות שופיפיי",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שיווק באמצעות שאלונים",
+    "title": "דאטה-צד-אפס בפעולה: בניית שאלון \"איזה מוצר מתאים לך\" שמזין את הדאטה ומוכר",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "אסטרטגיית הנחות וקופונים",
+    "title": "איך מבצעים משפיעים על SEO ודירוגים בחנות שופיפיי",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "ניתוח לוגים שופיפיי",
+    "title": "מדריך מעשי: אבחון בעיות סריקה של גוגל ובוטים של AI",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "Shopify Marketplace Connect",
+    "title": "מדריך לסינכרון חנות שופיפיי עם אמזון, וולמארט ואיביי",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "סכמת Product Variants",
+    "title": "כך תציגו וריאציות של מוצרים (צבע/מידה) בגוגל וב-AI",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "רענון תוכן באיקומרס",
+    "title": "המדריך לזיהוי ותיקון \"דעיכת תוכן\" (Content Decay) בשופיפיי",
     "intent": "informational"
   }
 ]
