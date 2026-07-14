@@ -87,7 +87,7 @@ const jsonLd = {
       <h1>מחירון שמחזיר את עצמו מהלקוח הראשון שמגיע מ-AI</h1>
       <p class="lede">
         מערכת אוטומטית שעובדת בשביל העסק שלך, וצוות שלא באמת צריך לישון בלילה.
-        החל מ-<span class="num">$49</span> לחודש ו-<span class="num">14</span> יום ללא עלות.
+        החל מ-<span class="num">$49</span> לחודש <b class="hl-gold">ו-14 יום ללא עלות.</b>
       </p>
     </div>
   </section>
@@ -182,6 +182,16 @@ const jsonLd = {
 
 <style>
   .price-hero { padding-block-end: 8px; }
+  /* "ו-14 יום ללא עלות" · highlighted in our brand yellow (marker) + bold so it POPS */
+  .hl-gold {
+    font-weight: 800;
+    color: var(--sc-gold-ink);
+    background: var(--accent-gold);
+    padding: 1px 9px;
+    border-radius: 7px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
   .plans { padding-block-start: 20px; }
   .more-faq { margin-block-start: 8px; font-weight: 600; }
   .price-cta { padding-block-end: clamp(24px, 4vw, 48px); }
