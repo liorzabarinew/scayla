@@ -66,13 +66,13 @@
      badges and small energetic highlights. A warm soft yellow · clearly
      distinct from the semantic positive green AND the critical red (#ff3b30),
      so it never reads as "negative". Text on gold = gold-ink dark (AA · 8.6:1). */
-  --accent-gold: #FFC24B;
+  --accent-gold: #24C88C;
   --sc-gold: var(--accent-gold);
-  --sc-gold-deep: #f0ad2e;      /* hover for gold solids (ink stays AA · 7.1:1) */
-  --sc-gold-ink: #3a2a00;       /* dark ink text ON gold (AA · ~8.6:1) */
-  --sc-gold-text: #7a5600;      /* gold used AS text on paper (AA · 6.1:1) */
-  --sc-gold-bg: #fff6e4;        /* soft gold wash */
-  --sc-gold-bd: #ffe6b3;        /* borders on gold wash */
+  --sc-gold-deep: #17A876;      /* hover for gold solids (ink stays AA · 7.1:1) */
+  --sc-gold-ink: #063a27;       /* dark ink text ON gold (AA · ~8.6:1) */
+  --sc-gold-text: #0A6E4C;      /* gold used AS text on paper (AA · 6.1:1) */
+  --sc-gold-bg: #e7faf1;        /* soft gold wash */
+  --sc-gold-bd: #bfeed9;        /* borders on gold wash */
 
   /* Back-compat aliases · legacy --accent-coral / --sc-coral-* now resolve to
      the gold ramp so older pages keep working without a coral surface. */
@@ -133,9 +133,9 @@
   --sc-red-bd: #5c2a25;
 
   /* gold roles on dark paper (solid gold stays identical in both themes) */
-  --sc-gold-text: #ffcf6b;   /* AA on dark paper · ~13:1 */
-  --sc-gold-bg: #2e2410;
-  --sc-gold-bd: #5c4a1f;
+  --sc-gold-text: #43DBA4;   /* AA on dark paper · ~13:1 */
+  --sc-gold-bg: #0f2b20;
+  --sc-gold-bd: #205c44;
   /* legacy coral aliases on dark */
   --sc-coral-text: var(--sc-gold-text);
   --sc-coral-bg: var(--sc-gold-bg);

@@ -150,13 +150,13 @@ section { padding-block: clamp(48px, 7vw, 88px); }
 .btn-gold, .btn-coral {
   background: var(--accent-gold);
   color: var(--sc-gold-ink);
-  box-shadow: 0 8px 22px -10px rgba(240, 173, 46, .55);
+  box-shadow: 0 8px 22px -10px rgba(36, 200, 140, .55);
 }
 .btn-gold:hover, .btn-coral:hover {
   background: var(--sc-gold-deep);
   color: var(--sc-gold-ink);
   transform: translateY(-1px);
-  box-shadow: 0 12px 30px -10px rgba(240, 173, 46, .65);
+  box-shadow: 0 12px 30px -10px rgba(36, 200, 140, .65);
 }
 .btn-sm { padding: 9px 17px; font-size: 14px; }
 .btn-lg { padding: 14px 30px; font-size: 16px; }
@@ -177,10 +177,10 @@ section { padding-block: clamp(48px, 7vw, 88px); }
 /* white-on-gradient variant (inside gradient CTA bands) keeps the same heft */
 .btn-hero.btn-white { box-shadow: 0 14px 34px -12px rgba(0, 0, 0, .4); }
 /* gold hero variant · the v2 warm-soft-yellow primary that pops off the indigo */
-.btn-hero.btn-gold, .btn-hero.btn-coral { box-shadow: 0 14px 34px -12px rgba(240, 173, 46, .6); }
+.btn-hero.btn-gold, .btn-hero.btn-coral { box-shadow: 0 14px 34px -12px rgba(36, 200, 140, .6); }
 .btn-hero.btn-gold:hover, .btn-hero.btn-coral:hover {
   transform: translateY(-2px);
-  box-shadow: 0 20px 44px -12px rgba(240, 173, 46, .72);
+  box-shadow: 0 20px 44px -12px rgba(36, 200, 140, .72);
 }
 
 /* Secondary demo button · calm, clearly subordinate to the hero install CTA */
