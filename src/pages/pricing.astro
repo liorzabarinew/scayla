@@ -83,7 +83,7 @@ const jsonLd = {
 <BaseLayout title={title} description={description}>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   <section class="price-hero">
-    <div class="narrow center">
+    <div class="wrap center">
       <h1>מחירון שמחזיר את עצמו מהלקוח הראשון שמגיע מ-AI</h1>
       <p class="lede">
         מערכת אוטומטית שעובדת בשביל העסק שלך, וצוות שלא באמת צריך לישון בלילה.
@@ -182,6 +182,8 @@ const jsonLd = {
 
 <style>
   .price-hero { padding-block-end: 8px; }
+  /* hero spans the body width (1080) for consistency; the paragraph stays readable */
+  .price-hero .lede { max-inline-size: 56ch; margin-inline: auto; }
   /* "ו-14 יום ללא עלות" · highlighted in our brand yellow (marker) + bold so it POPS */
   .hl-gold {
     font-weight: 800;

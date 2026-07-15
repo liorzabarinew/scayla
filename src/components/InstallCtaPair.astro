@@ -7,7 +7,7 @@
  * lighter (outline/ghost), never smaller. The primary is the loud filled surface;
  * the demo is the calm outline beside it.
  *
- * Under the primary: tight microcopy "14 יום חינם | ללא כרטיס אשראי" ·
+ * Under the primary: tight microcopy "14 יום חינם · ללא כרטיס אשראי" ·
  * width-locked to the button (inline-size:0 + min-inline-size:100% trick),
  * so it may wrap to two lines but can never grow wider than the button.
  * Demo link pulls from DEMO_URL (single config value · opens in a new tab).
@@ -48,7 +48,7 @@ const demoClass = onGradient
 <div class:list={['cta-pair', { center }]}>
   <span class="cta-col">
     <a href={SHOPIFY_APP_URL} class={primaryClass}>התקינו ב-Shopify</a>
-    <span class:list={['cta-micro', { grad: onGradient }]}>14 יום חינם | ללא כרטיס אשראי</span>
+    <span class:list={['cta-micro', { grad: onGradient }]}>14 יום חינם · ללא כרטיס אשראי</span>
   </span>
   <span class="cta-col">
     <a href={DEMO_URL} class={demoClass} target="_blank" rel="noopener">{demoLabel}</a>

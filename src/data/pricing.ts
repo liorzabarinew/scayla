@@ -46,16 +46,12 @@ export const tiers: Tier[] = [
     price: 49,
     tagline: 'לחנות שרוצה להתחיל להופיע ב-AI.',
     axes: [
-      { label: 'ניטור AI', value: 'שבועי' },
       { label: 'מאמרים בחודש', value: '8', num: true },
-      { label: 'מתחרים במעקב', value: '3', num: true },
       { label: 'מוצרים מנוטרים', value: '100', num: true },
+      { label: 'מתחרים במעקב', value: '3', num: true },
+      { label: 'ניטור AI', value: 'ChatGPT' },
     ],
-    features: [
-      'צופה תשובות חי (ChatGPT)',
-      'מתקן 404 + סכמות בסיס',
-      'חיבור Google Search Console',
-    ],
+    features: [],
   },
   {
     name: 'Scale',
@@ -63,16 +59,13 @@ export const tiers: Tier[] = [
     tagline: 'למותג שרוצה להוביל את הקטגוריה.',
     popular: true,
     axes: [
-      { label: 'ניטור AI', value: 'פעמיים בשבוע' },
       { label: 'מאמרים בחודש', value: '20', num: true },
-      { label: 'מתחרים במעקב', value: '6', num: true },
       { label: 'מוצרים מנוטרים', value: '500', num: true },
+      { label: 'מתחרים במעקב', value: '6', num: true },
+      { label: 'ניטור AI', value: 'ChatGPT + Gemini' },
     ],
     features: [
-      'כל מה שב-Growth',
-      'מדידה רב-מנועית · ChatGPT + Gemini',
-      'FAQ אוטומטי לעמודי מוצר',
-      'חיבור GA4 + דוח ROI לפני ואחרי',
+      'FAQ אוטומטי לעמודי קטגוריה',
     ],
   },
   {
@@ -80,16 +73,14 @@ export const tiers: Tier[] = [
     price: 99,
     tagline: 'לקטלוג גדול ולנפח גבוה.',
     axes: [
-      { label: 'ניטור AI', value: 'יומי' },
       { label: 'מאמרים בחודש', value: '40', num: true },
-      { label: 'מתחרים במעקב', value: '12', num: true },
       { label: 'מוצרים מנוטרים', value: '2,000', num: true },
+      { label: 'מתחרים במעקב', value: '12', num: true },
+      { label: 'ניטור AI', value: 'ChatGPT + Gemini' },
     ],
     features: [
-      'כל מה שב-Scale',
-      'פעולות בכמות (Bulk) על כל הקטלוג',
-      'דוחות מתקדמים + KPI מותאמים',
-      'עדיפות בתמיכה',
+      'FAQ אוטומטי לעמודי קטגוריה',
+      'תמיכת פרימיום',
     ],
   },
 ];

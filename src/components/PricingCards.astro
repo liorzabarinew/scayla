@@ -28,14 +28,29 @@ import { tiers, SHOPIFY_APP_URL } from '../data/pricing';
             </div>
           ))}
         </div>
-        <ul>
-          {t.features.map((f) => <li>{f}</li>)}
-        </ul>
+        {t.features.length > 0 && (
+          <ul>
+            {t.features.map((f) => <li>{f}</li>)}
+          </ul>
+        )}
         <a href={SHOPIFY_APP_URL} class:list={['btn', t.popular ? 'btn-white' : 'btn-ghost']}>
           התחילו ב-Shopify
         </a>
       </article>
     ))}
+  </div>
+
+  <!-- Shared strip · every plan includes these (Lior's final pricing, 2026-07-15) -->
+  <div class="all-plans">
+    <p class="ap-head">כל המסלולים כוללים</p>
+    <ul class="ap-grid">
+      <li>ניטור AI שבועי</li>
+      <li>Live answer viewer · צפייה בתשובות ה-AI החיות</li>
+      <li>תיקון 404 + Schema (JSON-LD)</li>
+      <li>חיבור Google Search Console + Google Analytics</li>
+      <li>דוחות ROI (לפני/אחרי) + דוח שבועי</li>
+      <li>14 יום ניסיון חינם, בלי כרטיס אשראי</li>
+    </ul>
   </div>
 </div>
 
@@ -117,6 +132,27 @@ import { tiers, SHOPIFY_APP_URL } from '../data/pricing';
   li::before { content: '✓'; color: var(--sc-pos); font-weight: 800; flex: none; }
   .pl.pop li::before { color: #c9ffdc; }
   .btn { margin-block-start: auto; }
+
+  /* Shared "every plan includes" strip · matches the card feature-list style */
+  .all-plans {
+    margin-block-start: 26px;
+    padding: 22px clamp(18px, 5vw, 32px);
+    background: var(--sc-wash);
+    border: 1px solid var(--sc-soft);
+    border-radius: var(--sc-r-hero);
+  }
+  .ap-head {
+    text-align: center; font-size: 12.5px; font-weight: 800;
+    letter-spacing: .05em; color: var(--sc-mv); margin: 0 0 16px;
+  }
+  .ap-grid {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 26px;
+  }
+  @media (max-width: 820px) { .ap-grid { grid-template-columns: 1fr; max-inline-size: 420px; margin-inline: auto; } }
+  .ap-grid li { display: flex; gap: 9px; align-items: flex-start; font-size: 14px; line-height: 1.5; color: var(--sc-ink); }
+  .ap-grid li::before { content: '✓'; color: var(--sc-pos); font-weight: 800; flex: none; }
+
   .pnote {
     text-align: center; font-size: 13.5px; color: var(--sc-muted);
     margin-block-start: 22px;

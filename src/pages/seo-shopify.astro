@@ -26,7 +26,7 @@ const faq = [
 
 <BaseLayout title={title} description={description}>
   <section class="svc-hero">
-    <div class="narrow center">
+    <div class="wrap center">
       <span class="eyebrow">קידום אורגני ל-Shopify</span>
       <h1>קידום אורגני לחנות שופיפיי · בלי סוכנות, בלי כאב ראש</h1>
       <p class="lede">
@@ -101,6 +101,7 @@ const faq = [
 
 <style>
   .svc-hero { padding-block-end: 16px; }
+  .svc-hero .lede { max-inline-size: 62ch; margin-inline: auto; }
   .cta-note { font-size: 13px; color: var(--sc-disabled); margin-block-start: 14px; }
   .alt-bg { background: var(--sc-card); }
   :global([data-theme='dark']) .alt-bg { background: #17141d; }

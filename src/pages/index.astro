@@ -635,7 +635,9 @@ const team = [
   /* hero install/demo pair sits SIDE-BY-SIDE like the final section (same-size
      buttons, differ only by fill); stacks only on small mobile (handled in the
      component's own ≤480px rule). */
-  @media (min-width: 481px) {
+  /* 560, not 481: below this the two 232px buttons don't fit side-by-side, so let
+     them wrap/stack instead of getting clipped by the hero's overflow-x:clip. */
+  @media (min-width: 560px) {
     .hero-side :global(.cta-pair) { flex-wrap: nowrap; }
   }
   .hero h1 {

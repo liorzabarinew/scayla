@@ -554,7 +554,7 @@ const share = {
     margin-block: 36px 12px; scroll-margin-block-start: 84px;
   }
   .prose :global(h3) { margin-block: 28px 10px; scroll-margin-block-start: 84px; }
-  .prose :global(p) { margin-block-end: 16px; font-size: 16px; line-height: 1.85; color: var(--sc-ink); font-weight: 400; unicode-bidi: plaintext; }
+  .prose :global(p) { margin-block-end: 16px; font-size: 16px; line-height: 1.85; color: var(--sc-ink); font-weight: 400; unicode-bidi: isolate; }
   .prose :global(strong) { font-weight: 700; }
   .prose :global(ul), .prose :global(ol) { padding-inline-start: 22px; margin-block-end: 16px; display: grid; gap: 8px; }
   /* isolate (not plaintext): keeps the RTL bullet on the right even when the item
@@ -587,7 +587,7 @@ const share = {
     display: inline-flex; align-items: center; gap: 7px;
     background: var(--sc-card); border: 1px solid var(--sc-hair);
     color: var(--sc-muted); border-radius: var(--sc-r-pill);
-    inline-size: 40px; block-size: 40px; justify-content: center; padding: 0;
+    inline-size: 44px; block-size: 44px; justify-content: center; padding: 0;
     cursor: pointer; transition: color var(--sc-fast), border-color var(--sc-fast), transform var(--sc-fast) var(--sc-ease);
   }
   .sh-btn:hover { color: var(--sc-accent-text); border-color: var(--sc-soft); transform: translateY(-1px); }
