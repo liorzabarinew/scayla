@@ -35,12 +35,13 @@ import { tiers, SHOPIFY_APP_URL } from '../data/pricing';
         <a href={SHOPIFY_APP_URL} class:list={['btn', t.popular ? 'btn-white' : 'btn-ghost']}>
           התחילו ב-Shopify
         </a>
+        <a href="#all-plans" class="ap-hint">+ כל מה שכלול בכל המסלולים ↓</a>
       </article>
     ))}
   </div>
 
   <!-- Shared strip · every plan includes these (Lior's final pricing, 2026-07-15) -->
-  <div class="all-plans">
+  <div class="all-plans" id="all-plans">
     <p class="ap-head">כל המסלולים כוללים</p>
     <ul class="ap-grid">
       <li>ניטור AI שבועי</li>
@@ -133,6 +134,15 @@ import { tiers, SHOPIFY_APP_URL } from '../data/pricing';
   li::before { content: '✓'; color: var(--sc-pos); font-weight: 800; flex: none; }
   .pl.pop li::before { color: #c9ffdc; }
   .btn { margin-block-start: auto; }
+  /* subtle pointer to the shared "all plans include" strip */
+  .ap-hint {
+    display: block; text-align: center; margin-block-start: 10px;
+    font-size: 12.5px; font-weight: 600; color: var(--sc-muted);
+    text-decoration: none; transition: color .15s var(--sc-ease);
+  }
+  .ap-hint:hover { color: var(--sc-accent-text); }
+  .pl.pop .ap-hint { color: rgba(255, 255, 255, .72); }
+  .pl.pop .ap-hint:hover { color: #fff; }
 
   /* Shared "every plan includes" strip · matches the card feature-list style */
   .all-plans {
