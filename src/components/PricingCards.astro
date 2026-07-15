@@ -96,6 +96,8 @@ import { tiers, SHOPIFY_APP_URL } from '../data/pricing';
     border-radius: var(--sc-r-pill);
   }
   h3 { font-size: 20px; margin-block-end: 4px; margin-block-start: 8px; }
+  /* clear the absolute "הכי פופולרי" tag so it doesn't crowd the heading */
+  .pl.pop h3 { margin-block-start: 30px; }
   .pr {
     font-size: 44px; font-weight: 800; letter-spacing: -.02em;
     margin-block: 8px 2px; color: inherit;
