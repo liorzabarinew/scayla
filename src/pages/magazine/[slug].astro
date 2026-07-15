@@ -494,8 +494,8 @@ const share = {
     /* two-column ONLY when a TOC actually renders · otherwise the lone content column
        collapses into the 230px TOC slot (that was the narrow-text bug). */
     .layout.has-toc {
-      display: grid; grid-template-columns: 230px 1fr; gap: 40px;
-      align-items: start; max-inline-size: 940px;
+      display: grid; grid-template-columns: 240px 1fr; gap: 44px;
+      align-items: start; max-inline-size: 1040px;
     }
     .toc {
       position: sticky; inset-block-start: 84px;
@@ -557,7 +557,10 @@ const share = {
   .prose :global(p) { margin-block-end: 16px; font-size: 16px; line-height: 1.85; color: var(--sc-ink); font-weight: 400; unicode-bidi: plaintext; }
   .prose :global(strong) { font-weight: 700; }
   .prose :global(ul), .prose :global(ol) { padding-inline-start: 22px; margin-block-end: 16px; display: grid; gap: 8px; }
-  .prose :global(li) { font-size: 15.5px; line-height: 1.75; color: var(--sc-ink); unicode-bidi: plaintext; }
+  /* isolate (not plaintext): keeps the RTL bullet on the right even when the item
+     starts with an English word (Offer, ShippingDetails…) — plaintext flipped the
+     marker to the left. Embedded LTR runs still render correctly. */
+  .prose :global(li) { font-size: 15.5px; line-height: 1.75; color: var(--sc-ink); unicode-bidi: isolate; }
   .prose :global(blockquote) {
     border-inline-start: 3px solid var(--sc-soft); background: var(--sc-wash);
     border-radius: 10px; padding: 12px 16px; margin-block-end: 20px;

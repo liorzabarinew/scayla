@@ -342,14 +342,16 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
       border: 1px solid var(--sc-hair); background: var(--sc-card);
       color: var(--sc-ink); cursor: pointer;
     }
-    /* fixed inside the sticky header's containing block → fills the viewport
-       below the header bar. block-size uses dvh so it survives URL-bar resize. */
+    /* fixed to the VIEWPORT (the header has no transform, so % here would resolve
+       against the viewport, not the header — hence the panel must be anchored by
+       the real header height, not 100%). Fills from just below the bar to the
+       bottom; dvh survives URL-bar resize. */
     .navlinks {
       display: none;
       position: fixed;
       inset-inline: 0;
-      inset-block-start: 100%;
-      block-size: calc(100dvh - 65px);
+      inset-block-start: var(--sc-header-h, 64px);
+      block-size: calc(100dvh - var(--sc-header-h, 64px));
       overflow-y: auto;
       overscroll-behavior: contain;
       flex-direction: column;

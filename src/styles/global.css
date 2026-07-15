@@ -82,7 +82,7 @@ button { font-family: inherit; }
 
 /* ── Layout primitives ── */
 .wrap { max-inline-size: 1080px; margin-inline: auto; padding-inline: clamp(18px, 5vw, 40px); }
-.narrow { max-inline-size: 720px; margin-inline: auto; padding-inline: clamp(18px, 5vw, 40px); }
+.narrow { max-inline-size: 820px; margin-inline: auto; padding-inline: clamp(18px, 5vw, 40px); }
 section { padding-block: clamp(48px, 7vw, 88px); }
 .center { text-align: center; }
 
