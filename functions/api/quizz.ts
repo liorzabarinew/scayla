@@ -161,10 +161,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (missing.length) return Response.json({ ok: false, error: 'missing', missing }, { status: 400 });
   if (!okEmail(data.em)) return Response.json({ ok: false, error: 'bad email' }, { status: 400 });
   if (!okPhone(data.ph)) return Response.json({ ok: false, error: 'bad phone' }, { status: 400 });
-  // הפיילוט הוא לשופיפיי בלבד · הדפדפן כבר חוסם, זה השער השני.
-  if (data.platform !== 'Shopify') {
-    return Response.json({ ok: false, error: 'platform not supported' }, { status: 400 });
-  }
+  // פלטפורמה שאינה שופיפיי אינה שגיאה · הדפדפן כבר מדלג למסך הדחייה לפני השליחה.
+  // אם הגשה כזו בכל זאת מגיעה · רושמים אותה כרגיל, ועמודת "פלטפורמה" מספרת את הסיפור.
 
   const ts = new Date().toLocaleString('he-IL', { timeZone: 'Asia/Jerusalem' });
   const row = COLUMNS.map(({ key }) => (key === '_ts' ? ts : data[key] || ''));
