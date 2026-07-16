@@ -1,0 +1,816 @@
+---
+/**
+ * /quizz · עמוד נחיתה + שאלון התאמה לפיילוט חמש החנויות.
+ *
+ * הכניסה לעמוד היא מקישור ישיר (פוסט אורגני) · הוא לא יושב בתפריט העליון.
+ * noIndex: הפיילוט מוגבל לחמישה מקומות ולזמן קצוב · אין סיבה שיתחרה באתר בגוגל.
+ *
+ * מדיניות Shopify (דרישה 1.3.1): אסור לתת הטבה בתמורה לביקורת. לכן אין בעמוד
+ * הזה שום אזכור של ביקורת או דירוג · התמורה היחידה שמבוקשת היא פידבק פנימי.
+ * זה מכוון. בקשת ביקורת תגיע רק דרך ה-Reviews API בתוך האפליקציה.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'פיילוט · חמש חנויות שופיפיי מקבלות את Scayla חינם · Scayla';
+const description =
+  'אנחנו מחפשים חמש חנויות שופיפיי שירוצו על Scayla המלאה שלושה חודשים, בליווי אנשי SEO ו-GEO. שאלון התאמה קצר · תשובה תוך יומיים.';
+---
+
+<BaseLayout title={title} description={description} noIndex>
+  <!-- ═══ HERO ═══ -->
+  <header class="hero">
+    <div class="hero-in">
+      <div>
+        <span class="seats"><i class="lv-dot" aria-hidden="true"></i>פיילוט · <span class="num">5</span> מקומות</span>
+        <h1>
+          חמש חנויות שופיפיי<br />
+          מקבלות את Scayla<br />
+          <span class="grad-word">חינם. שלושה חודשים.</span>
+        </h1>
+      </div>
+
+      <div class="hero-side">
+        <p class="sub">
+          אנחנו רגע לפני העלייה לחנות האפליקציות של Shopify · ומחפשים חמש חנויות
+          שירוצו על המערכת המלאה, עם ליווי צמוד של אנשי SEO ו-GEO.
+          <strong>כל מה שאנחנו מבקשים בתמורה זה פידבק כן</strong>, שנשאר אצלנו פנימית.
+        </p>
+        <div class="cta-pair">
+          <a class="btn btn-hero btn-gold" href="#form">למילוי שאלון ההתאמה</a>
+        </div>
+        <div class="proof">
+          <div class="stat">
+            <b class="num">7</b>
+            <span>קייס סטאדיז עד היום</span>
+          </div>
+          <div class="stat">
+            <b class="num">220%</b>
+            <span>עלייה ממוצעת בתנועה אורגנית</span>
+          </div>
+          <div class="stat">
+            <b class="num">₪0</b>
+            <span>מדיה ממומנת</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ═══ מה בפיילוט ═══ -->
+  <section class="alt-bg">
+    <div class="wrap">
+      <div class="sh">
+        <span class="eyebrow">מה בפיילוט</span>
+        <h2>המערכת המלאה · לא גרסה מוקטנת</h2>
+        <p>אתם מקבלים את כל מה שלקוח משלם מקבל · ואנחנו יושבים על זה איתכם.</p>
+      </div>
+
+      <div class="panels">
+        <div class="panel card">
+          <div class="panel-h">
+            <span class="panel-ic" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+            </span>
+            <h3>אתם מקבלים</h3>
+          </div>
+          <ul class="rows">
+            <li><i class="mk y" aria-hidden="true">✓</i><span>שלושה חודשים של Scayla במלואה · כל התפקידים פעילים</span></li>
+            <li><i class="mk y" aria-hidden="true">✓</i><span>ליווי צמוד של אנשי SEO ו-GEO · לא רק תוכנה</span></li>
+            <li><i class="mk y" aria-hidden="true">✓</i><span>תוכן שנכתב לגוגל ולמנועי ה-AI · אחרי שני סבבי בקרה</span></li>
+            <li><i class="mk y" aria-hidden="true">✓</i><span>תיקונים טכניים בחנות · בלי שורת קוד מהמפתח שלכם</span></li>
+            <li><i class="mk y" aria-hidden="true">✓</i><span>אישור שלכם על כל שינוי · שום דבר לא עולה לבד</span></li>
+          </ul>
+        </div>
+
+        <div class="panel card">
+          <div class="panel-h">
+            <span class="panel-ic" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M4 20l4.5-1L18 9.5a2.1 2.1 0 0 0-3-3L5.5 16z"></path></svg>
+            </span>
+            <h3>אנחנו מבקשים</h3>
+          </div>
+          <ul class="rows">
+            <li><i class="mk y" aria-hidden="true">✓</i><span>שיחה חודשית של חצי שעה · פעם בחודש, זה הכל</span></li>
+            <li><i class="mk y" aria-hidden="true">✓</i><span>פידבק כן · כולל מה שלא עובד. זה כל הרעיון</span></li>
+            <li><i class="mk y" aria-hidden="true">✓</i><span>גישה ל-Search Console ול-GA4 · אחרת אין ממה למדוד</span></li>
+            <li><i class="mk y" aria-hidden="true">✓</i><span>מישהו אצלכם שמאשר תוכן תוך יום או יומיים</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ התאמה ═══ -->
+  <section>
+    <div class="wrap">
+      <div class="sh">
+        <span class="eyebrow">לפני שממלאים</span>
+        <h2>למי הפיילוט מתאים · ולמי פחות</h2>
+        <p>עדיף לומר את זה עכשיו מאשר לבזבז לכם חודש. אנחנו בוחרים לפי התאמה · לא לפי מי הגיב ראשון.</p>
+      </div>
+
+      <div class="panels">
+        <div class="panel card">
+          <div class="panel-h">
+            <span class="panel-ic" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M8.5 12.5l2.5 2.5 4.5-5"></path></svg>
+            </span>
+            <h3>מתאים</h3>
+          </div>
+          <ul class="rows">
+            <li><i class="mk y" aria-hidden="true">✓</i><span>חנות שופיפיי שבאוויר לפחות שנה</span></li>
+            <li><i class="mk y" aria-hidden="true">✓</i><span>יש כבר תנועה · גם צנועה. צריך בסיס למדוד ממנו</span></li>
+            <li><i class="mk y" aria-hidden="true">✓</i><span>בעלי החנות מעורבים · ויכולים לאשר מהר</span></li>
+            <li><i class="mk y" aria-hidden="true">✓</i><span>משלמים היום לסוכנות · או לא נוגעים בקידום אורגני בכלל</span></li>
+          </ul>
+        </div>
+
+        <div class="panel card">
+          <div class="panel-h">
+            <span class="panel-ic" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M9 9l6 6M15 9l-6 6"></path></svg>
+            </span>
+            <h3>פחות מתאים</h3>
+          </div>
+          <ul class="rows">
+            <li><i class="mk n" aria-hidden="true">✕</i><span>כל פלטפורמה שאינה שופיפיי · בשלב הזה לא נוכל</span></li>
+            <li><i class="mk n" aria-hidden="true">✕</i><span>חנות חדשה מאוד · מתחת לשלושה חודשים</span></li>
+            <li><i class="mk n" aria-hidden="true">✕</i><span>ריברנד, דומיין חדש או מעבר פלטפורמה בחודשים הקרובים</span></li>
+            <li><i class="mk n" aria-hidden="true">✕</i><span>אף אחד לא פנוי לאשר תוכן · המערכת תיתקע ושנינו נפסיד</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ הטופס ═══ -->
+  <section id="form" class="alt-bg">
+    <div class="form-wrap">
+      <div class="sh" id="form-head">
+        <span class="eyebrow">שאלון התאמה</span>
+        <h2>שלוש דקות · ותשובה תוך יומיים</h2>
+        <p>כן או לא, בלי להשאיר אתכם באוויר. כל מה שתכתבו נשאר אצלנו.</p>
+      </div>
+
+      <form class="form" id="quizz-form" novalidate>
+        <fieldset class="fs">
+          <legend>החנות</legend>
+
+          <div class="f">
+            <label for="store">שם החנות וכתובת האתר <span class="req">חובה</span></label>
+            <input id="store" name="store" type="text" placeholder="פנינה קוסמטיקס · pnina-shop.co.il" dir="auto" autocomplete="organization" />
+            <p class="err" id="e-store" role="alert" hidden></p>
+          </div>
+
+          <div class="f">
+            <label for="platform">על איזו פלטפורמה החנות בנויה? <span class="req">חובה</span></label>
+            <select id="platform" name="platform">
+              <option value="">בחרו</option>
+              <option value="Shopify">Shopify</option>
+              <option value="WooCommerce">WooCommerce</option>
+              <option value="Wix">Wix</option>
+              <option value="Magento">Magento</option>
+              <option value="אחר">אחר</option>
+            </select>
+            <span class="hint">הפיילוט פתוח לחנויות שופיפיי בלבד בשלב הזה.</span>
+            <p class="err" id="e-platform" role="alert" hidden></p>
+          </div>
+
+          <div class="f">
+            <label for="what">מה החנות מוכרת · ולמי? <span class="req">חובה</span></label>
+            <textarea id="what" name="what" placeholder="שתי שורות מספיקות"></textarea>
+            <p class="err" id="e-what" role="alert" hidden></p>
+          </div>
+
+          <div class="f">
+            <span class="q" id="q-age">כמה זמן החנות באוויר? <span class="req">חובה</span></span>
+            <div class="opts" role="radiogroup" aria-labelledby="q-age">
+              <input type="radio" id="age1" name="age" value="פחות מ-3 חודשים" /><label for="age1">פחות מ-<span class="num">3</span> חודשים</label>
+              <input type="radio" id="age2" name="age" value="3 עד 12 חודשים" /><label for="age2"><span class="num">3</span> עד <span class="num">12</span> חודשים</label>
+              <input type="radio" id="age3" name="age" value="1 עד 3 שנים" /><label for="age3"><span class="num">1</span> עד <span class="num">3</span> שנים</label>
+              <input type="radio" id="age4" name="age" value="מעל 3 שנים" /><label for="age4">מעל <span class="num">3</span> שנים</label>
+            </div>
+            <p class="err" id="e-age" role="alert" hidden></p>
+          </div>
+
+          <div class="f">
+            <span class="q" id="q-traffic">כמה מבקרים בחודש מגיעים לחנות היום, בערך? <span class="req">חובה</span></span>
+            <div class="opts" role="radiogroup" aria-labelledby="q-traffic">
+              <input type="radio" id="t1" name="traffic" value="עד 500" /><label for="t1">עד <span class="num">500</span></label>
+              <input type="radio" id="t2" name="traffic" value="500 עד 2,000" /><label for="t2"><span class="num">500</span> עד <span class="num">2,000</span></label>
+              <input type="radio" id="t3" name="traffic" value="2,000 עד 10,000" /><label for="t3"><span class="num">2,000</span> עד <span class="num">10,000</span></label>
+              <input type="radio" id="t4" name="traffic" value="מעל 10,000" /><label for="t4">מעל <span class="num">10,000</span></label>
+              <input type="radio" id="t5" name="traffic" value="לא יודעים" /><label for="t5">לא יודעים</label>
+            </div>
+            <p class="err" id="e-traffic" role="alert" hidden></p>
+          </div>
+
+          <div class="f">
+            <span class="q" id="q-chg">מתוכנן שינוי גדול בחנות בשלושת החודשים הקרובים?</span>
+            <div class="opts" role="radiogroup" aria-labelledby="q-chg">
+              <input type="radio" id="c1" name="chg" value="לא" /><label for="c1">לא</label>
+              <input type="radio" id="c2" name="chg" value="מעבר פלטפורמה" /><label for="c2">מעבר פלטפורמה</label>
+              <input type="radio" id="c3" name="chg" value="ריברנד או דומיין חדש" /><label for="c3">ריברנד או דומיין חדש</label>
+              <input type="radio" id="c4" name="chg" value="שינוי גדול בקטלוג" /><label for="c4">שינוי גדול בקטלוג</label>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="fs">
+          <legend>איפה אתם היום</legend>
+
+          <div class="f">
+            <span class="q" id="q-seo">מה קורה אצלכם היום עם קידום אורגני? <span class="req">חובה</span></span>
+            <div class="opts" role="radiogroup" aria-labelledby="q-seo">
+              <input type="radio" id="s1" name="seo" value="לא נוגעים בזה" /><label for="s1">לא נוגעים בזה</label>
+              <input type="radio" id="s2" name="seo" value="משהו לבד מדי פעם" /><label for="s2">משהו לבד מדי פעם</label>
+              <input type="radio" id="s3" name="seo" value="פרילנסר" /><label for="s3">פרילנסר</label>
+              <input type="radio" id="s4" name="seo" value="סוכנות" /><label for="s4">סוכנות</label>
+              <input type="radio" id="s5" name="seo" value="מומחה SEO פנימי" /><label for="s5">מומחה SEO פנימי</label>
+            </div>
+            <p class="err" id="e-seo" role="alert" hidden></p>
+          </div>
+
+          <div class="f">
+            <span class="q" id="q-bud">כמה אתם משלמים על זה בחודש היום?</span>
+            <div class="opts" role="radiogroup" aria-labelledby="q-bud">
+              <input type="radio" id="b1" name="bud" value="₪0" /><label for="b1"><span class="num">₪0</span></label>
+              <input type="radio" id="b2" name="bud" value="עד ₪1,500" /><label for="b2">עד <span class="num">₪1,500</span></label>
+              <input type="radio" id="b3" name="bud" value="₪1,500 עד ₪4,000" /><label for="b3"><span class="num">₪1,500</span> עד <span class="num">₪4,000</span></label>
+              <input type="radio" id="b4" name="bud" value="₪4,000 עד ₪10,000" /><label for="b4"><span class="num">₪4,000</span> עד <span class="num">₪10,000</span></label>
+              <input type="radio" id="b5" name="bud" value="מעל ₪10,000" /><label for="b5">מעל <span class="num">₪10,000</span></label>
+            </div>
+          </div>
+
+          <div class="f">
+            <label for="pain">מה הכי מתסכל אתכם בנושא הזה?</label>
+            <textarea id="pain" name="pain" placeholder="תכתבו בגלוי · זה עוזר לנו יותר מכל דבר אחר"></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset class="fs hot">
+          <legend>גישה וקצב</legend>
+
+          <div class="note">
+            <span class="note-ic" aria-hidden="true">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16.5v.01"></path></svg>
+            </span>
+            <span>
+              <b>החלק שקובע אם הפיילוט יצליח.</b>
+              בלי גישה לנתונים אין ממה למדוד · ובלי מישהו שמאשר, המערכת עוצרת. עדיף שנדע עכשיו.
+            </span>
+          </div>
+
+          <div class="f">
+            <span class="q" id="q-gsc">יש לכם Google Search Console מחובר לחנות? <span class="req">חובה</span></span>
+            <div class="opts" role="radiogroup" aria-labelledby="q-gsc">
+              <input type="radio" id="g1" name="gsc" value="כן · ואנחנו יכולים לתת הרשאה" /><label for="g1">כן · ואנחנו יכולים לתת הרשאה</label>
+              <input type="radio" id="g2" name="gsc" value="כן · אבל ההרשאה אצל מישהו אחר" /><label for="g2">כן · אבל ההרשאה אצל מישהו אחר</label>
+              <input type="radio" id="g3" name="gsc" value="לא" /><label for="g3">לא</label>
+              <input type="radio" id="g4" name="gsc" value="לא יודעים" /><label for="g4">לא יודעים</label>
+            </div>
+            <p class="err" id="e-gsc" role="alert" hidden></p>
+          </div>
+
+          <div class="f">
+            <span class="q" id="q-ga4">יש לכם Google Analytics 4 מחובר לחנות? <span class="req">חובה</span></span>
+            <div class="opts" role="radiogroup" aria-labelledby="q-ga4">
+              <input type="radio" id="a1" name="ga4" value="כן · ואנחנו יכולים לתת הרשאה" /><label for="a1">כן · ואנחנו יכולים לתת הרשאה</label>
+              <input type="radio" id="a2" name="ga4" value="כן · אבל ההרשאה אצל מישהו אחר" /><label for="a2">כן · אבל ההרשאה אצל מישהו אחר</label>
+              <input type="radio" id="a3" name="ga4" value="לא" /><label for="a3">לא</label>
+              <input type="radio" id="a4" name="ga4" value="לא יודעים" /><label for="a4">לא יודעים</label>
+            </div>
+            <p class="err" id="e-ga4" role="alert" hidden></p>
+          </div>
+
+          <div class="f">
+            <span class="q" id="q-inst">תוכלו להתקין אפליקציה בחנות ולתת לה הרשאות? <span class="req">חובה</span></span>
+            <div class="opts" role="radiogroup" aria-labelledby="q-inst">
+              <input type="radio" id="i1" name="inst" value="כן · אנחנו בעלי החנות" /><label for="i1">כן · אנחנו בעלי החנות</label>
+              <input type="radio" id="i2" name="inst" value="כן · דרך המפתח שלנו" /><label for="i2">כן · דרך המפתח שלנו</label>
+              <input type="radio" id="i3" name="inst" value="לא בטוחים" /><label for="i3">לא בטוחים</label>
+            </div>
+            <p class="err" id="e-inst" role="alert" hidden></p>
+          </div>
+
+          <div class="f">
+            <span class="q" id="q-apr">מי יאשר את התוכן והשינויים · וכמה מהר? <span class="req">חובה</span></span>
+            <div class="opts" role="radiogroup" aria-labelledby="q-apr">
+              <input type="radio" id="p1" name="apr" value="אני · תוך יום או יומיים" /><label for="p1">אני · תוך יום או יומיים</label>
+              <input type="radio" id="p2" name="apr" value="אני · אבל זה יכול לקחת שבוע" /><label for="p2">אני · אבל זה יכול לקחת שבוע</label>
+              <input type="radio" id="p3" name="apr" value="מישהו אחר בצוות" /><label for="p3">מישהו אחר בצוות</label>
+              <input type="radio" id="p4" name="apr" value="עוד לא יודעים" /><label for="p4">עוד לא יודעים</label>
+            </div>
+            <p class="err" id="e-apr" role="alert" hidden></p>
+          </div>
+        </fieldset>
+
+        <fieldset class="fs">
+          <legend>התחייבות ופרטים</legend>
+
+          <div class="f">
+            <span class="q" id="q-cmt">הפיילוט כולל שיחה חודשית של חצי שעה ופידבק כן. מתאים? <span class="req">חובה</span></span>
+            <div class="opts" role="radiogroup" aria-labelledby="q-cmt">
+              <input type="radio" id="k1" name="cmt" value="כן" /><label for="k1">כן</label>
+              <input type="radio" id="k2" name="cmt" value="כן · אבל נעדיף פידבק בכתב" /><label for="k2">כן · אבל נעדיף פידבק בכתב</label>
+              <input type="radio" id="k3" name="cmt" value="לא בטוחים" /><label for="k3">לא בטוחים</label>
+            </div>
+            <p class="err" id="e-cmt" role="alert" hidden></p>
+          </div>
+
+          <div class="f">
+            <span class="q" id="q-cs">אם התוצאות יהיו טובות · נוכל לשתף אותן כקייס סטאדי?</span>
+            <div class="opts" role="radiogroup" aria-labelledby="q-cs">
+              <input type="radio" id="cs1" name="cs" value="כן · עם שם החנות" /><label for="cs1">כן · עם שם החנות</label>
+              <input type="radio" id="cs2" name="cs" value="כן · בעילום שם" /><label for="cs2">כן · בעילום שם</label>
+              <input type="radio" id="cs3" name="cs" value="לא" /><label for="cs3">לא</label>
+            </div>
+            <span class="hint">"לא" לא פוסל אתכם. זו בקשה · לא תנאי.</span>
+          </div>
+
+          <div class="row">
+            <div class="f">
+              <label for="nm">שם מלא <span class="req">חובה</span></label>
+              <input id="nm" name="nm" type="text" dir="auto" autocomplete="name" />
+              <p class="err" id="e-nm" role="alert" hidden></p>
+            </div>
+            <div class="f">
+              <label for="ph">טלפון <span class="req">חובה</span></label>
+              <input id="ph" name="ph" type="tel" inputmode="tel" dir="ltr" placeholder="050-0000000" autocomplete="tel" />
+              <p class="err" id="e-ph" role="alert" hidden></p>
+            </div>
+            <div class="f">
+              <label for="em">מייל <span class="req">חובה</span></label>
+              <input id="em" name="em" type="email" dir="ltr" placeholder="you@store.co.il" autocomplete="email" />
+              <p class="err" id="e-em" role="alert" hidden></p>
+            </div>
+          </div>
+
+          <div class="f">
+            <label for="more">משהו נוסף שכדאי שנדע?</label>
+            <textarea id="more" name="more"></textarea>
+          </div>
+        </fieldset>
+
+        <!-- מלכודת ספאם · שדה שבן-אדם לא רואה ולא ממלא. בוט שימלא אותו יידחה בשקט. -->
+        <div class="hp" aria-hidden="true">
+          <label for="company-website">אל תמלאו שדה זה</label>
+          <input id="company-website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="send">
+          <p class="err summary" id="e-summary" role="alert" hidden></p>
+          <button class="btn btn-hero btn-gold" type="submit" id="quizz-submit">שליחת השאלון</button>
+          <p class="fine">
+            הפרטים והנתונים שלכם נשארים אצלנו פנימית · ומשמשים לשיפור המוצר בלבד.
+            נחזור אליכם תוך שני ימי עסקים.
+          </p>
+        </div>
+      </form>
+
+      <!-- מצב סיום · נשלח בהצלחה -->
+      <div class="end card" id="quizz-done" hidden>
+        <span class="end-ic ok" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
+        </span>
+        <h2>קיבלנו</h2>
+        <p>נחזור אליכם תוך שני ימי עסקים · כן או לא, בלי להשאיר אתכם באוויר.</p>
+      </div>
+
+      <!-- מצב סיום · פלטפורמה שאינה שופיפיי -->
+      <div class="end card" id="quizz-nope" hidden>
+        <span class="end-ic no" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16.5v.01"></path></svg>
+        </span>
+        <h2>תודה</h2>
+        <p>
+          הפיילוט פתוח לחנויות שופיפיי בלבד בשלב הזה · המערכת מתחברת ישירות לחנות.
+          נעדכן אתכם כשנפתח לפלטפורמות נוספות. בינתיים אפשר לקבל בדיקה חינם של החנות.
+        </p>
+        <div class="cta-pair center end-cta">
+          <a class="btn btn-hero btn-gold" href="/check">לבדיקה חינם</a>
+        </div>
+        <button class="back" type="button" id="quizz-back">בחרתם פלטפורמה אחרת בטעות? חזרה לשאלון</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ מה קורה אחרי ═══ -->
+  <section id="after">
+    <div class="wrap">
+      <div class="sh">
+        <span class="eyebrow">מה קורה אחרי ששולחים</span>
+        <h2>שלושה צעדים · ואתם באוויר</h2>
+      </div>
+
+      <div class="steps">
+        <div class="step card">
+          <span class="step-n num">1</span>
+          <h3>אנחנו בודקים את החנות</h3>
+          <p>מריצים בדיקת נראות ראשונית וממפים איפה נפתחה לכם הזדמנות · עוד לפני שנדבר.</p>
+        </div>
+        <div class="step card">
+          <span class="step-n num">2</span>
+          <h3>תשובה תוך יומיים</h3>
+          <p>כן או לא, בלי להעלים אתכם. אם לא · נסביר בדיוק למה, ומה כן אפשר לעשות בינתיים.</p>
+        </div>
+        <div class="step card">
+          <span class="step-n num">3</span>
+          <h3>שיחת התנעה · חצי שעה</h3>
+          <p>מחברים גישות, מגדירים יעד למדידה · והמערכת מתחילה לעבוד באותו שבוע.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ סגירה · הערכים של CtaBand.astro ═══ -->
+  <section>
+    <div class="wrap">
+      <div class="band">
+        <h2>לא שופיפיי · או שהפיילוט כבר מלא?</h2>
+        <p>
+          קבלו בדיקה חינם של החנות וראו איפה אתם עומדים בגוגל ובתשובות של מנועי ה-AI ·
+          בלי להתחייב לכלום.
+        </p>
+        <div class="cta-pair center">
+          <a class="btn btn-hero btn-white" href="/check">לבדיקה חינם</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* העמוד יורש טוקנים, סקאלת-כותרות, .wrap/.narrow/.eyebrow/.lede/.sh/.card/.num
+     ו-.btn* מ-global.css. כאן יושב רק מה שייחודי לעמוד הזה. */
+
+  .alt-bg { background: var(--sc-card); }
+  :global([data-theme='dark']) .alt-bg { background: #17141d; }
+
+  /* ═══ HERO · אותו משטח בהיר של דף הבית ═══ */
+  .hero {
+    position: relative;
+    padding-block: clamp(52px, 7vw, 104px) clamp(40px, 6vw, 80px);
+    overflow-x: clip;
+    background:
+      radial-gradient(1100px 700px at 82% -14%, rgba(139, 118, 242, .32), transparent 62%),
+      radial-gradient(860px 620px at -8% 34%, rgba(85, 70, 214, .13), transparent 55%);
+  }
+  :global([data-theme='dark']) .hero {
+    background:
+      radial-gradient(1100px 700px at 82% -14%, rgba(139, 118, 242, .2), transparent 62%),
+      radial-gradient(860px 620px at -8% 34%, rgba(85, 70, 214, .14), transparent 55%),
+      linear-gradient(180deg, #221c3a 0%, var(--sc-paper) 82%);
+  }
+  .hero-in {
+    max-inline-size: 1200px; margin-inline: auto;
+    padding-inline: clamp(18px, 5vw, 48px);
+    display: grid;
+    grid-template-columns: minmax(0, 6.4fr) minmax(0, 5.6fr);
+    gap: clamp(24px, 4vw, 56px); align-items: end;
+  }
+  @media (max-width: 860px) { .hero-in { grid-template-columns: 1fr; align-items: start; } }
+
+  .hero h1 {
+    font-size: clamp(38px, 6.2vw, 68px);
+    font-weight: 900; line-height: 1.04; letter-spacing: -.025em;
+    color: var(--sc-ink);
+  }
+  .grad-word {
+    background: var(--sc-grad); -webkit-background-clip: text; background-clip: text;
+    color: transparent; -webkit-text-fill-color: transparent;
+  }
+
+  /* תג המקומות · הרמפה המשלימה, כמו תגי "בקרוב"/live באתר */
+  .seats {
+    display: inline-flex; align-items: center; gap: 9px;
+    background: var(--sc-gold-bg);
+    border: 1px solid var(--sc-gold-bd);
+    color: var(--sc-gold-text);
+    border-radius: var(--sc-r-pill);
+    padding: 7px 15px;
+    font-size: 12.5px; font-weight: 800; letter-spacing: .04em;
+    margin-block-end: 20px;
+  }
+  .lv-dot {
+    inline-size: 7px; block-size: 7px; border-radius: 999px;
+    background: var(--accent-gold); flex: none;
+    box-shadow: 0 0 0 0 rgba(36, 200, 140, .8);
+    animation: lv 2.4s var(--sc-ease) infinite;
+  }
+  @keyframes lv {
+    70% { box-shadow: 0 0 0 8px rgba(36, 200, 140, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(36, 200, 140, 0); }
+  }
+
+  .hero-side { display: flex; flex-direction: column; gap: 22px; }
+  .hero .sub {
+    font-size: clamp(16px, 1.8vw, 19px);
+    color: var(--sc-mv); max-inline-size: 44ch;
+  }
+  .hero .sub strong { color: var(--sc-ink); font-weight: 700; }
+
+  .proof {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px; margin-block-start: 8px;
+  }
+  @media (max-width: 400px) { .proof { grid-template-columns: 1fr; } }
+  .stat {
+    background: var(--sc-card); border: 1px solid var(--sc-hair);
+    border-radius: 14px; padding: 16px 18px;
+    box-shadow: var(--sc-sh-lift);
+    display: flex; flex-direction: column; gap: 3px;
+    min-inline-size: 0; /* מרשה לאריח להצטמצם · בלי זה הרשת נשברת */
+  }
+  .stat b { font-size: clamp(24px, 2.6vw, 31px); font-weight: 900; letter-spacing: -.025em; color: var(--sc-ink); line-height: 1.1; }
+  .stat span { font-size: 11.5px; font-weight: 700; letter-spacing: .02em; color: var(--sc-muted); line-height: 1.35; text-wrap: balance; }
+
+  /* ═══ פאנלים ═══ */
+  .panels { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 760px) { .panels { grid-template-columns: 1fr; } }
+  .panel { padding: 34px 32px; }
+  .panel-h {
+    display: flex; align-items: center; gap: 12px;
+    padding-block-end: 20px; margin-block-end: 22px;
+    border-block-end: 1px solid var(--sc-div);
+  }
+  .panel-ic {
+    display: grid; place-items: center; inline-size: 40px; block-size: 40px;
+    border-radius: 11px; background: var(--sc-wash);
+    border: 1px solid var(--sc-soft); color: var(--sc-accent-text); flex: none;
+  }
+  .panel h3 { color: var(--sc-ink); }
+  .rows { display: flex; flex-direction: column; gap: 14px; list-style: none; padding: 0; }
+  .rows li { display: flex; gap: 11px; align-items: flex-start; font-size: 15px; font-weight: 500; color: var(--sc-ink); line-height: 1.55; }
+  .rows li span { color: var(--sc-muted); }
+  .mk {
+    flex: none; inline-size: 19px; block-size: 19px; border-radius: 999px;
+    display: grid; place-items: center; font-size: 11px; font-weight: 800;
+    margin-block-start: 3px; font-style: normal;
+  }
+  .mk.y { background: var(--sc-pos-bg); color: var(--sc-pos-deep); border: 1px solid var(--sc-pos-bd); }
+  .mk.n { background: var(--sc-red-bg); color: var(--sc-red-text); border: 1px solid var(--sc-red-bd); }
+
+  /* ═══ הטופס ═══ */
+  .form-wrap { max-inline-size: 760px; margin-inline: auto; padding-inline: clamp(18px, 5vw, 40px); }
+  .form { display: flex; flex-direction: column; gap: 20px; }
+  .fs {
+    border: 1px solid var(--sc-hair); background: var(--sc-card);
+    border-radius: var(--sc-r-card); box-shadow: var(--sc-sh-subtle);
+    padding: 12px 32px 34px; margin: 0;
+    display: flex; flex-direction: column; gap: 24px;
+  }
+  @media (max-width: 560px) { .fs { padding-inline: 20px; } }
+  .fs > legend {
+    font-size: 11.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--sc-accent-text); background: var(--sc-wash);
+    border: 1px solid var(--sc-soft); border-radius: var(--sc-r-pill);
+    padding: 6px 14px;
+  }
+  .fs.hot { background: var(--sc-wash); border-color: var(--sc-soft); }
+  .fs.hot > legend { background: var(--sc-card); }
+
+  .f { display: flex; flex-direction: column; gap: 8px; }
+  .f > label, .f > .q {
+    font-size: 15px; font-weight: 700; color: var(--sc-ink);
+    display: flex; gap: 7px; align-items: baseline;
+  }
+  .req { color: var(--sc-accent-text); font-size: 12px; font-weight: 700; }
+  .hint { font-size: 13px; font-weight: 500; color: var(--sc-muted); }
+
+  /* :not([type='radio']) חיוני · בלעדיו הכלל הזה נותן inline-size:100% גם
+     לרדיו המוסתרים שבתוך .opts, והם גולשים אופקית ושוברים את העמוד. */
+  .f :is(input:not([type='radio']), select, textarea) {
+    font-family: inherit; font-size: 15px; font-weight: 500;
+    color: var(--sc-ink); background: var(--sc-card);
+    border: 1px solid var(--sc-hair); border-radius: var(--sc-r-chip);
+    padding: 11px 14px; inline-size: 100%;
+    transition: border-color var(--sc-fast) var(--sc-ease), box-shadow var(--sc-fast) var(--sc-ease);
+  }
+  .f textarea { min-block-size: 82px; resize: vertical; }
+  .f :is(input, select, textarea):focus-visible {
+    outline: none; border-color: var(--sc-accent);
+    box-shadow: 0 0 0 3px var(--sc-wash);
+  }
+  .f input::placeholder, .f textarea::placeholder { color: var(--sc-disabled); }
+  .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; }
+
+  /* רדיו כצ'יפים · ה-input מוסתר ב-opacity ולא ב-display:none, כדי לשמור
+     על ניווט מקלדת. אין לפשט את זה ל-display:none. */
+  .opts { display: flex; flex-wrap: wrap; gap: 8px; position: relative; }
+  .opts input {
+    position: absolute; inset-block-start: 0; inset-inline-start: 0;
+    inline-size: 1px; block-size: 1px; margin: 0;
+    opacity: 0; pointer-events: none;
+  }
+  .opts label {
+    font-size: 13.5px; font-weight: 600; color: var(--sc-ink);
+    border: 1px solid var(--sc-chip-bd); background: var(--sc-card);
+    border-radius: var(--sc-r-pill); padding: 8px 15px; cursor: pointer;
+    transition: all var(--sc-fast) var(--sc-ease);
+  }
+  .opts label:hover { border-color: var(--sc-soft); background: var(--sc-wash); }
+  .opts input:checked + label {
+    background: var(--sc-accent); border-color: var(--sc-accent);
+    color: #fff; box-shadow: 0 6px 16px -8px rgba(85, 70, 214, .7);
+  }
+  .opts input:focus-visible + label { outline: 3px solid var(--sc-accent-text); outline-offset: 2px; }
+
+  .note {
+    display: flex; gap: 11px; border-radius: var(--sc-r-chip);
+    padding: 13px 15px; font-size: 13.5px; font-weight: 500;
+    border: 1px solid var(--sc-gold-bd); background: var(--sc-gold-bg);
+    color: var(--sc-ink);
+  }
+  .note b { font-weight: 800; }
+  .note-ic { color: var(--sc-gold-text); flex: none; margin-block-start: 1px; }
+
+  /* שגיאות · אומרות מה לתקן, לא "שדה לא תקין" */
+  .err { font-size: 13px; font-weight: 600; color: var(--sc-red-text); }
+  .err.summary {
+    background: var(--sc-red-bg); border: 1px solid var(--sc-red-bd);
+    border-radius: var(--sc-r-chip); padding: 11px 15px; text-align: center;
+  }
+  .f.bad :is(input, select, textarea) { border-color: var(--sc-red); }
+
+  /* מלכודת ספאם · מוסתרת מבני-אדם ומקוראי-מסך, נגישה לבוטים */
+  .hp { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  .send { display: flex; flex-direction: column; gap: 14px; align-items: center; margin-block-start: 10px; }
+  .fine { font-size: 13px; color: var(--sc-muted); text-align: center; max-inline-size: 48ch; }
+  #quizz-submit[aria-busy='true'] { opacity: .7; pointer-events: none; }
+
+  /* ═══ מצבי סיום ═══ */
+  .end { padding: clamp(36px, 6vw, 56px) clamp(24px, 5vw, 44px); text-align: center; }
+  .end h2 { margin-block-end: 12px; }
+  .end p { color: var(--sc-mv); max-inline-size: 52ch; margin-inline: auto; }
+  .end-ic {
+    display: grid; place-items: center; inline-size: 54px; block-size: 54px;
+    border-radius: 999px; margin: 0 auto 18px;
+  }
+  .end-ic.ok { background: var(--sc-pos-bg); border: 1px solid var(--sc-pos-bd); color: var(--sc-pos-deep); }
+  .end-ic.no { background: var(--sc-gold-bg); border: 1px solid var(--sc-gold-bd); color: var(--sc-gold-text); }
+  .end-cta { margin-block-start: 26px; }
+  .back {
+    margin-block-start: 18px; background: none; border: none; cursor: pointer;
+    font-family: inherit; font-size: 13.5px; font-weight: 600;
+    color: var(--sc-muted); text-decoration: underline; text-underline-offset: 3px;
+  }
+  .back:hover { color: var(--sc-accent-text); }
+
+  /* ═══ צעדים ═══ */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 760px) { .steps { grid-template-columns: 1fr; } }
+  .step { padding: 32px 28px; }
+  .step-n {
+    display: grid; place-items: center; inline-size: 48px; block-size: 48px;
+    border-radius: 12px; background: var(--sc-wash); border: 1px solid var(--sc-soft);
+    color: var(--sc-accent-text); font-size: 17px; font-weight: 800;
+    margin-block-end: 14px;
+  }
+  .step h3 { margin-block-end: 7px; color: var(--sc-ink); }
+  .step p { font-size: 14px; color: var(--sc-muted); }
+
+  /* ═══ באנר סגירה · הערכים של CtaBand.astro ═══ */
+  .band {
+    background: var(--sc-grad-rich); border-radius: 24px;
+    padding: clamp(36px, 6vw, 64px) 28px;
+    color: #fff; text-align: center;
+    box-shadow: 0 24px 50px -22px rgba(33, 28, 134, .6);
+  }
+  .band h2 { color: #fff; }
+  .band p { color: rgba(255, 255, 255, .88); max-inline-size: 52ch; margin: 14px auto 28px; }
+</style>
+
+<script>
+  // ── /quizz · לוגיקת השאלון ──────────────────────────────────────────────
+  // 1. פלטפורמה שאינה Shopify → דילוג ישיר למצב הדחייה (אין טעם למלא את השאר)
+  // 2. ולידציה שאומרת מה לתקן, לא "שדה לא תקין"
+  // 3. שליחה ל-/api/quizz → Google Sheet (ליאור + נוי) + פינג טלגרם
+
+  const form = document.getElementById('quizz-form') as HTMLFormElement | null;
+  const done = document.getElementById('quizz-done');
+  const nope = document.getElementById('quizz-nope');
+  const head = document.getElementById('form-head');
+  const back = document.getElementById('quizz-back');
+  const submit = document.getElementById('quizz-submit') as HTMLButtonElement | null;
+  const summary = document.getElementById('e-summary');
+  const platform = document.getElementById('platform') as HTMLSelectElement | null;
+
+  if (form && done && nope && head && submit && summary && platform) {
+    const show = (el: HTMLElement | null) => el && el.removeAttribute('hidden');
+    const hide = (el: HTMLElement | null) => el && el.setAttribute('hidden', '');
+
+    // ── 1. פלטפורמה ≠ Shopify → מצב דחייה ──
+    const gate = () => {
+      const v = platform.value;
+      if (v && v !== 'Shopify') {
+        hide(form); hide(head); hide(done); show(nope);
+        nope.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    };
+    platform.addEventListener('change', gate);
+    back?.addEventListener('click', () => {
+      platform.value = '';
+      hide(nope); show(head); show(form);
+      platform.focus();
+    });
+
+    // ── 2. ולידציה ──
+    const REQ_TEXT: Record<string, string> = {
+      store: 'כתבו את שם החנות וכתובת האתר.',
+      what: 'כתבו בקצרה מה החנות מוכרת ולמי.',
+      nm: 'כתבו את שמכם המלא.',
+    };
+    const REQ_RADIO: Record<string, string> = {
+      age: 'בחרו כמה זמן החנות באוויר.',
+      traffic: 'בחרו כמה מבקרים מגיעים לחנות בחודש.',
+      seo: 'בחרו מה קורה אצלכם היום עם קידום אורגני.',
+      gsc: 'בחרו אם יש לכם Search Console מחובר.',
+      ga4: 'בחרו אם יש לכם Google Analytics 4 מחובר.',
+      inst: 'בחרו אם תוכלו להתקין אפליקציה בחנות.',
+      apr: 'בחרו מי יאשר את התוכן וכמה מהר.',
+      cmt: 'בחרו אם השיחה החודשית והפידבק מתאימים לכם.',
+    };
+
+    // טלפון ישראלי · נייד 05X, קווי 0X, ושירותים 07X. מקבל +972 ומפרידים.
+    const okPhone = (raw: string) => {
+      const d = raw.replace(/[\s\-().]/g, '').replace(/^\+972/, '0');
+      return /^0(5\d{8}|7\d{8}|[23489]\d{7})$/.test(d);
+    };
+    const okEmail = (raw: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(raw.trim());
+
+    const setErr = (key: string, msg: string) => {
+      const el = document.getElementById('e-' + key);
+      const field = el?.closest('.f');
+      if (el) { el.textContent = msg; el.removeAttribute('hidden'); }
+      field?.classList.add('bad');
+    };
+    const clearErr = (key: string) => {
+      const el = document.getElementById('e-' + key);
+      const field = el?.closest('.f');
+      if (el) { el.setAttribute('hidden', ''); el.textContent = ''; }
+      field?.classList.remove('bad');
+    };
+
+    const validate = () => {
+      const fd = new FormData(form);
+      const bad: string[] = [];
+      const all = [...Object.keys(REQ_TEXT), ...Object.keys(REQ_RADIO), 'platform', 'ph', 'em'];
+      all.forEach(clearErr);
+
+      for (const [k, msg] of Object.entries(REQ_TEXT)) {
+        if (!String(fd.get(k) || '').trim()) { setErr(k, msg); bad.push(k); }
+      }
+      for (const [k, msg] of Object.entries(REQ_RADIO)) {
+        if (!fd.get(k)) { setErr(k, msg); bad.push(k); }
+      }
+      if (!fd.get('platform')) { setErr('platform', 'בחרו על איזו פלטפורמה החנות בנויה.'); bad.push('platform'); }
+
+      const ph = String(fd.get('ph') || '').trim();
+      if (!ph) { setErr('ph', 'כתבו מספר טלפון.'); bad.push('ph'); }
+      else if (!okPhone(ph)) { setErr('ph', 'המספר לא נראה תקין · טלפון ישראלי, למשל 050-0000000.'); bad.push('ph'); }
+
+      const em = String(fd.get('em') || '').trim();
+      if (!em) { setErr('em', 'כתבו כתובת מייל.'); bad.push('em'); }
+      else if (!okEmail(em)) { setErr('em', 'המייל לא נראה תקין · בדקו את הכתובת, למשל you@store.co.il.'); bad.push('em'); }
+
+      return bad;
+    };
+
+    // ── 3. שליחה ──
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hide(summary);
+
+      const bad = validate();
+      if (bad.length) {
+        summary.textContent = `חסרים ${bad.length} שדות · השלימו את המסומנים באדום ונסו שוב.`;
+        show(summary);
+        const first = document.getElementById('e-' + bad[0])?.closest('.f');
+        first?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        (first?.querySelector('input, select, textarea') as HTMLElement | null)?.focus();
+        return;
+      }
+
+      submit.setAttribute('aria-busy', 'true');
+      submit.textContent = 'שולח...';
+      try {
+        const payload = Object.fromEntries(new FormData(form).entries());
+        const res = await fetch('/api/quizz', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) throw new Error('bad status ' + res.status);
+        hide(form); hide(head); show(done);
+        done.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch {
+        summary.textContent = 'השליחה נכשלה · בדקו את החיבור ונסו שוב. אם זה חוזר, כתבו לנו דרך עמוד צרו קשר.';
+        show(summary);
+        submit.removeAttribute('aria-busy');
+        submit.textContent = 'שליחת השאלון';
+      }
+    });
+  }
+</script>

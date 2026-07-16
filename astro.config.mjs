@@ -7,7 +7,9 @@ export default defineConfig({
   site: 'https://scayla.co.il',
   output: 'static',
   trailingSlash: 'never',
-  integrations: [sitemap()],
+  // /quizz הוא עמוד נחיתה לפיילוט · noIndex, והכניסה אליו מקישור ישיר בלבד.
+  // בלי הסינון הזה הוא היה יושב ב-sitemap ובו-זמנית מסומן noindex · סתירה.
+  integrations: [sitemap({ filter: (page) => !/\/quizz\/?$/.test(page) })],
   build: {
     format: 'file',
   },

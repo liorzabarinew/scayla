@@ -12,3 +12,7 @@ npm-debug.log*
 
 # service-account key (never commit)
 .secrets/
+
+# wrangler local cache (pages dev)
+.wrangler/
+.dev.vars
