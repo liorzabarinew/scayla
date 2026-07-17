@@ -7,9 +7,12 @@ export default defineConfig({
   site: 'https://scayla.co.il',
   output: 'static',
   trailingSlash: 'never',
-  // /quizz הוא עמוד נחיתה לפיילוט · noIndex, והכניסה אליו מקישור ישיר בלבד.
-  // בלי הסינון הזה הוא היה יושב ב-sitemap ובו-זמנית מסומן noindex · סתירה.
-  integrations: [sitemap({ filter: (page) => !/\/quizz\/?$/.test(page) })],
+  // עמודים שמסומנים noIndex חייבים להיות מסוננים גם מה-sitemap · אחרת הם יושבים
+  // בו ומסומנים noindex בו-זמנית, וזו סתירה שגוגל מדווח עליה.
+  //   /quizz · עמוד נחיתה לפיילוט, כניסה מקישור ישיר בלבד.
+  //   /scan  · זמני. המכונה עוד לא מחוברת. כשהיא תחובר · מסירים noIndex מ-scan.astro
+  //            ומוציאים אותו מהסינון הזה, בשני צעדים באותו קומיט.
+  integrations: [sitemap({ filter: (page) => !/\/(quizz|scan)\/?$/.test(page) })],
   build: {
     format: 'file',
   },
