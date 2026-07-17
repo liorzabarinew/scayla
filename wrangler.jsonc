@@ -1,0 +1,20 @@
+{
+  // Cloudflare Pages · הקונפיג היחיד של הפרויקט.
+  // נוסף כשנוספה מכונת /scan · לפני כן הפריסה עבדה בלי קובץ כלל
+  // (wrangler pages deploy dist), וה-Function של /quizz לא נזקק לבינדינגים.
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "scayla",
+  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2025-01-01",
+
+  // מאגר הג'ובים של /scan · הליד חוזר לעמוד שלו דרך ?job=<id>, אז המצב
+  // חייב לשרוד סגירת חלון. TTL 30 יום מוגדר בקוד לפי מפתח.
+  "kv_namespaces": [
+    { "binding": "SCAN_JOBS", "id": "f1d42bd0778b461daaedb54aa1f425f2" }
+  ],
+
+  "vars": {
+    // תקרת סריקות יומית · הסריקה זולה, המאמרים הם היקרים ויקבלו תקרה נפרדת.
+    "SCAN_DAILY_CAP": "40"
+  }
+}
