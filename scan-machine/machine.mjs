@@ -251,7 +251,7 @@ export async function runScan({ host, blog }, onProgress) {
     throw err;
   }
   if (store.isShopify) store.productCount = await countProducts(host);
-  steps[0] = STEP(store.productCount ? `קראנו את החנות · ${store.productCount} מוצרים` : 'קראנו את החנות', 'done');
+  steps[0] = STEP(store.productCount ? `קראנו את החנות · כ-${store.productCount} מוצרים` : 'קראנו את החנות', 'done');
   await emit({ store: { host, title: store.title, isShopify: store.isShopify, products: store.productCount } });
 
   // 2. הבלוג · אופציונלי

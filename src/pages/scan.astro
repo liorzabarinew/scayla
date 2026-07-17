@@ -1,204 +1,202 @@
 ---
 /**
- * /scan · בדיקת נראות ב-AI + שני מאמרים לחנות של הליד.
+ * /scan · ממשק, לא עמוד נחיתה.
  *
- * מחליף את /check, שהוא הדגמה חזיתית (DemoWidget.astro:10 · "NO fetch/XHR/API/backend").
- * ההבדל המהותי: שם המספרים קשיחים וזהים לכל מבקר, כאן הם נמדדים. לכן אין פה תג
- * "הדגמה" · וזה בדיוק למה אסור שיוצג פה מספר שלא נמדד באמת.
+ * שלושה מסכים שמחליפים זה את זה · המשתמש לא גולל כדי למצוא מצב:
+ *   1. הפיץ' + כתובת החנות   2. המכונה עובדת (+ מייל)   3. התוצאות
+ * בלי סקשנים שיווקיים מתחת. אם הכלי הוא העיקר · הכלי מקבל את המסך.
+ * ראה [[lior-layout-dont-cram-center]] · לא לדחוס לעמודה צרה באמצע.
  *
- * noIndex כרגע: המכונה עוד לא מחוברת. כשהיא תחובר · מסירים noIndex ומסירים את
- * הסינון ב-astro.config (הם חייבים לזוז יחד, אחרת העמוד יושב ב-sitemap ומסומן
- * noindex בו-זמנית).
+ * מחליף את /check, שהוא הדגמה חזיתית (DemoWidget.astro:10 · "NO fetch/XHR/API").
+ * שם המספרים קשיחים וזהים לכל מבקר. כאן הם נמדדים · ולכן אין תג "הדגמה",
+ * ולכן אסור שיופיע פה מספר שלא נמדד.
  *
- * מדיניות Shopify 1.3.1: אין פה שום אזכור של ביקורת או דירוג. מכוון.
+ * המנוע לא מוזכר · מדברים על "ה-AI". פרט מימוש, לא מסר (ליאור).
+ * מדיניות Shopify 1.3.1: אפס אזכור של ביקורת או דירוג. מכוון.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
-import CtaBand from '../components/CtaBand.astro';
-import InstallCtaPair from '../components/InstallCtaPair.astro';
 
 const title = 'בדיקת נראות ב-AI · האם ה-AI מזכיר את החנות שלכם? · Scayla';
 const description =
   'הכניסו את כתובת החנות ונבדוק בפועל, על שאלות קונה אמיתיות, אם ה-AI מזכיר אתכם או את המתחרים. הציון חינם ובלי פרטים · ואחריו נכתוב לכם שני מאמרים מלאים לחנות.';
 
-// site key של Turnstile · פומבי בכוונה, נכנס ל-HTML. הסוד יושב כ-Pages secret.
 const TURNSTILE_SITE_KEY = '0x4AAAAAAD3uTcm7n0TsX_1I';
-
-// היקף המעגל של המחוון · חייב להתאים ל-r=84 של DashboardMock/ui.tsx
 const C = +(2 * Math.PI * 84).toFixed(2);
 ---
 
 <BaseLayout title={title} description={description} noIndex>
-  <!-- ═══ HERO + הטופס ═══ -->
-  <section class="scan-hero">
-    <div class="narrow center">
-      <span class="eyebrow">בדיקה חינם</span>
-      <!-- ה-AI עטוף ב-nobr · בלי זה השורה נשברת בין "ה-" ל-"AI" ומשאירה
-           תחילית עברית תלושה בסוף שורה. -->
-      <h1>נראה לכם מה <span class="nobr">ה-<span class="grad-word">AI</span></span> אומר עליכם<br />ואז נסגור את הפער</h1>
-      <p class="lede">
-        קודם נכניס את החנות שלכם לשאלות שקונים באמת שואלים את ה-AI, ונראה בשחור על גבי לבן
-        אם אתם מופיעים או שהמתחרים מופיעים במקומכם. <strong>ואז, על החשבון שלנו, נכתוב לכם שני
-        מאמרים מלאים</strong> בדיוק על הפערים שמצאנו · כדי שתראו איך נראה תוכן שמזיז את המחט.
-      </p>
-      <ol class="journey">
-        <li><span class="j-n num">1</span>סורקים את החנות והבלוג</li>
-        <li><span class="j-n num">2</span>שואלים את ה-<span class="num">AI</span> ומודדים ציון</li>
-        <li><span class="j-n num">3</span>כותבים לכם <span class="num">2</span> מאמרים</li>
-      </ol>
-    </div>
-
-    <div class="form-wrap">
-      <!-- ── S0 · הטופס ── -->
-      <form class="card panel" id="s-idle">
-        <div class="f">
-          <label for="store">כתובת החנות <span class="req">חובה</span></label>
-          <input id="store" name="store" type="text" dir="ltr" inputmode="url"
-                 autocomplete="url" placeholder="example.co.il" />
-          <p class="err" id="e-store" role="alert" hidden></p>
+  <div class="app">
+    <!-- ═══════════ מסך 1 · הפיץ' + הכתובת ═══════════ -->
+    <section class="screen" id="screen-idle">
+      <div class="s1-grid">
+        <div class="s1-pitch">
+          <span class="eyebrow">בדיקה חינם</span>
+          <h1>נראה לכם מה <span class="nobr">ה-<span class="grad-word">AI</span></span> אומר עליכם<br />ואז נסגור את הפער</h1>
+          <p class="lede">
+            נכניס את החנות שלכם לשאלות שקונים באמת שואלים את ה-AI, ונראה בשחור על גבי לבן
+            אם אתם מופיעים או שהמתחרים מופיעים במקומכם. <strong>ואז נכתוב לכם שני מאמרים
+            מלאים, בחינם</strong>, בדיוק על הפערים שנמצאו.
+          </p>
+          <ol class="journey">
+            <li><span class="j-n num">1</span>סורקים את החנות והבלוג</li>
+            <li><span class="j-n num">2</span>שואלים את ה-AI ומודדים ציון</li>
+            <li><span class="j-n num">3</span>כותבים לכם <span class="num">2</span> מאמרים</li>
+          </ol>
         </div>
 
-        <div class="f">
-          <label for="blog">כתובת הבלוג</label>
-          <input id="blog" name="blog" type="text" dir="ltr" inputmode="url" placeholder="example.co.il/blog" />
-          <span class="hint">אם יש לכם בלוג · נסרוק גם אותו. לא חובה.</span>
-        </div>
+        <form class="card s1-form" id="form-idle">
+          <div class="f">
+            <label for="store">כתובת החנות <span class="req">חובה</span></label>
+            <input id="store" name="store" type="text" dir="ltr" inputmode="url"
+                   autocomplete="url" placeholder="example.co.il" />
+            <p class="err" id="e-store" role="alert" hidden></p>
+          </div>
+          <div class="f">
+            <label for="blog">כתובת הבלוג</label>
+            <input id="blog" name="blog" type="text" dir="ltr" inputmode="url" placeholder="example.co.il/blog" />
+            <span class="hint">אם יש לכם בלוג · נסרוק גם אותו. לא חובה.</span>
+          </div>
 
-        <!-- מלכודת ספאם · בן-אדם לא רואה ולא ממלא -->
-        <div class="hp" aria-hidden="true">
-          <label for="company-website">אל תמלאו שדה זה</label>
-          <input id="company-website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
-        </div>
+          <div class="hp" aria-hidden="true">
+            <label for="company-website">אל תמלאו שדה זה</label>
+            <input id="company-website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
 
-        <p class="err summary" id="e-summary" role="alert" hidden></p>
-        <button class="btn btn-hero btn-gold" type="submit" id="go">קדימה, בואו נראה</button>
-        <div class="ts-slot" id="ts-slot" data-sitekey={TURNSTILE_SITE_KEY}></div>
-        <p class="fine">
-          הציון חינם ובלי להשאיר פרטים · בלי כרטיס אשראי, בלי התקנה.
-        </p>
-      </form>
+          <p class="err summary" id="e-summary" role="alert" hidden></p>
+          <button class="btn btn-hero btn-gold" type="submit" id="go">קדימה, בואו נראה</button>
+          <div class="ts-slot" id="ts-slot" data-sitekey={TURNSTILE_SITE_KEY}></div>
+          <p class="fine">הציון חינם ובלי להשאיר פרטים · בלי כרטיס אשראי, בלי התקנה.</p>
+        </form>
+      </div>
+    </section>
 
-      <!-- ── S1 · הריצה · לוג חי + מייל פתוח לצידו ── -->
-      <div class="panel run-wrap" id="s-scanning" hidden aria-live="polite">
-        <div class="card">
-          <div class="run-head">
-            <span class="radar" aria-hidden="true"></span>
-            <div>
-              <h2 class="run-t">המכונה עובדת על <b id="scan-host" dir="ltr">…</b></h2>
-              <p class="run-s">רץ כבר <span class="num" id="scan-elapsed">0:00</span></p>
+    <!-- ═══════════ מסך 2 · המכונה עובדת ═══════════ -->
+    <section class="screen" id="screen-run" hidden aria-live="polite">
+      <div class="s2-grid">
+        <div class="card run-main">
+          <div class="run-top">
+            <div class="orb" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="run-id">
+              <h2>המכונה עובדת על <b id="run-host" dir="ltr">…</b></h2>
+              <p class="run-now" id="run-now">מתחילים</p>
+            </div>
+            <div class="run-clock">
+              <b class="num" id="run-elapsed">0:00</b>
+              <small>רץ כבר</small>
             </div>
           </div>
-          <ol class="log" id="scan-log"></ol>
-          <ol class="log log-gen" id="gen-log" hidden></ol>
+          <ol class="log" id="run-log"></ol>
         </div>
 
-        <!-- שדה פתוח, לא שער · הריצה רצה ממילא -->
-        <form class="card mailbox" id="s-mail">
-          <p class="mail-t">
-            <b>זה לוקח בערך <span class="num" id="eta">14</span> דקות.</b>
-            השאירו מייל ונעדכן אתכם כשזה מוכן · או פשוט השאירו את החלון הזה פתוח וראו את הקסם.
-          </p>
-          <div class="row">
+        <aside class="s2-side">
+          <form class="card mailbox" id="form-mail">
+            <p class="mail-t">
+              <b>זה לוקח בערך <span class="num">14</span> דקות.</b>
+              אפשר להישאר ולראות את זה קורה · או להשאיר מייל ולסגור את החלון, ונעדכן אתכם כשזה מוכן.
+            </p>
             <div class="f">
               <label for="gname">שם</label>
               <input id="gname" name="gname" type="text" dir="auto" autocomplete="name" placeholder="השם שלכם" />
-              <p class="err" id="e-gname" role="alert" hidden></p>
             </div>
             <div class="f">
               <label for="email">מייל</label>
               <input id="email" name="email" type="email" dir="ltr" autocomplete="email" placeholder="you@store.co.il" />
               <p class="err" id="e-email" role="alert" hidden></p>
             </div>
+            <button class="btn btn-gold" type="submit" id="go-mail">עדכנו אותי במייל</button>
+            <p class="err summary" id="e-mail" role="alert" hidden></p>
+          </form>
+
+          <div class="card mailbox saved" id="mail-ok" hidden>
+            <span class="mk-ok" aria-hidden="true">✓</span>
+            <p>נשלח קישור לעמוד הזה ל-<b class="num" dir="ltr" id="mail-shown">…</b> כשהמאמרים מוכנים. אפשר לסגור את החלון.</p>
           </div>
-          <button class="btn btn-gold" type="submit" id="go-mail">עדכנו אותי כשזה מוכן</button>
-          <p class="err summary" id="e-gate" role="alert" hidden></p>
-        </form>
-        <div class="card mailbox saved" id="s-mail-ok" hidden>
-          <span class="mk-ok" aria-hidden="true">✓</span>
-          <p>נשלח לכם קישור לעמוד הזה ל-<b class="num" dir="ltr" id="mail-shown">…</b> ברגע שהמאמרים מוכנים. אפשר לסגור את החלון.</p>
-        </div>
+
+          <!-- הציון נכנס לכאן ברגע שנמדד · בזמן שהמאמרים עוד נכתבים -->
+          <div class="card score-mini" id="score-mini" hidden>
+            <span class="eyebrow">הציון שלכם</span>
+            <div class="mini-row">
+              <div class="dm-gauge" id="gauge">
+                <svg viewBox="0 0 200 200" aria-hidden="true">
+                  <defs><linearGradient id="scGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="#5546d6" /><stop offset="1" stop-color="#8b76f2" />
+                  </linearGradient></defs>
+                  <circle cx="100" cy="100" r="84" fill="none" stroke="var(--sc-div)" stroke-width="15" />
+                  <circle class="dm-arc" id="gauge-arc" cx="100" cy="100" r="84" fill="none"
+                          stroke="url(#scGrad)" stroke-width="15" stroke-linecap="round"
+                          stroke-dasharray={C} stroke-dashoffset={C} transform="rotate(-90 100 100)" />
+                </svg>
+                <span class="dm-gauge-c">
+                  <b class="num"><i id="gauge-num">0</i><em class="pct">%</em></b>
+                  <small>נראות ב-AI</small>
+                </span>
+              </div>
+              <div class="mini-txt">
+                <span class="band" id="score-band">…</span>
+                <p class="mini-sub" id="mini-sub"></p>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ═══════════ מסך 3 · התוצאות ═══════════ -->
+    <section class="screen" id="screen-done" hidden>
+      <div class="done-head">
+        <span class="eyebrow">הכל מוכן</span>
+        <h2>הנה מה שה-AI אומר עליכם · ומה שכתבנו לכם</h2>
+        <p class="verdict" id="verdict" hidden></p>
       </div>
 
-      <!-- ── S2 · הציון · חינם, בלי מייל ── -->
-      <div class="panel" id="s-score" hidden>
-        <div class="card score-card">
-          <span class="eyebrow">התוצאה שלכם</span>
-          <p class="verdict" id="score-verdict" hidden></p>
+      <div class="res-grid">
+        <div class="card score-full">
           <div class="score-row">
-            <div class="dm-gauge" id="gauge" data-target="0">
+            <div class="dm-gauge" id="gauge2">
               <svg viewBox="0 0 200 200" aria-hidden="true">
-                <defs>
-                  <linearGradient id="scGrad" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0" stop-color="#5546d6" /><stop offset="1" stop-color="#8b76f2" />
-                  </linearGradient>
-                </defs>
+                <defs><linearGradient id="scGrad2" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#5546d6" /><stop offset="1" stop-color="#8b76f2" />
+                </linearGradient></defs>
                 <circle cx="100" cy="100" r="84" fill="none" stroke="var(--sc-div)" stroke-width="15" />
-                <circle class="dm-arc" id="gauge-arc" cx="100" cy="100" r="84" fill="none"
-                        stroke="url(#scGrad)" stroke-width="15" stroke-linecap="round"
+                <circle class="dm-arc" id="gauge-arc2" cx="100" cy="100" r="84" fill="none"
+                        stroke="url(#scGrad2)" stroke-width="15" stroke-linecap="round"
                         stroke-dasharray={C} stroke-dashoffset={C} transform="rotate(-90 100 100)" />
               </svg>
               <span class="dm-gauge-c">
-                <b class="num"><i id="gauge-num">0</i><em class="pct">%</em></b>
+                <b class="num"><i id="gauge-num2">0</i><em class="pct">%</em></b>
                 <small>נראות ב-AI</small>
               </span>
             </div>
             <div class="score-txt">
-              <p class="score-line">
-                אתם מופיעים ב-<b class="num" id="score-pct">0%</b> מהתשובות
-              </p>
-              <span class="band" id="score-band">…</span>
-              <p class="score-sub" id="score-sub">
+              <p class="score-line">אתם מופיעים ב-<b class="num" id="score-pct">0%</b> מהתשובות</p>
+              <span class="band" id="score-band2">…</span>
+              <p class="score-sub">
                 שאלנו את ה-AI <span class="num" id="q-total">0</span> שאלות קונה שנגזרו מהחנות שלכם ·
                 הופעתם ב-<span class="num" id="q-hit">0</span> מהן.
               </p>
             </div>
           </div>
           <p class="method">
-            הציון נמדד עכשיו, על <span class="num">15</span> שאלות קונה שנגזרו מהאתר שלכם · לא על שאלות כלליות.
-            זו תמונת רגע. בתוך Scayla המדידה רצה <b>כל שבוע על קבוצה קבועה</b> של שאלות, כך שאפשר
-            להשוות שבוע לשבוע ולראות אם אתם עולים או יורדים.
+            הציון נמדד עכשיו, על שאלות שנגזרו מהאתר שלכם · לא על שאלות כלליות. זו תמונת רגע.
+            בתוך Scayla המדידה רצה <b>כל שבוע על קבוצה קבועה</b> של שאלות, כך שאפשר להשוות
+            שבוע לשבוע ולראות אם אתם עולים או יורדים.
           </p>
         </div>
-
         <div class="answers" id="answers"></div>
       </div>
 
-      <!-- ── S5 · מוכן ── -->
-      <div class="panel" id="s-done" hidden>
-        <div class="card end">
-          <span class="end-ic ok" aria-hidden="true">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"></path></svg>
-          </span>
-          <h2>המאמרים מוכנים</h2>
-          <p>שלחנו קישור לעמוד הזה גם ל-<b class="num" dir="ltr" id="done-email">…</b> · הוא נשמר, אפשר לחזור אליו מתי שתרצו.</p>
-        </div>
-        <div class="arts" id="done-arts"></div>
-        <div class="card end">
-          <h2>זה מה שהמכונה עושה כל יום</h2>
-          <p>
-            הציון שלכם אמיתי · בתוך Scayla הוא נמדד כל שבוע, על קבוצת שאלות קבועה,
-            והמכונה כותבת ומתקנת בלי שתצטרכו לבקש.
-          </p>
-          <div class="end-cta"><InstallCtaPair center variant="onLight" /></div>
-        </div>
+      <div class="arts" id="arts"></div>
+
+      <div class="card end cta-end">
+        <h2>זה מה שהמכונה עושה כל יום</h2>
+        <p>הציון שלכם אמיתי · בתוך Scayla הוא נמדד כל שבוע, והמכונה כותבת ומתקנת בלי שתבקשו.</p>
+        <a class="btn btn-hero btn-gold" href="/pricing">איך זה עובד</a>
       </div>
+    </section>
 
-      <!-- ── S6 · התור מלא ── -->
-      <form class="card panel end" id="s-capped" hidden>
-        <span class="end-ic warn" aria-hidden="true">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
-        </span>
-        <h2>התור מלא להיום</h2>
-        <p>הציון שלמעלה שלכם, והוא אמיתי. את המאמרים נריץ מחר · השאירו מייל ונשלח קישור כשהם מוכנים.</p>
-        <div class="f queue-f">
-          <label for="q-email">מייל</label>
-          <input id="q-email" name="q-email" type="email" dir="ltr" autocomplete="email" placeholder="you@store.co.il" />
-          <p class="err" id="e-qemail" role="alert" hidden></p>
-        </div>
-        <button class="btn btn-hero btn-gold" type="submit" id="go-queue">שמרו לי מקום למחר</button>
-      </form>
-
-      <!-- ── S7 · תקלה ── -->
-      <div class="card panel end" id="s-error" hidden>
+    <!-- ═══════════ תקלה ═══════════ -->
+    <section class="screen" id="screen-error" hidden>
+      <div class="card end">
         <span class="end-ic bad" aria-hidden="true">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16.5v.01"></path></svg>
         </span>
@@ -206,318 +204,293 @@ const C = +(2 * Math.PI * 84).toFixed(2);
         <p id="err-p">נסו שוב בעוד כמה דקות.</p>
         <button class="back" type="button" id="err-back">חזרה לבדיקה</button>
       </div>
-    </div>
-  </section>
-
-  <!-- ═══ מה בודקים ═══ -->
-  <section class="alt-bg" id="how">
-    <div class="wrap">
-      <div class="sh">
-        <span class="eyebrow">מה קורה בבדיקה</span>
-        <h2>שלושה שלבים · בלי שתעשו כלום</h2>
-      </div>
-      <div class="steps">
-        <div class="step card">
-          <span class="step-n num">1</span>
-          <h3>קוראים את החנות</h3>
-          <p>עוברים על המוצרים, הקטגוריות והבלוג · ומבינים מה אתם מוכרים ולמי, בלי שתסבירו.</p>
-        </div>
-        <div class="step card">
-          <span class="step-n num">2</span>
-          <h3>שואלים כמו קונה</h3>
-          <p>גוזרים מהחנות שאלות שקונה אמיתי שואל, ושואלים אותן את ה-AI · ובודקים מי מופיע בתשובה.</p>
-        </div>
-        <div class="step card">
-          <span class="step-n num">3</span>
-          <h3>סוגרים את הפער</h3>
-          <p>מהמקומות שבהם לא הופעתם נגזרים שני נושאים · והמכונה כותבת עליהם מאמרים מלאים.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <CtaBand
-        title="רוצים שזה יקרה כל שבוע, לבד?"
-        body="הבדיקה כאן היא תמונת רגע. בתוך Scayla המדידה רצה כל שבוע על קבוצת שאלות קבועה, והמכונה כותבת ומתקנת מעצמה."
-      />
-    </div>
-  </section>
+    </section>
+  </div>
 </BaseLayout>
 
 <style>
-  .alt-bg { background: var(--sc-card); }
-  :global([data-theme='dark']) .alt-bg { background: #17141d; }
+  /* ═══ המעטפת · הכלי מקבל את המסך ═══ */
+  .app {
+    min-block-size: calc(100dvh - var(--sc-header-h, 68px));
+    display: flex; flex-direction: column; justify-content: center;
+    padding: clamp(28px, 4vw, 56px) clamp(18px, 4vw, 48px) clamp(40px, 5vw, 72px);
+    background:
+      radial-gradient(1100px 700px at 82% -14%, rgba(139, 118, 242, .26), transparent 62%),
+      radial-gradient(860px 620px at -8% 40%, rgba(85, 70, 214, .1), transparent 55%);
+  }
+  :global([data-theme='dark']) .app {
+    background:
+      radial-gradient(1100px 700px at 82% -14%, rgba(139, 118, 242, .18), transparent 62%),
+      linear-gradient(180deg, #221c3a 0%, var(--sc-paper) 70%);
+  }
+  .screen { inline-size: 100%; max-inline-size: 1240px; margin-inline: auto; }
 
-  .scan-hero {
-    position: relative;
-    padding-block: clamp(44px, 6vw, 84px) clamp(48px, 7vw, 88px);
-    background:
-      radial-gradient(1100px 700px at 82% -14%, rgba(139, 118, 242, .3), transparent 62%),
-      radial-gradient(860px 620px at -8% 34%, rgba(85, 70, 214, .12), transparent 55%);
-  }
-  :global([data-theme='dark']) .scan-hero {
-    background:
-      radial-gradient(1100px 700px at 82% -14%, rgba(139, 118, 242, .2), transparent 62%),
-      linear-gradient(180deg, #221c3a 0%, var(--sc-paper) 82%);
-  }
-  .scan-hero h1 {
-    font-size: clamp(32px, 5vw, 54px); font-weight: 900;
-    letter-spacing: -.025em; line-height: 1.08;
-  }
+  /* [hidden] חייב לנצח · כל display מפורש (כמו .mailbox{display:flex}) גובר
+     על display:none של הדפדפן, וכרטיס "נשלח קישור" הופיע למרות hidden.
+     נתפס בצילום מסך, לא בקוד. */
+  [hidden] { display: none !important; }
   .nobr { white-space: nowrap; }
   .grad-word {
     background: var(--sc-grad); -webkit-background-clip: text; background-clip: text;
     color: transparent; -webkit-text-fill-color: transparent;
   }
-  .scan-hero .lede { max-inline-size: 60ch; margin-inline: auto; }
-  .scan-hero .lede strong { color: var(--sc-ink); font-weight: 700; }
 
-  /* המסע · שלושת השלבים כסיפור אחד, כבר בהירו. המאמרים לא הפתעה בשער. */
-  .journey {
-    list-style: none; padding: 0;
-    display: flex; justify-content: center; flex-wrap: wrap; gap: 10px;
-    margin-block-start: 26px;
+  /* ═══ מסך 1 · הפיץ' מול הטופס, פרוס על הרוחב ═══ */
+  .s1-grid {
+    display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(380px, .95fr);
+    gap: clamp(32px, 5vw, 72px); align-items: center;
   }
+  @media (max-width: 940px) { .s1-grid { grid-template-columns: 1fr; gap: 32px; } }
+
+  .s1-pitch h1 {
+    font-size: clamp(32px, 3.9vw, 54px); font-weight: 900;
+    letter-spacing: -.025em; line-height: 1.08; color: var(--sc-ink);
+  }
+  .s1-pitch .lede { max-inline-size: 46ch; margin-block-start: 20px; }
+  .s1-pitch .lede strong { color: var(--sc-ink); font-weight: 700; }
+
+  .journey { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 9px; margin-block-start: 28px; }
   .journey li {
-    display: inline-flex; align-items: center; gap: 9px;
+    display: inline-flex; align-items: center; gap: 11px; align-self: flex-start;
     background: var(--sc-card); border: 1px solid var(--sc-hair);
-    border-radius: var(--sc-r-pill); padding: 8px 16px 8px 9px;
-    font-size: 13.5px; font-weight: 600; color: var(--sc-ink);
-    box-shadow: var(--sc-sh-subtle);
+    border-radius: var(--sc-r-pill); padding: 9px 20px 9px 10px;
+    font-size: 14px; font-weight: 600; color: var(--sc-ink); box-shadow: var(--sc-sh-subtle);
   }
   .j-n {
-    display: grid; place-items: center; inline-size: 22px; block-size: 22px;
-    border-radius: 999px; background: var(--sc-wash); border: 1px solid var(--sc-soft);
-    color: var(--sc-accent-text); font-size: 11.5px; font-weight: 800; flex: none;
+    display: grid; place-items: center; inline-size: 24px; block-size: 24px; border-radius: 999px;
+    background: var(--sc-wash); border: 1px solid var(--sc-soft);
+    color: var(--sc-accent-text); font-size: 12px; font-weight: 800; flex: none;
   }
-  @media (max-width: 560px) { .journey { flex-direction: column; align-items: stretch; } }
 
-  .form-wrap { max-inline-size: 760px; margin-inline: auto; padding-inline: clamp(18px, 5vw, 40px); margin-block-start: 40px; }
-  .panel { padding: clamp(24px, 4vw, 36px); }
-  form.panel { display: flex; flex-direction: column; gap: 18px; }
+  .s1-form {
+    padding: clamp(28px, 3vw, 40px);
+    display: flex; flex-direction: column; gap: 20px;
+    box-shadow: var(--sc-sh-deep);
+  }
 
+  /* ═══ שדות ═══ */
   .f { display: flex; flex-direction: column; gap: 8px; }
-  .f > label { font-size: 15px; font-weight: 700; color: var(--sc-ink); display: flex; gap: 7px; align-items: baseline; }
+  .f > label { font-size: 14.5px; font-weight: 700; color: var(--sc-ink); display: flex; gap: 7px; align-items: baseline; }
   .req { color: var(--sc-accent-text); font-size: 12px; font-weight: 700; }
   .hint { font-size: 13px; font-weight: 500; color: var(--sc-muted); }
   .f input {
     font-family: inherit; font-size: 16px; font-weight: 500;
     color: var(--sc-ink); background: var(--sc-card);
     border: 1px solid var(--sc-hair); border-radius: var(--sc-r-chip);
-    padding: 13px 15px; inline-size: 100%;
+    padding: 14px 16px; inline-size: 100%;
     transition: border-color var(--sc-fast) var(--sc-ease), box-shadow var(--sc-fast) var(--sc-ease);
   }
   .f input:focus-visible { outline: none; border-color: var(--sc-accent); box-shadow: 0 0 0 3px var(--sc-wash); }
   .f input::placeholder { color: var(--sc-disabled); }
   .f.bad input { border-color: var(--sc-red); }
-
   .err { font-size: 13px; font-weight: 600; color: var(--sc-red-text); }
   .err.summary { background: var(--sc-red-bg); border: 1px solid var(--sc-red-bd); border-radius: var(--sc-r-chip); padding: 11px 15px; text-align: center; }
-  .fine { font-size: 13px; color: var(--sc-muted); text-align: center; }
+  .fine { font-size: 12.5px; color: var(--sc-muted); text-align: center; }
   .hp { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-  /* Turnstile · יושב מתחת לכפתור, לא מעליו. הווידג'ט הוא iframe שאי אפשר
-     לעצב מבפנים, אז מעגלים אותו מבחוץ · overflow:hidden גוזר את הפינות
-     המרובעות של ה-iframe עצמו. */
-  .ts-slot {
-    display: flex; justify-content: center;
-    min-block-size: 65px;
-    margin-block-start: -2px;
-  }
-  .ts-slot :global(iframe) {
-    border-radius: var(--sc-r-chip);
-    overflow: hidden;
-  }
-  .ts-slot :global(> div) {
-    border-radius: var(--sc-r-chip);
-    overflow: hidden;
-    box-shadow: var(--sc-sh-subtle);
-  }
-  #go[aria-busy='true'], #go-articles[aria-busy='true'] { opacity: .7; pointer-events: none; }
+  .ts-slot { display: flex; justify-content: center; min-block-size: 65px; margin-block-start: -4px; }
+  .ts-slot :global(iframe), .ts-slot :global(> div) { border-radius: var(--sc-r-chip); overflow: hidden; }
+  button[aria-busy='true'] { opacity: .7; pointer-events: none; }
 
-  /* ── ריצה חיה ── */
-  .run-head { display: flex; align-items: center; gap: 14px; margin-block-end: 20px; }
-  .run-t { font-size: 19px; font-weight: 800; letter-spacing: -.01em; }
-  .run-t b { font-weight: 800; color: var(--sc-accent-text); }
-  .run-s { font-size: 13.5px; color: var(--sc-muted); font-weight: 500; margin-block-start: 3px; }
-  .radar {
-    inline-size: 12px; block-size: 12px; border-radius: 999px; flex: none;
-    background: var(--accent-gold); box-shadow: 0 0 0 0 rgba(36, 200, 140, .8);
-    animation: rad 2s var(--sc-ease) infinite;
+  /* ═══ מסך 2 · המכונה ═══ */
+  .s2-grid {
+    display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(320px, .65fr);
+    gap: clamp(20px, 2.5vw, 32px); align-items: start;
   }
-  @keyframes rad { 70% { box-shadow: 0 0 0 10px rgba(36, 200, 140, 0); } 100% { box-shadow: 0 0 0 0 rgba(36, 200, 140, 0); } }
+  @media (max-width: 940px) { .s2-grid { grid-template-columns: 1fr; } }
 
-  /* הלוג · משפטים על מה שסקיילה עושה, לא פס אילם */
-  .log { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 11px; }
-  .log li {
-    display: flex; gap: 11px; align-items: flex-start;
-    font-size: 14.5px; line-height: 1.55; color: var(--sc-ink);
-    animation: logIn 320ms var(--sc-ease) both;
+  .run-main { padding: clamp(28px, 3vw, 40px); }
+  .run-top {
+    display: flex; align-items: center; gap: 18px;
+    padding-block-end: 24px; margin-block-end: 26px;
+    border-block-end: 1px solid var(--sc-div);
   }
-  @keyframes logIn { from { opacity: 0; transform: translateY(4px); } }
-  .log li[data-state='pending'] { color: var(--sc-disabled); }
-  .log li[data-state='running'] { color: var(--sc-ink); font-weight: 600; }
-  .log li[data-state='done'] { color: var(--sc-muted); }
-  .log .li-ic { flex: none; inline-size: 18px; block-size: 18px; border-radius: 999px; display: grid; place-items: center; font-size: 10px; font-weight: 800; margin-block-start: 2px; font-style: normal; }
-  .log li[data-state='done'] .li-ic { background: var(--sc-gold-bg); color: var(--sc-gold-text); border: 1px solid var(--sc-gold-bd); }
-  .log li[data-state='running'] .li-ic { background: var(--sc-wash); color: var(--sc-accent-text); border: 1px solid var(--sc-soft); }
-  .log li[data-state='pending'] .li-ic { background: transparent; border: 1px solid var(--sc-hair); }
-  .log li[data-state='skipped'] .li-ic { background: transparent; border: 1px dashed var(--sc-hair); color: var(--sc-disabled); }
-  .slow { font-size: 13px; color: var(--sc-muted); margin-block-start: 18px; text-align: center; }
+  .run-id { flex: 1; min-inline-size: 0; }
+  .run-id h2 { font-size: clamp(17px, 1.7vw, 21px); font-weight: 800; letter-spacing: -.01em; color: var(--sc-ink); }
+  .run-id h2 b { color: var(--sc-accent-text); font-weight: 800; }
+  .run-now { font-size: 13.5px; color: var(--sc-muted); font-weight: 600; margin-block-start: 5px; }
+  .run-clock { text-align: center; flex: none; }
+  .run-clock b { display: block; font-size: 26px; font-weight: 800; letter-spacing: -.02em; color: var(--sc-ink); line-height: 1; }
+  .run-clock small { font-size: 11px; color: var(--sc-muted); font-weight: 600; }
 
-  /* ── הציון ── */
-  .score-card { display: flex; flex-direction: column; gap: 18px; padding: clamp(24px, 4vw, 36px); }
-  /* סיכום המצב במילים · לפני המספרים. אדם קורא משפט, לא מחוון. */
-  .verdict {
-    font-size: clamp(16px, 2vw, 19px); line-height: 1.6; font-weight: 600;
-    color: var(--sc-ink); margin-block-start: -6px;
+  /* האורב · שלוש טבעות שנושמות. תנועה אמיתית, לא פס אילם. */
+  .orb { position: relative; inline-size: 44px; block-size: 44px; flex: none; display: grid; place-items: center; }
+  .orb i {
+    position: absolute; inline-size: 100%; block-size: 100%; border-radius: 999px;
+    border: 2px solid var(--accent-gold); opacity: 0;
+    animation: ping 2.4s var(--sc-ease) infinite;
   }
-  .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; }
-  .score-row { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
-  .dm-gauge { position: relative; inline-size: 148px; block-size: 148px; flex: none; }
+  .orb i:nth-child(2) { animation-delay: .8s; }
+  .orb i:nth-child(3) { animation-delay: 1.6s; }
+  .orb::after {
+    content: ''; inline-size: 12px; block-size: 12px; border-radius: 999px;
+    background: var(--accent-gold); box-shadow: 0 0 14px 2px rgba(36, 200, 140, .5);
+  }
+  @keyframes ping { 0% { transform: scale(.35); opacity: .9; } 100% { transform: scale(1); opacity: 0; } }
+
+  /* הלוג · השלב הפעיל פועם.
+     :global חובה · השורות נוצרות ב-JS ואין להן את ה-data-astro-cid שאסטרו
+     מוסיף לאלמנטים שבתבנית. בלי זה אף כלל כאן לא חל והלוג נראה כרשימת
+     תבליטים עירומה. נתפס במדידה: li_display=list-item, icon_size=auto. */
+  .log { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+  .log :global(li) {
+    display: flex; gap: 13px; align-items: flex-start;
+    font-size: 15px; line-height: 1.55; color: var(--sc-ink);
+    animation: logIn 340ms var(--sc-ease) both;
+  }
+  @keyframes logIn { from { opacity: 0; transform: translateY(5px); } }
+  .log :global(li[data-state='pending']) { color: var(--sc-disabled); }
+  .log :global(li[data-state='running']) { color: var(--sc-ink); font-weight: 700; }
+  .log :global(li[data-state='done']), .log :global(li[data-state='skipped']) { color: var(--sc-muted); }
+  .log :global(.li-ic) {
+    flex: none; inline-size: 20px; block-size: 20px; border-radius: 999px;
+    display: grid; place-items: center; font-size: 11px; font-weight: 800;
+    margin-block-start: 1px; font-style: normal; border: 1px solid var(--sc-hair);
+  }
+  .log :global(li[data-state='done'] .li-ic) {
+    background: var(--sc-gold-bg); color: var(--sc-gold-text); border-color: var(--sc-gold-bd);
+  }
+  .log :global(li[data-state='running'] .li-ic) {
+    background: var(--sc-wash); color: var(--sc-accent-text); border-color: var(--sc-accent);
+    animation: beat 1.4s var(--sc-ease) infinite;
+  }
+  @keyframes beat {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(85, 70, 214, .45); }
+    70% { box-shadow: 0 0 0 7px rgba(85, 70, 214, 0); }
+  }
+  .log :global(li[data-state='skipped'] .li-ic) { border-style: dashed; color: var(--sc-disabled); }
+  @media (prefers-reduced-motion: reduce) {
+    .orb i, .log :global(li[data-state='running'] .li-ic) { animation: none; }
+  }
+
+  /* ═══ הצד · מייל וציון ═══ */
+  .s2-side { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 92px; }
+  @media (max-width: 940px) { .s2-side { position: static; } }
+  .mailbox {
+    padding: 24px 26px; display: flex; flex-direction: column; gap: 15px;
+    background: var(--sc-gold-bg); border-color: var(--sc-gold-bd);
+  }
+  .mail-t { font-size: 14px; line-height: 1.7; color: var(--sc-ink); }
+  .mail-t b { font-weight: 800; }
+  .mailbox.saved { flex-direction: row; align-items: center; gap: 13px; }
+  .mailbox.saved p { font-size: 13.5px; line-height: 1.6; color: var(--sc-ink); }
+  .mk-ok {
+    flex: none; inline-size: 26px; block-size: 26px; border-radius: 999px;
+    display: grid; place-items: center; font-size: 13px; font-weight: 800;
+    background: var(--sc-card); color: var(--sc-gold-text); border: 1px solid var(--sc-gold-bd);
+  }
+  .score-mini { padding: 24px 26px; animation: logIn 400ms var(--sc-ease) both; }
+  .mini-row { display: flex; align-items: center; gap: 18px; margin-block-start: 14px; }
+  .mini-txt { min-inline-size: 0; }
+  .mini-sub { font-size: 13px; color: var(--sc-muted); margin-block-start: 8px; line-height: 1.5; }
+
+  /* ═══ המחוון ═══ */
+  .dm-gauge { position: relative; inline-size: 118px; block-size: 118px; flex: none; }
+  .score-full .dm-gauge { inline-size: 152px; block-size: 152px; }
   .dm-gauge svg { inline-size: 100%; block-size: 100%; display: block; }
   .dm-arc { transition: stroke-dashoffset 1300ms var(--sc-ease); }
   @media (prefers-reduced-motion: reduce) { .dm-arc { transition: none; } }
   .dm-gauge-c { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-  .dm-gauge-c b { font-weight: 800; font-size: 36px; line-height: 1; letter-spacing: -.02em; color: var(--sc-ink); }
+  .dm-gauge-c b { font-weight: 800; font-size: 29px; line-height: 1; letter-spacing: -.02em; color: var(--sc-ink); }
+  .score-full .dm-gauge-c b { font-size: 37px; }
   .dm-gauge-c b i { font-style: normal; }
-  .dm-gauge-c b em { font-style: normal; font-size: 17px; font-weight: 700; color: var(--sc-accent-text); }
-  .dm-gauge-c small { font-size: 11px; color: var(--sc-muted); margin-block-start: 4px; font-weight: 500; }
-  .score-txt { min-inline-size: 0; flex: 1; }
-  .score-line { font-size: clamp(18px, 2.2vw, 22px); font-weight: 700; color: var(--sc-ink); }
-  .score-line b { color: var(--sc-accent-text); font-weight: 900; }
+  .dm-gauge-c b em { font-style: normal; font-size: 15px; font-weight: 700; color: var(--sc-accent-text); }
+  .dm-gauge-c small { font-size: 10px; color: var(--sc-muted); margin-block-start: 4px; font-weight: 500; }
   .band {
-    display: inline-flex; margin-block-start: 10px; border-radius: var(--sc-r-pill);
-    padding: 6px 14px; font-size: 13px; font-weight: 800;
+    display: inline-flex; border-radius: var(--sc-r-pill); padding: 6px 14px;
+    font-size: 13px; font-weight: 800;
     background: var(--sc-wash); color: var(--sc-accent-text); border: 1px solid var(--sc-soft);
   }
   .band[data-band='lead'] { background: var(--sc-gold-bg); color: var(--sc-gold-text); border-color: var(--sc-gold-bd); }
   .band[data-band='gap'] { background: var(--sc-red-bg); color: var(--sc-red-text); border-color: var(--sc-red-bd); }
-  .score-sub { font-size: 14px; color: var(--sc-muted); margin-block-start: 12px; font-weight: 500; }
+
+  /* ═══ מסך 3 · תוצאות ═══ */
+  .done-head { text-align: center; margin-block-end: 30px; }
+  .done-head h2 { font-size: clamp(24px, 2.9vw, 36px); font-weight: 900; letter-spacing: -.02em; color: var(--sc-ink); }
+  .verdict {
+    font-size: clamp(15px, 1.7vw, 18px); line-height: 1.65; font-weight: 600;
+    color: var(--sc-mv); max-inline-size: 64ch; margin: 16px auto 0;
+  }
+  .res-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 18px; align-items: start; }
+  @media (max-width: 940px) { .res-grid { grid-template-columns: 1fr; } }
+  .score-full { padding: clamp(26px, 3vw, 36px); display: flex; flex-direction: column; gap: 18px; }
+  .score-row { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .score-txt { min-inline-size: 0; flex: 1; }
+  .score-line { font-size: clamp(17px, 2vw, 21px); font-weight: 700; color: var(--sc-ink); margin-block-end: 10px; }
+  .score-line b { color: var(--sc-accent-text); font-weight: 900; }
+  .score-sub { font-size: 13.5px; color: var(--sc-muted); margin-block-start: 12px; font-weight: 500; line-height: 1.6; }
   .method {
-    font-size: 13px; line-height: 1.65; color: var(--sc-mv); font-weight: 500;
+    font-size: 12.5px; line-height: 1.7; color: var(--sc-mv); font-weight: 500;
     border-block-start: 1px solid var(--sc-div); padding-block-start: 16px;
   }
   .method b { color: var(--sc-ink); font-weight: 700; }
-
-  .answers { display: flex; flex-direction: column; gap: 14px; margin-block-start: 16px; }
-
-  /* הריצה · הלוג והמייל זה לצד זה, לא זה אחרי זה */
-  .run-wrap { display: flex; flex-direction: column; gap: 14px; padding: 0; }
-  .log-gen { margin-block-start: 14px; padding-block-start: 14px; border-block-start: 1px solid var(--sc-div); }
-  .mailbox {
-    padding: 22px 24px; display: flex; flex-direction: column; gap: 14px;
-    background: var(--sc-gold-bg); border-color: var(--sc-gold-bd);
+  .answers { display: flex; flex-direction: column; gap: 12px; }
+  .answers :global(.card) { padding: 20px 22px; }
+  .answers :global(.band) {
+    display: inline-flex; border-radius: var(--sc-r-pill); padding: 6px 14px;
+    font-size: 13px; font-weight: 800;
+    background: var(--sc-wash); color: var(--sc-accent-text); border: 1px solid var(--sc-soft);
   }
-  .mail-t { font-size: 14.5px; line-height: 1.65; color: var(--sc-ink); }
-  .mail-t b { font-weight: 800; }
-  .mailbox .btn { align-self: flex-start; }
-  .mailbox.saved { flex-direction: row; align-items: center; gap: 12px; }
-  .mailbox.saved p { font-size: 14px; color: var(--sc-ink); }
-  .mk-ok {
-    flex: none; inline-size: 24px; block-size: 24px; border-radius: 999px;
-    display: grid; place-items: center; font-size: 13px; font-weight: 800;
-    background: var(--sc-card); color: var(--sc-gold-text); border: 1px solid var(--sc-gold-bd);
-  }
+  .answers :global(.band[data-band='lead']) { background: var(--sc-gold-bg); color: var(--sc-gold-text); border-color: var(--sc-gold-bd); }
+  .answers :global(.band[data-band='gap']) { background: var(--sc-red-bg); color: var(--sc-red-text); border-color: var(--sc-red-bd); }
 
-  /* ── שער ── */
-  .gate h2 { font-size: clamp(21px, 2.6vw, 27px); }
-  .gate-p { font-size: 15px; color: var(--sc-mv); line-height: 1.7; }
-  .gate-note {
-    display: flex; gap: 11px; border-radius: var(--sc-r-chip); padding: 14px 16px;
-    font-size: 13.5px; line-height: 1.6;
-    border: 1px solid var(--sc-gold-bd); background: var(--sc-gold-bg); color: var(--sc-ink);
+  .arts { display: flex; flex-direction: column; gap: 18px; margin-block-start: 18px; }
+  .arts :global(.art) { padding: clamp(26px, 3.5vw, 44px); }
+  .arts :global(.art-t) { font-size: clamp(20px, 2.4vw, 27px); font-weight: 800; letter-spacing: -.015em; line-height: 1.3; color: var(--sc-ink); }
+  .arts :global(.art-meta) { font-size: 13px; color: var(--sc-muted); font-weight: 600; margin-block-start: 8px; }
+  .arts :global(.art-flag) {
+    font-size: 13px; font-weight: 600; color: var(--sc-ink);
+    background: var(--sc-gold-bg); border: 1px solid var(--sc-gold-bd);
+    border-radius: var(--sc-r-chip); padding: 11px 14px; margin-block-start: 14px;
   }
-  .gate-note b { font-weight: 800; }
-  .gate-ic { color: var(--sc-gold-text); flex: none; margin-block-start: 1px; }
+  .arts :global(.prose) { margin-block-start: 20px; }
+  .arts :global(.prose h3) { font-size: 19px; font-weight: 800; letter-spacing: -.01em; margin-block: 28px 10px; color: var(--sc-ink); }
+  .arts :global(.prose h4) { font-size: 16px; font-weight: 800; margin-block: 20px 8px; color: var(--sc-ink); }
+  .arts :global(.prose p) { margin-block-end: 15px; font-size: 15.5px; line-height: 1.85; color: var(--sc-ink); unicode-bidi: isolate; }
+  .arts :global(.prose strong) { font-weight: 700; }
+  .arts :global(.prose ul) { padding-inline-start: 22px; margin-block-end: 15px; display: grid; gap: 7px; }
+  .arts :global(.prose li) { font-size: 15px; line-height: 1.75; color: var(--sc-ink); unicode-bidi: isolate; }
+  .arts :global(.prose code) {
+    font-size: 13.5px; background: var(--sc-wash); border: 1px solid var(--sc-soft);
+    border-radius: 5px; padding: 1px 5px; direction: ltr; unicode-bidi: isolate; display: inline-block;
+  }
+  .arts :global(.art-src) { margin-block-start: 26px; padding-block-start: 18px; border-block-start: 1px solid var(--sc-div); }
+  .arts :global(.art-src-t) { font-size: 11.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--sc-muted); margin-block-end: 10px; }
+  .arts :global(.art-src ol) { padding-inline-start: 20px; display: grid; gap: 5px; }
+  .arts :global(.art-src li) { font-size: 13px; color: var(--sc-muted); }
+  .arts :global(.art-src a) { color: var(--sc-accent-text); text-decoration: none; direction: ltr; unicode-bidi: isolate; display: inline-block; }
+  .arts :global(.art-src a:hover) { text-decoration: underline; }
 
-  /* ── מצבי סיום ── */
-  .end { text-align: center; }
-  .end h2 { margin-block-end: 10px; }
-  .end p { color: var(--sc-mv); max-inline-size: 52ch; margin-inline: auto; font-size: 15px; }
+  /* ═══ סיום ותקלה ═══ */
+  .end { padding: clamp(30px, 4vw, 48px); text-align: center; }
+  .end h2 { margin-block-end: 10px; font-size: clamp(20px, 2.4vw, 28px); }
+  .end p { color: var(--sc-mv); max-inline-size: 54ch; margin-inline: auto; font-size: 15px; line-height: 1.7; }
+  .cta-end { margin-block-start: 18px; }
+  .cta-end .btn { margin-block-start: 24px; }
   .end-ic { display: grid; place-items: center; inline-size: 52px; block-size: 52px; border-radius: 999px; margin: 0 auto 16px; }
-  .end-ic.ok { background: var(--sc-gold-bg); border: 1px solid var(--sc-gold-bd); color: var(--sc-gold-text); }
-  .end-ic.warn { background: var(--sc-wash); border: 1px solid var(--sc-soft); color: var(--sc-accent-text); }
   .end-ic.bad { background: var(--sc-red-bg); border: 1px solid var(--sc-red-bd); color: var(--sc-red-text); }
-  .end-cta { margin-block-start: 22px; display: flex; justify-content: center; }
-  .queue-f { max-inline-size: 320px; margin: 18px auto 0; text-align: start; }
-  #s-capped, #s-done .end + .arts { margin-block-start: 16px; }
-  #s-done { display: flex; flex-direction: column; gap: 16px; }
   .back {
-    margin-block-start: 16px; background: none; border: none; cursor: pointer;
+    margin-block-start: 18px; background: none; border: none; cursor: pointer;
     font-family: inherit; font-size: 13.5px; font-weight: 600; color: var(--sc-muted);
     text-decoration: underline; text-underline-offset: 3px;
   }
   .back:hover { color: var(--sc-accent-text); }
-
-  .arts { display: flex; flex-direction: column; gap: 18px; margin-block-start: 16px; }
-  .art { padding: clamp(24px, 4vw, 38px); }
-  .art-t { font-size: clamp(20px, 2.6vw, 26px); font-weight: 800; letter-spacing: -.015em; line-height: 1.3; color: var(--sc-ink); }
-  .art-meta { font-size: 13px; color: var(--sc-muted); font-weight: 600; margin-block-start: 8px; }
-  .art-flag {
-    font-size: 13px; font-weight: 600; color: var(--sc-ink);
-    background: var(--sc-gold-bg); border: 1px solid var(--sc-gold-bd);
-    border-radius: var(--sc-r-chip); padding: 10px 13px; margin-block-start: 12px;
-  }
-
-  /* גוף המאמר · אותם ערכים של .prose במגזין, כדי שזה ייראה כמו מאמר אמיתי */
-  .art .prose { margin-block-start: 18px; }
-  .art .prose :global(h3) {
-    font-size: 19px; font-weight: 800; letter-spacing: -.01em;
-    margin-block: 26px 10px; color: var(--sc-ink);
-  }
-  .art .prose :global(h4) { font-size: 16px; font-weight: 800; margin-block: 20px 8px; color: var(--sc-ink); }
-  .art .prose :global(p) {
-    margin-block-end: 15px; font-size: 15.5px; line-height: 1.85;
-    color: var(--sc-ink); font-weight: 400; unicode-bidi: isolate;
-  }
-  .art .prose :global(strong) { font-weight: 700; }
-  .art .prose :global(ul) { padding-inline-start: 22px; margin-block-end: 15px; display: grid; gap: 7px; }
-  .art .prose :global(li) { font-size: 15px; line-height: 1.75; color: var(--sc-ink); unicode-bidi: isolate; }
-  .art .prose :global(code) {
-    font-size: 13.5px; background: var(--sc-wash); border: 1px solid var(--sc-soft);
-    border-radius: 5px; padding: 1px 5px; direction: ltr; unicode-bidi: isolate; display: inline-block;
-  }
-
-  .art-src { margin-block-start: 24px; padding-block-start: 18px; border-block-start: 1px solid var(--sc-div); }
-  .art-src-t { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--sc-muted); margin-block-end: 10px; }
-  .art-src ol { padding-inline-start: 20px; display: grid; gap: 5px; }
-  .art-src li { font-size: 13px; color: var(--sc-muted); }
-  .art-src a { color: var(--sc-accent-text); text-decoration: none; direction: ltr; unicode-bidi: isolate; display: inline-block; }
-  .art-src a:hover { text-decoration: underline; }
-
-  /* ── צעדים ── */
-  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  @media (max-width: 760px) { .steps { grid-template-columns: 1fr; } }
-  .step { padding: 30px 26px; }
-  .step-n {
-    display: grid; place-items: center; inline-size: 46px; block-size: 46px;
-    border-radius: 12px; background: var(--sc-wash); border: 1px solid var(--sc-soft);
-    color: var(--sc-accent-text); font-size: 17px; font-weight: 800; margin-block-end: 13px;
-  }
-  .step h3 { margin-block-end: 6px; color: var(--sc-ink); }
-  .step p { font-size: 14px; color: var(--sc-muted); }
 </style>
 
 <script>
-  // ── /scan · מכונת המצבים ────────────────────────────────────────────────
-  // phase מהשרת הוא מקור האמת היחיד. אין פה שום נתון מומצא · אם השרת לא
-  // החזיר מספר, לא מוצג מספר. זו כל הנקודה של העמוד הזה מול /check.
+  // ── /scan · ממשק של שלושה מסכים. phase מהשרת הוא מקור האמת היחיד. ──
   const $ = (id: string) => document.getElementById(id);
   const show = (el: HTMLElement | null) => el?.removeAttribute('hidden');
   const hide = (el: HTMLElement | null) => el?.setAttribute('hidden', '');
 
-  const PANELS = ['s-idle', 's-scanning', 's-score', 's-done', 's-capped', 's-error'];
-  const only = (id: string) => PANELS.forEach((p) => (p === id ? show($(p)) : hide($(p))));
-  /** מרחב מצטבר · הריצה, הציון והמאמרים מופיעים זה על גב זה ולא מחליפים זה את זה. */
-  const stack = (...ids: string[]) => PANELS.forEach((p) => (ids.includes(p) ? show($(p)) : hide($(p))));
+  const SCREENS = ['screen-idle', 'screen-run', 'screen-done', 'screen-error'];
+  const screen = (id: string) => {
+    SCREENS.forEach((s) => (s === id ? show($(s)) : hide($(s))));
+    window.scrollTo({ top: 0 });
+  };
 
   const okEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
-  const cleanHost = (v: string) => {
-    let s = v.trim().replace(/^https?:\/\//i, '').replace(/^www\./i, '').replace(/\/.*$/, '');
-    return s.toLowerCase();
-  };
+  const cleanHost = (v: string) =>
+    v.trim().replace(/^https?:\/\//i, '').replace(/^www\./i, '').replace(/\/.*$/, '').toLowerCase();
   const okHost = (v: string) => /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9-]+)+$/.test(cleanHost(v));
 
   const setErr = (k: string, msg: string) => {
@@ -528,21 +501,16 @@ const C = +(2 * Math.PI * 84).toFixed(2);
     const el = $('e-' + k); el?.closest('.f')?.classList.remove('bad');
     if (el) { el.setAttribute('hidden', ''); el.textContent = ''; }
   };
-
   const mmss = (ms: number) => {
-    const s = Math.floor(ms / 1000);
+    const s = Math.max(0, Math.floor(ms / 1000));
     return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
   };
 
-  // ── הלוג · משפטים על מה שסקיילה עושה עכשיו ──
-  const ICON: Record<string, string> = { done: '✓', running: '•', pending: '', skipped: '–' };
-  const renderLog = (host: string, steps: { label: string; state: string }[]) => {
-    if (!host) return;
-    const el = $(host);
-    if (!el) return;
-    // בלי המשמר הזה, תגובת status שלא נושאת steps מוחקת לוג שכבר צויר
-    // והמשתמש רואה מסך ריק באמצע ריצה.
-    if (!steps?.length) return;
+  const ICON: Record<string, string> = { done: '✓', running: '', pending: '', skipped: '–' };
+  const renderLog = (steps: { label: string; state: string }[]) => {
+    const el = $('run-log');
+    // תגובת status בלי steps לא מוחקת לוג שכבר צויר
+    if (!el || !steps?.length) return;
     el.innerHTML = '';
     for (const s of steps) {
       const li = document.createElement('li');
@@ -551,51 +519,50 @@ const C = +(2 * Math.PI * 84).toFixed(2);
       (li.querySelector('span') as HTMLElement).textContent = s.label;
       el.appendChild(li);
     }
+    const now = steps.find((s) => s.state === 'running');
+    const nowEl = $('run-now');
+    if (nowEl) nowEl.textContent = now ? now.label : 'מסיימים';
   };
 
-  // ── המחוון ──
-  const R = 84, CIRC = 2 * Math.PI * R;
-  const paintScore = (score: any) => {
-    const pct = Math.max(0, Math.min(100, Math.round(score.pct)));
-    const arc = $('gauge-arc') as unknown as SVGCircleElement | null;
+  const CIRC = 2 * Math.PI * 84;
+  const paintGauge = (arcId: string, numId: string, wrapId: string, pct: number) => {
+    const arc = $(arcId) as unknown as SVGCircleElement | null;
     if (arc) arc.style.strokeDashoffset = String(CIRC * (1 - pct / 100));
-    const numEl = $('gauge-num');
-    // המספר האמיתי נכתב מיד · הספירה היא קישוט בלבד.
-    // אם rAF נחנק (טאב ברקע, reduced-motion, throttling) המחוון עדיין מציג את
-    // הערך הנכון. מחוון על 0 ליד טקסט שאומר 34% הוא מספר שקרי, וזה בדיוק מה
-    // שהעמוד הזה קיים כדי למחוק.
-    if (numEl) numEl.textContent = String(pct);
-    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (numEl && !reduce && pct > 0) {
-      const t0 = performance.now();
-      const tick = (t: number) => {
-        const p = Math.min(1, (t - t0) / 1300);
-        const eased = 1 - Math.pow(1 - p, 3);
-        numEl.textContent = String(Math.round(pct * eased));
-        if (p < 1) requestAnimationFrame(tick);
-        else numEl.textContent = String(pct); // תמיד נוחת על הערך המדויק
-      };
-      requestAnimationFrame(tick);
-    }
-    $('gauge')?.setAttribute('aria-label', `נראות ב-AI: ${pct}%`);
+    const n = $(numId);
+    // הערך האמיתי נכתב מיד · הספירה היא קישוט. אם rAF נחנק, המספר עדיין נכון.
+    if (n) n.textContent = String(pct);
+    $(wrapId)?.setAttribute('aria-label', `נראות ב-AI: ${pct}%`);
+    if (!n || matchMedia('(prefers-reduced-motion: reduce)').matches || pct <= 0) return;
+    const t0 = performance.now();
+    const tick = (t: number) => {
+      const p = Math.min(1, (t - t0) / 1300);
+      n.textContent = String(Math.round(pct * (1 - Math.pow(1 - p, 3))));
+      if (p < 1) requestAnimationFrame(tick); else n.textContent = String(pct);
+    };
+    requestAnimationFrame(tick);
+  };
 
-    const vd = $('score-verdict');
-    if (vd) {
-      // רק אם השרת מדד וכתב אותו · אין ניסוח מומצא בצד הלקוח
-      if (score.verdict) { vd.textContent = score.verdict; vd.removeAttribute('hidden'); }
-      else vd.setAttribute('hidden', '');
+  const bandOf = (pct: number) => (pct >= 50 ? 'lead' : pct >= 20 ? 'grow' : 'gap');
+  const bandTxt = (b: string) =>
+    b === 'lead' ? 'אתם מובילים בתשובות' : b === 'grow' ? 'יש לכם לאן לצמוח' : 'פער נראות גדול';
+
+  const paintScore = (s: any) => {
+    const pct = Math.max(0, Math.min(100, Math.round(s.pct)));
+    const b = bandOf(pct);
+    paintGauge('gauge-arc', 'gauge-num', 'gauge', pct);
+    paintGauge('gauge-arc2', 'gauge-num2', 'gauge2', pct);
+    for (const id of ['score-band', 'score-band2']) {
+      const el = $(id);
+      if (el) { el.dataset.band = b; el.textContent = bandTxt(b); }
     }
     const pctEl = $('score-pct'); if (pctEl) pctEl.textContent = pct + '%';
-    const qt = $('q-total'); if (qt) qt.textContent = String(score.queriesAsked ?? 0);
-    const qh = $('q-hit'); if (qh) qh.textContent = String(score.queriesMentioned ?? 0);
-
-    // הבנדים של האפליקציה · 20/50. לא לגעת.
-    const band = $('score-band');
-    if (band) {
-      const b = pct >= 50 ? 'lead' : pct >= 20 ? 'grow' : 'gap';
-      band.dataset.band = b;
-      band.textContent = b === 'lead' ? 'אתם מובילים בתשובות' : b === 'grow' ? 'יש לכם לאן לצמוח' : 'פער נראות גדול';
-    }
+    const qt = $('q-total'); if (qt) qt.textContent = String(s.queriesAsked ?? 0);
+    const qh = $('q-hit'); if (qh) qh.textContent = String(s.queriesMentioned ?? 0);
+    const ms = $('mini-sub');
+    if (ms) ms.textContent = `הופעתם ב-${s.queriesMentioned} מתוך ${s.queriesAsked} תשובות`;
+    const v = $('verdict');
+    if (v) { if (s.verdict) { v.textContent = s.verdict; v.removeAttribute('hidden'); } else v.setAttribute('hidden', ''); }
+    show($('score-mini'));
   };
 
   const renderAnswers = (answers: any[]) => {
@@ -603,38 +570,25 @@ const C = +(2 * Math.PI * 84).toFixed(2);
     if (!wrap) return;
     wrap.innerHTML = '';
     for (const a of answers || []) {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.style.padding = '20px 22px';
+      const c = document.createElement('div');
+      c.className = 'card';
+      c.style.padding = '20px 22px';
       const q = document.createElement('p');
-      q.style.cssText = 'font-size:14px;font-weight:800;color:var(--sc-ink);margin-block-end:8px;';
+      q.style.cssText = 'font-size:14px;font-weight:800;color:var(--sc-ink);margin-block-end:10px;line-height:1.5;';
       q.textContent = a.q;
-      const txt = document.createElement('p');
-      txt.style.cssText = 'font-size:14px;line-height:1.7;color:var(--sc-mv);';
-      txt.textContent = a.text;
       const tag = document.createElement('span');
       tag.className = 'band';
       tag.dataset.band = a.mentioned ? 'lead' : 'gap';
-      tag.textContent = a.mentioned ? 'הופעתם בתשובה' : 'לא הופעתם';
-      card.append(q, txt, tag);
-      wrap.appendChild(card);
+      tag.textContent = a.mentioned ? 'הופעתם' : 'לא הופעתם';
+      c.append(q, tag);
+      wrap.appendChild(c);
     }
   };
 
-  /**
-   * Markdown → HTML · תת-קבוצה מצומצמת ומכוונת.
-   * התוכן מגיע ממודל, אז מבריחים כל תו לפני שמעצבים · אחרת מאמר עם
-   * <script> בפנים היה רץ בדפדפן של הליד.
-   */
-  const esc = (s: string) =>
-    s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-
+  // ── Markdown → HTML · התוכן מגיע ממודל, אז מבריחים כל תו לפני עיצוב ──
+  const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const inline = (s: string) =>
-    esc(s)
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>')
-      .replace(/`([^`]+)`/g, '<code>$1</code>');
-
+    esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/`([^`]+)`/g, '<code>$1</code>');
   const mdToHtml = (md: string) => {
     const out: string[] = [];
     let list: string[] = [];
@@ -643,7 +597,7 @@ const C = +(2 * Math.PI * 84).toFixed(2);
       const line = raw.trimEnd();
       if (/^#{3}\s+/.test(line)) { flush(); out.push('<h4>' + inline(line.replace(/^#{3}\s+/, '')) + '</h4>'); }
       else if (/^#{2}\s+/.test(line)) { flush(); out.push('<h3>' + inline(line.replace(/^#{2}\s+/, '')) + '</h3>'); }
-      else if (/^[*-]\s+/.test(line) || /^\*\s{3}/.test(line)) list.push('<li>' + inline(line.replace(/^[*-]\s+/, '')) + '</li>');
+      else if (/^[*-]\s+/.test(line)) list.push('<li>' + inline(line.replace(/^[*-]\s+/, '')) + '</li>');
       else if (/^\d+\.\s+/.test(line)) list.push('<li>' + inline(line.replace(/^\d+\.\s+/, '')) + '</li>');
       else if (!line.trim()) flush();
       else { flush(); out.push('<p>' + inline(line) + '</p>'); }
@@ -652,45 +606,30 @@ const C = +(2 * Math.PI * 84).toFixed(2);
     return out.join('');
   };
 
-  const renderArts = (host: string, arts: any[]) => {
-    const wrap = $(host);
+  const renderArts = (arts: any[]) => {
+    const wrap = $('arts');
     if (!wrap) return;
     wrap.innerHTML = '';
     for (const a of arts || []) {
       const card = document.createElement('article');
       card.className = 'card art';
-
-      const h = document.createElement('h3');
-      h.className = 'art-t';
-      h.textContent = a.title || 'מאמר';
-      card.appendChild(h);
-
-      const meta = document.createElement('p');
-      meta.className = 'art-meta';
-      const words = (a.md || '').split(/\s+/).filter(Boolean).length;
-      meta.innerHTML = `<span class="num">${words}</span> מילים · <span class="num">${(a.sources || []).length}</span> מקורות`;
-      card.appendChild(meta);
-
-      // מאמר שנגנז · אומרים את זה, לא מתחזים לנקי
+      const h = document.createElement('h3'); h.className = 'art-t'; h.textContent = a.title || 'מאמר';
+      const meta = document.createElement('p'); meta.className = 'art-meta';
+      meta.innerHTML = `<span class="num">${(a.md || '').split(/\s+/).filter(Boolean).length}</span> מילים · <span class="num">${(a.sources || []).length}</span> מקורות`;
+      card.append(h, meta);
       if (a.shelved) {
-        const note = document.createElement('p');
-        note.className = 'art-flag';
-        note.textContent = 'הבקרה שלנו סימנה כאן דברים לשיפור · המאמר כאן כמו שהוא, בלי לייפות.';
-        card.appendChild(note);
+        const n = document.createElement('p'); n.className = 'art-flag';
+        n.textContent = 'הבקרה שלנו סימנה כאן דברים לשיפור · המאמר מוצג כמו שהוא, בלי לייפות.';
+        card.appendChild(n);
       }
-
-      const body = document.createElement('div');
-      body.className = 'prose';
+      const body = document.createElement('div'); body.className = 'prose';
       body.innerHTML = mdToHtml(a.md || '');
       card.appendChild(body);
-
       if ((a.sources || []).length) {
-        const src = document.createElement('div');
-        src.className = 'art-src';
-        src.innerHTML = '<p class="art-src-t">מקורות</p><ol>' +
-          a.sources.map((s: any) => `<li><a href="${esc(s.uri || '#')}" target="_blank" rel="noopener nofollow">${esc(s.domain || s.uri || '')}</a></li>`).join('') +
-          '</ol>';
-        card.appendChild(src);
+        const s = document.createElement('div'); s.className = 'art-src';
+        s.innerHTML = '<p class="art-src-t">מקורות</p><ol>' +
+          a.sources.map((x: any) => `<li><a href="${esc(x.uri || '#')}" target="_blank" rel="noopener nofollow">${esc(x.domain || '')}</a></li>`).join('') + '</ol>';
+        card.appendChild(s);
       }
       wrap.appendChild(card);
     }
@@ -700,50 +639,39 @@ const C = +(2 * Math.PI * 84).toFixed(2);
   let jobId: string | null = null;
   let startedAt = 0;
   let timer: any = null;
-
-  const startClock = (el: string) => {
+  const startClock = () => {
     clearInterval(timer);
-    timer = setInterval(() => {
-      const e = $(el);
-      if (e) e.textContent = mmss(Date.now() - startedAt);
-    }, 1000);
+    const t = $('run-elapsed');
+    const tick = () => { if (t) t.textContent = mmss(Date.now() - startedAt); };
+    tick();
+    timer = setInterval(tick, 1000);
   };
-
   const fail = (t: string, p: string) => {
     clearInterval(timer);
-    const et = $('err-t'), ep = $('err-p');
-    if (et) et.textContent = t;
-    if (ep) ep.textContent = p;
-    only('s-error');
+    const a = $('err-t'), b = $('err-p');
+    if (a) a.textContent = t;
+    if (b) b.textContent = p;
+    screen('screen-error');
   };
 
   const apply = (st: any) => {
-    if (st.score) paintScore(st.score);
-    if (st.score?.answers) renderAnswers(st.score.answers);
-
+    if (st.startedAt) startedAt = st.startedAt;
+    if (st.score) { paintScore(st.score); renderAnswers(st.score.answers || []); }
     switch (st.phase) {
       case 'scanning':
-        renderLog('scan-log', st.scan?.steps || []);
-        stack('s-scanning'); startClock('scan-elapsed'); break;
       case 'score':
-        // הציון מופיע · הריצה ממשיכה למאמרים לבד, בלי שער
-        renderLog('scan-log', st.scan?.steps || []);
-        stack('s-scanning', 's-score'); startClock('scan-elapsed'); break;
       case 'generating':
-        renderLog('scan-log', st.scan?.steps || []);
-        if (st.gen?.steps?.length) { show($('gen-log')); renderLog('gen-log', st.gen.steps); }
-        stack('s-scanning', 's-score'); startClock('scan-elapsed'); break;
+        renderLog([...(st.scan?.steps || []), ...(st.gen?.steps || [])]);
+        screen('screen-run'); startClock(); break;
       case 'done':
         clearInterval(timer);
-        renderArts('done-arts', st.articles || []);
-        stack('s-score', 's-done'); break;
-      case 'capped': stack('s-score', 's-capped'); break;
+        renderArts(st.articles || []);
+        screen('screen-done'); break;
       case 'error':
         fail(st.error?.title || 'משהו לא עבד', st.error?.message || 'נסו שוב בעוד כמה דקות.'); break;
     }
   };
 
-  // ── polling ──
   let delay = 2000;
   const poll = async () => {
     if (!jobId) return;
@@ -752,17 +680,14 @@ const C = +(2 * Math.PI * 84).toFixed(2);
       if (!r.ok) throw new Error(String(r.status));
       const st = await r.json();
       apply(st);
-      // לא עוצרים ב-score · המאמרים ממשיכים לרוץ אחריו
-      if (['done', 'error', 'capped'].includes(st.phase)) return;
-      delay = Math.min(10000, delay * 1.4);
+      if (['done', 'error'].includes(st.phase)) return;
+      delay = Math.min(10000, delay * 1.3);
       setTimeout(poll, delay);
-    } catch {
-      setTimeout(poll, 5000);
-    }
+    } catch { setTimeout(poll, 5000); }
   };
 
-  // ── S0 → סריקה ──
-  ($('s-idle') as HTMLFormElement | null)?.addEventListener('submit', async (e) => {
+  // ── מסך 1 → 2 ──
+  ($('form-idle') as HTMLFormElement | null)?.addEventListener('submit', async (e) => {
     e.preventDefault();
     clearErr('store'); hide($('e-summary'));
     const store = ($('store') as HTMLInputElement).value;
@@ -770,18 +695,15 @@ const C = +(2 * Math.PI * 84).toFixed(2);
     if (!okHost(store)) { setErr('store', 'הכתובת לא נראית תקינה · לדוגמה example.co.il'); return; }
 
     const btn = $('go') as HTMLButtonElement;
-    btn.setAttribute('aria-busy', 'true'); btn.textContent = 'סורקים...';
-    const hostEl = $('scan-host'); if (hostEl) hostEl.textContent = cleanHost(store);
-
+    btn.setAttribute('aria-busy', 'true'); btn.textContent = 'מתחילים...';
+    const h = $('run-host'); if (h) h.textContent = cleanHost(store);
     try {
       const ts = (document.querySelector('[name="cf-turnstile-response"]') as HTMLInputElement)?.value || '';
       const r = await fetch('/api/scan', {
         method: 'POST', headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
-          store: cleanHost(store),
-          blog: ($('blog') as HTMLInputElement).value.trim(),
-          company_website: ($('company-website') as HTMLInputElement).value,
-          cf_turnstile_response: ts,
+          store: cleanHost(store), blog: ($('blog') as HTMLInputElement).value.trim(),
+          company_website: ($('company-website') as HTMLInputElement).value, cf_turnstile_response: ts,
         }),
       });
       const j = await r.json();
@@ -799,59 +721,38 @@ const C = +(2 * Math.PI * 84).toFixed(2);
       jobId = j.jobId;
       try { sessionStorage.setItem('scaylaScanJob', jobId!); } catch {}
       history.replaceState(null, '', `/scan/${jobId}`);
+      // השעון מתחיל רק כאן · לא הצגנו "0:00 רץ כבר" לפני שהייתה פעולה
       startedAt = Date.now();
       apply({ phase: 'scanning', scan: j.scan });
       poll();
     } catch {
       btn.removeAttribute('aria-busy'); btn.textContent = 'קדימה, בואו נראה';
       const el = $('e-summary');
-      if (el) { el.textContent = 'לא הצלחנו להתחיל את הבדיקה · בדקו את החיבור ונסו שוב.'; show(el); }
+      if (el) { el.textContent = 'לא הצלחנו להתחיל · בדקו את החיבור ונסו שוב.'; show(el); }
     }
   });
 
-  // ── S3 → כתיבה ──
-  ($('s-mail') as HTMLFormElement | null)?.addEventListener('submit', async (e) => {
+  // ── מייל · רישום, לא שער ──
+  ($('form-mail') as HTMLFormElement | null)?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    clearErr('email'); clearErr('gname'); hide($('e-gate'));
-    const gname = ($('gname') as HTMLInputElement).value;
+    clearErr('email'); hide($('e-mail'));
     const email = ($('email') as HTMLInputElement).value;
-    if (!email.trim()) { setErr('email', 'כתבו כתובת מייל כדי שנוכל לעדכן אתכם.'); return; }
-    if (!okEmail(email)) { setErr('email', 'המייל לא נראה תקין · בדקו את הכתובת, למשל you@store.co.il'); return; }
-
+    if (!okEmail(email)) { setErr('email', 'כתבו כתובת מייל תקינה כדי שנוכל לעדכן אתכם.'); return; }
     const btn = $('go-mail') as HTMLButtonElement;
     btn.setAttribute('aria-busy', 'true'); btn.textContent = 'שומרים...';
     try {
       const r = await fetch('/api/scan/email', {
         method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ jobId, name: gname.trim(), email: email.trim() }),
+        body: JSON.stringify({ jobId, name: ($('gname') as HTMLInputElement).value.trim(), email: email.trim() }),
       });
-      btn.removeAttribute('aria-busy'); btn.textContent = 'עדכנו אותי כשזה מוכן';
-      if (!r.ok) { const el = $('e-gate'); if (el) { el.textContent = 'לא הצלחנו לשמור · נסו שוב.'; show(el); } return; }
-      // הטופס מתחלף באישור · הריצה ממשיכה בדיוק כמו קודם
+      btn.removeAttribute('aria-busy'); btn.textContent = 'עדכנו אותי במייל';
+      if (!r.ok) { const el = $('e-mail'); if (el) { el.textContent = 'לא הצלחנו לשמור · נסו שוב.'; show(el); } return; }
       const ms = $('mail-shown'); if (ms) ms.textContent = email.trim();
-      const de = $('done-email'); if (de) de.textContent = email.trim();
-      hide($('s-mail')); show($('s-mail-ok'));
+      hide($('form-mail')); show($('mail-ok'));
     } catch {
-      btn.removeAttribute('aria-busy'); btn.textContent = 'עדכנו אותי כשזה מוכן';
-      const el = $('e-gate'); if (el) { el.textContent = 'לא הצלחנו לשמור · בדקו את החיבור ונסו שוב.'; show(el); }
+      btn.removeAttribute('aria-busy'); btn.textContent = 'עדכנו אותי במייל';
+      const el = $('e-mail'); if (el) { el.textContent = 'לא הצלחנו לשמור · בדקו את החיבור ונסו שוב.'; show(el); }
     }
-  });
-
-  // ── S6 · תור ──
-  ($('s-capped') as HTMLFormElement | null)?.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    clearErr('qemail');
-    const email = ($('q-email') as HTMLInputElement).value;
-    if (!okEmail(email)) { setErr('qemail', 'כתבו כתובת מייל תקינה.'); return; }
-    const btn = $('go-queue') as HTMLButtonElement;
-    btn.setAttribute('aria-busy', 'true');
-    try {
-      await fetch('/api/scan/queue', {
-        method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ jobId, name: gname.trim(), email: email.trim() }),
-      });
-      btn.textContent = 'נשמר · נשלח לכם מחר';
-    } catch { btn.removeAttribute('aria-busy'); }
   });
 
   $('err-back')?.addEventListener('click', () => {
@@ -859,22 +760,15 @@ const C = +(2 * Math.PI * 84).toFixed(2);
     try { sessionStorage.removeItem('scaylaScanJob'); } catch {}
     const btn = $('go') as HTMLButtonElement;
     btn.removeAttribute('aria-busy'); btn.textContent = 'קדימה, בואו נראה';
-    only('s-idle');
+    screen('screen-idle');
   });
 
-  // ── חזרה לעבודה קיימת · ?job= או sessionStorage ──
-  // ה-id מגיע מהנתיב · /scan/weshoes-co-il-a3f9c2. זה הקישור שהליד מקבל
-  // במייל, והוא צריך להיראות כמו העמוד שלו ולא כמו פרמטר.
+  // ── חזרה לריצה קיימת · /scan/<id> ──
   const fromPath = (location.pathname.match(/^\/scan\/([a-z0-9-]{6,60})\/?$/) || [])[1] || null;
-  const resume = fromPath
-    || (() => { try { return sessionStorage.getItem('scaylaScanJob'); } catch { return null; } })();
-  if (resume) {
-    jobId = resume;
-    startedAt = Date.now();
-    poll();
-  }
+  const resume = fromPath || (() => { try { return sessionStorage.getItem('scaylaScanJob'); } catch { return null; } })();
+  if (resume) { jobId = resume; startedAt = Date.now(); poll(); }
 
-  // ── Turnstile · נטען רק כשיש slot ──
+  // ── Turnstile ──
   const slot = $('ts-slot');
   if (slot) {
     const s = document.createElement('script');
