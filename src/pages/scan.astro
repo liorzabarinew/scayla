@@ -143,7 +143,6 @@ const C = +(2 * Math.PI * 84).toFixed(2);
     <!-- ═══════════ מסך 3 · התוצאות ═══════════ -->
     <section class="screen" id="screen-done" hidden>
       <div class="done-head">
-        <span class="eyebrow">הכל מוכן</span>
         <h2>הנה מה שה-AI אומר עליכם · ומה שכתבנו לכם</h2>
         <p class="verdict" id="verdict" hidden></p>
       </div>
@@ -517,6 +516,35 @@ const C = +(2 * Math.PI * 84).toFixed(2);
     font-size: 14px; background: var(--sc-wash); border: 1px solid var(--sc-soft);
     border-radius: 5px; padding: 1px 5px; direction: ltr; unicode-bidi: isolate; display: inline-block;
   }
+  /* טבלה · גלילה אופקית במובייל, בלי לשבור את הדף */
+  .reader :global(.tbl-wrap) { overflow-x: auto; margin-block: 22px; border: 1px solid var(--sc-hair); border-radius: var(--sc-r-chip); }
+  .reader :global(table) { inline-size: 100%; border-collapse: collapse; font-size: 14.5px; }
+  .reader :global(th) { background: var(--sc-wash); text-align: start; padding: 12px 14px; font-weight: 800; color: var(--sc-ink); border-block-end: 1px solid var(--sc-hair); }
+  .reader :global(td) { padding: 11px 14px; color: var(--sc-ink); border-block-end: 1px solid var(--sc-div); }
+  .reader :global(tr:last-child td) { border-block-end: none; }
+
+  /* "למה כתבנו לך את זה" · תיחום צבעוני, לא טקסט גנרי */
+  .reader :global(.why-box) {
+    background: var(--sc-grad-soft, linear-gradient(135deg, rgba(85,70,214,.08), rgba(139,118,242,.05)));
+    border: 1px solid var(--sc-soft); border-inline-start: 4px solid var(--sc-accent);
+    border-radius: var(--sc-r-hero); padding: 20px 24px; margin-block-end: 28px;
+  }
+  .reader :global(.why-t) { font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--sc-accent-text); margin-block-end: 8px; }
+  .reader :global(.why-box p:last-child) { font-size: 15.5px; line-height: 1.7; color: var(--sc-ink); font-weight: 500; }
+
+  /* "בקצרה" · takeaways בראש המאמר */
+  .reader :global(.tldr) { background: var(--sc-wash); border: 1px solid var(--sc-soft); border-radius: var(--sc-r-hero); padding: 22px 26px; margin-block-end: 30px; }
+  .reader :global(.tldr-t) { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--sc-accent-text); margin-block-end: 12px; }
+  .reader :global(.tldr ul) { padding-inline-start: 20px; display: grid; gap: 9px; margin: 0; }
+  .reader :global(.tldr li) { font-size: 15.5px; line-height: 1.6; color: var(--sc-ink); font-weight: 500; }
+
+  /* FAQ */
+  .reader :global(.faq) { margin-block-start: 40px; padding-block-start: 26px; border-block-start: 1px solid var(--sc-div); }
+  .reader :global(.faq > h3) { font-size: 22px; font-weight: 800; margin-block-end: 18px; }
+  .reader :global(.faq-i) { padding-block: 16px; border-block-end: 1px solid var(--sc-div); }
+  .reader :global(.faq-q) { font-size: 16px; font-weight: 700; color: var(--sc-ink); margin-block-end: 7px; }
+  .reader :global(.faq-a) { font-size: 15px; line-height: 1.75; color: var(--sc-mv); }
+
   .reader :global(.art-src) { margin-block-start: 40px; padding-block-start: 22px; border-block-start: 1px solid var(--sc-div); }
   .reader :global(.art-src-t) { font-size: 11.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--sc-muted); margin-block-end: 12px; }
   .reader :global(.art-src ol) { padding-inline-start: 20px; display: grid; gap: 6px; }
@@ -653,12 +681,28 @@ const C = +(2 * Math.PI * 84).toFixed(2);
   const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const inline = (s: string) =>
     esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/`([^`]+)`/g, '<code>$1</code>');
+  const cells = (line: string) => line.replace(/^\||\|$/g, '').split('|').map((c) => c.trim());
   const mdToHtml = (md: string) => {
+    const lines = (md || '').split('\n');
     const out: string[] = [];
     let list: string[] = [];
     const flush = () => { if (list.length) { out.push('<ul>' + list.join('') + '</ul>'); list = []; } };
-    for (const raw of (md || '').split('\n')) {
-      const line = raw.trimEnd();
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trimEnd();
+      // טבלה · | a | b | ואחריה | --- | --- |
+      if (/^\s*\|.*\|/.test(line) && /^\s*\|[\s:|-]+\|/.test(lines[i + 1] || '')) {
+        flush();
+        const head = cells(line);
+        let body = '';
+        i += 2;
+        while (i < lines.length && /^\s*\|.*\|/.test(lines[i])) {
+          body += '<tr>' + cells(lines[i]).map((c) => `<td>${inline(c)}</td>`).join('') + '</tr>';
+          i++;
+        }
+        i--;
+        out.push('<div class="tbl-wrap"><table><thead><tr>' + head.map((c) => `<th>${inline(c)}</th>`).join('') + '</tr></thead><tbody>' + body + '</tbody></table></div>');
+        continue;
+      }
       if (/^#{3}\s+/.test(line)) { flush(); out.push('<h4>' + inline(line.replace(/^#{3}\s+/, '')) + '</h4>'); }
       else if (/^#{2}\s+/.test(line)) { flush(); out.push('<h3>' + inline(line.replace(/^#{2}\s+/, '')) + '</h3>'); }
       else if (/^[*-]\s+/.test(line)) list.push('<li>' + inline(line.replace(/^[*-]\s+/, '')) + '</li>');
@@ -675,7 +719,22 @@ const C = +(2 * Math.PI * 84).toFixed(2);
     const t = $('reader-t'); if (t) t.textContent = a.title || 'מאמר';
     const m = $('reader-meta');
     if (m) m.textContent = `${(a.md || '').split(/\s+/).filter(Boolean).length} מילים · ${(a.sources || []).length} מקורות`;
-    const b = $('reader-md'); if (b) b.innerHTML = mdToHtml(a.md || '');
+    const b = $('reader-md');
+    if (b) {
+      // "למה כתבנו לך את זה" · תיחום צבעוני בראש המאמר, מסביר איזו שאלת קונה הוא מכסה
+      const wh = a.why
+        ? `<div class="why-box"><p class="why-t">למה כתבנו לכם את המאמר הזה</p><p>${esc(a.why)}</p></div>`
+        : '';
+      // "בקצרה ל-AI" · takeaways
+      const tk = (a.takeaways || []).length
+        ? '<div class="tldr"><p class="tldr-t">בקצרה</p><ul>' + a.takeaways.map((x: string) => `<li>${esc(x)}</li>`).join('') + '</ul></div>'
+        : '';
+      // FAQ · שאלות ותשובות בסוף
+      const fq = (a.faq || []).length
+        ? '<div class="faq"><h3>שאלות ותשובות</h3>' + a.faq.map((f: any) => `<div class="faq-i"><p class="faq-q">${esc(f.q)}</p><p class="faq-a">${esc(f.a)}</p></div>`).join('') + '</div>'
+        : '';
+      b.innerHTML = wh + tk + mdToHtml(a.md || '') + fq;
+    }
     const s = $('reader-src');
     if (s) {
       s.innerHTML = (a.sources || []).length
@@ -711,10 +770,9 @@ const C = +(2 * Math.PI * 84).toFixed(2);
         card.appendChild(n);
       }
 
-      // תקציר · הפסקה הראשונה בלי סימני Markdown
+      // תקציר · "למה כתבנו לך את זה", מדליק, לא הפסקה הראשונה של הגוף
       const ex = document.createElement('p'); ex.className = 'art-ex';
-      ex.textContent = (a.md || '').split('\n').find((l: string) => l.trim() && !l.startsWith('#'))
-        ?.replace(/[*_`#]/g, '').slice(0, 300) || '';
+      ex.textContent = a.why || (a.md || '').split('\n').find((l: string) => l.trim() && !l.startsWith('#'))?.replace(/[*_`#]/g, '').slice(0, 300) || '';
       card.appendChild(ex);
 
       const go = document.createElement('button');

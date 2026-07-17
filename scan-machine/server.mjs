@@ -99,7 +99,10 @@ http.createServer(async (req, res) => {
       const body = await new Promise((ok) => { let b = ''; req.on('data', (c) => (b += c)); req.on('end', () => ok(b)); });
       const { jobId, host, blog } = JSON.parse(body || '{}');
       if (!jobId || !host) return json(res, 400, { error: 'missing' });
-      await save(jobId, { id: jobId, host, blog: blog || '', phase: 'scanning', startedAt: Date.now() });
+      // expireAt · מדיניות ה-TTL של Firestore מוחקת את הג'וב אוטומטית.
+      // 30 יום · הקישור /scan/<id> שהלקוח משתף חי חודש, ואז מתנקה לבד.
+      const expireAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+      await save(jobId, { id: jobId, host, blog: blog || '', phase: 'scanning', startedAt: Date.now(), expireAt });
       // 202 מיד · העבודה ממשיכה. CPU always-allocated, אז היא לא נחנקת.
       json(res, 202, { ok: true, jobId });
       work(jobId, host, blog);
