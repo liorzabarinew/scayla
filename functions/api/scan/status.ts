@@ -2,11 +2,11 @@
  * GET /api/scan/status?job=<id> · פרוקסי דק ל-Firestore דרך המכונה.
  * Firestore עקבי-חזק, אז הלוג באמת חי. KV היה מפגר עד 60 שניות.
  */
-import { type Env, trim, machine } from '../_scan-lib';
+import { type Env, trim, machine, okJobId } from '../_scan-lib';
 
 export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
   const id = trim(new URL(request.url).searchParams.get('job'), 64);
-  if (!id) return Response.json({ error: 'missing_job' }, { status: 400 });
+  if (!id || !okJobId(id)) return Response.json({ error: 'missing_job' }, { status: 400 });
 
   let job: any;
   try {

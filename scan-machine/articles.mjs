@@ -1,0 +1,232 @@
+/**
+ * צינור המאמרים של /scan · שני מאמרים לחנות של הליד.
+ *
+ * לוקח את הלוגיקה של machine-vertex.mjs (עדשות QA מקבילות, סולם תיקון מסלים,
+ * שערים דטרמיניסטיים) אבל עומד בפני עצמו · לא מייבא, לא כותב ל-src/content
+ * ולא נוגע בבנק התוכן. מאמר של ליד לא נכנס למגזין של Scayla לעולם.
+ *
+ * שני המאמרים רצים במקביל · המשך הוא הזמן של האיטי מביניהם, לא הסכום.
+ */
+import { callGemini } from './machine.mjs';
+
+const MAX_FIX_ROUNDS = 4;
+// pro בכל הסבבים · הכתיבה היא ה"וואו" שהלקוח רואה, לא המקום לחסוך
+const FIX_MODELS = ['gemini-2.5-pro', 'gemini-2.5-pro', 'gemini-2.5-pro'];
+const fixModelForRound = (r) => FIX_MODELS[Math.min(Math.max(1, r | 0) - 1, FIX_MODELS.length - 1)];
+
+// מה באמת חוסם שחרור · אחרי סבבי התיקון. סגנון לא חוסם, אבל שלד כן:
+// מאמר של 2,172 תווים שוחרר ללקוח כי הרשימה הקודמת לא הכירה "רדוד".
+const HARD_ISSUE_RE = /כותרת לא תקינה|קטוע|מבנה שבור|ייחוס|רדוד|מומצא|לא נתמכת|לא מבוסס/;
+const hasHardIssue = (issues) => (issues || []).some((i) => HARD_ISSUE_RE.test(String(i)));
+
+/** בוחר שני נושאים מהפערים שנמדדו · לא מהאוויר. */
+export async function pickTopics(store, score) {
+  const missed = score.answers.filter((a) => !a.mentioned).map((a) => a.q);
+  const pool = missed.length >= 2 ? missed : score.answers.map((a) => a.q);
+  const prompt = `אתה מתכנן תוכן לחנות אונליין ישראלית.
+
+החנות: ${store.title || store.host} (${store.host})
+מה היא מוכרת: ${(store.description || store.text || '').slice(0, 700)}
+
+אלה שאלות קונה אמיתיות שבהן החנות לא הופיעה בתשובת ה-AI:
+${pool.slice(0, 6).map((q, i) => `${i + 1}. ${q}`).join('\n')}
+
+בחר בדיוק 2 נושאי מאמר שונים זה מזה, שכתיבתם תעזור לחנות להופיע בשאלות כאלה.
+כללים:
+- כל נושא חייב להיות מבוסס על שאלה מהרשימה, לא על רעיון חדש.
+- שני נושאים מזוויות שונות · לא שתי גרסאות של אותו דבר.
+- כותרת בעברית, מדויקת, בלי סופרלטיבים ובלי הבטחות תוצאה.
+החזר JSON:
+[{"title":"<כותרת המאמר>","angle":"<במשפט: על מה הוא עונה>","query":"<השאלה מהרשימה>"}]`;
+
+  const { text } = await callGemini(prompt, { json: true, maxTokens: 4000 });
+  const raw = text.trim().replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
+  let arr;
+  try { arr = JSON.parse(raw); } catch { arr = JSON.parse((raw.match(/\[[\s\S]*\]/) || ['[]'])[0]); }
+  const out = (Array.isArray(arr) ? arr : []).filter((x) => x?.title).slice(0, 2);
+  if (out.length < 2) throw new Error('topics: need 2');
+  return out;
+}
+
+/** מחקר מעוגן · מקורות אמיתיים, לא זיכרון של המודל. */
+async function research(topic, store) {
+  const { text, sources } = await callGemini(
+    `אסוף עובדות ומקורות עדכניים לכתיבת מאמר בעברית בנושא: "${topic.title}".
+הקשר: חנות אונליין ישראלית בתחום ${store.title || store.host}.
+החזר סיכום עובדתי תמציתי · רק מה שנתמך במקורות שמצאת. ציין מספרים רק אם הם מופיעים במקור.`,
+    { grounded: true, maxTokens: 8000, timeoutMs: 120_000 },
+  );
+  return { brief: text, sources };
+}
+
+async function write(topic, store, brief) {
+  const { text } = await callGemini(
+    `אתה כותב מאמר בעברית לבלוג של חנות אונליין ישראלית: ${store.title || store.host}.
+
+נושא: ${topic.title}
+הזווית: ${topic.angle}
+השאלה שהמאמר עונה עליה: ${topic.query}
+
+עובדות מהמחקר · אל תוסיף עובדות או מספרים שלא מופיעים כאן:
+${brief.slice(0, 3500)}
+
+כתוב מאמר מלא ומעמיק ב-Markdown.
+
+אורך · דרישה קשיחה, לא הצעה:
+- המאמר כולו: בין 1100 ל-1500 מילים.
+- 6 עד 8 כותרות ## · תחת כל אחת 150 עד 250 מילים של תוכן אמיתי.
+- סעיף בן פסקה אחת קצרה נחשב כשל. אם אין לך מה להגיד בעומק על נושא · אחד את הסעיפים.
+
+מבנה:
+- פסקת פתיחה מודגשת (**) שעונה ישירות על השאלה בשלוש-ארבע שורות.
+- כל סעיף מוסיף ידע חדש · הסבר, דוגמה קונקרטית, או קריטריון להחלטה. לא חזרה בניסוח אחר.
+- סעיף אחרון "## מה חשוב לזכור" עם 3 נקודות.
+
+כללים קשיחים:
+- כל טענה עובדתית חייבת להיגזר מהמחקר. אין "כבר שנים רבות" או "בחירה קפדנית" בלי ביסוס · אלה מילים ריקות.
+- עברית מקורית. אסור לתרגם מבנים מאנגלית ("משלבים בין X לבין Y", "מגיעים בגודל של"). כתוב כמו שישראלי כותב.
+- בלי הבטחות תוצאה ("דירוג ראשון", "תוך X ימים", "מובטח").
+- בלי מקפים ארוכים. המפריד הוא נקודה מפרידה ·
+- בלי למכור את החנות בכל פסקה. כתוב לקונה, לא למנהל השיווק.
+- עברית אנושית · לא תרגומית, בלי "בואו נצלול" ובלי "בשורה התחתונה".
+- לא לכתוב frontmatter, רק את גוף המאמר.
+החזר Markdown בלבד.`,
+    { maxTokens: 16000, timeoutMs: 180_000 },
+  );
+  return text;
+}
+
+// ── שערים דטרמיניסטיים · חינם, מיידיים, והקוד מחליט ──
+export function lint(md) {
+  const out = [];
+  const words = (md || '').split(/\s+/).filter(Boolean).length;
+  const heads = (md.match(/^## /gm) || []).length;
+
+  // ── עומק · השער שנכשל. הסף הקודם היה 900 תווים, ומאמר של 2,172 תווים
+  //    (6 סעיפים × ~360 תווים = שלד) עבר אותו בקלות ושוחרר ללקוח.
+  if (words < 900) out.push(`קטוע · ${words} מילים בלבד, נדרשות לפחות 900`);
+  if (heads < 5) out.push(`מבנה שבור · ${heads} כותרות, נדרשות לפחות 5`);
+
+  // כל סעיף חייב עומק אמיתי · סעיף של פסקה אחת הוא שלד
+  if (heads) {
+    const secs = md.split(/^## /m).slice(1);
+    const thin = secs.filter((s) => s.split(/\s+/).filter(Boolean).length < 90);
+    if (thin.length) out.push(`קטוע · ${thin.length} סעיפים רדודים מדי (פחות מ-90 מילים)`);
+  }
+
+  if (/—/.test(md)) out.push('מקף ארוך · אסור');
+  if (/(דירוג ראשון|מובטח|תוך \d+ ימים|תוצאות מיידיות)/.test(md)) out.push('הבטחת תוצאה · אסור');
+  if (/```(?![\s\S]*?```)/.test(md)) out.push('מבנה שבור · גדר קוד לא נסגרה');
+  if (/\bסוכן\b/.test(md)) out.push('מילה אסורה · סוכן');
+  return out;
+}
+
+const jsonLens = async (prompt, model) => {
+  const { text } = await callGemini(prompt, { json: true, maxTokens: 5000, model });
+  const raw = text.trim().replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
+  try { return JSON.parse(raw); } catch { return JSON.parse((raw.match(/\{[\s\S]*\}/) || ['{}'])[0]); }
+};
+
+/** חמש עדשות במקביל · כל אחת מסתכלת מזווית אחרת. */
+async function qaAll(md, brief) {
+  const lensWith = (name, body, model) =>
+    jsonLens(`${body}\n\nהחזר JSON: {"issues":["<בעיה>"]}\n\nהמאמר:\n${md.slice(0, 14000)}`, model)
+      .then((j) => ({ name, issues: j.issues || [] }))
+      .catch(() => null);
+  const lens = (name, body) => lensWith(name, body, undefined);
+
+  const res = await Promise.all([
+    // flash כאן בכוונה · מודל שונה מהכותב מקטין blind-spots מתואמים.
+    // זו שונות, לא חיסכון. אותה כוונה כמו qaCrossModel במכונת התוכן.
+    lensWith('facts', 'אתה עורך-בקרה. אתר טענות, מספרים או ציטוטים שנראים מומצאים או לא נתמכים. אל תפסול על סגנון.', 'gemini-2.5-flash'),
+    lens('copy', 'אתה עורך לשון עברית. אתר עברית תרגומית, מקפים ארוכים, ניסוח מנופח או ביטויי AI שחוקים.'),
+    lens('promise', 'אתה בודק ציות. אתר כל הבטחת תוצאה, סופרלטיב שיווקי או מכירה אגרסיבית של החנות.'),
+    lens('struct', 'אתה בודק מבנה. אתר פסקאות קטועות, כותרות ריקות, חזרתיות בין סעיפים או פתיח שלא עונה על השאלה.'),
+    lens('ground', `אתה בודק עיגון. אלה העובדות שאושרו במחקר:\n${brief.slice(0, 2000)}\n\nאתר כל טענה במאמר שלא נגזרת מהן.`),
+  ]);
+
+  // כל העדשות נפלו · לא משחררים מאמר שעבר אפס בקרה בזמן שהעמוד מבטיח בקרה מלאה
+  if (res.every((r) => r === null)) throw new Error('QA unavailable · not shipping unverified');
+  return res.filter(Boolean).flatMap((r) => r.issues).filter(Boolean);
+}
+
+async function fix(md, issues, round) {
+  const { text } = await callGemini(
+    `תקן את המאמר לפי הבעיות. תקן נקודתית ושמור על מה שתקין.
+
+בעיות:
+${issues.map((i) => `- ${i}`).join('\n')}
+
+כללים:
+- אסור לקצר. אם צוין שסעיף רדוד · העמק אותו, אל תמחק אותו. המאמר צריך להישאר 1100-1500 מילים.
+- טענה שסומנה כלא-מבוססת · או שתבסס אותה מהמחקר, או שתמחק אותה. אל תרכך אותה במילים.
+- ניסוח שסומן כתרגומי · שכתב אותו בעברית מקורית.
+- בלי מקפים ארוכים (המפריד הוא ·), בלי הבטחות תוצאה, Markdown בלבד, בלי frontmatter.
+
+המאמר:
+${md}`,
+    { maxTokens: 16000, timeoutMs: 180_000, model: fixModelForRound(round) },
+  );
+  return text;
+}
+
+/** מאמר אחד, מקצה לקצה. onStep מדווח שלב כדי שהלוג יהיה חי. */
+export async function buildArticle(topic, store, onStep) {
+  await onStep('מחקר מבוסס מקורות');
+  const { brief, sources } = await research(topic, store);
+
+  await onStep('כתיבה');
+  let md = await write(topic, store, brief);
+
+  await onStep('5 בדיקות איכות במקביל');
+  let issues = [...lint(md), ...(await qaAll(md, brief))];
+
+  for (let round = 1; round <= MAX_FIX_ROUNDS && issues.length; round++) {
+    await onStep(`סבב תיקון ${round}`);
+    md = await fix(md, issues, round);
+    await onStep('אימות חוזר');
+    issues = [...lint(md), ...(await qaAll(md, brief))];
+  }
+
+  await onStep('בדיקות דטרמיניסטיות');
+  let residual = [...lint(md), ...issues];
+
+  // סבב הצלה · אם נשארה בעיה *קשה* אחרי כל הסבבים, מנסים פעם אחת אחרונה
+  // ממוקדת בה בלבד. הליד הובטח שני מאמרים · לא מוותרים על אחד בגלל פסקה
+  // קטועה שאפשר לתקן.
+  if (hasHardIssue(residual)) {
+    const hard = residual.filter((i) => HARD_ISSUE_RE.test(String(i)));
+    await onStep('סבב הצלה אחרון');
+    md = await fix(md, hard, MAX_FIX_ROUNDS);
+    await onStep('אימות אחרון');
+    residual = [...lint(md), ...(await qaAll(md, brief))];
+  }
+
+  const shelved = hasHardIssue(residual);
+
+  return {
+    title: topic.title,
+    md,
+    sources: sources.slice(0, 8),
+    shelved,
+    // אם נשארו בעיות קשות · מסמנים ולא מתחזים לנקי
+    residual: residual.slice(0, 5),
+  };
+}
+
+/** שני המאמרים · במקביל. */
+export async function buildBoth(store, score, onProgress) {
+  const topics = await pickTopics(store, score);
+  const state = topics.map((t) => ({ id: t.title, title: t.title, phase: 'ממתין', done: false }));
+  const emit = () => onProgress(state.map((s) => ({ ...s })));
+  await emit();
+
+  const results = await Promise.all(
+    topics.map((topic, i) =>
+      buildArticle(topic, store, async (phase) => { state[i].phase = phase; await emit(); })
+        .then(async (a) => { state[i].phase = a.shelved ? 'נדרשת בדיקה' : 'מוכן'; state[i].done = true; await emit(); return a; })
+        .catch(async (e) => { state[i].phase = 'נכשל'; state[i].done = true; await emit(); console.error('article failed', topic.title, e?.message); return null; }),
+    ),
+  );
+  return results.filter(Boolean);
+}

@@ -13,9 +13,12 @@
 import { GoogleAuth } from 'google-auth-library';
 
 export const PROJECT = process.env.GCP_PROJECT || 'scayla-prod';
-const MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+// pro כברירת מחדל · זה ה"וואו" שהלקוח רואה. flash נשמר רק למקום אחד
+// שבו הוא נבחר בכוונה: המבקר הצולב, ששם המטרה היא מודל *שונה* מהכותב.
+const MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-pro';
 const REGION = process.env.GCP_REGION || 'us-central1';
-const VERTEX = `https://${REGION}-aiplatform.googleapis.com/v1/projects/${PROJECT}/locations/${REGION}/publishers/google/models/${MODEL}:generateContent`;
+const vertexUrl = (model = MODEL) =>
+  `https://${REGION}-aiplatform.googleapis.com/v1/projects/${PROJECT}/locations/${REGION}/publishers/google/models/${model}:generateContent`;
 
 // ── Vertex · ה-SDK מטפל בטוקן. אין יותר JWT ידני ב-WebCrypto. ──
 const auth = new GoogleAuth({ scopes: 'https://www.googleapis.com/auth/cloud-platform' });
@@ -27,10 +30,20 @@ const token = async () => {
 };
 
 export async function callGemini(prompt, opts = {}) {
-  const gen = { maxOutputTokens: opts.maxTokens ?? 2000, temperature: opts.temperature ?? 0.4 };
-  // gemini-2.5 סופר טוקני חשיבה בתוך maxOutputTokens · עם prompt אמיתי הם בלעו
-  // את התקציב והתשובה חזרה קטועה. כבוי כברירת מחדל.
-  if (!opts.think) gen.thinkingConfig = { thinkingBudget: 0 };
+  const model = opts.model || MODEL;
+
+  // ── חשיבה: דלוקה. תמיד. ──
+  // קודם כיביתי אותה (thinkingBudget:0) כי טוקני חשיבה בלעו את maxOutputTokens
+  // וה-JSON חזר קטוע. זו הייתה אבחנה שגויה: הבעיה לא הייתה החשיבה אלא שלא
+  // היה מספיק מקום לפלט. כיבוי החשיבה הוא לובוטומיה של המודל · הוא גם שבר את
+  // pro לגמרי (400 · "does not support setting thinking_budget to 0").
+  // הפתרון הנכון: חשיבה דינמית + מרווח פלט אמיתי. נמדד מול Vertex:
+  // pro + thinkingBudget:-1 + 8000 → 200 STOP, 1770 טוקני חשיבה, פלט מלא.
+  const gen = {
+    maxOutputTokens: opts.maxTokens ?? 6000,
+    temperature: opts.temperature ?? 0.4,
+    thinkingConfig: { thinkingBudget: -1 },
+  };
   if (opts.json) gen.responseMimeType = 'application/json';
 
   const body = { contents: [{ role: 'user', parts: [{ text: prompt }] }], generationConfig: gen };
@@ -39,7 +52,8 @@ export async function callGemini(prompt, opts = {}) {
   const ac = new AbortController();
   const timer = setTimeout(() => ac.abort(), opts.timeoutMs ?? 60_000);
   try {
-    const r = await fetch(VERTEX, {
+    // opts.model · סולם התיקון מסלים מ-flash ל-pro בין סבבים
+    const r = await fetch(vertexUrl(model), {
       method: 'POST', signal: ac.signal,
       headers: { authorization: `Bearer ${await token()}`, 'content-type': 'application/json' },
       body: JSON.stringify(body),
@@ -68,16 +82,33 @@ const strip = (html) =>
     .replace(/&quot;/g, '"').replace(/&#\d+;/g, ' ').replace(/\s+/g, ' ').trim();
 const metaOf = (html, re) => (html.match(re) || [])[1]?.trim() || '';
 
-export async function scanStore(host, timeoutMs = 15_000) {
+// חנויות אמיתיות חוסמות user-agent לא מוכר · weshoes.co.il החזיר
+// store_unreachable אחרי כמה סריקות עם ה-UA המקורי שלנו. הסריקה יזומה
+// על ידי בעל החנות עצמו על האתר שלו, אז דפדפן רגיל הוא הייצוג הנכון.
+const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
+const HDRS = {
+  'user-agent': UA,
+  accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+  'accept-language': 'he-IL,he;q=0.9,en;q=0.8',
+  'accept-encoding': 'gzip, deflate, br',
+  'cache-control': 'no-cache',
+};
+
+export async function scanStore(host, timeoutMs = 20_000, attempt = 1) {
   const base = { host, ok: false, title: '', description: '', text: '', productCount: 0, isShopify: false };
   const ac = new AbortController();
   const timer = setTimeout(() => ac.abort(), timeoutMs);
   try {
-    const r = await fetch(`https://${host}/`, {
-      signal: ac.signal, redirect: 'follow',
-      headers: { 'user-agent': 'ScaylaScan/1.0 (+https://scayla.co.il/scan)', accept: 'text/html' },
-    });
-    if (!r.ok) return { ...base, error: `http_${r.status}` };
+    const r = await fetch(`https://${host}/`, { signal: ac.signal, redirect: 'follow', headers: HDRS });
+    if (!r.ok) {
+      // 403/429 = חסימה או קצב · ניסיון שני אחרי המתנה לפני שמוותרים
+      if (attempt === 1 && [403, 429, 503].includes(r.status)) {
+        clearTimeout(timer);
+        await new Promise((ok) => setTimeout(ok, 2500));
+        return scanStore(host, timeoutMs, 2);
+      }
+      return { ...base, error: `http_${r.status}` };
+    }
     const html = (await r.text()).slice(0, 400_000);
     return {
       ...base, ok: true,
@@ -90,15 +121,18 @@ export async function scanStore(host, timeoutMs = 15_000) {
       text: strip(html).slice(0, 6000),
     };
   } catch (e) {
+    if (attempt === 1 && e?.name !== 'AbortError') {
+      clearTimeout(timer);
+      await new Promise((ok) => setTimeout(ok, 2000));
+      return scanStore(host, timeoutMs, 2);
+    }
     return { ...base, error: e?.name === 'AbortError' ? 'timeout' : 'unreachable' };
   } finally { clearTimeout(timer); }
 }
 
 export async function countProducts(host) {
   try {
-    const r = await fetch(`https://${host}/products.json?limit=250`, {
-      headers: { 'user-agent': 'ScaylaScan/1.0 (+https://scayla.co.il/scan)' },
-    });
+    const r = await fetch(`https://${host}/products.json?limit=250`, { headers: HDRS });
     if (!r.ok) return 0;
     const j = await r.json();
     return Array.isArray(j?.products) ? j.products.length : 0;
@@ -106,7 +140,7 @@ export async function countProducts(host) {
 }
 
 // ── שאלות קונה ──
-export async function buyerQuestions(s, n = 8) {
+export async function buyerQuestions(s, n = 15) {
   const prompt = `אתה מנתח חנות אונליין ישראלית ומייצר שאלות שקונה אמיתי מקליד למנוע תשובות.
 
 החנות: ${s.host}
@@ -123,7 +157,7 @@ export async function buyerQuestions(s, n = 8) {
 החזר מערך JSON של מחרוזות בלבד:
 ["שאלה 1", "שאלה 2"]`;
 
-  const { text } = await callGemini(prompt, { json: true, maxTokens: 1200 });
+  const { text } = await callGemini(prompt, { json: true, maxTokens: 4000 });
   const raw = text.trim().replace(/^```(?:json)?/i, '').replace(/```$/, '').trim();
   let arr;
   try { arr = JSON.parse(raw); }
@@ -157,6 +191,40 @@ export function brandNamesFrom(s) {
 }
 
 export const bandOf = (pct) => (pct >= 50 ? 'lead' : pct >= 20 ? 'grow' : 'gap');
+
+/**
+ * סיכום המצב במילים · אדם קורא משפט, לא מחוון.
+ * מעוגן קשיח: המודל מקבל רק את מה שנמדד ואסור לו להוסיף מספר או עובדה
+ * משלו. אם הוא נופל · אין סיכום, ולא ממציאים אחד. עמוד בלי תג "הדגמה"
+ * לא יציג משפט שלא נגזר ממדידה.
+ */
+export async function verdictOf(store, score) {
+  const missed = score.answers.filter((a) => !a.mentioned).map((a) => a.q).slice(0, 3);
+  const hitQs = score.answers.filter((a) => a.mentioned).map((a) => a.q).slice(0, 2);
+  const prompt = `אתה כותב שתי שורות סיכום לבעל חנות אונליין ישראלית על תוצאות בדיקת נראות ב-AI.
+
+עובדות מדודות · אלה כל העובדות שיש לך:
+- החנות: ${store.title || store.host}
+- נשאלו ${score.queriesAsked} שאלות קונה, החנות הופיעה ב-${score.queriesMentioned} מהן (${score.pct}%)
+${hitQs.length ? `- הופיעה בשאלות כמו: ${hitQs.join(' | ')}` : '- לא הופיעה באף שאלה'}
+${missed.length ? `- לא הופיעה בשאלות כמו: ${missed.join(' | ')}` : ''}
+
+כתוב 2 משפטים קצרים בעברית, בגוף שני רבים ("אתם"), שמסכמים לבעל החנות את המצב שלו.
+כללים קשיחים:
+- אל תמציא שום מספר, עובדה, שם מתחרה או המלצה שלא מופיעים ברשימה למעלה.
+- בלי הבטחות תוצאה ובלי סופרלטיבים שיווקיים.
+- בלי מקפים ארוכים. המפריד הוא נקודה מפרידה ·
+- משפט ראשון: איפה הם עומדים. משפט שני: מה זה אומר בפועל.
+החזר טקסט בלבד, בלי מרכאות.`;
+
+  try {
+    const { text } = await callGemini(prompt, { maxTokens: 3000, temperature: 0.5 });
+    const clean = text.trim().replace(/^["']|["']$/g, '').replace(/—/g, '·');
+    return clean.length > 20 && clean.length < 400 ? clean : null;
+  } catch {
+    return null; // אין סיכום · עדיף מאשר סיכום מומצא
+  }
+}
 export const STEP = (label, state) => ({ label, state });
 
 /**
@@ -198,7 +266,7 @@ export async function runScan({ host, blog }, onProgress) {
   // 3. שאלות
   steps[2] = STEP('מרכיבים שאלות קונה מהחנות שלכם', 'running');
   await emit();
-  const qs = await buyerQuestions(store, 8);
+  const qs = await buyerQuestions(store, 15);
   steps[2] = STEP(`הרכבנו ${qs.length} שאלות קונה מהחנות שלכם`, 'done');
   await emit();
 
@@ -211,7 +279,7 @@ export async function runScan({ host, blog }, onProgress) {
     await emit();
     let a;
     try {
-      a = await callGemini(qs[i], { grounded: true, maxTokens: 2000, timeoutMs: 50_000 });
+      a = await callGemini(qs[i], { grounded: true, maxTokens: 4000, timeoutMs: 70_000 });
     } catch {
       // שאלה שנפלה לא נספרת · לא במונה ולא במכנה. תקלה אצלנו לא מורידה
       // ציון של חנות אמיתית.
@@ -232,9 +300,12 @@ export async function runScan({ host, blog }, onProgress) {
   // 5. הציון · נוסחת המוצר
   const pct = Math.round((100 * hit) / answers.length);
   steps[3] = STEP(`שאלנו את Gemini · ${answers.length} שאלות`, 'done');
+  steps[4] = STEP('מסכמים את המצב', 'running');
+  await emit();
+
+  const score = { pct, band: bandOf(pct), queriesAsked: answers.length, queriesMentioned: hit, engines: ['gemini'], answers };
+  score.verdict = await verdictOf(store, score);
+
   steps[4] = STEP(`הופעתם ב-${hit} מתוך ${answers.length} תשובות`, 'done');
-  await emit({
-    phase: 'score',
-    score: { pct, band: bandOf(pct), queriesAsked: answers.length, queriesMentioned: hit, engines: ['gemini'], answers },
-  });
+  await emit({ phase: 'score', score });
 }

@@ -26,11 +26,21 @@ export const okHost = (v: string) => /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9-]
 
 export const trim = (v: unknown, max = 400) => String(v ?? '').slice(0, max).trim();
 
-export const newId = () => {
-  const b = new Uint8Array(12);
+/**
+ * מזהה הג'וב = גם ה-URL של הליד: weshoes-co-il-a3f9c2
+ * הדומיין נותן קישור שנראה כמו העמוד שלו ולא כמו פרמטר, והטוקן האקראי
+ * מונע ניחוש · בלעדיו כל אחד היה יכול לקרוא סריקה של חנות אחרת.
+ */
+export const newId = (host: string) => {
+  const b = new Uint8Array(4);
   crypto.getRandomValues(b);
-  return [...b].map((x) => x.toString(16).padStart(2, '0')).join('');
+  const token = [...b].map((x) => x.toString(16).padStart(2, '0')).join('');
+  const slug = cleanHost(host).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40);
+  return `${slug}-${token}`;
 };
+
+/** מקבל רק את הצורה שאנחנו מייצרים · חוסם path-traversal ושטויות. */
+export const okJobId = (v: string) => /^[a-z0-9-]{6,60}$/.test(v);
 
 // ── Turnstile ──
 export const verifyTurnstile = async (env: Env, token: string, ip?: string) => {

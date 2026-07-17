@@ -77,22 +77,52 @@ const C = +(2 * Math.PI * 84).toFixed(2);
         </p>
       </form>
 
-      <!-- ── S1 · סורקים ── -->
-      <div class="card panel" id="s-scanning" hidden aria-live="polite">
-        <div class="run-head">
-          <span class="radar" aria-hidden="true"></span>
-          <div>
-            <h2 class="run-t">סורקים את <b id="scan-host" dir="ltr">…</b></h2>
-            <p class="run-s">רץ כבר <span class="num" id="scan-elapsed">0:00</span> · אחרי הציון נכתוב לכם <span class="num">2</span> מאמרים</p>
+      <!-- ── S1 · הריצה · לוג חי + מייל פתוח לצידו ── -->
+      <div class="panel run-wrap" id="s-scanning" hidden aria-live="polite">
+        <div class="card">
+          <div class="run-head">
+            <span class="radar" aria-hidden="true"></span>
+            <div>
+              <h2 class="run-t">המכונה עובדת על <b id="scan-host" dir="ltr">…</b></h2>
+              <p class="run-s">רץ כבר <span class="num" id="scan-elapsed">0:00</span></p>
+            </div>
           </div>
+          <ol class="log" id="scan-log"></ol>
+          <ol class="log log-gen" id="gen-log" hidden></ol>
         </div>
-        <ol class="log" id="scan-log"></ol>
+
+        <!-- שדה פתוח, לא שער · הריצה רצה ממילא -->
+        <form class="card mailbox" id="s-mail">
+          <p class="mail-t">
+            <b>זה לוקח בערך <span class="num" id="eta">14</span> דקות.</b>
+            השאירו מייל ונעדכן אתכם כשזה מוכן · או פשוט השאירו את החלון הזה פתוח וראו את הקסם.
+          </p>
+          <div class="row">
+            <div class="f">
+              <label for="gname">שם</label>
+              <input id="gname" name="gname" type="text" dir="auto" autocomplete="name" placeholder="השם שלכם" />
+              <p class="err" id="e-gname" role="alert" hidden></p>
+            </div>
+            <div class="f">
+              <label for="email">מייל</label>
+              <input id="email" name="email" type="email" dir="ltr" autocomplete="email" placeholder="you@store.co.il" />
+              <p class="err" id="e-email" role="alert" hidden></p>
+            </div>
+          </div>
+          <button class="btn btn-gold" type="submit" id="go-mail">עדכנו אותי כשזה מוכן</button>
+          <p class="err summary" id="e-gate" role="alert" hidden></p>
+        </form>
+        <div class="card mailbox saved" id="s-mail-ok" hidden>
+          <span class="mk-ok" aria-hidden="true">✓</span>
+          <p>נשלח לכם קישור לעמוד הזה ל-<b class="num" dir="ltr" id="mail-shown">…</b> ברגע שהמאמרים מוכנים. אפשר לסגור את החלון.</p>
+        </div>
       </div>
 
       <!-- ── S2 · הציון · חינם, בלי מייל ── -->
       <div class="panel" id="s-score" hidden>
         <div class="card score-card">
           <span class="eyebrow">התוצאה שלכם</span>
+          <p class="verdict" id="score-verdict" hidden></p>
           <div class="score-row">
             <div class="dm-gauge" id="gauge" data-target="0">
               <svg viewBox="0 0 200 200" aria-hidden="true">
@@ -130,54 +160,6 @@ const C = +(2 * Math.PI * 84).toFixed(2);
         </div>
 
         <div class="answers" id="answers"></div>
-      </div>
-
-      <!-- ── S3 · שער המייל ── -->
-      <form class="card panel gate" id="s-gate" hidden>
-        <span class="eyebrow">כמו שהבטחנו</span>
-        <h2>עכשיו החלק השני · שני המאמרים שלכם</h2>
-        <p class="gate-p">
-          שני מאמרים מלאים, בשני נושאים שונים, שנבחרו מהפערים שמצאנו בחנות שלכם עכשיו.
-          הם עוברים את אותם שערי בקרה שהמכונה מריצה על כל מאמר · מחקר מבוסס מקורות,
-          <span class="num">5</span> בדיקות איכות במקביל, וסבבי תיקון עד שזה עובר.
-        </p>
-        <div class="gate-note">
-          <span class="gate-ic" aria-hidden="true">
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16.5v.01"></path></svg>
-          </span>
-          <span>
-            <b>הכתיבה לוקחת בין <span class="num">15</span> ל-<span class="num">25</span> דקות.</b>
-            אפשר להשאיר את החלון פתוח ולראות את זה קורה, ואפשר לסגור · נשלח לכם קישור לעמוד הזה
-            כשהמאמרים מוכנים. הם נשארים כאן, אצלנו.
-          </span>
-        </div>
-        <div class="f">
-          <label for="email">מייל <span class="req">חובה</span></label>
-          <input id="email" name="email" type="email" dir="ltr" autocomplete="email" placeholder="you@store.co.il" />
-          <p class="err" id="e-email" role="alert" hidden></p>
-        </div>
-        <p class="err summary" id="e-gate" role="alert" hidden></p>
-        <button class="btn btn-hero btn-gold" type="submit" id="go-articles">כתבו לי את המאמרים</button>
-        <p class="fine">המייל משמש לשליחת הקישור ולעדכונים על Scayla · אפשר להסיר בכל רגע.</p>
-      </form>
-
-      <!-- ── S4 · כותבים ── -->
-      <div class="panel" id="s-generating" hidden aria-live="polite">
-        <div class="card">
-          <div class="run-head">
-            <span class="radar" aria-hidden="true"></span>
-            <div>
-              <h2 class="run-t">המכונה כותבת</h2>
-              <p class="run-s">
-                רץ כבר <span class="num" id="gen-elapsed">0:00</span> ·
-                אפשר לסגור את החלון, נשלח קישור למייל
-              </p>
-            </div>
-          </div>
-          <ol class="log" id="gen-log"></ol>
-          <p class="slow" id="gen-slow" hidden>השלב הזה יכול לקחת כמה דקות · המכונה לא תקועה.</p>
-        </div>
-        <div class="arts" id="gen-arts"></div>
       </div>
 
       <!-- ── S5 · מוכן ── -->
@@ -386,6 +368,12 @@ const C = +(2 * Math.PI * 84).toFixed(2);
 
   /* ── הציון ── */
   .score-card { display: flex; flex-direction: column; gap: 18px; padding: clamp(24px, 4vw, 36px); }
+  /* סיכום המצב במילים · לפני המספרים. אדם קורא משפט, לא מחוון. */
+  .verdict {
+    font-size: clamp(16px, 2vw, 19px); line-height: 1.6; font-weight: 600;
+    color: var(--sc-ink); margin-block-start: -6px;
+  }
+  .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; }
   .score-row { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
   .dm-gauge { position: relative; inline-size: 148px; block-size: 148px; flex: none; }
   .dm-gauge svg { inline-size: 100%; block-size: 100%; display: block; }
@@ -414,6 +402,24 @@ const C = +(2 * Math.PI * 84).toFixed(2);
   .method b { color: var(--sc-ink); font-weight: 700; }
 
   .answers { display: flex; flex-direction: column; gap: 14px; margin-block-start: 16px; }
+
+  /* הריצה · הלוג והמייל זה לצד זה, לא זה אחרי זה */
+  .run-wrap { display: flex; flex-direction: column; gap: 14px; padding: 0; }
+  .log-gen { margin-block-start: 14px; padding-block-start: 14px; border-block-start: 1px solid var(--sc-div); }
+  .mailbox {
+    padding: 22px 24px; display: flex; flex-direction: column; gap: 14px;
+    background: var(--sc-gold-bg); border-color: var(--sc-gold-bd);
+  }
+  .mail-t { font-size: 14.5px; line-height: 1.65; color: var(--sc-ink); }
+  .mail-t b { font-weight: 800; }
+  .mailbox .btn { align-self: flex-start; }
+  .mailbox.saved { flex-direction: row; align-items: center; gap: 12px; }
+  .mailbox.saved p { font-size: 14px; color: var(--sc-ink); }
+  .mk-ok {
+    flex: none; inline-size: 24px; block-size: 24px; border-radius: 999px;
+    display: grid; place-items: center; font-size: 13px; font-weight: 800;
+    background: var(--sc-card); color: var(--sc-gold-text); border: 1px solid var(--sc-gold-bd);
+  }
 
   /* ── שער ── */
   .gate h2 { font-size: clamp(21px, 2.6vw, 27px); }
@@ -445,7 +451,41 @@ const C = +(2 * Math.PI * 84).toFixed(2);
   }
   .back:hover { color: var(--sc-accent-text); }
 
-  .arts { display: flex; flex-direction: column; gap: 16px; margin-block-start: 16px; }
+  .arts { display: flex; flex-direction: column; gap: 18px; margin-block-start: 16px; }
+  .art { padding: clamp(24px, 4vw, 38px); }
+  .art-t { font-size: clamp(20px, 2.6vw, 26px); font-weight: 800; letter-spacing: -.015em; line-height: 1.3; color: var(--sc-ink); }
+  .art-meta { font-size: 13px; color: var(--sc-muted); font-weight: 600; margin-block-start: 8px; }
+  .art-flag {
+    font-size: 13px; font-weight: 600; color: var(--sc-ink);
+    background: var(--sc-gold-bg); border: 1px solid var(--sc-gold-bd);
+    border-radius: var(--sc-r-chip); padding: 10px 13px; margin-block-start: 12px;
+  }
+
+  /* גוף המאמר · אותם ערכים של .prose במגזין, כדי שזה ייראה כמו מאמר אמיתי */
+  .art .prose { margin-block-start: 18px; }
+  .art .prose :global(h3) {
+    font-size: 19px; font-weight: 800; letter-spacing: -.01em;
+    margin-block: 26px 10px; color: var(--sc-ink);
+  }
+  .art .prose :global(h4) { font-size: 16px; font-weight: 800; margin-block: 20px 8px; color: var(--sc-ink); }
+  .art .prose :global(p) {
+    margin-block-end: 15px; font-size: 15.5px; line-height: 1.85;
+    color: var(--sc-ink); font-weight: 400; unicode-bidi: isolate;
+  }
+  .art .prose :global(strong) { font-weight: 700; }
+  .art .prose :global(ul) { padding-inline-start: 22px; margin-block-end: 15px; display: grid; gap: 7px; }
+  .art .prose :global(li) { font-size: 15px; line-height: 1.75; color: var(--sc-ink); unicode-bidi: isolate; }
+  .art .prose :global(code) {
+    font-size: 13.5px; background: var(--sc-wash); border: 1px solid var(--sc-soft);
+    border-radius: 5px; padding: 1px 5px; direction: ltr; unicode-bidi: isolate; display: inline-block;
+  }
+
+  .art-src { margin-block-start: 24px; padding-block-start: 18px; border-block-start: 1px solid var(--sc-div); }
+  .art-src-t { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--sc-muted); margin-block-end: 10px; }
+  .art-src ol { padding-inline-start: 20px; display: grid; gap: 5px; }
+  .art-src li { font-size: 13px; color: var(--sc-muted); }
+  .art-src a { color: var(--sc-accent-text); text-decoration: none; direction: ltr; unicode-bidi: isolate; display: inline-block; }
+  .art-src a:hover { text-decoration: underline; }
 
   /* ── צעדים ── */
   .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
@@ -468,12 +508,10 @@ const C = +(2 * Math.PI * 84).toFixed(2);
   const show = (el: HTMLElement | null) => el?.removeAttribute('hidden');
   const hide = (el: HTMLElement | null) => el?.setAttribute('hidden', '');
 
-  const PANELS = ['s-idle', 's-scanning', 's-score', 's-gate', 's-generating', 's-done', 's-capped', 's-error'];
+  const PANELS = ['s-idle', 's-scanning', 's-score', 's-done', 's-capped', 's-error'];
   const only = (id: string) => PANELS.forEach((p) => (p === id ? show($(p)) : hide($(p))));
-  // הציון נשאר על המסך גם בשלבים הבאים · הוא הערך שכבר נתנו
-  const keepScore = (id: string) => {
-    PANELS.forEach((p) => (p === id || p === 's-score' ? show($(p)) : hide($(p))));
-  };
+  /** מרחב מצטבר · הריצה, הציון והמאמרים מופיעים זה על גב זה ולא מחליפים זה את זה. */
+  const stack = (...ids: string[]) => PANELS.forEach((p) => (ids.includes(p) ? show($(p)) : hide($(p))));
 
   const okEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
   const cleanHost = (v: string) => {
@@ -541,6 +579,12 @@ const C = +(2 * Math.PI * 84).toFixed(2);
     }
     $('gauge')?.setAttribute('aria-label', `נראות ב-AI: ${pct}%`);
 
+    const vd = $('score-verdict');
+    if (vd) {
+      // רק אם השרת מדד וכתב אותו · אין ניסוח מומצא בצד הלקוח
+      if (score.verdict) { vd.textContent = score.verdict; vd.removeAttribute('hidden'); }
+      else vd.setAttribute('hidden', '');
+    }
     const pctEl = $('score-pct'); if (pctEl) pctEl.textContent = pct + '%';
     const qt = $('q-total'); if (qt) qt.textContent = String(score.queriesAsked ?? 0);
     const qh = $('q-hit'); if (qh) qh.textContent = String(score.queriesMentioned ?? 0);
@@ -577,20 +621,77 @@ const C = +(2 * Math.PI * 84).toFixed(2);
     }
   };
 
+  /**
+   * Markdown → HTML · תת-קבוצה מצומצמת ומכוונת.
+   * התוכן מגיע ממודל, אז מבריחים כל תו לפני שמעצבים · אחרת מאמר עם
+   * <script> בפנים היה רץ בדפדפן של הליד.
+   */
+  const esc = (s: string) =>
+    s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+  const inline = (s: string) =>
+    esc(s)
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>')
+      .replace(/`([^`]+)`/g, '<code>$1</code>');
+
+  const mdToHtml = (md: string) => {
+    const out: string[] = [];
+    let list: string[] = [];
+    const flush = () => { if (list.length) { out.push('<ul>' + list.join('') + '</ul>'); list = []; } };
+    for (const raw of (md || '').split('\n')) {
+      const line = raw.trimEnd();
+      if (/^#{3}\s+/.test(line)) { flush(); out.push('<h4>' + inline(line.replace(/^#{3}\s+/, '')) + '</h4>'); }
+      else if (/^#{2}\s+/.test(line)) { flush(); out.push('<h3>' + inline(line.replace(/^#{2}\s+/, '')) + '</h3>'); }
+      else if (/^[*-]\s+/.test(line) || /^\*\s{3}/.test(line)) list.push('<li>' + inline(line.replace(/^[*-]\s+/, '')) + '</li>');
+      else if (/^\d+\.\s+/.test(line)) list.push('<li>' + inline(line.replace(/^\d+\.\s+/, '')) + '</li>');
+      else if (!line.trim()) flush();
+      else { flush(); out.push('<p>' + inline(line) + '</p>'); }
+    }
+    flush();
+    return out.join('');
+  };
+
   const renderArts = (host: string, arts: any[]) => {
     const wrap = $(host);
     if (!wrap) return;
     wrap.innerHTML = '';
     for (const a of arts || []) {
-      const card = document.createElement('div');
-      card.className = 'card';
-      card.style.padding = '22px 24px';
-      const t = document.createElement('h3');
-      t.textContent = a.title || 'מאמר בכתיבה';
-      const s = document.createElement('p');
-      s.style.cssText = 'font-size:13.5px;color:var(--sc-muted);margin-block-start:6px;';
-      s.textContent = a.phase || '';
-      card.append(t, s);
+      const card = document.createElement('article');
+      card.className = 'card art';
+
+      const h = document.createElement('h3');
+      h.className = 'art-t';
+      h.textContent = a.title || 'מאמר';
+      card.appendChild(h);
+
+      const meta = document.createElement('p');
+      meta.className = 'art-meta';
+      const words = (a.md || '').split(/\s+/).filter(Boolean).length;
+      meta.innerHTML = `<span class="num">${words}</span> מילים · <span class="num">${(a.sources || []).length}</span> מקורות`;
+      card.appendChild(meta);
+
+      // מאמר שנגנז · אומרים את זה, לא מתחזים לנקי
+      if (a.shelved) {
+        const note = document.createElement('p');
+        note.className = 'art-flag';
+        note.textContent = 'הבקרה שלנו סימנה כאן דברים לשיפור · המאמר כאן כמו שהוא, בלי לייפות.';
+        card.appendChild(note);
+      }
+
+      const body = document.createElement('div');
+      body.className = 'prose';
+      body.innerHTML = mdToHtml(a.md || '');
+      card.appendChild(body);
+
+      if ((a.sources || []).length) {
+        const src = document.createElement('div');
+        src.className = 'art-src';
+        src.innerHTML = '<p class="art-src-t">מקורות</p><ol>' +
+          a.sources.map((s: any) => `<li><a href="${esc(s.uri || '#')}" target="_blank" rel="noopener nofollow">${esc(s.domain || s.uri || '')}</a></li>`).join('') +
+          '</ol>';
+        card.appendChild(src);
+      }
       wrap.appendChild(card);
     }
   };
@@ -623,18 +724,20 @@ const C = +(2 * Math.PI * 84).toFixed(2);
     switch (st.phase) {
       case 'scanning':
         renderLog('scan-log', st.scan?.steps || []);
-        only('s-scanning'); startClock('scan-elapsed'); break;
+        stack('s-scanning'); startClock('scan-elapsed'); break;
       case 'score':
-        clearInterval(timer); only('s-score'); show($('s-gate')); break;
+        // הציון מופיע · הריצה ממשיכה למאמרים לבד, בלי שער
+        renderLog('scan-log', st.scan?.steps || []);
+        stack('s-scanning', 's-score'); startClock('scan-elapsed'); break;
       case 'generating':
-        renderLog('gen-log', st.gen?.steps || []);
-        renderArts('gen-arts', st.articles || []);
-        keepScore('s-generating'); startClock('gen-elapsed'); break;
+        renderLog('scan-log', st.scan?.steps || []);
+        if (st.gen?.steps?.length) { show($('gen-log')); renderLog('gen-log', st.gen.steps); }
+        stack('s-scanning', 's-score'); startClock('scan-elapsed'); break;
       case 'done':
         clearInterval(timer);
         renderArts('done-arts', st.articles || []);
-        keepScore('s-done'); break;
-      case 'capped': keepScore('s-capped'); break;
+        stack('s-score', 's-done'); break;
+      case 'capped': stack('s-score', 's-capped'); break;
       case 'error':
         fail(st.error?.title || 'משהו לא עבד', st.error?.message || 'נסו שוב בעוד כמה דקות.'); break;
     }
@@ -649,7 +752,8 @@ const C = +(2 * Math.PI * 84).toFixed(2);
       if (!r.ok) throw new Error(String(r.status));
       const st = await r.json();
       apply(st);
-      if (['done', 'error', 'capped', 'score'].includes(st.phase)) return;
+      // לא עוצרים ב-score · המאמרים ממשיכים לרוץ אחריו
+      if (['done', 'error', 'capped'].includes(st.phase)) return;
       delay = Math.min(10000, delay * 1.4);
       setTimeout(poll, delay);
     } catch {
@@ -694,7 +798,7 @@ const C = +(2 * Math.PI * 84).toFixed(2);
       }
       jobId = j.jobId;
       try { sessionStorage.setItem('scaylaScanJob', jobId!); } catch {}
-      history.replaceState(null, '', `/scan?job=${jobId}`);
+      history.replaceState(null, '', `/scan/${jobId}`);
       startedAt = Date.now();
       apply({ phase: 'scanning', scan: j.scan });
       poll();
@@ -706,32 +810,30 @@ const C = +(2 * Math.PI * 84).toFixed(2);
   });
 
   // ── S3 → כתיבה ──
-  ($('s-gate') as HTMLFormElement | null)?.addEventListener('submit', async (e) => {
+  ($('s-mail') as HTMLFormElement | null)?.addEventListener('submit', async (e) => {
     e.preventDefault();
-    clearErr('email'); hide($('e-gate'));
+    clearErr('email'); clearErr('gname'); hide($('e-gate'));
+    const gname = ($('gname') as HTMLInputElement).value;
     const email = ($('email') as HTMLInputElement).value;
-    if (!email.trim()) { setErr('email', 'כתבו כתובת מייל.'); return; }
+    if (!email.trim()) { setErr('email', 'כתבו כתובת מייל כדי שנוכל לעדכן אתכם.'); return; }
     if (!okEmail(email)) { setErr('email', 'המייל לא נראה תקין · בדקו את הכתובת, למשל you@store.co.il'); return; }
 
-    const btn = $('go-articles') as HTMLButtonElement;
-    btn.setAttribute('aria-busy', 'true'); btn.textContent = 'מתחילים...';
+    const btn = $('go-mail') as HTMLButtonElement;
+    btn.setAttribute('aria-busy', 'true'); btn.textContent = 'שומרים...';
     try {
       const r = await fetch('/api/scan/email', {
         method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ jobId, email: email.trim() }),
+        body: JSON.stringify({ jobId, name: gname.trim(), email: email.trim() }),
       });
-      const j = await r.json();
-      btn.removeAttribute('aria-busy'); btn.textContent = 'כתבו לי את המאמרים';
-      if (r.status === 503 && j.error === 'articles_cap') { keepScore('s-capped'); return; }
-      if (!r.ok) { const el = $('e-gate'); if (el) { el.textContent = 'לא הצלחנו להתחיל · נסו שוב.'; show(el); } return; }
+      btn.removeAttribute('aria-busy'); btn.textContent = 'עדכנו אותי כשזה מוכן';
+      if (!r.ok) { const el = $('e-gate'); if (el) { el.textContent = 'לא הצלחנו לשמור · נסו שוב.'; show(el); } return; }
+      // הטופס מתחלף באישור · הריצה ממשיכה בדיוק כמו קודם
+      const ms = $('mail-shown'); if (ms) ms.textContent = email.trim();
       const de = $('done-email'); if (de) de.textContent = email.trim();
-      startedAt = Date.now();
-      delay = 2000;
-      apply({ phase: 'generating', gen: j.gen, articles: j.articles });
-      poll();
+      hide($('s-mail')); show($('s-mail-ok'));
     } catch {
-      btn.removeAttribute('aria-busy'); btn.textContent = 'כתבו לי את המאמרים';
-      const el = $('e-gate'); if (el) { el.textContent = 'לא הצלחנו להתחיל · בדקו את החיבור ונסו שוב.'; show(el); }
+      btn.removeAttribute('aria-busy'); btn.textContent = 'עדכנו אותי כשזה מוכן';
+      const el = $('e-gate'); if (el) { el.textContent = 'לא הצלחנו לשמור · בדקו את החיבור ונסו שוב.'; show(el); }
     }
   });
 
@@ -746,7 +848,7 @@ const C = +(2 * Math.PI * 84).toFixed(2);
     try {
       await fetch('/api/scan/queue', {
         method: 'POST', headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ jobId, email: email.trim() }),
+        body: JSON.stringify({ jobId, name: gname.trim(), email: email.trim() }),
       });
       btn.textContent = 'נשמר · נשלח לכם מחר';
     } catch { btn.removeAttribute('aria-busy'); }
@@ -754,13 +856,17 @@ const C = +(2 * Math.PI * 84).toFixed(2);
 
   $('err-back')?.addEventListener('click', () => {
     history.replaceState(null, '', '/scan');
+    try { sessionStorage.removeItem('scaylaScanJob'); } catch {}
     const btn = $('go') as HTMLButtonElement;
     btn.removeAttribute('aria-busy'); btn.textContent = 'קדימה, בואו נראה';
     only('s-idle');
   });
 
   // ── חזרה לעבודה קיימת · ?job= או sessionStorage ──
-  const resume = new URLSearchParams(location.search).get('job')
+  // ה-id מגיע מהנתיב · /scan/weshoes-co-il-a3f9c2. זה הקישור שהליד מקבל
+  // במייל, והוא צריך להיראות כמו העמוד שלו ולא כמו פרמטר.
+  const fromPath = (location.pathname.match(/^\/scan\/([a-z0-9-]{6,60})\/?$/) || [])[1] || null;
+  const resume = fromPath
     || (() => { try { return sessionStorage.getItem('scaylaScanJob'); } catch { return null; } })();
   if (resume) {
     jobId = resume;

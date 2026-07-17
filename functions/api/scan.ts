@@ -49,7 +49,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (used >= cap) return Response.json({ error: 'scan_cap' }, { status: 503 });
   await env.SCAN_JOBS.put(capKey(), String(used + 1), { expirationTtl: 60 * 60 * 36 });
 
-  const id = newId();
+  const id = newId(host);
   const r = await machine(env, '/start', {
     method: 'POST', headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ jobId: id, host, blog }),

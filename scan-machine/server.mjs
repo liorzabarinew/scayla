@@ -8,6 +8,8 @@
 import http from 'node:http';
 import { Firestore } from '@google-cloud/firestore';
 import { runScan } from './machine.mjs';
+import { buildBoth } from './articles.mjs';
+import { sendReady } from './email.mjs';
 
 const db = new Firestore({ projectId: process.env.GCP_PROJECT || 'scayla-prod' });
 const col = db.collection('scan_jobs');
@@ -17,7 +19,10 @@ const save = (id, patch) => col.doc(id).set({ ...patch, updatedAt: Date.now() },
 
 async function work(jobId, host, blog) {
   try {
+    // ריצה אחת רציפה · הסריקה והמאמרים הם אותו מסע, לא שני מוצרים.
+    // אין שער מייל באמצע · המייל הוא נוחות שנרשמת תוך כדי.
     await runScan({ host, blog }, (patch) => save(jobId, patch));
+    await writeArticles(jobId);
   } catch (e) {
     console.error('scan failed', jobId, e?.message);
     await save(jobId, {
@@ -25,6 +30,57 @@ async function work(jobId, host, blog) {
       error: { title: e?.userTitle || 'הבדיקה נכשלה', message: e?.userMessage || 'משהו השתבש אצלנו · נסו שוב בעוד כמה דקות.' },
       _debug: String(e?.message || e).slice(0, 300),
     });
+  }
+}
+
+/**
+ * שני המאמרים · רצים במקביל, ואז מייל עם קישור.
+ * המאמרים נשמרים ב-Firestore ומוצגים בעמוד. המייל נושא קישור בלבד.
+ */
+async function writeArticles(jobId) {
+  const snap = await col.doc(jobId).get();
+  const job = snap.data();
+  if (!job?.score) return;
+  await save(jobId, { phase: 'generating', articlesStartedAt: Date.now() });
+
+  const store = { host: job.host, title: job.store?.title || '', description: '', text: '' };
+  try {
+    // ההתקדמות כותבת ל-gen בלבד · לא ל-articles.
+    // קודם שניהם כתבו ל-articles, וה-emit הלא-מסונכרן של הסיום נחת *אחרי*
+    // השמירה הסופית ודרס את המאמרים במצב-התקדמות ריק. התוכן אבד בדיסק,
+    // לא בצינור. שדות נפרדים = אין מרוץ.
+    const articles = await buildBoth(store, job.score, (state) =>
+      save(jobId, { gen: { steps: state.map((s) => ({ label: `${s.title} · ${s.phase}`, state: s.done ? 'done' : 'running' })) } }),
+    );
+    if (!articles.length) throw new Error('no articles produced');
+
+    await save(jobId, { phase: 'done', articles, finishedAt: Date.now() });
+
+    // מייל · רק אם הליד השאיר אחד תוך כדי הריצה. אחרון בתור, כי אם הוא
+    // נופל המאמרים כבר בעמוד ולא אבדו.
+    const fresh = (await col.doc(jobId).get()).data();
+    if (fresh?.lead?.email) await notify(jobId, fresh);
+  } catch (e) {
+    console.error('articles failed', jobId, e?.message);
+    await save(jobId, {
+      phase: 'error',
+      error: { title: 'לא הצלחנו לכתוב את המאמרים', message: 'נסו שוב בעוד כמה דקות · הציון שלכם נשמר.' },
+      _debug: String(e?.message || e).slice(0, 300),
+    });
+  }
+}
+
+/** שולח את ההתראה · קישור בלבד, לא את המאמרים. */
+async function notify(jobId, job) {
+  try {
+    const id = await sendReady({
+      apiKey: process.env.RESEND_API_KEY, to: job.lead.email, name: job.lead.name,
+      host: job.host, jobId, pct: job.score?.pct,
+    });
+    await save(jobId, { emailedAt: Date.now(), emailId: id });
+  } catch (e) {
+    console.error('email failed', jobId, e?.message);
+    await save(jobId, { _emailError: String(e?.message).slice(0, 200) });
   }
 }
 
@@ -47,6 +103,21 @@ http.createServer(async (req, res) => {
       // 202 מיד · העבודה ממשיכה. CPU always-allocated, אז היא לא נחנקת.
       json(res, 202, { ok: true, jobId });
       work(jobId, host, blog);
+      return;
+    }
+
+    // רישום מייל · לא שער. הריצה כבר רצה ממילא.
+    if (req.method === 'POST' && url.pathname === '/email') {
+      const body = await new Promise((ok) => { let b = ''; req.on('data', (c) => (b += c)); req.on('end', () => ok(b)); });
+      const { jobId, name, email } = JSON.parse(body || '{}');
+      if (!jobId || !email) return json(res, 400, { error: 'missing' });
+      const snap = await col.doc(jobId).get();
+      if (!snap.exists) return json(res, 404, { error: 'not_found' });
+      await save(jobId, { lead: { name: name || '', email } });
+      json(res, 202, { ok: true });
+      // כבר מוכן · שולחים מיד במקום לחכות לריצה שכבר הסתיימה
+      const j = snap.data();
+      if (j?.phase === 'done') notify(jobId, { ...j, lead: { name, email } });
       return;
     }
 
