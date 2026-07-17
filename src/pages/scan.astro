@@ -32,11 +32,19 @@ const C = +(2 * Math.PI * 84).toFixed(2);
   <section class="scan-hero">
     <div class="narrow center">
       <span class="eyebrow">בדיקה חינם</span>
-      <h1>האם ה-<span class="grad-word">AI</span> מזכיר<br />את החנות שלכם?</h1>
+      <!-- ה-AI עטוף ב-nobr · בלי זה השורה נשברת בין "ה-" ל-"AI" ומשאירה
+           תחילית עברית תלושה בסוף שורה. -->
+      <h1>נראה לכם מה <span class="nobr">ה-<span class="grad-word">AI</span></span> אומר עליכם<br />ואז נסגור את הפער</h1>
       <p class="lede">
-        נכניס את החנות שלכם לשאלות שקונים באמת שואלים את Gemini · ונראה בשחור על גבי לבן
-        אם אתם מופיעים בתשובה, או שהמתחרים מופיעים במקומכם.
+        קודם נכניס את החנות שלכם לשאלות שקונים באמת שואלים את Gemini, ונראה בשחור על גבי לבן
+        אם אתם מופיעים או שהמתחרים מופיעים במקומכם. <strong>ואז, על החשבון שלנו, נכתוב לכם שני
+        מאמרים מלאים</strong> בדיוק על הפערים שמצאנו · כדי שתראו איך נראה תוכן שמזיז את המחט.
       </p>
+      <ol class="journey">
+        <li><span class="j-n num">1</span>סורקים את החנות והבלוג</li>
+        <li><span class="j-n num">2</span>שואלים את Gemini ומודדים ציון</li>
+        <li><span class="j-n num">3</span>כותבים לכם <span class="num">2</span> מאמרים</li>
+      </ol>
     </div>
 
     <div class="form-wrap">
@@ -61,10 +69,9 @@ const C = +(2 * Math.PI * 84).toFixed(2);
           <input id="company-website" name="company_website" type="text" tabindex="-1" autocomplete="off" />
         </div>
 
-        <div class="ts-slot" id="ts-slot" data-sitekey={TURNSTILE_SITE_KEY}></div>
-
         <p class="err summary" id="e-summary" role="alert" hidden></p>
-        <button class="btn btn-hero btn-gold" type="submit" id="go">בדקו את החנות שלי</button>
+        <button class="btn btn-hero btn-gold" type="submit" id="go">קדימה, בואו נראה</button>
+        <div class="ts-slot" id="ts-slot" data-sitekey={TURNSTILE_SITE_KEY}></div>
         <p class="fine">
           הציון חינם ובלי להשאיר פרטים · בלי כרטיס אשראי, בלי התקנה.
         </p>
@@ -76,7 +83,7 @@ const C = +(2 * Math.PI * 84).toFixed(2);
           <span class="radar" aria-hidden="true"></span>
           <div>
             <h2 class="run-t">סורקים את <b id="scan-host" dir="ltr">…</b></h2>
-            <p class="run-s">רץ כבר <span class="num" id="scan-elapsed">0:00</span></p>
+            <p class="run-s">רץ כבר <span class="num" id="scan-elapsed">0:00</span> · אחרי הציון נכתוב לכם <span class="num">2</span> מאמרים</p>
           </div>
         </div>
         <ol class="log" id="scan-log"></ol>
@@ -127,8 +134,8 @@ const C = +(2 * Math.PI * 84).toFixed(2);
 
       <!-- ── S3 · שער המייל ── -->
       <form class="card panel gate" id="s-gate" hidden>
-        <span class="eyebrow">השלב הבא</span>
-        <h2>שנכתוב לכם שני מאמרים · על החשבון שלנו?</h2>
+        <span class="eyebrow">כמו שהבטחנו</span>
+        <h2>עכשיו החלק השני · שני המאמרים שלכם</h2>
         <p class="gate-p">
           שני מאמרים מלאים, בשני נושאים שונים, שנבחרו מהפערים שמצאנו בחנות שלכם עכשיו.
           הם עוברים את אותם שערי בקרה שהמכונה מריצה על כל מאמר · מחקר מבוסס מקורות,
@@ -273,12 +280,37 @@ const C = +(2 * Math.PI * 84).toFixed(2);
       radial-gradient(1100px 700px at 82% -14%, rgba(139, 118, 242, .2), transparent 62%),
       linear-gradient(180deg, #221c3a 0%, var(--sc-paper) 82%);
   }
-  .scan-hero h1 { font-size: clamp(34px, 5.4vw, 58px); font-weight: 900; letter-spacing: -.025em; line-height: 1.06; }
+  .scan-hero h1 {
+    font-size: clamp(32px, 5vw, 54px); font-weight: 900;
+    letter-spacing: -.025em; line-height: 1.08;
+  }
+  .nobr { white-space: nowrap; }
   .grad-word {
     background: var(--sc-grad); -webkit-background-clip: text; background-clip: text;
     color: transparent; -webkit-text-fill-color: transparent;
   }
-  .scan-hero .lede { max-inline-size: 56ch; margin-inline: auto; }
+  .scan-hero .lede { max-inline-size: 60ch; margin-inline: auto; }
+  .scan-hero .lede strong { color: var(--sc-ink); font-weight: 700; }
+
+  /* המסע · שלושת השלבים כסיפור אחד, כבר בהירו. המאמרים לא הפתעה בשער. */
+  .journey {
+    list-style: none; padding: 0;
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 10px;
+    margin-block-start: 26px;
+  }
+  .journey li {
+    display: inline-flex; align-items: center; gap: 9px;
+    background: var(--sc-card); border: 1px solid var(--sc-hair);
+    border-radius: var(--sc-r-pill); padding: 8px 16px 8px 9px;
+    font-size: 13.5px; font-weight: 600; color: var(--sc-ink);
+    box-shadow: var(--sc-sh-subtle);
+  }
+  .j-n {
+    display: grid; place-items: center; inline-size: 22px; block-size: 22px;
+    border-radius: 999px; background: var(--sc-wash); border: 1px solid var(--sc-soft);
+    color: var(--sc-accent-text); font-size: 11.5px; font-weight: 800; flex: none;
+  }
+  @media (max-width: 560px) { .journey { flex-direction: column; align-items: stretch; } }
 
   .form-wrap { max-inline-size: 760px; margin-inline: auto; padding-inline: clamp(18px, 5vw, 40px); margin-block-start: 40px; }
   .panel { padding: clamp(24px, 4vw, 36px); }
@@ -303,7 +335,23 @@ const C = +(2 * Math.PI * 84).toFixed(2);
   .err.summary { background: var(--sc-red-bg); border: 1px solid var(--sc-red-bd); border-radius: var(--sc-r-chip); padding: 11px 15px; text-align: center; }
   .fine { font-size: 13px; color: var(--sc-muted); text-align: center; }
   .hp { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-  .ts-slot { display: flex; justify-content: center; min-block-size: 65px; }
+  /* Turnstile · יושב מתחת לכפתור, לא מעליו. הווידג'ט הוא iframe שאי אפשר
+     לעצב מבפנים, אז מעגלים אותו מבחוץ · overflow:hidden גוזר את הפינות
+     המרובעות של ה-iframe עצמו. */
+  .ts-slot {
+    display: flex; justify-content: center;
+    min-block-size: 65px;
+    margin-block-start: -2px;
+  }
+  .ts-slot :global(iframe) {
+    border-radius: var(--sc-r-chip);
+    overflow: hidden;
+  }
+  .ts-slot :global(> div) {
+    border-radius: var(--sc-r-chip);
+    overflow: hidden;
+    box-shadow: var(--sc-sh-subtle);
+  }
   #go[aria-busy='true'], #go-articles[aria-busy='true'] { opacity: .7; pointer-events: none; }
 
   /* ── ריצה חיה ── */
@@ -634,7 +682,7 @@ const C = +(2 * Math.PI * 84).toFixed(2);
       });
       const j = await r.json();
       if (!r.ok) {
-        btn.removeAttribute('aria-busy'); btn.textContent = 'בדקו את החנות שלי';
+        btn.removeAttribute('aria-busy'); btn.textContent = 'קדימה, בואו נראה';
         const m: Record<string, string> = {
           bad_url: 'הכתובת לא נראית תקינה · בדקו ונסו שוב.',
           turnstile: 'אימות האבטחה לא עבר · רעננו את העמוד ונסו שוב.',
@@ -651,7 +699,7 @@ const C = +(2 * Math.PI * 84).toFixed(2);
       apply({ phase: 'scanning', scan: j.scan });
       poll();
     } catch {
-      btn.removeAttribute('aria-busy'); btn.textContent = 'בדקו את החנות שלי';
+      btn.removeAttribute('aria-busy'); btn.textContent = 'קדימה, בואו נראה';
       const el = $('e-summary');
       if (el) { el.textContent = 'לא הצלחנו להתחיל את הבדיקה · בדקו את החיבור ונסו שוב.'; show(el); }
     }
@@ -707,7 +755,7 @@ const C = +(2 * Math.PI * 84).toFixed(2);
   $('err-back')?.addEventListener('click', () => {
     history.replaceState(null, '', '/scan');
     const btn = $('go') as HTMLButtonElement;
-    btn.removeAttribute('aria-busy'); btn.textContent = 'בדקו את החנות שלי';
+    btn.removeAttribute('aria-busy'); btn.textContent = 'קדימה, בואו נראה';
     only('s-idle');
   });
 
