@@ -1,0 +1,10 @@
+{
+  "name": "scayla-scan-machine",
+  "type": "module",
+  "private": true,
+  "engines": { "node": ">=22" },
+  "dependencies": {
+    "@google-cloud/firestore": "^7.11.0",
+    "google-auth-library": "^9.15.0"
+  }
+}

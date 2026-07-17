@@ -16,3 +16,5 @@ npm-debug.log*
 # wrangler local cache (pages dev)
 .wrangler/
 .dev.vars
+# Cloud Run build artifacts
+scan-machine/node_modules/
