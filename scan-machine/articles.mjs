@@ -171,34 +171,46 @@ ${md}`,
 }
 
 /** מאמר אחד, מקצה לקצה. onStep מדווח שלב כדי שהלוג יהיה חי. */
+/**
+ * שלבי הכתיבה בשפת לקוח.
+ * "סבב תיקון 1" ו"סבב הצלה אחרון" הם ז'רגון פנימי שלנו · הם דלפו ללקוח
+ * ולא אמרו לו כלום. כל שלב כאן מסביר מה באמת קורה עכשיו.
+ */
+const FIX_STEP = [
+  'מגיה, מהדק ניסוחים ומחדד את הטענות',
+  'מעביר את המאמר בין שני מודלים שונים כדי לחדד אותו',
+  'מאמת כל טענה מול המקורות ומסלק כל מה שלא מבוסס',
+  'ליטוש אחרון · מסיר חזרתיות ומשלים פערים',
+];
+const fixStep = (r) => FIX_STEP[Math.min(Math.max(1, r) - 1, FIX_STEP.length - 1)];
+
 export async function buildArticle(topic, store, onStep) {
-  await onStep('מחקר מבוסס מקורות');
+  await onStep('חוקר את הנושא ואוסף מקורות מהרשת');
   const { brief, sources } = await research(topic, store);
 
-  await onStep('כתיבה');
+  await onStep('כותב את המאמר');
   let md = await write(topic, store, brief);
 
-  await onStep('5 בדיקות איכות במקביל');
+  await onStep('מריץ 5 בדיקות איכות במקביל · עובדות, לשון, מבנה, עיגון וציות');
   let issues = [...lint(md), ...(await qaAll(md, brief))];
 
   for (let round = 1; round <= MAX_FIX_ROUNDS && issues.length; round++) {
-    await onStep(`סבב תיקון ${round}`);
+    await onStep(fixStep(round));
     md = await fix(md, issues, round);
-    await onStep('אימות חוזר');
+    await onStep('בודק שוב מול כל חמש העדשות');
     issues = [...lint(md), ...(await qaAll(md, brief))];
   }
 
-  await onStep('בדיקות דטרמיניסטיות');
+  await onStep('בודק אורך, מבנה ועומק של כל סעיף');
   let residual = [...lint(md), ...issues];
 
-  // סבב הצלה · אם נשארה בעיה *קשה* אחרי כל הסבבים, מנסים פעם אחת אחרונה
-  // ממוקדת בה בלבד. הליד הובטח שני מאמרים · לא מוותרים על אחד בגלל פסקה
-  // קטועה שאפשר לתקן.
+  // ניסיון אחרון על בעיות קשות · הליד הובטח שני מאמרים, לא מוותרים על
+  // אחד בגלל פסקה קטועה שאפשר לתקן.
   if (hasHardIssue(residual)) {
     const hard = residual.filter((i) => HARD_ISSUE_RE.test(String(i)));
-    await onStep('סבב הצלה אחרון');
+    await onStep('מתקן את מה שהבקרה עוד סימנה');
     md = await fix(md, hard, MAX_FIX_ROUNDS);
-    await onStep('אימות אחרון');
+    await onStep('אימות אחרון לפני מסירה');
     residual = [...lint(md), ...(await qaAll(md, brief))];
   }
 
@@ -217,15 +229,16 @@ export async function buildArticle(topic, store, onStep) {
 /** שני המאמרים · במקביל. */
 export async function buildBoth(store, score, onProgress) {
   const topics = await pickTopics(store, score);
-  const state = topics.map((t) => ({ id: t.title, title: t.title, phase: 'ממתין', done: false }));
+  const ORD = ['מאמר ראשון', 'מאמר שני'];
+  const state = topics.map((t, i) => ({ id: t.title, ord: ORD[i] || `מאמר ${i + 1}`, title: t.title, phase: 'ממתין בתור', done: false }));
   const emit = () => onProgress(state.map((s) => ({ ...s })));
   await emit();
 
   const results = await Promise.all(
     topics.map((topic, i) =>
       buildArticle(topic, store, async (phase) => { state[i].phase = phase; await emit(); })
-        .then(async (a) => { state[i].phase = a.shelved ? 'נדרשת בדיקה' : 'מוכן'; state[i].done = true; await emit(); return a; })
-        .catch(async (e) => { state[i].phase = 'נכשל'; state[i].done = true; await emit(); console.error('article failed', topic.title, e?.message); return null; }),
+        .then(async (a) => { state[i].phase = a.shelved ? 'מוכן · סימנו בו דברים לשיפור' : 'מוכן'; state[i].done = true; await emit(); return a; })
+        .catch(async (e) => { state[i].phase = 'לא הצלחנו להשלים אותו'; state[i].done = true; await emit(); console.error('article failed', topic.title, e?.message); return null; }),
     ),
   );
   return results.filter(Boolean);

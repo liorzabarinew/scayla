@@ -18,6 +18,17 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
     return Response.json({ error: 'unavailable' }, { status: 503 });
   }
 
+  // ג'וב שלא זז 4 דקות ואינו סופי · מת. פריסה או מיחזור instance הורגים
+  // ריצה באמצע, ובלי השער הזה המשתמש רואה ספינר עד סוף הזמן.
+  const STALE_MS = 4 * 60 * 1000;
+  const idle = Date.now() - (job.updatedAt || job.startedAt || 0);
+  if (!['done', 'error'].includes(job.phase) && idle > STALE_MS) {
+    job = {
+      ...job, phase: 'error',
+      error: { title: 'הריצה נקטעה', message: 'משהו קטע אותנו באמצע · אפשר להתחיל מחדש והפעם זה ירוץ עד הסוף.' },
+    };
+  }
+
   // _debug נשאר במכונה · לא חושפים סיבות-שורש למשתמש
   return Response.json(
     {

@@ -130,13 +130,29 @@ export async function scanStore(host, timeoutMs = 20_000, attempt = 1) {
   } finally { clearTimeout(timer); }
 }
 
-export async function countProducts(host) {
+/**
+ * ספירת מוצרים אמיתית · products.json מחזיר עד 250 לעמוד.
+ * קודם החזרנו את אורך העמוד הראשון, אז כל חנות עם 250+ מוצרים הציגה בדיוק
+ * "250" לנצח · תקרה של הקוד שהתחזתה למדידה. ליאור קרא לזה חרטוט וצדק.
+ * עכשיו: מדפדפים. אם עברנו את התקרה שלנו · מחזירים { atLeast } ולא מספר
+ * מדויק, והטקסט אומר "מעל" ולא נוקב.
+ */
+export async function countProducts(host, maxPages = 8) {
+  let total = 0;
   try {
-    const r = await fetch(`https://${host}/products.json?limit=250`, { headers: HDRS });
-    if (!r.ok) return 0;
-    const j = await r.json();
-    return Array.isArray(j?.products) ? j.products.length : 0;
-  } catch { return 0; }
+    for (let page = 1; page <= maxPages; page++) {
+      const r = await fetch(`https://${host}/products.json?limit=250&page=${page}`, { headers: HDRS });
+      if (!r.ok) break;
+      const j = await r.json();
+      const n = Array.isArray(j?.products) ? j.products.length : 0;
+      total += n;
+      if (n < 250) return { count: total, exact: true };   // העמוד לא מלא · זה הסוף
+    }
+    // נגמרו העמודים שהסכמנו למשוך · אנחנו לא יודעים כמה יש באמת
+    return { count: total, exact: false };
+  } catch {
+    return { count: total, exact: total > 0 ? false : true };
+  }
 }
 
 // ── שאלות קונה ──
@@ -233,12 +249,19 @@ export const STEP = (label, state) => ({ label, state });
  * onProgress נקרא אחרי כל שלב כדי שהלוג יהיה באמת חי.
  */
 export async function runScan({ host, blog }, onProgress) {
+  // כל השלבים מופיעים מההתחלה · הטיקים יורדים אחד־אחד. המשתמש רואה מראש
+  // את כל העבודה שמחכה לו, וזה מה שמצדיק 16 דקות המתנה.
   const steps = [
-    STEP('קוראים את החנות', 'running'),
+    STEP('קוראים את החנות ואת הקטלוג', 'running'),
     STEP('סורקים את הבלוג', blog ? 'pending' : 'skipped'),
-    STEP('מרכיבים שאלות קונה מהחנות שלכם', 'pending'),
-    STEP('שואלים את ה-AI שאלות קונה', 'pending'),
-    STEP('בודקים מי מופיע בתשובות', 'pending'),
+    STEP('מבינים מה אתם מוכרים ולמי', 'pending'),
+    STEP('מרכיבים 15 שאלות שקונה אמיתי שואל', 'pending'),
+    STEP('שואלים את ה-AI ומצליבים מול מקורות חיים', 'pending'),
+    STEP('בודקים בכל תשובה מי מוזכר ומי חסר', 'pending'),
+    STEP('מחשבים את ציון הנראות שלכם', 'pending'),
+    STEP('בוחרים 2 נושאים מהפערים שנמצאו', 'pending'),
+    STEP('כותבים את שני המאמרים', 'pending'),
+    STEP('מגישים אותם לבקרת האיכות', 'pending'),
   ];
   const emit = (patch = {}) => onProgress({ scan: { steps }, ...patch });
 
@@ -250,9 +273,16 @@ export async function runScan({ host, blog }, onProgress) {
     err.userMessage = 'בדקו שהכתובת נכונה ושהאתר עלה, ונסו שוב.';
     throw err;
   }
-  if (store.isShopify) store.productCount = await countProducts(host);
-  steps[0] = STEP(store.productCount ? `קראנו את החנות · כ-${store.productCount} מוצרים` : 'קראנו את החנות', 'done');
-  await emit({ store: { host, title: store.title, isShopify: store.isShopify, products: store.productCount } });
+  let prod = { count: 0, exact: true };
+  if (store.isShopify) prod = await countProducts(host);
+  store.productCount = prod.count;
+  steps[0] = STEP(
+    !prod.count ? 'קראנו את החנות'
+      : prod.exact ? `קראנו את הקטלוג · ${prod.count} מוצרים`
+      : `קראנו את הקטלוג · מעל ${prod.count} מוצרים`,
+    'done',
+  );
+  await emit({ store: { host, title: store.title, isShopify: store.isShopify, products: prod.count, productsExact: prod.exact } });
 
   // 2. הבלוג · אופציונלי
   if (blog) {
@@ -263,12 +293,15 @@ export async function runScan({ host, blog }, onProgress) {
     if (b.ok) store.text = (store.text + ' ' + b.text).slice(0, 8000);
     await emit();
   }
+  steps[2] = STEP('מבינים מה אתם מוכרים ולמי', 'running');
+  await emit();
 
   // 3. שאלות
-  steps[2] = STEP('מרכיבים שאלות קונה מהחנות שלכם', 'running');
+  steps[2] = STEP('הבנו מה אתם מוכרים ולמי', 'done');
+  steps[3] = STEP('מרכיבים שאלות שקונה אמיתי שואל', 'running');
   await emit();
   const qs = await buyerQuestions(store, 15);
-  steps[2] = STEP(`הרכבנו ${qs.length} שאלות קונה מהחנות שלכם`, 'done');
+  steps[3] = STEP(`הרכבנו ${qs.length} שאלות שקונה אמיתי שואל`, 'done');
   await emit();
 
   // 4. Gemini · לולאה רגילה. זהו.
@@ -276,7 +309,7 @@ export async function runScan({ host, blog }, onProgress) {
   const answers = [];
   let hit = 0;
   for (let i = 0; i < qs.length; i++) {
-    steps[3] = STEP(`שואלים את ה-AI · ${i}/${qs.length}`, 'running');
+    steps[4] = STEP(`שואלים את ה-AI ומצליבים מול מקורות חיים · שאלה ${i + 1} מתוך ${qs.length}`, 'running');
     await emit();
     let a;
     try {
@@ -300,13 +333,15 @@ export async function runScan({ host, blog }, onProgress) {
 
   // 5. הציון · נוסחת המוצר
   const pct = Math.round((100 * hit) / answers.length);
-  steps[3] = STEP(`שאלנו את ה-AI · ${answers.length} שאלות קונה`, 'done');
-  steps[4] = STEP('מסכמים את המצב', 'running');
+  steps[4] = STEP(`שאלנו את ה-AI ${answers.length} שאלות והצלבנו מול מקורות חיים`, 'done');
+  steps[5] = STEP(`בדקנו בכל תשובה מי מוזכר · הופעתם ב-${hit} מתוך ${answers.length}`, 'done');
+  steps[6] = STEP('מחשבים את ציון הנראות שלכם', 'running');
   await emit();
 
   const score = { pct, band: bandOf(pct), queriesAsked: answers.length, queriesMentioned: hit, engines: ['gemini'], answers };
   score.verdict = await verdictOf(store, score);
 
-  steps[4] = STEP(`הופעתם ב-${hit} מתוך ${answers.length} תשובות`, 'done');
+  steps[6] = STEP(`ציון הנראות שלכם · ${pct}%`, 'done');
+  steps[7] = STEP('בוחרים 2 נושאים מהפערים שנמצאו', 'running');
   await emit({ phase: 'score', score });
 }

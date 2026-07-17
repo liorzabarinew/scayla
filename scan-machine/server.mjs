@@ -50,7 +50,7 @@ async function writeArticles(jobId) {
     // השמירה הסופית ודרס את המאמרים במצב-התקדמות ריק. התוכן אבד בדיסק,
     // לא בצינור. שדות נפרדים = אין מרוץ.
     const articles = await buildBoth(store, job.score, (state) =>
-      save(jobId, { gen: { steps: state.map((s) => ({ label: `${s.title} · ${s.phase}`, state: s.done ? 'done' : 'running' })) } }),
+      save(jobId, { gen: { steps: state.map((s) => ({ label: `${s.ord} · ${s.phase}`, state: s.done ? 'done' : 'running' })) } }),
     );
     if (!articles.length) throw new Error('no articles produced');
 

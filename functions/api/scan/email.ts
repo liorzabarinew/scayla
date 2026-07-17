@@ -14,17 +14,15 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const name = trim(body.name, 80);
   const email = trim(body.email, 160);
   if (!jobId || !okJobId(jobId)) return Response.json({ error: 'bad_job' }, { status: 400 });
-  if (!name) return Response.json({ error: 'missing_name' }, { status: 400 });
   if (!okEmail(email)) return Response.json({ error: 'bad_email' }, { status: 400 });
 
   try {
-    const r = await machine(env, '/articles', {
+    const r = await machine(env, '/email', {
       method: 'POST', headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ jobId, name, email }),
     });
-    if (r.status === 409) return Response.json({ error: 'wrong_phase' }, { status: 409 });
-    if (!r.ok) throw new Error(String(r.status));
-    return Response.json({ ok: true, phase: 'generating' }, { status: 202 });
+    if (!r.ok) throw new Error(`machine ${r.status}`);
+    return Response.json({ ok: true }, { status: 202 });
   } catch {
     return Response.json({ error: 'machine_unavailable' }, { status: 503 });
   }

@@ -72,72 +72,71 @@ const C = +(2 * Math.PI * 84).toFixed(2);
 
     <!-- ═══════════ מסך 2 · המכונה עובדת ═══════════ -->
     <section class="screen" id="screen-run" hidden aria-live="polite">
-      <div class="s2-grid">
-        <div class="card run-main">
-          <div class="run-top">
-            <div class="orb" aria-hidden="true"><i></i><i></i><i></i></div>
-            <div class="run-id">
-              <h2>המכונה עובדת על <b id="run-host" dir="ltr">…</b></h2>
-              <p class="run-now" id="run-now">מתחילים</p>
-            </div>
-            <div class="run-clock">
-              <b class="num" id="run-elapsed">0:00</b>
-              <small>רץ כבר</small>
-            </div>
-          </div>
-          <ol class="log" id="run-log"></ol>
+      <!-- הירוק ראשון ובולט · אנחנו צריכים מיילים, זה לא הערת שוליים -->
+      <form class="card mailbox" id="form-mail">
+        <div class="mail-copy">
+          <h2>זה לוקח בערך <span class="num">16</span> דקות</h2>
+          <p>אפשר להישאר ולראות את זה קורה · או להשאיר מייל, לסגור את החלון, ולקבל קישור כשהכל מוכן.</p>
         </div>
-
-        <aside class="s2-side">
-          <form class="card mailbox" id="form-mail">
-            <p class="mail-t">
-              <b>זה לוקח בערך <span class="num">14</span> דקות.</b>
-              אפשר להישאר ולראות את זה קורה · או להשאיר מייל ולסגור את החלון, ונעדכן אתכם כשזה מוכן.
-            </p>
-            <div class="f">
-              <label for="gname">שם</label>
-              <input id="gname" name="gname" type="text" dir="auto" autocomplete="name" placeholder="השם שלכם" />
-            </div>
-            <div class="f">
-              <label for="email">מייל</label>
-              <input id="email" name="email" type="email" dir="ltr" autocomplete="email" placeholder="you@store.co.il" />
-              <p class="err" id="e-email" role="alert" hidden></p>
-            </div>
-            <button class="btn btn-gold" type="submit" id="go-mail">עדכנו אותי במייל</button>
-            <p class="err summary" id="e-mail" role="alert" hidden></p>
-          </form>
-
-          <div class="card mailbox saved" id="mail-ok" hidden>
-            <span class="mk-ok" aria-hidden="true">✓</span>
-            <p>נשלח קישור לעמוד הזה ל-<b class="num" dir="ltr" id="mail-shown">…</b> כשהמאמרים מוכנים. אפשר לסגור את החלון.</p>
+        <div class="mail-fields">
+          <div class="f">
+            <label for="gname">שם</label>
+            <input id="gname" name="gname" type="text" dir="auto" autocomplete="name" placeholder="השם שלכם" />
           </div>
-
-          <!-- הציון נכנס לכאן ברגע שנמדד · בזמן שהמאמרים עוד נכתבים -->
-          <div class="card score-mini" id="score-mini" hidden>
-            <span class="eyebrow">הציון שלכם</span>
-            <div class="mini-row">
-              <div class="dm-gauge" id="gauge">
-                <svg viewBox="0 0 200 200" aria-hidden="true">
-                  <defs><linearGradient id="scGrad" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0" stop-color="#5546d6" /><stop offset="1" stop-color="#8b76f2" />
-                  </linearGradient></defs>
-                  <circle cx="100" cy="100" r="84" fill="none" stroke="var(--sc-div)" stroke-width="15" />
-                  <circle class="dm-arc" id="gauge-arc" cx="100" cy="100" r="84" fill="none"
-                          stroke="url(#scGrad)" stroke-width="15" stroke-linecap="round"
-                          stroke-dasharray={C} stroke-dashoffset={C} transform="rotate(-90 100 100)" />
-                </svg>
-                <span class="dm-gauge-c">
-                  <b class="num"><i id="gauge-num">0</i><em class="pct">%</em></b>
-                  <small>נראות ב-AI</small>
-                </span>
-              </div>
-              <div class="mini-txt">
-                <span class="band" id="score-band">…</span>
-                <p class="mini-sub" id="mini-sub"></p>
-              </div>
-            </div>
+          <div class="f">
+            <label for="email">מייל</label>
+            <input id="email" name="email" type="email" dir="ltr" autocomplete="email" placeholder="you@store.co.il" />
+            <p class="err" id="e-email" role="alert" hidden></p>
           </div>
-        </aside>
+          <button class="btn btn-gold" type="submit" id="go-mail">עדכנו אותי במייל</button>
+        </div>
+        <p class="err summary" id="e-mail" role="alert" hidden></p>
+      </form>
+
+      <div class="card mailbox saved" id="mail-ok" hidden>
+        <span class="mk-ok" aria-hidden="true">✓</span>
+        <p>נשלח קישור לעמוד הזה ל-<b class="num" dir="ltr" id="mail-shown">…</b> ברגע שהכל מוכן. אפשר לסגור את החלון.</p>
+      </div>
+
+      <!-- המכונה · ממש מתחת לירוק -->
+      <div class="card run-main">
+        <div class="run-top">
+          <div class="orb" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="run-id">
+            <h2>Scayla עובדת על <b id="run-host" dir="ltr">…</b></h2>
+            <p class="run-now" id="run-now">מתחילים</p>
+          </div>
+          <div class="run-clock">
+            <b class="num" id="run-elapsed">0:00</b>
+            <small>רץ כבר</small>
+          </div>
+        </div>
+        <ol class="log" id="run-log"></ol>
+      </div>
+
+      <div class="card score-mini" id="score-mini" hidden>
+        <span class="eyebrow">הציון שלכם · כבר מוכן</span>
+        <div class="mini-row">
+          <div class="dm-gauge" id="gauge">
+            <svg viewBox="0 0 200 200" aria-hidden="true">
+              <defs><linearGradient id="scGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#5546d6" /><stop offset="1" stop-color="#8b76f2" />
+              </linearGradient></defs>
+              <circle cx="100" cy="100" r="84" fill="none" stroke="var(--sc-div)" stroke-width="15" />
+              <circle class="dm-arc" id="gauge-arc" cx="100" cy="100" r="84" fill="none"
+                      stroke="url(#scGrad)" stroke-width="15" stroke-linecap="round"
+                      stroke-dasharray={C} stroke-dashoffset={C} transform="rotate(-90 100 100)" />
+            </svg>
+            <span class="dm-gauge-c">
+              <b class="num"><i id="gauge-num">0</i><em class="pct">%</em></b>
+              <small>נראות ב-AI</small>
+            </span>
+          </div>
+          <div class="mini-txt">
+            <span class="band" id="score-band">…</span>
+            <p class="mini-sub" id="mini-sub"></p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -149,50 +148,69 @@ const C = +(2 * Math.PI * 84).toFixed(2);
         <p class="verdict" id="verdict" hidden></p>
       </div>
 
-      <div class="res-grid">
-        <div class="card score-full">
-          <div class="score-row">
-            <div class="dm-gauge" id="gauge2">
-              <svg viewBox="0 0 200 200" aria-hidden="true">
-                <defs><linearGradient id="scGrad2" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stop-color="#5546d6" /><stop offset="1" stop-color="#8b76f2" />
-                </linearGradient></defs>
-                <circle cx="100" cy="100" r="84" fill="none" stroke="var(--sc-div)" stroke-width="15" />
-                <circle class="dm-arc" id="gauge-arc2" cx="100" cy="100" r="84" fill="none"
-                        stroke="url(#scGrad2)" stroke-width="15" stroke-linecap="round"
-                        stroke-dasharray={C} stroke-dashoffset={C} transform="rotate(-90 100 100)" />
-              </svg>
-              <span class="dm-gauge-c">
-                <b class="num"><i id="gauge-num2">0</i><em class="pct">%</em></b>
-                <small>נראות ב-AI</small>
-              </span>
-            </div>
-            <div class="score-txt">
-              <p class="score-line">אתם מופיעים ב-<b class="num" id="score-pct">0%</b> מהתשובות</p>
-              <span class="band" id="score-band2">…</span>
-              <p class="score-sub">
-                שאלנו את ה-AI <span class="num" id="q-total">0</span> שאלות קונה שנגזרו מהחנות שלכם ·
-                הופעתם ב-<span class="num" id="q-hit">0</span> מהן.
-              </p>
-            </div>
+      <!-- הציון · רוחב מלא, לא נדחק לצד -->
+      <div class="card score-full">
+        <div class="score-row">
+          <div class="dm-gauge" id="gauge2">
+            <svg viewBox="0 0 200 200" aria-hidden="true">
+              <defs><linearGradient id="scGrad2" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#5546d6" /><stop offset="1" stop-color="#8b76f2" />
+              </linearGradient></defs>
+              <circle cx="100" cy="100" r="84" fill="none" stroke="var(--sc-div)" stroke-width="15" />
+              <circle class="dm-arc" id="gauge-arc2" cx="100" cy="100" r="84" fill="none"
+                      stroke="url(#scGrad2)" stroke-width="15" stroke-linecap="round"
+                      stroke-dasharray={C} stroke-dashoffset={C} transform="rotate(-90 100 100)" />
+            </svg>
+            <span class="dm-gauge-c">
+              <b class="num"><i id="gauge-num2">0</i><em class="pct">%</em></b>
+              <small>נראות ב-AI</small>
+            </span>
           </div>
-          <p class="method">
-            הציון נמדד עכשיו, על שאלות שנגזרו מהאתר שלכם · לא על שאלות כלליות. זו תמונת רגע.
-            בתוך Scayla המדידה רצה <b>כל שבוע על קבוצה קבועה</b> של שאלות, כך שאפשר להשוות
-            שבוע לשבוע ולראות אם אתם עולים או יורדים.
-          </p>
+          <div class="score-txt">
+            <p class="score-line">אתם מופיעים ב-<b class="num" id="score-pct">0%</b> מהתשובות</p>
+            <span class="band" id="score-band2">…</span>
+            <p class="score-sub">
+              שאלנו את ה-AI <span class="num" id="q-total">0</span> שאלות קונה שנגזרו מהחנות שלכם ·
+              הופעתם ב-<span class="num" id="q-hit">0</span> מהן. כל השאלות למטה.
+            </p>
+          </div>
         </div>
-        <div class="answers" id="answers"></div>
+        <p class="method">
+          הציון נמדד עכשיו, על שאלות שנגזרו מהאתר שלכם · לא על שאלות כלליות. זו תמונת רגע.
+          בתוך Scayla המדידה רצה <b>כל שבוע על קבוצה קבועה</b> של שאלות, כך שאפשר להשוות
+          שבוע לשבוע ולראות אם אתם עולים או יורדים.
+        </p>
       </div>
 
-      <div class="arts" id="arts"></div>
+      <!-- השאלות · ריבועים, לא גלילה אינסופית. הלקוח רואה את העבודה. -->
+      <h3 class="sec-t">אלה השאלות ששאלנו · ומה קרה בכל אחת</h3>
+      <div class="q-grid" id="answers"></div>
+
+      <h3 class="sec-t">שני המאמרים שכתבנו לכם</h3>
+      <div class="art-grid" id="arts"></div>
 
       <div class="card end cta-end">
-        <h2>זה מה שהמכונה עושה כל יום</h2>
-        <p>הציון שלכם אמיתי · בתוך Scayla הוא נמדד כל שבוע, והמכונה כותבת ומתקנת בלי שתבקשו.</p>
-        <a class="btn btn-hero btn-gold" href="/pricing">איך זה עובד</a>
+        <h2>רוצים שזה יקרה כל שבוע, לבד?</h2>
+        <p>מה שראיתם כאן זו תמונת רגע אחת. בתוך Scayla המדידה רצה כל שבוע, והמכונה כותבת ומתקנת בלי שתבקשו.</p>
+        <div class="cta-pair center">
+          <a class="btn btn-hero btn-gold" href="https://calendly.com/lior-mrmake/30min">קבעו דמו</a>
+          <a class="btn btn-hero btn-ghost" href="/pricing">למחירון</a>
+        </div>
       </div>
     </section>
+
+    <!-- קורא המאמר · שכבה מלאה, לא ניווט החוצה -->
+    <div class="reader" id="reader" hidden>
+      <div class="reader-bar">
+        <button class="reader-x" type="button" id="reader-close" aria-label="סגירה">✕</button>
+        <p class="reader-meta" id="reader-meta"></p>
+      </div>
+      <article class="reader-body">
+        <h1 id="reader-t"></h1>
+        <div class="prose" id="reader-md"></div>
+        <div id="reader-src"></div>
+      </article>
+    </div>
 
     <!-- ═══════════ תקלה ═══════════ -->
     <section class="screen" id="screen-error" hidden>
@@ -291,12 +309,34 @@ const C = +(2 * Math.PI * 84).toFixed(2);
   .ts-slot :global(iframe), .ts-slot :global(> div) { border-radius: var(--sc-r-chip); overflow: hidden; }
   button[aria-busy='true'] { opacity: .7; pointer-events: none; }
 
-  /* ═══ מסך 2 · המכונה ═══ */
-  .s2-grid {
-    display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(320px, .65fr);
-    gap: clamp(20px, 2.5vw, 32px); align-items: start;
+  /* ═══ מסך 2 · הכל מוערם · הירוק ראשון ═══ */
+  #screen-run { display: flex; flex-direction: column; gap: 16px; }
+
+  /* הירוק · בולט. אנחנו צריכים מיילים, זו לא הערת שוליים. */
+  .mailbox {
+    padding: clamp(24px, 3vw, 34px);
+    background: var(--sc-gold-bg); border: 2px solid var(--accent-gold);
+    box-shadow: 0 14px 40px -18px rgba(36, 200, 140, .55);
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(360px, .85fr);
+    gap: clamp(18px, 3vw, 40px); align-items: center;
   }
-  @media (max-width: 940px) { .s2-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 860px) { .mailbox { grid-template-columns: 1fr; } }
+  .mail-copy h2 { font-size: clamp(19px, 2.1vw, 25px); font-weight: 800; letter-spacing: -.015em; color: var(--sc-ink); }
+  .mail-copy p { font-size: 14.5px; line-height: 1.65; color: var(--sc-mv); margin-block-start: 8px; }
+  .mail-fields { display: grid; grid-template-columns: 1fr 1.3fr; gap: 12px; align-items: end; }
+  @media (max-width: 620px) { .mail-fields { grid-template-columns: 1fr; } }
+  .mail-fields .btn { grid-column: 1 / -1; }
+  .mailbox .err.summary { grid-column: 1 / -1; }
+  .mailbox.saved {
+    display: flex; flex-direction: row; align-items: center; gap: 14px;
+    border-width: 1px; border-color: var(--sc-gold-bd); box-shadow: var(--sc-sh-subtle);
+  }
+  .mailbox.saved p { font-size: 14.5px; line-height: 1.6; color: var(--sc-ink); }
+  .mk-ok {
+    flex: none; inline-size: 28px; block-size: 28px; border-radius: 999px;
+    display: grid; place-items: center; font-size: 14px; font-weight: 800;
+    background: var(--sc-card); color: var(--sc-gold-text); border: 1px solid var(--sc-gold-bd);
+  }
 
   .run-main { padding: clamp(28px, 3vw, 40px); }
   .run-top {
@@ -312,7 +352,6 @@ const C = +(2 * Math.PI * 84).toFixed(2);
   .run-clock b { display: block; font-size: 26px; font-weight: 800; letter-spacing: -.02em; color: var(--sc-ink); line-height: 1; }
   .run-clock small { font-size: 11px; color: var(--sc-muted); font-weight: 600; }
 
-  /* האורב · שלוש טבעות שנושמות. תנועה אמיתית, לא פס אילם. */
   .orb { position: relative; inline-size: 44px; block-size: 44px; flex: none; display: grid; place-items: center; }
   .orb i {
     position: absolute; inline-size: 100%; block-size: 100%; border-radius: 999px;
@@ -327,17 +366,13 @@ const C = +(2 * Math.PI * 84).toFixed(2);
   }
   @keyframes ping { 0% { transform: scale(.35); opacity: .9; } 100% { transform: scale(1); opacity: 0; } }
 
-  /* הלוג · השלב הפעיל פועם.
-     :global חובה · השורות נוצרות ב-JS ואין להן את ה-data-astro-cid שאסטרו
-     מוסיף לאלמנטים שבתבנית. בלי זה אף כלל כאן לא חל והלוג נראה כרשימת
-     תבליטים עירומה. נתפס במדידה: li_display=list-item, icon_size=auto. */
-  .log { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+  /* הלוג · כל השלבים מההתחלה, הטיק יורד אחד־אחד.
+     :global חובה · השורות נוצרות ב-JS ואין להן data-astro-cid. */
+  .log { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 13px; }
   .log :global(li) {
     display: flex; gap: 13px; align-items: flex-start;
-    font-size: 15px; line-height: 1.55; color: var(--sc-ink);
-    animation: logIn 340ms var(--sc-ease) both;
+    font-size: 14.5px; line-height: 1.55; color: var(--sc-ink);
   }
-  @keyframes logIn { from { opacity: 0; transform: translateY(5px); } }
   .log :global(li[data-state='pending']) { color: var(--sc-disabled); }
   .log :global(li[data-state='running']) { color: var(--sc-ink); font-weight: 700; }
   .log :global(li[data-state='done']), .log :global(li[data-state='skipped']) { color: var(--sc-muted); }
@@ -345,6 +380,7 @@ const C = +(2 * Math.PI * 84).toFixed(2);
     flex: none; inline-size: 20px; block-size: 20px; border-radius: 999px;
     display: grid; place-items: center; font-size: 11px; font-weight: 800;
     margin-block-start: 1px; font-style: normal; border: 1px solid var(--sc-hair);
+    transition: all var(--sc-fast) var(--sc-ease);
   }
   .log :global(li[data-state='done'] .li-ic) {
     background: var(--sc-gold-bg); color: var(--sc-gold-text); border-color: var(--sc-gold-bd);
@@ -362,26 +398,11 @@ const C = +(2 * Math.PI * 84).toFixed(2);
     .orb i, .log :global(li[data-state='running'] .li-ic) { animation: none; }
   }
 
-  /* ═══ הצד · מייל וציון ═══ */
-  .s2-side { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 92px; }
-  @media (max-width: 940px) { .s2-side { position: static; } }
-  .mailbox {
-    padding: 24px 26px; display: flex; flex-direction: column; gap: 15px;
-    background: var(--sc-gold-bg); border-color: var(--sc-gold-bd);
-  }
-  .mail-t { font-size: 14px; line-height: 1.7; color: var(--sc-ink); }
-  .mail-t b { font-weight: 800; }
-  .mailbox.saved { flex-direction: row; align-items: center; gap: 13px; }
-  .mailbox.saved p { font-size: 13.5px; line-height: 1.6; color: var(--sc-ink); }
-  .mk-ok {
-    flex: none; inline-size: 26px; block-size: 26px; border-radius: 999px;
-    display: grid; place-items: center; font-size: 13px; font-weight: 800;
-    background: var(--sc-card); color: var(--sc-gold-text); border: 1px solid var(--sc-gold-bd);
-  }
-  .score-mini { padding: 24px 26px; animation: logIn 400ms var(--sc-ease) both; }
-  .mini-row { display: flex; align-items: center; gap: 18px; margin-block-start: 14px; }
+  .score-mini { padding: clamp(22px, 2.5vw, 30px); animation: logIn 400ms var(--sc-ease) both; }
+  @keyframes logIn { from { opacity: 0; transform: translateY(6px); } }
+  .mini-row { display: flex; align-items: center; gap: 20px; margin-block-start: 14px; flex-wrap: wrap; }
   .mini-txt { min-inline-size: 0; }
-  .mini-sub { font-size: 13px; color: var(--sc-muted); margin-block-start: 8px; line-height: 1.5; }
+  .mini-sub { font-size: 13.5px; color: var(--sc-muted); margin-block-start: 8px; line-height: 1.5; }
 
   /* ═══ המחוון ═══ */
   .dm-gauge { position: relative; inline-size: 118px; block-size: 118px; flex: none; }
@@ -404,61 +425,104 @@ const C = +(2 * Math.PI * 84).toFixed(2);
   .band[data-band='gap'] { background: var(--sc-red-bg); color: var(--sc-red-text); border-color: var(--sc-red-bd); }
 
   /* ═══ מסך 3 · תוצאות ═══ */
-  .done-head { text-align: center; margin-block-end: 30px; }
+  #screen-done { display: flex; flex-direction: column; gap: 18px; }
+  .done-head { text-align: center; margin-block-end: 8px; }
   .done-head h2 { font-size: clamp(24px, 2.9vw, 36px); font-weight: 900; letter-spacing: -.02em; color: var(--sc-ink); }
   .verdict {
     font-size: clamp(15px, 1.7vw, 18px); line-height: 1.65; font-weight: 600;
     color: var(--sc-mv); max-inline-size: 64ch; margin: 16px auto 0;
   }
-  .res-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 18px; align-items: start; }
-  @media (max-width: 940px) { .res-grid { grid-template-columns: 1fr; } }
-  .score-full { padding: clamp(26px, 3vw, 36px); display: flex; flex-direction: column; gap: 18px; }
-  .score-row { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .sec-t {
+    font-size: clamp(17px, 1.9vw, 22px); font-weight: 800; letter-spacing: -.015em;
+    color: var(--sc-ink); margin-block-start: 14px;
+  }
+  .score-full { padding: clamp(26px, 3vw, 38px); display: flex; flex-direction: column; gap: 20px; }
+  .score-row { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
   .score-txt { min-inline-size: 0; flex: 1; }
-  .score-line { font-size: clamp(17px, 2vw, 21px); font-weight: 700; color: var(--sc-ink); margin-block-end: 10px; }
+  .score-line { font-size: clamp(18px, 2.1vw, 23px); font-weight: 700; color: var(--sc-ink); margin-block-end: 10px; }
   .score-line b { color: var(--sc-accent-text); font-weight: 900; }
-  .score-sub { font-size: 13.5px; color: var(--sc-muted); margin-block-start: 12px; font-weight: 500; line-height: 1.6; }
+  .score-sub { font-size: 14px; color: var(--sc-muted); margin-block-start: 12px; font-weight: 500; line-height: 1.6; }
   .method {
     font-size: 12.5px; line-height: 1.7; color: var(--sc-mv); font-weight: 500;
     border-block-start: 1px solid var(--sc-div); padding-block-start: 16px;
   }
   .method b { color: var(--sc-ink); font-weight: 700; }
-  .answers { display: flex; flex-direction: column; gap: 12px; }
-  .answers :global(.card) { padding: 20px 22px; }
-  .answers :global(.band) {
-    display: inline-flex; border-radius: var(--sc-r-pill); padding: 6px 14px;
-    font-size: 13px; font-weight: 800;
-    background: var(--sc-wash); color: var(--sc-accent-text); border: 1px solid var(--sc-soft);
-  }
-  .answers :global(.band[data-band='lead']) { background: var(--sc-gold-bg); color: var(--sc-gold-text); border-color: var(--sc-gold-bd); }
-  .answers :global(.band[data-band='gap']) { background: var(--sc-red-bg); color: var(--sc-red-text); border-color: var(--sc-red-bd); }
 
-  .arts { display: flex; flex-direction: column; gap: 18px; margin-block-start: 18px; }
-  .arts :global(.art) { padding: clamp(26px, 3.5vw, 44px); }
-  .arts :global(.art-t) { font-size: clamp(20px, 2.4vw, 27px); font-weight: 800; letter-spacing: -.015em; line-height: 1.3; color: var(--sc-ink); }
-  .arts :global(.art-meta) { font-size: 13px; color: var(--sc-muted); font-weight: 600; margin-block-start: 8px; }
-  .arts :global(.art-flag) {
-    font-size: 13px; font-weight: 600; color: var(--sc-ink);
-    background: var(--sc-gold-bg); border: 1px solid var(--sc-gold-bd);
-    border-radius: var(--sc-r-chip); padding: 11px 14px; margin-block-start: 14px;
+  /* השאלות · ריבועים. הלקוח רואה את העבודה בלי לגלול קילומטר. */
+  .q-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+  .q-grid :global(.q-card) {
+    background: var(--sc-card); border: 1px solid var(--sc-hair);
+    border-radius: var(--sc-r-card); padding: 18px 20px;
+    display: flex; flex-direction: column; gap: 12px; justify-content: space-between;
+    box-shadow: var(--sc-sh-subtle);
   }
-  .arts :global(.prose) { margin-block-start: 20px; }
-  .arts :global(.prose h3) { font-size: 19px; font-weight: 800; letter-spacing: -.01em; margin-block: 28px 10px; color: var(--sc-ink); }
-  .arts :global(.prose h4) { font-size: 16px; font-weight: 800; margin-block: 20px 8px; color: var(--sc-ink); }
-  .arts :global(.prose p) { margin-block-end: 15px; font-size: 15.5px; line-height: 1.85; color: var(--sc-ink); unicode-bidi: isolate; }
-  .arts :global(.prose strong) { font-weight: 700; }
-  .arts :global(.prose ul) { padding-inline-start: 22px; margin-block-end: 15px; display: grid; gap: 7px; }
-  .arts :global(.prose li) { font-size: 15px; line-height: 1.75; color: var(--sc-ink); unicode-bidi: isolate; }
-  .arts :global(.prose code) {
-    font-size: 13.5px; background: var(--sc-wash); border: 1px solid var(--sc-soft);
+  .q-grid :global(.q-card.hit) { border-color: var(--sc-gold-bd); background: var(--sc-gold-bg); }
+  .q-grid :global(.q-q) { font-size: 14px; font-weight: 700; line-height: 1.55; color: var(--sc-ink); }
+  .q-grid :global(.q-tag) {
+    align-self: flex-start; border-radius: var(--sc-r-pill); padding: 5px 12px;
+    font-size: 12px; font-weight: 800;
+    background: var(--sc-red-bg); color: var(--sc-red-text); border: 1px solid var(--sc-red-bd);
+  }
+  .q-grid :global(.q-card.hit .q-tag) { background: var(--sc-card); color: var(--sc-gold-text); border-color: var(--sc-gold-bd); }
+
+  /* המאמרים · זה לצד זה, שורה אחת, כפתור לקורא המלא */
+  .art-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 18px; }
+  .art-grid :global(.art) {
+    background: var(--sc-card); border: 1px solid var(--sc-hair);
+    border-radius: var(--sc-r-hero); padding: clamp(24px, 2.6vw, 32px);
+    display: flex; flex-direction: column; gap: 12px; box-shadow: var(--sc-sh-lift);
+  }
+  .art-grid :global(.art-t) { font-size: clamp(18px, 1.9vw, 22px); font-weight: 800; letter-spacing: -.015em; line-height: 1.35; color: var(--sc-ink); }
+  .art-grid :global(.art-meta) { font-size: 12.5px; color: var(--sc-muted); font-weight: 600; }
+  .art-grid :global(.art-ex) {
+    font-size: 14px; line-height: 1.75; color: var(--sc-mv);
+    display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .art-grid :global(.art-flag) {
+    font-size: 12.5px; font-weight: 600; color: var(--sc-ink);
+    background: var(--sc-gold-bg); border: 1px solid var(--sc-gold-bd);
+    border-radius: var(--sc-r-chip); padding: 9px 12px;
+  }
+  .art-grid :global(.art-go) { margin-block-start: auto; align-self: flex-start; }
+
+  /* הקורא · שכבה מלאה במקום לנווט החוצה */
+  .reader {
+    position: fixed; inset: 0; z-index: 60; background: var(--sc-paper);
+    overflow-y: auto; animation: fadeIn 220ms var(--sc-ease) both;
+  }
+  @keyframes fadeIn { from { opacity: 0; } }
+  .reader-bar {
+    position: sticky; top: 0; z-index: 2;
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px clamp(18px, 4vw, 40px);
+    background: color-mix(in srgb, var(--sc-paper) 88%, transparent);
+    backdrop-filter: blur(14px); border-block-end: 1px solid var(--sc-hair);
+  }
+  .reader-x {
+    inline-size: 36px; block-size: 36px; border-radius: 999px; flex: none;
+    border: 1px solid var(--sc-hair); background: var(--sc-card);
+    color: var(--sc-ink); font-size: 15px; cursor: pointer;
+  }
+  .reader-x:hover { border-color: var(--sc-accent); color: var(--sc-accent-text); }
+  .reader-meta { font-size: 13px; color: var(--sc-muted); font-weight: 600; }
+  .reader-body { max-inline-size: 760px; margin-inline: auto; padding: clamp(28px, 4vw, 52px) clamp(18px, 4vw, 40px) 80px; }
+  .reader-body h1 { font-size: clamp(26px, 3.4vw, 40px); font-weight: 900; letter-spacing: -.025em; line-height: 1.2; color: var(--sc-ink); margin-block-end: 26px; }
+  .reader :global(.prose h3) { font-size: 21px; font-weight: 800; letter-spacing: -.01em; margin-block: 32px 12px; color: var(--sc-ink); }
+  .reader :global(.prose h4) { font-size: 17px; font-weight: 800; margin-block: 22px 8px; color: var(--sc-ink); }
+  .reader :global(.prose p) { margin-block-end: 17px; font-size: 16.5px; line-height: 1.9; color: var(--sc-ink); unicode-bidi: isolate; }
+  .reader :global(.prose strong) { font-weight: 700; }
+  .reader :global(.prose ul) { padding-inline-start: 24px; margin-block-end: 17px; display: grid; gap: 8px; }
+  .reader :global(.prose li) { font-size: 16px; line-height: 1.8; color: var(--sc-ink); unicode-bidi: isolate; }
+  .reader :global(.prose code) {
+    font-size: 14px; background: var(--sc-wash); border: 1px solid var(--sc-soft);
     border-radius: 5px; padding: 1px 5px; direction: ltr; unicode-bidi: isolate; display: inline-block;
   }
-  .arts :global(.art-src) { margin-block-start: 26px; padding-block-start: 18px; border-block-start: 1px solid var(--sc-div); }
-  .arts :global(.art-src-t) { font-size: 11.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--sc-muted); margin-block-end: 10px; }
-  .arts :global(.art-src ol) { padding-inline-start: 20px; display: grid; gap: 5px; }
-  .arts :global(.art-src li) { font-size: 13px; color: var(--sc-muted); }
-  .arts :global(.art-src a) { color: var(--sc-accent-text); text-decoration: none; direction: ltr; unicode-bidi: isolate; display: inline-block; }
-  .arts :global(.art-src a:hover) { text-decoration: underline; }
+  .reader :global(.art-src) { margin-block-start: 40px; padding-block-start: 22px; border-block-start: 1px solid var(--sc-div); }
+  .reader :global(.art-src-t) { font-size: 11.5px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--sc-muted); margin-block-end: 12px; }
+  .reader :global(.art-src ol) { padding-inline-start: 20px; display: grid; gap: 6px; }
+  .reader :global(.art-src li) { font-size: 13.5px; color: var(--sc-muted); }
+  .reader :global(.art-src a) { color: var(--sc-accent-text); text-decoration: none; direction: ltr; unicode-bidi: isolate; display: inline-block; }
+  .reader :global(.art-src a:hover) { text-decoration: underline; }
 
   /* ═══ סיום ותקלה ═══ */
   .end { padding: clamp(30px, 4vw, 48px); text-align: center; }
@@ -546,7 +610,12 @@ const C = +(2 * Math.PI * 84).toFixed(2);
   const bandTxt = (b: string) =>
     b === 'lead' ? 'אתם מובילים בתשובות' : b === 'grow' ? 'יש לכם לאן לצמוח' : 'פער נראות גדול';
 
+  let scorePainted = false;
   const paintScore = (s: any) => {
+    // רק פעם אחת · paintScore נקרא בכל poll, וכל קריאה איתחלה מחדש את
+    // ספירת-העלייה. האחוזים "קפצו מ-0" כל כמה שניות.
+    if (scorePainted) return;
+    scorePainted = true;
     const pct = Math.max(0, Math.min(100, Math.round(s.pct)));
     const b = bandOf(pct);
     paintGauge('gauge-arc', 'gauge-num', 'gauge', pct);
@@ -571,15 +640,10 @@ const C = +(2 * Math.PI * 84).toFixed(2);
     wrap.innerHTML = '';
     for (const a of answers || []) {
       const c = document.createElement('div');
-      c.className = 'card';
-      c.style.padding = '20px 22px';
-      const q = document.createElement('p');
-      q.style.cssText = 'font-size:14px;font-weight:800;color:var(--sc-ink);margin-block-end:10px;line-height:1.5;';
-      q.textContent = a.q;
-      const tag = document.createElement('span');
-      tag.className = 'band';
-      tag.dataset.band = a.mentioned ? 'lead' : 'gap';
-      tag.textContent = a.mentioned ? 'הופעתם' : 'לא הופעתם';
+      c.className = 'q-card' + (a.mentioned ? ' hit' : '');
+      const q = document.createElement('p'); q.className = 'q-q'; q.textContent = a.q;
+      const tag = document.createElement('span'); tag.className = 'q-tag';
+      tag.textContent = a.mentioned ? '✓ הופעתם בתשובה' : '✕ לא הופעתם';
       c.append(q, tag);
       wrap.appendChild(c);
     }
@@ -606,33 +670,61 @@ const C = +(2 * Math.PI * 84).toFixed(2);
     return out.join('');
   };
 
+  /** פותח את המאמר המלא בשכבה · נעים יותר מלנווט החוצה ולאבד את העמוד. */
+  const openReader = (a: any) => {
+    const t = $('reader-t'); if (t) t.textContent = a.title || 'מאמר';
+    const m = $('reader-meta');
+    if (m) m.textContent = `${(a.md || '').split(/\s+/).filter(Boolean).length} מילים · ${(a.sources || []).length} מקורות`;
+    const b = $('reader-md'); if (b) b.innerHTML = mdToHtml(a.md || '');
+    const s = $('reader-src');
+    if (s) {
+      s.innerHTML = (a.sources || []).length
+        ? '<div class="art-src"><p class="art-src-t">מקורות</p><ol>' +
+          a.sources.map((x: any) => `<li><a href="${esc(x.uri || '#')}" target="_blank" rel="noopener nofollow">${esc(x.domain || '')}</a></li>`).join('') +
+          '</ol></div>'
+        : '';
+    }
+    show($('reader'));
+    document.body.style.overflow = 'hidden';
+    $('reader')?.scrollTo({ top: 0 });
+  };
+  const closeReader = () => { hide($('reader')); document.body.style.overflow = ''; };
+  $('reader-close')?.addEventListener('click', closeReader);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeReader(); });
+
   const renderArts = (arts: any[]) => {
     const wrap = $('arts');
     if (!wrap) return;
     wrap.innerHTML = '';
-    for (const a of arts || []) {
+    (arts || []).forEach((a, i) => {
       const card = document.createElement('article');
-      card.className = 'card art';
+      card.className = 'art';
+
       const h = document.createElement('h3'); h.className = 'art-t'; h.textContent = a.title || 'מאמר';
       const meta = document.createElement('p'); meta.className = 'art-meta';
       meta.innerHTML = `<span class="num">${(a.md || '').split(/\s+/).filter(Boolean).length}</span> מילים · <span class="num">${(a.sources || []).length}</span> מקורות`;
       card.append(h, meta);
+
       if (a.shelved) {
         const n = document.createElement('p'); n.className = 'art-flag';
         n.textContent = 'הבקרה שלנו סימנה כאן דברים לשיפור · המאמר מוצג כמו שהוא, בלי לייפות.';
         card.appendChild(n);
       }
-      const body = document.createElement('div'); body.className = 'prose';
-      body.innerHTML = mdToHtml(a.md || '');
-      card.appendChild(body);
-      if ((a.sources || []).length) {
-        const s = document.createElement('div'); s.className = 'art-src';
-        s.innerHTML = '<p class="art-src-t">מקורות</p><ol>' +
-          a.sources.map((x: any) => `<li><a href="${esc(x.uri || '#')}" target="_blank" rel="noopener nofollow">${esc(x.domain || '')}</a></li>`).join('') + '</ol>';
-        card.appendChild(s);
-      }
+
+      // תקציר · הפסקה הראשונה בלי סימני Markdown
+      const ex = document.createElement('p'); ex.className = 'art-ex';
+      ex.textContent = (a.md || '').split('\n').find((l: string) => l.trim() && !l.startsWith('#'))
+        ?.replace(/[*_`#]/g, '').slice(0, 300) || '';
+      card.appendChild(ex);
+
+      const go = document.createElement('button');
+      go.className = 'btn btn-gold art-go'; go.type = 'button';
+      go.textContent = 'לקריאת המאמר המלא';
+      go.addEventListener('click', () => openReader(a));
+      card.appendChild(go);
+
       wrap.appendChild(card);
-    }
+    });
   };
 
   // ── מצב ──
