@@ -16,9 +16,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import CtaBand from '../components/CtaBand.astro';
 import InstallCtaPair from '../components/InstallCtaPair.astro';
 
-const title = 'בדיקת נראות ב-AI · האם Gemini מזכיר את החנות שלכם? · Scayla';
+const title = 'בדיקת נראות ב-AI · האם ה-AI מזכיר את החנות שלכם? · Scayla';
 const description =
-  'הכניסו את כתובת החנות ונבדוק בפועל על שאלות קונה אמיתיות אם Gemini מזכיר אתכם. הציון חינם ובלי פרטים · ואם תרצו, נכתוב לכם שני מאמרים מלאים לחנות.';
+  'הכניסו את כתובת החנות ונבדוק בפועל, על שאלות קונה אמיתיות, אם ה-AI מזכיר אתכם או את המתחרים. הציון חינם ובלי פרטים · ואחריו נכתוב לכם שני מאמרים מלאים לחנות.';
 
 // site key של Turnstile · פומבי בכוונה, נכנס ל-HTML. הסוד יושב כ-Pages secret.
 const TURNSTILE_SITE_KEY = '0x4AAAAAAD3uTcm7n0TsX_1I';
@@ -36,13 +36,13 @@ const C = +(2 * Math.PI * 84).toFixed(2);
            תחילית עברית תלושה בסוף שורה. -->
       <h1>נראה לכם מה <span class="nobr">ה-<span class="grad-word">AI</span></span> אומר עליכם<br />ואז נסגור את הפער</h1>
       <p class="lede">
-        קודם נכניס את החנות שלכם לשאלות שקונים באמת שואלים את Gemini, ונראה בשחור על גבי לבן
+        קודם נכניס את החנות שלכם לשאלות שקונים באמת שואלים את ה-AI, ונראה בשחור על גבי לבן
         אם אתם מופיעים או שהמתחרים מופיעים במקומכם. <strong>ואז, על החשבון שלנו, נכתוב לכם שני
         מאמרים מלאים</strong> בדיוק על הפערים שמצאנו · כדי שתראו איך נראה תוכן שמזיז את המחט.
       </p>
       <ol class="journey">
         <li><span class="j-n num">1</span>סורקים את החנות והבלוג</li>
-        <li><span class="j-n num">2</span>שואלים את Gemini ומודדים ציון</li>
+        <li><span class="j-n num">2</span>שואלים את ה-<span class="num">AI</span> ומודדים ציון</li>
         <li><span class="j-n num">3</span>כותבים לכם <span class="num">2</span> מאמרים</li>
       </ol>
     </div>
@@ -147,15 +147,15 @@ const C = +(2 * Math.PI * 84).toFixed(2);
               </p>
               <span class="band" id="score-band">…</span>
               <p class="score-sub" id="score-sub">
-                שאלנו את Gemini <span class="num" id="q-total">0</span> שאלות קונה שנגזרו מהחנות שלכם ·
+                שאלנו את ה-AI <span class="num" id="q-total">0</span> שאלות קונה שנגזרו מהחנות שלכם ·
                 הופעתם ב-<span class="num" id="q-hit">0</span> מהן.
               </p>
             </div>
           </div>
           <p class="method">
-            בדקנו ב-<b>Gemini</b> על שאלות שנגזרו מהאתר שלכם עכשיו. בתוך Scayla המדידה רצה גם על
-            ChatGPT, שבועית, על קבוצה קבועה של עד <span class="num">15</span> שאלות · כך אפשר להשוות
-            שבוע לשבוע ולראות מגמה, ולא רק תמונת רגע.
+            הציון נמדד עכשיו, על <span class="num">15</span> שאלות קונה שנגזרו מהאתר שלכם · לא על שאלות כלליות.
+            זו תמונת רגע. בתוך Scayla המדידה רצה <b>כל שבוע על קבוצה קבועה</b> של שאלות, כך שאפשר
+            להשוות שבוע לשבוע ולראות אם אתם עולים או יורדים.
           </p>
         </div>
 
@@ -175,7 +175,7 @@ const C = +(2 * Math.PI * 84).toFixed(2);
         <div class="card end">
           <h2>זה מה שהמכונה עושה כל יום</h2>
           <p>
-            הציון שלכם אמיתי · בתוך Scayla הוא נמדד כל שבוע, על ChatGPT וגם על Gemini,
+            הציון שלכם אמיתי · בתוך Scayla הוא נמדד כל שבוע, על קבוצת שאלות קבועה,
             והמכונה כותבת ומתקנת בלי שתצטרכו לבקש.
           </p>
           <div class="end-cta"><InstallCtaPair center variant="onLight" /></div>
@@ -225,7 +225,7 @@ const C = +(2 * Math.PI * 84).toFixed(2);
         <div class="step card">
           <span class="step-n num">2</span>
           <h3>שואלים כמו קונה</h3>
-          <p>גוזרים מהחנות שאלות שקונה אמיתי שואל, ושואלים אותן את Gemini · ובודקים מי מופיע בתשובה.</p>
+          <p>גוזרים מהחנות שאלות שקונה אמיתי שואל, ושואלים אותן את ה-AI · ובודקים מי מופיע בתשובה.</p>
         </div>
         <div class="step card">
           <span class="step-n num">3</span>
@@ -240,7 +240,7 @@ const C = +(2 * Math.PI * 84).toFixed(2);
     <div class="wrap">
       <CtaBand
         title="רוצים שזה יקרה כל שבוע, לבד?"
-        body="הבדיקה כאן היא תמונת רגע. בתוך Scayla המדידה רצה כל שבוע על ChatGPT וגם על Gemini, והמכונה כותבת ומתקנת מעצמה."
+        body="הבדיקה כאן היא תמונת רגע. בתוך Scayla המדידה רצה כל שבוע על קבוצת שאלות קבועה, והמכונה כותבת ומתקנת מעצמה."
       />
     </div>
   </section>

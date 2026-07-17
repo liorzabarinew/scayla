@@ -66,7 +66,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       { label: 'קוראים את החנות', state: 'running' },
       { label: 'סורקים את הבלוג', state: blog ? 'pending' : 'skipped' },
       { label: 'מרכיבים שאלות קונה מהחנות שלכם', state: 'pending' },
-      { label: 'שואלים את Gemini', state: 'pending' },
+      { label: 'שואלים את ה-AI שאלות קונה', state: 'pending' },
       { label: 'בודקים מי מופיע בתשובות', state: 'pending' },
     ] },
   });

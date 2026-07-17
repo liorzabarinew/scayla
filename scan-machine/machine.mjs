@@ -215,6 +215,7 @@ ${missed.length ? `- לא הופיעה בשאלות כמו: ${missed.join(' | ')
 - בלי הבטחות תוצאה ובלי סופרלטיבים שיווקיים.
 - בלי מקפים ארוכים. המפריד הוא נקודה מפרידה ·
 - משפט ראשון: איפה הם עומדים. משפט שני: מה זה אומר בפועל.
+- אל תזכיר שם של מנוע AI מסוים (Gemini / ChatGPT). כתוב "ה-AI" או "מנועי תשובות".
 החזר טקסט בלבד, בלי מרכאות.`;
 
   try {
@@ -236,7 +237,7 @@ export async function runScan({ host, blog }, onProgress) {
     STEP('קוראים את החנות', 'running'),
     STEP('סורקים את הבלוג', blog ? 'pending' : 'skipped'),
     STEP('מרכיבים שאלות קונה מהחנות שלכם', 'pending'),
-    STEP('שואלים את Gemini', 'pending'),
+    STEP('שואלים את ה-AI שאלות קונה', 'pending'),
     STEP('בודקים מי מופיע בתשובות', 'pending'),
   ];
   const emit = (patch = {}) => onProgress({ scan: { steps }, ...patch });
@@ -275,7 +276,7 @@ export async function runScan({ host, blog }, onProgress) {
   const answers = [];
   let hit = 0;
   for (let i = 0; i < qs.length; i++) {
-    steps[3] = STEP(`שואלים את Gemini · ${i}/${qs.length}`, 'running');
+    steps[3] = STEP(`שואלים את ה-AI · ${i}/${qs.length}`, 'running');
     await emit();
     let a;
     try {
@@ -299,7 +300,7 @@ export async function runScan({ host, blog }, onProgress) {
 
   // 5. הציון · נוסחת המוצר
   const pct = Math.round((100 * hit) / answers.length);
-  steps[3] = STEP(`שאלנו את Gemini · ${answers.length} שאלות`, 'done');
+  steps[3] = STEP(`שאלנו את ה-AI · ${answers.length} שאלות קונה`, 'done');
   steps[4] = STEP('מסכמים את המצב', 'running');
   await emit();
 
