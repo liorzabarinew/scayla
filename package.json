@@ -14,7 +14,9 @@
     "machine": "node scripts/machine-vertex.mjs",
     "fixer": "node scripts/fixer.mjs",
     "machine:publish": "node scripts/machine-vertex.mjs --publish",
-    "daily": "node scripts/daily.mjs"
+    "daily": "node scripts/daily.mjs",
+    "predeploy": "node scripts/deploy-guard.mjs",
+    "deploy": "npm run build && wrangler pages deploy dist --project-name scayla --branch main"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.4.1",
