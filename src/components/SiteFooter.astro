@@ -26,7 +26,7 @@ const year = new Date().getFullYear();
         <h3>האתר</h3>
         <ul>
           <li><a href="/#how">איך זה עובד</a></li>
-          <li><a href="/check">בדיקה חינם</a></li>
+          <li><a href="/scan">בדיקה חינם</a></li>
           <li><a href="/#features">פיצרים</a></li>
           <li><a href="/pricing">מחירון</a></li>
           <li><a href="/magazine">בלוג</a></li>
@@ -88,8 +88,12 @@ const year = new Date().getFullYear();
     grid-template-columns: 1.8fr 1fr 1.2fr 1fr 1fr;
     gap: 28px;
   }
-  @media (max-width: 820px) { .cols { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 480px) { .cols { grid-template-columns: 1fr; } }
+  /* טאבלט + מובייל · 2 קטגוריות בשורה. הבלוק של המותג נפרש על כל הרוחב
+     למעלה, כך שארבעת התפריטים נופלים בזוגות: האתר|פתרונות · עזרה|משפטי. */
+  @media (max-width: 820px) {
+    .cols { grid-template-columns: 1fr 1fr; }
+    .brand-col { grid-column: 1 / -1; }
+  }
   .logo {
     display: inline-flex; align-items: center; gap: 9px;
     font-weight: 800; font-size: 19px; letter-spacing: -.02em; color: var(--sc-ink);

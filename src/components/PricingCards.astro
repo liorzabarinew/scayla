@@ -1,13 +1,26 @@
 ---
 /**
- * Pricing cards · 3 tiers from src/data/pricing.ts.
- * Used on the home page and on /pricing.
- * Monthly billing only · the Shopify app bills every 30 days (no annual plan yet).
+ * Pricing cards · 3 tiers from src/data/pricing.ts. Used on /pricing.
+ * Monthly ⇄ annual toggle: annual bills at ANNUAL_DISCOUNT off (currently 20%).
+ * The toggle flips data-billing on the wrapper; CSS swaps the price + savings line.
+ * Defaults to MONTHLY (Lior's call): opens on $49 so it doesn't feel pushed, while
+ * the headline says "$39" — the "חסכו 20%" badge invites the user to toggle and
+ * discover the annual price themselves (curiosity gap converts better than a push).
  */
-import { tiers, SHOPIFY_APP_URL } from '../data/pricing';
+import {
+  tiers, SHOPIFY_APP_URL,
+  ANNUAL_DISCOUNT_PCT, annualPerMonth, annualTotal,
+} from '../data/pricing';
 ---
 
-<div class="pricing">
+<div class="pricing" data-billing="monthly">
+  <div class="billing-toggle" role="tablist" aria-label="מחזור חיוב">
+    <button type="button" role="tab" data-bill="monthly" class="on" aria-selected="true">חודשי</button>
+    <button type="button" role="tab" data-bill="annual" aria-selected="false">
+      שנתי <span class="pct">חסכו {ANNUAL_DISCOUNT_PCT}%</span>
+    </button>
+  </div>
+
   <div class="pgrid">
     {tiers.map((t) => (
       <article class:list={['pl', { pop: t.popular }]}>
@@ -15,8 +28,13 @@ import { tiers, SHOPIFY_APP_URL } from '../data/pricing';
         <h3>{t.name}</h3>
 
         <p class="pr">
-          <span class="num">${t.price}</span><small>/חודש</small>
+          <span class="bill-monthly"><span class="num">${t.price}</span><small>/חודש</small></span>
+          <span class="bill-annual"><span class="num">${annualPerMonth(t.price)}</span><small>/חודש</small></span>
         </p>
+        <p class="sub-price bill-annual">
+          <s class="num">${t.price}</s> · בחיוב שנתי <span class="num">${annualTotal(t.price)}</span>/שנה
+        </p>
+        <p class="sub-price bill-monthly">חיוב חודשי · ביטול בכל עת</p>
 
         <p class="desc">{t.tagline}</p>
         <div class="axes">
@@ -54,6 +72,44 @@ import { tiers, SHOPIFY_APP_URL } from '../data/pricing';
 </div>
 
 <style>
+  /* ── Monthly / annual toggle ── */
+  .billing-toggle {
+    display: flex; inline-size: fit-content; gap: 4px; margin: 0 auto 26px; padding: 4px;
+    background: var(--sc-wash); border: 1px solid var(--sc-soft);
+    border-radius: var(--sc-r-pill);
+  }
+  .billing-toggle button {
+    display: inline-flex; align-items: center; gap: 8px;
+    font: inherit; font-size: 14px; font-weight: 700; color: var(--sc-mv);
+    background: transparent; border: none; cursor: pointer;
+    padding: 9px 20px; border-radius: var(--sc-r-pill);
+    transition: background .18s var(--sc-ease), color .18s var(--sc-ease), box-shadow .18s var(--sc-ease);
+  }
+  .billing-toggle button:hover { color: var(--sc-accent-text); }
+  .billing-toggle button.on {
+    background: var(--sc-paper); color: var(--sc-accent-text);
+    box-shadow: 0 1px 3px rgba(20, 16, 50, .12);
+  }
+  .billing-toggle button:focus-visible { outline: 2px solid var(--sc-accent); outline-offset: 2px; }
+  /* Savings badge · signposts the annual deal on a monthly-default page, so it
+     gets a touch more presence + a soft attention pulse to invite the toggle. */
+  .pct {
+    font-size: 11.5px; font-weight: 800; letter-spacing: .01em;
+    background: var(--sc-pos); color: #fff;
+    padding: 3px 9px; border-radius: var(--sc-r-pill); white-space: nowrap;
+    box-shadow: 0 0 0 0 rgba(23, 132, 58, .5);
+    animation: pct-pulse 2.4s ease-out infinite;
+  }
+  @keyframes pct-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(23, 132, 58, .5); }
+    60%, 100% { box-shadow: 0 0 0 7px rgba(23, 132, 58, 0); }
+  }
+  @media (prefers-reduced-motion: reduce) { .pct { animation: none; } }
+
+  /* ── Price swap · exactly one period shows per data-billing state ── */
+  .pricing[data-billing="monthly"] .bill-annual { display: none; }
+  .pricing[data-billing="annual"] .bill-monthly { display: none; }
+
   .sub-price {
     font-size: 13px; color: var(--sc-muted); font-weight: 600;
     margin-block: -2px 4px; min-block-size: 18px;
@@ -169,3 +225,20 @@ import { tiers, SHOPIFY_APP_URL } from '../data/pricing';
     margin-block-start: 22px;
   }
 </style>
+
+<script>
+  // Toggle billing period · flips data-billing on the nearest .pricing wrapper.
+  document.querySelectorAll('.pricing').forEach((root) => {
+    const btns = root.querySelectorAll('.billing-toggle button');
+    btns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        root.setAttribute('data-billing', (btn as HTMLElement).dataset.bill || 'annual');
+        btns.forEach((b) => {
+          const on = b === btn;
+          b.classList.toggle('on', on);
+          b.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+      });
+    });
+  });
+</script>

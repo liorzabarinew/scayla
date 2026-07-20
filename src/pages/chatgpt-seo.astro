@@ -10,6 +10,11 @@ const description =
   'איך להופיע ולהתקדם ב-ChatGPT עם חנות שופיפיי: מדידה של מה ChatGPT עונה על הקטגוריה שלכם, השוואה למתחרים ותיקונים אוטומטיים.';
 
 const canonicalPath = '/chatgpt-seo';
+const authorName = 'נוי קייטל';
+const authorUrl = 'https://scayla.co.il/experts/noy-keitel';
+const datePublished = '2026-06-15';
+const dateModified = '2026-07-17';
+const updatedLabel = 'עודכן 17 ביולי 2026';
 
 const faq = [
   {
@@ -21,8 +26,16 @@ const faq = [
     a: 'לא. אין פרסום ממומן שמכניס חנות לתשובה. ChatGPT בוחר את מי להזכיר לפי תוכן ברור, מובנה ומצוטט במקומות אחרים. אופטימיזציה ל-ChatGPT היא בניית התוכן הזה: עמודי מוצר מדויקים, FAQ, סכמות ומאמרים עם תשובות ישירות שקל לצטט.',
   },
   {
+    q: 'איך ChatGPT בכלל יודע על החנות שלנו?',
+    a: 'ChatGPT מסתמך על שני מקורות: הידע שנצבר באימון המודל, ותוצאות חיפוש חיות שהוא מושך בזמן אמת דרך הדפדפן שלו. חנות חדשה או קטנה כמעט לא קיימת בידע המאומן, ולכן הדרך המהירה להיכנס לתשובה היא תוכן ברור וזמין שהחיפוש החי יכול למצוא ולצטט ברגע שנשאלת שאלת קנייה.',
+  },
+  {
     q: 'למה דווקא ChatGPT ולא Gemini או Perplexity?',
     a: 'ChatGPT הוא המנוע עם הכי הרבה משתמשים בישראל, אז הוא נותן את מספר ההזדמנויות הגדול ביותר להופיע בתשובה של קונה. Scayla מודדת אותו ראשונה, ואת אותם עקרונות מיישמת גם על Gemini, Perplexity ו-Claude. כדאי להתחיל היכן שהקהל כבר נמצא.',
+  },
+  {
+    q: 'מה ההבדל בין קידום ל-ChatGPT לבין SEO רגיל בגוגל?',
+    a: 'SEO בגוגל נאבק על דירוג ברשימת עשר תוצאות, וגם מקום שביעי עדיין נספר. ב-ChatGPT יש תשובה אחת עם שניים-שלושה שמות בלבד, אז או שאתם בפנים או שאתם שקופים. העקרונות חופפים (תוכן איכותי, מבנה, סכמות), אבל הרף גבוה יותר וההמלצה מגיעה מוכנה במקום רשימה שהקונה עוד צריך לסנן.',
   },
   {
     q: 'תוך כמה זמן רואים שינוי בהופעה ב-ChatGPT?',
@@ -37,8 +50,32 @@ const articleLd = {
   description,
   inLanguage: 'he',
   mainEntityOfPage: `https://scayla.co.il${canonicalPath}`,
-  author: { '@type': 'Person', name: 'נוי קייטל', url: 'https://scayla.co.il/experts/noy-keitel' },
-  publisher: { '@type': 'Organization', name: 'Scayla', url: 'https://scayla.co.il/' },
+  image: 'https://scayla.co.il/og.png',
+  datePublished,
+  dateModified,
+  author: { '@type': 'Person', name: authorName, url: authorUrl },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Scayla',
+    url: 'https://scayla.co.il/',
+    logo: { '@type': 'ImageObject', url: 'https://scayla.co.il/favicon-32.png' },
+  },
+  about: ['קידום ל-ChatGPT', 'נראות במנועי AI', 'GEO', 'ChatGPT', 'OpenAI', 'Shopify'],
+};
+
+const howToLd = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'איך להופיע ב-ChatGPT · חמישה צעדים',
+  description: 'חמישה צעדים שהופכים חנות שופיפיי לתשובה ש-ChatGPT בוחר לצטט לקונים.',
+  inLanguage: 'he',
+  step: [
+    { '@type': 'HowToStep', position: 1, name: 'כתבו את השאלות שקונה באמת שואל', text: 'לא מילות מפתח יבשות. "מה הכי טוב ל___", "המלצה על ___ בישראל". אלה השאילתות שבהן ChatGPT מחזיר שמות של חנויות.' },
+    { '@type': 'HowToStep', position: 2, name: 'בדקו מה קורה כשמריצים אותן', text: 'הריצו כל שאלה כמה פעמים. אם השם שלכם לא חוזר יש פער. אם חוזר מתחרה יש את מי לעקוף.' },
+    { '@type': 'HowToStep', position: 3, name: 'ענו על השאלה בעמוד ברור', text: 'עמוד או FAQ שנותן תשובה ישירה ומדויקת, בלי מסביב. זה המבנה ש-ChatGPT לוקח ממנו ציטוט.' },
+    { '@type': 'HowToStep', position: 4, name: 'הוסיפו סכמות ותקנו שברים', text: 'Product, FAQPage ו-Organization עוזרים למנוע להבין מה אתם מוכרים. עמוד 404 באמצע נתיב הקנייה מפיל אתכם מהמפה.' },
+    { '@type': 'HowToStep', position: 5, name: 'מדדו שוב בעוד שבוע', text: 'שינוי בתשובת AI אינו מיידי. הציון השבועי אומר לכם אם הכיוון עובד לפני שאתם משקיעים עוד.' },
+  ],
 };
 ---
 
@@ -48,11 +85,13 @@ const articleLd = {
   breadcrumbs={[{ name: 'קידום ל-ChatGPT', path: canonicalPath }]}
 >
   <script type="application/ld+json" set:html={JSON.stringify(articleLd)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(howToLd)} slot="head" />
 
   <section class="svc-hero">
     <div class="wrap center">
       <span class="eyebrow">קידום ל-ChatGPT</span>
       <h1>איך להופיע ולהתקדם ב-ChatGPT · כשקונה שואל, שתהיו בתשובה</h1>
+      <p class="byline">מאת <a href={authorUrl}>{authorName}</a> · {updatedLabel}</p>
       <p class="lede">
         המשתמשים בישראל כבר שואלים את ChatGPT "מה הכי טוב ל___" ומקבלים תשובה אחת עם כמה
         שמות. Scayla בודקת אם החנות שלכם אחד מהם, מראה מי תופס את מקומכם, ובונה את התוכן
@@ -63,21 +102,60 @@ const articleLd = {
     </div>
   </section>
 
+  <section class="svc-tldr">
+    <div class="narrow">
+      <div class="tldr card">
+        <span class="tldr-tag">בקצרה</span>
+        <p>
+          קידום ל-ChatGPT (חלק מ-GEO) הוא לגרום ל-ChatGPT להזכיר את החנות שלכם כשקונה מבקש
+          המלצה. אי אפשר לקנות מיקום בתשובה: ChatGPT מצטט תוכן ברור, מובנה ועדכני שהוא מוצא
+          בזמן אמת. משפרים נראות עם עמודים שעונים ישירות על שאלות קנייה, עם סכמות ועם FAQ ·
+          ואז מודדים שבועית אם זה עבד. Scayla עושה את שני החלקים אוטומטית, מתוך החנות.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <section class="svc-body alt-bg">
-    <div class="wrap">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">הבסיס</span>
+        <h2>מה זה קידום ל-ChatGPT?</h2>
+      </div>
+      <div class="prose">
+        <p>
+          קידום ל-ChatGPT הוא ענף של נראות במנועי AI (מכונה גם GEO · Generative Engine
+          Optimization): המידה שבה ChatGPT מזכיר את החנות שלכם כשמישהו שואל אותו שאלת קנייה.
+          ההבדל מגוגל קלאסי מהותי. בגוגל יש עמוד תוצאות עם עשרה קישורים והקונה בוחר בעצמו,
+          ואילו ChatGPT מחזיר תשובה אחת מנוסחת, שבה נכנסים שניים-שלושה שמות בלבד. או שאתם שם,
+          או שאתם שקופים לחלוטין · אין עמוד שני לגלול אליו.
+        </p>
+        <p>
+          חשוב להבין מאיפה ChatGPT שואב את השמות. יש לו שתי דרכים: הידע שנצבר באימון המודל,
+          שמכיר בעיקר מותגים גדולים וותיקים, וחיפוש חי שהוא מריץ בזמן אמת ומושך ממנו עמודים
+          עדכניים. חנות ישראלית בינונית כמעט לא קיימת בידע המאומן, ולכן הזירה האמיתית שלכם היא
+          החיפוש החי · שם תוכן ברור, זמין ומובנה יכול להיכנס לתשובה גם בלי שנים של מוניטין.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-body">
+    <div class="narrow">
       <div class="sh">
         <span class="eyebrow">למה זה המנוע להתחיל בו</span>
-        <h2>ChatGPT זה הכי הרבה קונים ששואלים · והכי הרבה הזדמנויות להיות בתשובה</h2>
+        <h2>למה מתחילים דווקא מ-ChatGPT?</h2>
         <p>
-          לא כל מנוע שווה אותו דבר לחנות ישראלית. ChatGPT מוביל בשימוש בעברית, ומי שמגיע
-          ממנו כבר שאל שאלת קנייה ממוקדת · לא גלישה סתמית. משם ההיגיון הפשוט: יותר שאלות
-          שבהן אתם יכולים להיות מוזכרים, ולקוח שכבר בשל להחלטה.
+          לא כל מנוע שווה אותו דבר לחנות ישראלית. ChatGPT מוביל בשימוש בעברית, ומי שמגיע ממנו
+          כבר שאל שאלת קנייה ממוקדת · לא גלישה סתמית. משם ההיגיון הפשוט: יותר שאלות שבהן אתם
+          יכולים להיות מוזכרים, ולקוח שכבר בשל להחלטה. מבקר שמגיע מהמלצה בתשובת AI כבר עבר את
+          שלב "מה בכלל קיים" והגיע עם כוונת קנייה, בזמן שקליק ממוצע מגוגל עדיין באמצע ההשוואה.
         </p>
       </div>
       <div class="stat-row">
         <div class="stat card fade-up">
-          <div class="stat-n num">×5</div>
-          <p>ההמרה של מבקר שמגיע מתשובת AI, לעומת קליק ממוצע מגוגל · הוא בא עם כוונה, לא כדי לגלוש.</p>
+          <div class="stat-n">כוונת קנייה</div>
+          <p>מי שמגיע מתשובת AI כבר קיבל המלצה וביקש שם, לא גלש כדי להשוות · ולכן הוא קרוב יותר להחלטה מקליק אורגני ממוצע.</p>
         </div>
         <div class="stat card fade-up">
           <div class="stat-n num">1</div>
@@ -91,7 +169,68 @@ const articleLd = {
     </div>
   </section>
 
-  <section class="svc-demo">
+  <section class="svc-body alt-bg">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">המנגנון</span>
+        <h2>איך ChatGPT בוחר את מי לצטט?</h2>
+      </div>
+      <div class="prose">
+        <p>
+          ChatGPT לא "מדרג" עמודים כמו גוגל. הוא מרכיב תשובה מתוך מקורות שהוא מבין וסומך
+          עליהם. בפועל, ארבעה דברים מכריעים אם תיכנסו לתשובה:
+        </p>
+      </div>
+      <div class="bgrid two">
+        <div class="b card fade-up">
+          <h3>תשובה ישירה וברורה</h3>
+          <p>ChatGPT מעדיף לצטט טקסט שעונה על השאלה בפסקה אחת, בלי מסביב. עמוד שפותח בתשובה קצרה ומדויקת קל להרים ממנו ציטוט.</p>
+        </div>
+        <div class="b card fade-up">
+          <h3>מבנה שהמכונה מבינה</h3>
+          <p>כותרות היררכיות, רשימות, טבלאות וסכמות (FAQPage, Product, Organization) אומרות למנוע מה הוא קורא. תוכן לא מובנה פשוט לא נלקח.</p>
+        </div>
+        <div class="b card fade-up">
+          <h3>סמכות וציטוט חיצוני</h3>
+          <p>ChatGPT מצטט מותגים שכבר מוזכרים במקומות אחרים · ביקורות, מדריכים, אזכורים. נוכחות עקבית ברשת מגדילה את הסיכוי להיבחר.</p>
+        </div>
+        <div class="b card fade-up">
+          <h3>עדכניות וזמינות לחיפוש</h3>
+          <p>תוכן טרי, עם תאריך עדכון ומידע נכון להיום, שהחיפוש החי של ChatGPT יכול למצוא · מנצח עמוד ישן או חסום שהמנוע לא מגיע אליו.</p>
+        </div>
+      </div>
+      <p class="svc-note center">
+        המכניקה הזו זהה בכל המנועים · לכן משתלם לבנות אותה פעם אחת נכון. הרעיון המלא נמצא
+        בעמוד <a href="/geo">אופטימיזציה למנועי AI · GEO</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="svc-body">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">ההבדל שחשוב להבין</span>
+        <h2>קידום ל-ChatGPT מול SEO מסורתי בגוגל</h2>
+        <p>אותם עקרונות איכות, רף אחר לגמרי. ככה זה נראה זה מול זה:</p>
+      </div>
+      <div class="tbl-wrap">
+        <table class="cmp">
+          <thead>
+            <tr><th></th><th>SEO מסורתי בגוגל</th><th>קידום ל-ChatGPT (GEO)</th></tr>
+          </thead>
+          <tbody>
+            <tr><th>התוצאה</th><td>דירוג ברשימת קישורים</td><td>אזכור בתוך תשובה אחת</td></tr>
+            <tr><th>כמה מקומות יש</th><td>כ-10 תוצאות בעמוד</td><td>2 עד 3 שמות בתשובה</td></tr>
+            <tr><th>מה הקונה עושה</th><td>בוחר מתוך רשימה</td><td>מקבל המלצה מוכנה</td></tr>
+            <tr><th>מה קובע</th><td>קישורים, מילות מפתח, סמכות</td><td>תוכן ברור, מובנה, ניתן לציטוט</td></tr>
+            <tr><th>איפה מודדים</th><td>Search Console ודירוגים</td><td>מדגם שאילתות מול ChatGPT</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-demo alt-bg">
     <div class="wrap">
       <div class="sh">
         <span class="eyebrow">ככה זה נראה</span>
@@ -121,14 +260,14 @@ const articleLd = {
         </div>
       </div>
       <p class="svc-note center">
-        המספרים והתשובות כאן להמחשה. בתוך האפליקציה תראו את התשובה האמיתית על החנות שלכם ·
+        התשובות כאן להמחשה. בתוך האפליקציה תראו את התשובה האמיתית על החנות שלכם ·
         וגם את <a href="/ai-visibility">ההשוואה בין ChatGPT ל-Gemini</a>.
       </p>
     </div>
   </section>
 
-  <section class="svc-body alt-bg">
-    <div class="wrap">
+  <section class="svc-body">
+    <div class="narrow">
       <div class="sh">
         <span class="eyebrow">איך Scayla עוזרת</span>
         <h2>שלושה מהלכים שמזיזים אתכם בתוך ChatGPT</h2>
@@ -146,7 +285,7 @@ const articleLd = {
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V6a2 2 0 0 1 2-2h11l3 3v12.5a1.5 1.5 0 0 1-1.5 1.5H5.5A1.5 1.5 0 0 1 4 19.5z"/><path d="M8 10h8M8 14h5"/></svg>
           </span>
           <h3>בונה תוכן שקל לצטט</h3>
-          <p>ChatGPT אוהב תשובות ישירות ומספרים ברורים. Scayla כותבת FAQ, מאמרים ועמודי מוצר במבנה הזה, בעברית תקנית · ומפרסמת רק באישורכם.</p>
+          <p>ChatGPT אוהב תשובות ישירות ומבנה ברור. Scayla כותבת FAQ, מאמרים ועמודי מוצר במבנה הזה, בעברית תקנית · ומפרסמת רק באישורכם.</p>
         </div>
         <div class="b card fade-up">
           <span class="b-ic" aria-hidden="true">
@@ -156,6 +295,10 @@ const articleLd = {
           <p>סכמות חסרות, כותרות חלשות, עמודי 404 · כל מה שמקשה על מנוע להבין את החנות. התיקונים מוכנים לאישור בקליק, והכל הפיך.</p>
         </div>
       </div>
+      <p class="svc-note center">
+        רוצים לראות איפה אתם עומדים? <a href="/scan">בדיקת נראות חינם</a> מראה בדקות באיזה
+        אחוז מהתשובות של ChatGPT אתם מופיעים. פרטים על <a href="/pricing">התוכניות</a>.
+      </p>
     </div>
   </section>
 
@@ -163,7 +306,7 @@ const articleLd = {
     <div class="narrow">
       <div class="sh">
         <span class="eyebrow">מדריך מהיר</span>
-        <h2>חמישה צעדים להופעה ב-ChatGPT</h2>
+        <h2>איך משפרים הופעה ב-ChatGPT · חמישה צעדים</h2>
       </div>
       <ol class="guide">
         <li class="card fade-up">
@@ -184,7 +327,7 @@ const articleLd = {
           <span class="gn num">3</span>
           <div>
             <h3>ענו על השאלה בעמוד ברור</h3>
-            <p>עמוד או FAQ שנותן תשובה ישירה ומספרים, בלי מסביב. זה המבנה שמנוע לוקח ממנו ציטוט.</p>
+            <p>עמוד או FAQ שנותן תשובה ישירה ומדויקת, בלי מסביב. זה המבנה שמנוע לוקח ממנו ציטוט.</p>
           </div>
         </li>
         <li class="card fade-up">
@@ -239,24 +382,52 @@ const articleLd = {
 <style>
   .svc-hero { padding-block-end: 16px; }
   .svc-hero .lede { max-inline-size: 62ch; margin-inline: auto; }
+  .byline { font-size: 13.5px; color: var(--sc-muted); margin-block: 6px 14px; font-weight: 500; }
+  .byline a { font-weight: 700; }
   .cta-note { font-size: 13px; color: var(--sc-disabled); margin-block-start: 14px; }
   .alt-bg { background: var(--sc-card); }
   :global([data-theme='dark']) .alt-bg { background: #17141d; }
+
+  .svc-tldr { padding-block: 8px; }
+  .tldr { padding: 22px 24px; border-inline-start: 4px solid var(--sc-accent); background: var(--sc-wash); }
+  .tldr-tag {
+    display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: .04em;
+    color: var(--sc-accent-text); margin-block-end: 8px;
+    text-transform: uppercase;
+  }
+  .tldr p { font-size: 16px; color: var(--sc-ink); line-height: 1.75; margin: 0; }
+
+  .prose p { max-inline-size: 68ch; margin-inline: auto; margin-block-end: 14px; font-size: 16px; }
+  .prose { margin-block-end: 8px; }
+
+  .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table.cmp {
+    inline-size: 100%; border-collapse: collapse; margin-inline: auto;
+    font-size: 15px; background: var(--sc-paper); border-radius: 14px; overflow: hidden;
+    border: 1px solid var(--sc-hair);
+  }
+  table.cmp th, table.cmp td { padding: 12px 16px; text-align: start; vertical-align: top; }
+  table.cmp thead th { background: var(--sc-wash); color: var(--sc-ink); font-weight: 800; font-size: 14.5px; }
+  table.cmp tbody th { font-weight: 700; color: var(--sc-ink); inline-size: 26%; }
+  table.cmp tbody td { color: var(--sc-muted); font-weight: 500; }
+  table.cmp tbody tr + tr th, table.cmp tbody tr + tr td { border-block-start: 1px solid var(--sc-hair); }
 
   .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   @media (max-width: 820px) { .stat-row { grid-template-columns: 1fr; } }
   .stat { padding: 24px; background: var(--sc-paper); }
   .stat-n { font-size: 40px; font-weight: 800; color: var(--sc-accent-text); letter-spacing: -.02em; line-height: 1; margin-block-end: 10px; }
+  .stat:has(.stat-n:not(.num)) .stat-n { font-size: 26px; }
   .stat p { font-size: 14.5px; }
 
   .engines { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media (max-width: 820px) { .engines { grid-template-columns: 1fr; } }
   .engine-panel { padding: 14px; border-radius: 18px; }
 
-  .bgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-  @media (max-width: 820px) { .bgrid { grid-template-columns: 1fr; } }
-  .b { padding: 24px; background: var(--sc-paper); }
-  .b { transition: transform .18s var(--sc-ease), box-shadow .18s var(--sc-ease); }
+  .bgrid { display: grid; gap: 16px; }
+  .bgrid.two { grid-template-columns: repeat(2, 1fr); }
+  .bgrid.three { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 820px) { .bgrid.two, .bgrid.three { grid-template-columns: 1fr; } }
+  .b { padding: 24px; background: var(--sc-paper); transition: transform .18s var(--sc-ease), box-shadow .18s var(--sc-ease); }
   .b:hover { transform: translateY(-3px); box-shadow: var(--sc-sh-lift); }
   .b-ic {
     display: grid; place-items: center;
@@ -288,6 +459,6 @@ const articleLd = {
   .lcard b { font-size: 15.5px; font-weight: 800; letter-spacing: -.01em; }
   .lcard small { font-size: 13px; color: var(--sc-muted); font-weight: 500; line-height: 1.5; }
 
-  .svc-note { margin-block-start: 26px; font-size: 15px; max-inline-size: 62ch; margin-inline: auto; }
+  .svc-note { margin-block-start: 26px; font-size: 15px; max-inline-size: 64ch; margin-inline: auto; }
   .svc-cta { padding-block-end: clamp(24px, 4vw, 48px); }
 </style>

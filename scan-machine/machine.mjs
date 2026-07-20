@@ -11,6 +11,7 @@
  * יהיה מדידה אמיתית.
  */
 import { GoogleAuth } from 'google-auth-library';
+import { Firestore } from '@google-cloud/firestore';
 
 export const PROJECT = process.env.GCP_PROJECT || 'scayla-prod';
 // pro כברירת מחדל · זה ה"וואו" שהלקוח רואה. flash נשמר רק למקום אחד
@@ -74,6 +75,65 @@ export const cleanHost = (v) =>
   String(v || '').trim().toLowerCase()
     .replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/.*$/, '').replace(/:\d+$/, '');
 export const okHost = (v) => /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9-]+)+$/.test(cleanHost(v));
+
+// דומיין-רושם · מקפל www/תת-דומיין/נתיב, כדי להתאים תוצאת SERP לחנות.
+const MULTI_TLD = new Set([
+  'co.il', 'org.il', 'ac.il', 'gov.il', 'net.il', 'muni.il',
+  'co.uk', 'com.au', 'co.nz', 'co.za', 'com.br', 'co.jp',
+]);
+export const registrableDomain = (v) => {
+  const h = cleanHost(v);
+  const p = h.split('.');
+  if (p.length <= 2) return h;
+  const l2 = p.slice(-2).join('.');
+  return (MULTI_TLD.has(l2) ? p.slice(-3) : p.slice(-2)).join('.');
+};
+
+/**
+ * SERP אמיתי ב-Google · Programmable Search (PSE). אות פנימי בלבד: מתחרים
+ * אמיתיים + פערים (שאלות שבהן החנות חסרה מגוגל) להזנת בחירת המאמרים. לא
+ * ציון שמוצג ליוזר · PSE נבדל מגוגל החי, לכן לא טוענים דירוג מדויק כלפי חוץ.
+ * gl=il + hl=he + lr=lang_he · ממקד לתוצאות ישראליות/עבריות.
+ */
+export async function serpProbe(question, host, cx, key, num = 10) {
+  const u = `https://www.googleapis.com/customsearch/v1?key=${encodeURIComponent(key)}&cx=${encodeURIComponent(cx)}&q=${encodeURIComponent(question)}&num=${num}&gl=il&hl=he&lr=lang_he`;
+  const r = await fetch(u, { signal: AbortSignal.timeout(15_000) });
+  if (!r.ok) throw new Error(`pse ${r.status}: ${(await r.text()).slice(0, 120)}`);
+  const j = await r.json();
+  const domains = (j.items || []).map((it) => registrableDomain(it.displayLink || it.link || '')).filter(Boolean);
+  const reg = registrableDomain(host);
+  const rank = domains.findIndex((d) => d === reg);
+  return { domains, storeRank: rank >= 0 ? rank + 1 : null };
+}
+
+/**
+ * חסם מכסה יומי קשיח ל-PSE · אף פעם לא חוצים את ה-free (100/יום). מזמינים
+ * מכסה אטומית מול Firestore (עקבי-חזק, גם מול סריקות מקבילות): מחזיר כמה
+ * שאילתות מותר להריץ עכשיו (0 עד want). 0 = הגענו לרף → מדלגים על השכבה,
+ * אין serp בדוח, אפס תשלום. שמרני בכוונה · מזמינים מראש, כישלון-שאילתה עדיין
+ * נספר, כדי שלעולם לא נחרוג.
+ */
+let _quotaDb;
+// מפתח היום מיושר ל-Pacific · מכסת גוגל מתאפסת בחצות PT, אז יום-הספירה שלנו
+// זהה ליום-המכסה של גוגל, ורף 90 באמת מבטיח שלא נחצה 100 באף חלון.
+const pacificDay = () =>
+  new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+const pseDayDoc = () => {
+  _quotaDb ??= new Firestore({ projectId: PROJECT });
+  return _quotaDb.collection('pse_quota').doc(pacificDay());
+};
+async function reservePse(want, cap) {
+  const ref = pseDayDoc();
+  return ref.firestore.runTransaction(async (tx) => {
+    const snap = await tx.get(ref);
+    const used = snap.exists ? (snap.data().count || 0) : 0;
+    const grant = Math.max(0, Math.min(want, cap - used));
+    if (grant > 0) {
+      tx.set(ref, { count: used + grant, updatedAt: Date.now(), expireAt: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000) }, { merge: true });
+    }
+    return grant;
+  });
+}
 
 // ── סורק ──
 const strip = (html) =>
@@ -371,6 +431,37 @@ export async function runScan({ host, blog }, onProgress) {
 
   const score = { pct, band: bandOf(pct), queriesAsked: answers.length, queriesMentioned: hit, engines: ['gemini'], answers };
   score.verdict = await verdictOf(store, score);
+
+  // ── שכבת SERP פנימית · מתחרים + פערים בגוגל, להזנת בחירת המאמרים ──
+  // flag-gated על PSE_CX+PSE_API_KEY · בלעדיהם מדלגים בשקט. עטוף לגמרי כדי
+  // שכישלון PSE לעולם לא ישבור סריקה. לא מוצג ליוזר · אות פנימי בלבד.
+  const PSE_CX = process.env.PSE_CX, PSE_KEY = process.env.PSE_API_KEY;
+  if (PSE_CX && PSE_KEY) {
+    try {
+      const want = Math.min(qs.length, Number(process.env.PSE_MAX || 16));
+      const cap = Number(process.env.PSE_DAILY_CAP || 90); // רף מתחת ל-100 של גוגל · אף פעם לא בתשלום
+      const grant = await reservePse(want, cap); // חסם קשיח · 0 = הגענו לרף היומי → מדלגים
+      if (grant > 0) {
+        const reg = registrableDomain(host);
+        const perQ = [];
+        const freq = {};
+        for (let i = 0; i < grant; i++) {
+          try {
+            const s = await serpProbe(qs[i], host, PSE_CX, PSE_KEY);
+            perQ.push({ q: qs[i], storeRank: s.storeRank, top: s.domains.slice(0, 5) });
+            for (const d of s.domains.slice(0, 10)) if (d && d !== reg) freq[d] = (freq[d] || 0) + 1;
+          } catch { /* שאילתה שנפלה · מדלגים (כבר נספרה במכסה, שמרני) */ }
+        }
+        if (perQ.length) {
+          const present = perQ.filter((x) => x.storeRank).length;
+          const competitors = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([domain, count]) => ({ domain, count }));
+          const gaps = perQ.filter((x) => !x.storeRank).map((x) => x.q);
+          score.serp = { asked: perQ.length, storePresent: present, storeHitRate: Math.round((100 * present) / perQ.length), competitors, gaps, perQ };
+        }
+      }
+      // grant === 0 → הגענו לרף היומי · אין serp בדוח, לא feed למאמרים, אפס תשלום.
+    } catch (e) { console.error('serp probe failed', e?.message); }
+  }
 
   steps[6] = STEP(`ציון הנראות שלכם · ${pct}%`, 'done');
   steps[7] = STEP('בוחרים 2 נושאים מהפערים שנמצאו', 'running');

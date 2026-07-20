@@ -4,75 +4,267 @@ import CtaBand from '../components/CtaBand.astro';
 import InstallCtaPair from '../components/InstallCtaPair.astro';
 import FaqAccordion from '../components/FaqAccordion.astro';
 
-const title = 'קידום אורגני ל-Shopify · Scayla';
+const title = 'קידום אורגני לשופיפיי (Shopify) · מדריך SEO לחנות · Scayla';
 const description =
-  'קידום אורגני לחנות שופיפיי בלי סוכנות: מחקר מילים, תוכן, סכמות ותיקוני 404 · אוטומטית ובאישור שלכם. מ-$49 לחודש.';
+  'קידום אורגני לחנות שופיפיי: איך עובד SEO ב-Shopify · קולקציות מול עמודי מוצר, URL כפולים וקנוניקל, מטאדאטה, סכמות ו-sitemap. מדריך + מכונה שמתקנת אוטומטית, מ-$39 לחודש.';
+
+const canonicalPath = '/seo-shopify';
+const authorName = 'נוי קייטל';
+const authorUrl = 'https://scayla.co.il/experts/noy-keitel';
+const datePublished = '2026-06-15';
+const dateModified = '2026-07-17';
+const updatedLabel = 'עודכן 17 ביולי 2026';
 
 const faq = [
   {
     q: 'איך עושים קידום אורגני לחנות שופיפיי בלי לדעת SEO?',
-    a: 'עם Scayla אתם לא צריכים לדעת SEO. המכונה סורקת את החנות, מזהה מה חוסם אתכם בגוגל · כותרות חלשות, תיאורים חסרים, סכמות, 404 · ומכינה את התיקונים. אתם מאשרים בקליק, והכל הפיך.',
+    a: 'עם Scayla אתם לא צריכים לדעת SEO. המכונה סורקת את החנות, מזהה מה חוסם אתכם בגוגל · כותרות חלשות, תיאורים חסרים, סכמות Product, URL כפולים ועמודי 404 · ומכינה את התיקונים. אתם מאשרים בקליק, והכל הפיך.',
   },
   {
     q: 'כמה עולה קידום חנות שופיפיי?',
-    a: 'סוכנות SEO גובה בדרך כלל אלפי שקלים בחודש. Scayla מתחילה ב-$49 לחודש, בחיוב דרך Shopify, עם 14 יום ניסיון חינם · והיא היחידה שמקדמת אתכם גם במנועי ה-AI, לא רק בגוגל.',
+    a: 'סוכנות SEO גובה בדרך כלל אלפי שקלים בחודש. Scayla מתחילה ב-$39 לחודש, בחיוב דרך Shopify, עם 14 יום ניסיון חינם · והיא היחידה שמקדמת אתכם גם במנועי ה-AI, לא רק בגוגל.',
   },
   {
     q: 'מה ההבדל בין Scayla לאפליקציות SEO אחרות ל-Shopify?',
-    a: 'רוב האפליקציות עוצרות בגוגל: מטא, מילות מפתח, סיטמאפ. Scayla עושה את כל זה · ובנוסף מודדת ומנצחת את הנראות שלכם בתשובות של ChatGPT ו-Gemini, ששם הקונים כבר נמצאים.',
+    a: 'רוב האפליקציות עוצרות בגוגל: מטא, מילות מפתח, sitemap. Scayla עושה את כל זה · ובנוסף מודדת ומנצחת את הנראות שלכם בתשובות של ChatGPT ו-Gemini, ששם הקונים כבר נמצאים.',
+  },
+  {
+    q: 'האם Shopify מוגבל בקידום אורגני?',
+    a: 'לא באמת. Shopify מייצר sitemap.xml אוטומטי, robots.txt סביר וסכמת מוצר בסיסית בערכות רבות. המגבלות האמיתיות הן במבנה ה-URL הקבוע (‎/products/‎ ו-‎/collections/‎), ב-URL כפולים של אותו מוצר תחת כמה קטגוריות, ובמטאדאטה שנשארת כברירת מחדל. את אלה פותרים עם קנוניקל, מטאפילדס ומטאדאטה מכוונת.',
+  },
+  {
+    q: 'למה יש לי כמה כתובות לאותו מוצר בשופיפיי?',
+    a: 'כשמוצר משויך לכמה קולקציות, Shopify יכול להגיש אותו גם תחת ‎/collections/שם/products/שם‎ וגם תחת ‎/products/שם‎. זה יוצר תוכן כפול שמפצל אותות דירוג. הפתרון הוא תג canonical שמצביע תמיד על כתובת ‎/products/‎ הנקייה, וזה בדיוק מה שמנוע התיקונים בודק.',
+  },
+  {
+    q: 'תוך כמה זמן רואים תוצאות מקידום אורגני בשופיפיי?',
+    a: 'תיקונים טכניים · קנוניקל, סכמות, מטאדאטה · נסרקים תוך ימים. שיפור אמיתי בדירוג של קטגוריה או מוצר מצטבר לאורך שבועות, אחרי שגוגל סרק את התוכן החדש והתחיל לתת בו אמון. מדידה שבועית מראה אם הכיוון נכון בלי לנחש.',
   },
 ];
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'קידום אורגני לשופיפיי · מדריך SEO לחנות Shopify',
+  description,
+  inLanguage: 'he',
+  mainEntityOfPage: `https://scayla.co.il${canonicalPath}`,
+  image: 'https://scayla.co.il/og.png',
+  datePublished,
+  dateModified,
+  author: { '@type': 'Person', name: authorName, url: authorUrl },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Scayla',
+    url: 'https://scayla.co.il/',
+    logo: { '@type': 'ImageObject', url: 'https://scayla.co.il/favicon-32.png' },
+  },
+  about: ['קידום אורגני לשופיפיי', 'SEO', 'Shopify', 'קנוניקל', 'מטאפילדס', 'sitemap.xml', 'סכמת Product', 'GEO'],
+};
+
+const appLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Scayla · קידום אורגני לשופיפיי',
+  description,
+  applicationCategory: 'BusinessApplication',
+  operatingSystem: 'Shopify',
+  inLanguage: 'he',
+  url: `https://scayla.co.il${canonicalPath}`,
+  image: 'https://scayla.co.il/og.png',
+  publisher: { '@type': 'Organization', name: 'Scayla', url: 'https://scayla.co.il/' },
+  offers: {
+    '@type': 'Offer',
+    price: '49',
+    priceCurrency: 'USD',
+    url: 'https://scayla.co.il/pricing',
+    availability: 'https://schema.org/InStock',
+  },
+};
+
+const howToLd = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'איך עושים קידום אורגני לחנות שופיפיי',
+  description: 'חמישה צעדים שהופכים חנות Shopify לחנות שגוגל ומנועי AI מבינים ומדרגים.',
+  inLanguage: 'he',
+  step: [
+    { '@type': 'HowToStep', position: 1, name: 'מפים מילות מפתח לקטגוריות ולמוצרים', text: 'מרכיבים את השאילתות שקונה באמת מקליד: קטגוריות רחבות לעמודי /collections/, ומונחי מוצר מדויקים לעמודי /products/. כל כתובת מקבלת מטרה אחת.' },
+    { '@type': 'HowToStep', position: 2, name: 'מתקנים את מבנה ה-URL והקנוניקל', text: 'מוודאים שכל מוצר מוגש מכתובת /products/ נקייה אחת, עם תג canonical שמצביע עליה, כדי שגרסאות /collections/…/products/ לא יפצלו את אותות הדירוג.' },
+    { '@type': 'HowToStep', position: 3, name: 'כותבים מטאדאטה, כותרות ותיאורים', text: 'לכל עמוד קטגוריה ומוצר: כותרת H1 ברורה, title ו-meta description ייחודיים במקום ברירת המחדל, וטקסט תיאור שמכיל את מילת המפתח בצורה טבעית.' },
+    { '@type': 'HowToStep', position: 4, name: 'מוסיפים סכמות וממלאים מטאפילדס', text: 'סכמת Product עם מחיר וזמינות, סכמת FAQPage בעמודי מידע, ומטאפילדס למאפייני מוצר שערכות ה-theme מציגות · כדי שגוגל ומנועי AI יבינו מה נמכר.' },
+    { '@type': 'HowToStep', position: 5, name: 'מפרסמים sitemap, מודדים ומצטברים', text: 'מוודאים ש-sitemap.xml נשלח ל-Search Console ושה-robots.txt לא חוסם עמודים חשובים, ואז מודדים דירוגים ונראות מדי שבוע ומתקנים לפי הנתונים.' },
+  ],
+};
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout
+  title={title}
+  description={description}
+  breadcrumbs={[{ name: 'קידום אורגני לשופיפיי', path: canonicalPath }]}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(articleLd)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(appLd)} slot="head" />
+  <script type="application/ld+json" set:html={JSON.stringify(howToLd)} slot="head" />
+
   <section class="svc-hero">
     <div class="wrap center">
-      <span class="eyebrow">קידום אורגני ל-Shopify</span>
+      <span class="eyebrow">קידום אורגני לשופיפיי</span>
       <h1>קידום אורגני לחנות שופיפיי · בלי סוכנות, בלי כאב ראש</h1>
+      <p class="byline">מאת <a href={authorUrl}>{authorName}</a> · {updatedLabel}</p>
       <p class="lede">
-        Scayla היא מכונת קידום אורגני שעובדת בתוך החנות שלכם: מחקר מילות מפתח בעברית,
-        מאמרים מבוססי מחקר, SEO למוצרים ולקטגוריות, סכמות ותיקוני 404 · הכל באישור שלכם,
-        הכל הפיך, מ-<span class="num">$49</span> לחודש.
+        Scayla היא מכונת קידום אורגני שעובדת בתוך חנות ה-Shopify שלכם: מחקר מילות מפתח בעברית,
+        מאמרים מבוססי מחקר, SEO למוצרים ולקטגוריות, קנוניקל, סכמות ותיקוני 404 · הכל באישור שלכם,
+        הכל הפיך, מ-<span class="num">$39</span> לחודש.
       </p>
       <InstallCtaPair center variant="hero" />
       <p class="cta-note">אבחון חינם · חיוב דרך Shopify · ביטול בכל עת</p>
     </div>
   </section>
 
+  <section class="svc-tldr">
+    <div class="narrow">
+      <div class="tldr card">
+        <span class="tldr-tag">בקצרה</span>
+        <p>
+          קידום אורגני לשופיפיי הוא התאמת חנות Shopify כך שגוגל ומנועי AI ימצאו אותה, יבינו אותה
+          וידרגו אותה גבוה. עושים זאת עם מבנה URL נקי וקנוניקל, מטאדאטה וכותרות ייחודיות לכל
+          קטגוריה ומוצר, סכמות Product ו-FAQ, מטאפילדס ו-sitemap תקין · ואז מודדים מדי שבוע. Scayla
+          מזהה את החוסמים ומכינה את התיקונים לאישור בקליק, מתוך החנות.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <section class="svc-body alt-bg">
-    <div class="wrap">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">הבסיס</span>
+        <h2>מה זה קידום אורגני לשופיפיי?</h2>
+      </div>
+      <div class="prose">
+        <p>
+          קידום אורגני לשופיפיי (SEO ל-Shopify) הוא סדרת פעולות שגורמות לחנות שלכם להופיע גבוה
+          בתוצאות החיפוש של גוגל · ולאחרונה גם בתשובות של מנועי AI · על שאילתות שקונים באמת
+          מקלידים. בניגוד לפרסום ממומן, תנועה אורגנית לא נעצרת ברגע שמפסיקים לשלם: עמוד קטגוריה
+          שמדורג טוב ממשיך להביא קונים חודש אחרי חודש, וזו הסיבה שקידום אורגני הוא הנכס השיווקי
+          הזול ביותר לטווח ארוך של חנות.
+        </p>
+        <p>
+          Shopify עצמו נותן בסיס SEO סביר · הוא מייצר <b>sitemap.xml</b> אוטומטי, <b>robots.txt</b>
+          תקין, ומבנה URL קבוע. אבל הבסיס הזה הוא המכנה המשותף של כל חנות Shopify בעולם, ולכן הוא
+          לא מבדל אתכם. ההבדל בין חנות שמדורגת לחנות שקופה נמצא בשכבה שמעליו: איך אתם מנהלים כתובות
+          כפולות, מטאדאטה, סכמות ומטאפילדס. את השכבה הזו נפרק כאן צעד-צעד.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-body">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">המנגנון של Shopify</span>
+        <h2>איך עובד SEO בתוך Shopify?</h2>
+        <p>Shopify מכתיב מבנה קבוע. מי שמכיר אותו, מנצל אותו במקום להיאבק בו:</p>
+      </div>
+      <div class="prose">
+        <p>
+          <b>קולקציות מול עמודי מוצר.</b> Shopify מפריד בין שני סוגי עמודים: קטגוריות תחת
+          <code>/collections/</code> ומוצרים תחת <code>/products/</code>. הכלל הפשוט הוא שקטגוריות
+          נלחמות על מילות מפתח רחבות ("נעלי ריצה לנשים") ומוצרים על מונחים מדויקים (שם דגם, מק"ט).
+          חנויות רבות מפספסות דירוגים כי עמוד הקטגוריה שלהן ריק מטקסט · רק רשת מוצרים · בזמן שגוגל
+          מחפש שם הסבר על הקטגוריה.
+        </p>
+        <p>
+          <b>URL כפולים וקנוניקל.</b> זה החור הנפוץ ביותר בחנויות Shopify. כשמוצר משויך לכמה
+          קולקציות, אותו מוצר נגיש גם דרך <code>/collections/שם/products/שם</code> וגם דרך
+          <code>/products/שם</code>. גוגל רואה תוכן כפול ומפצל בין הכתובות את אותות הדירוג. הפתרון
+          הוא תג <code>&lt;link rel="canonical"&gt;</code> שמצביע תמיד על כתובת <code>/products/</code>
+          הנקייה. Shopify מוסיף אותו בברירת מחדל, אך ערכות ותוספים יכולים לשבור אותו · לכן צריך לבדוק.
+        </p>
+        <p>
+          <b>מטאדאטה, כותרות ותיאורים.</b> ה-<code>title</code>, ה-<code>meta description</code>
+          וכותרת ה-<code>H1</code> הם מה שגוגל מציג ומדרג. ברירת המחדל של Shopify ממחזרת את שם המוצר
+          פעמיים, מה שמבזבז את השטח היקר בעמוד התוצאות. כל עמוד קטגוריה ומוצר צריך כותרת ותיאור
+          ייחודיים, עם מילת המפתח בהתחלה ובניסוח שמזמין קליק.
+        </p>
+        <p>
+          <b>מטאפילדס וה-theme.</b> Shopify שומר מאפייני מוצר נוספים · חומר, מידות, תאימות · ב-
+          <b>metafields</b>. ערכת ה-theme (שכתובה ב-Liquid) מציגה אותם בעמוד, וגם מזינה מהם סכמת
+          Product עשירה יותר. מטאפילדס מלאים פירושם עמוד מוצר שגוגל ומנועי AI מבינים לעומק, ולא רק
+          כותרת ומחיר.
+        </p>
+        <p>
+          <b>נתונים מובנים (סכמות).</b> סכמת <b>Product</b> עם מחיר וזמינות מזכה בכוכבי דירוג ומחיר
+          ישירות בעמוד התוצאות, וסכמת <b>FAQPage</b> בעמודי מידע פותחת מקום נוסף. את הסכמות מזריקים
+          ל-Liquid של ה-theme או דרך אפליקציה, ותמיד מוודאים שהן תקינות ב-Rich Results Test של גוגל.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-body alt-bg">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">ההבדל שחשוב להבין</span>
+        <h2>Scayla מול סוכנות SEO מול אפליקציית SEO גנרית</h2>
+        <p>שלוש דרכים לקדם חנות Shopify · ככה הן נראות זו מול זו:</p>
+      </div>
+      <div class="tbl-wrap">
+        <table class="cmp">
+          <thead>
+            <tr><th></th><th>סוכנות SEO</th><th>אפליקציית SEO גנרית</th><th>Scayla</th></tr>
+          </thead>
+          <tbody>
+            <tr><th>עלות חודשית</th><td>אלפי שקלים</td><td>נמוכה עד בינונית</td><td>מ-$39, חיוב דרך Shopify</td></tr>
+            <tr><th>מי עושה את העבודה</th><td>אנשי צוות</td><td>אתם, ידנית</td><td>מכונה, לאישורכם</td></tr>
+            <tr><th>מחקר מילים בעברית</th><td>לרוב כן</td><td>חלקי</td><td>כן, מובנה</td></tr>
+            <tr><th>כתיבת תוכן ומאמרים</th><td>כן, לאט</td><td>לא</td><td>כן, מבוסס מחקר</td></tr>
+            <tr><th>תיקוני קנוניקל ו-404</th><td>תלוי בסקופ</td><td>חלקי</td><td>כן, בקליק והפיך</td></tr>
+            <tr><th>נראות במנועי AI</th><td>נדיר</td><td>לא</td><td>כן, מדידה מול ChatGPT ו-Gemini</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="svc-note center">
+        הטבלה מתארת מודל עבודה טיפוסי · לא נתוני מחיר של ספק ספציפי. השוו תמיד לסקופ שהוצע לכם.
+      </p>
+    </div>
+  </section>
+
+  <section class="svc-body">
+    <div class="narrow">
       <div class="sh">
         <span class="eyebrow">מה תקבלו</span>
-        <h2>כל העבודה של סוכנות · בקצב של מכונה</h2>
+        <h2>מה מכונת הקידום עושה לחנות שלכם?</h2>
       </div>
-      <div class="bgrid">
+      <div class="bgrid two">
         <div class="b card fade-up">
           <span class="b-ic" aria-hidden="true">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 3a8 8 0 1 0 0 16 8 8 0 0 0 0-16z"/><path d="M21 21l-4.3-4.3"/></svg>
           </span>
           <h3>מחקר מילות מפתח בעברית</h3>
-          <p>המכונה מוצאת את השאילתות ששוות לכם הכי הרבה · כולל מילים שאתם צעד אחד מעמוד 1 בהן.</p>
+          <p>המכונה מוצאת את השאילתות ששוות לכם הכי הרבה · כולל מילים שאתם צעד אחד מעמוד 1 בהן · וממפה כל אחת לעמוד קולקציה או מוצר.</p>
         </div>
         <div class="b card fade-up">
           <span class="b-ic" aria-hidden="true">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 12 22l-9-9V4h9l8.6 8.6a1 1 0 0 1 0 1.4z"/><circle cx="7.5" cy="7.5" r="1.5"/></svg>
           </span>
           <h3>SEO למוצרים ולקטגוריות</h3>
-          <p>כותרות, מטא ותיאורים משופרים בכמות, עם לפני/אחרי ליד כל הצעה. קידום חנות שופיפיי בקליק אחד.</p>
+          <p>כותרות, title ותיאורים ייחודיים במקום ברירת המחדל של Shopify, עם לפני/אחרי ליד כל הצעה. קידום חנות שופיפיי בקליק אחד.</p>
         </div>
         <div class="b card fade-up">
           <span class="b-ic" aria-hidden="true">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V6a2 2 0 0 1 2-2h11l3 3v12.5a1.5 1.5 0 0 1-1.5 1.5H5.5A1.5 1.5 0 0 1 4 19.5z"/><path d="M8 10h8M8 14h5"/></svg>
           </span>
           <h3>תוכן שמביא תנועה</h3>
-          <p>מאמרים מבוססי מחקר בעברית תקנית, מכוונים למילות המפתח שלכם · מתפרסמים רק באישורכם.</p>
+          <p>מאמרים מבוססי מחקר בעברית תקנית, מכוונים למילות המפתח שלכם · מתפרסמים כבלוג Shopify רק באישורכם.</p>
         </div>
         <div class="b card fade-up">
           <span class="b-ic" aria-hidden="true">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.6 6.6a3.5 3.5 0 0 0-4.7 4.6L3 18.5V21h2.5l7.3-7.3a3.5 3.5 0 0 0 4.6-4.7l-2.3 2.3-2-.3-.3-2 2.4-2.4z"/></svg>
           </span>
           <h3>תיקונים טכניים</h3>
-          <p>סכמות, FAQ, תיקוני 301 לעמודי 404 · מחובר ישירות ל-Google Search Console ול-GA4.</p>
+          <p>סכמת Product, FAQ, קנוניקל, תיקוני 301 לעמודי 404 · מחובר ישירות ל-Google Search Console ול-GA4.</p>
         </div>
       </div>
       <p class="svc-note center">
@@ -82,10 +274,106 @@ const faq = [
     </div>
   </section>
 
+  <section class="svc-guide">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">מדריך מהיר</span>
+        <h2>איך עושים קידום אורגני לשופיפיי · חמישה צעדים</h2>
+      </div>
+      <ol class="guide">
+        <li class="card fade-up">
+          <span class="gn num">1</span>
+          <div>
+            <h3>מפים מילות מפתח לקטגוריות ולמוצרים</h3>
+            <p>מונחים רחבים ("נעלי ריצה לנשים") לעמודי <code>/collections/</code>, ומונחי דגם מדויקים לעמודי <code>/products/</code>. כל כתובת מקבלת מטרה אחת, בלי שתי כתובות שנלחמות על אותה מילה.</p>
+          </div>
+        </li>
+        <li class="card fade-up">
+          <span class="gn num">2</span>
+          <div>
+            <h3>מתקנים את מבנה ה-URL והקנוניקל</h3>
+            <p>מוודאים שכל מוצר מוגש מכתובת <code>/products/</code> נקייה אחת, עם תג canonical שמצביע עליה, כדי שגרסאות <code>/collections/…/products/</code> לא יפצלו את אותות הדירוג בין כתובות.</p>
+          </div>
+        </li>
+        <li class="card fade-up">
+          <span class="gn num">3</span>
+          <div>
+            <h3>כותבים מטאדאטה, כותרות ותיאורים</h3>
+            <p>לכל קטגוריה ומוצר: <code>H1</code> ברור, <code>title</code> ו-<code>meta description</code> ייחודיים במקום ברירת המחדל, וטקסט שמכיל את מילת המפתח בצורה טבעית · לא מוחזרת פעמיים.</p>
+          </div>
+        </li>
+        <li class="card fade-up">
+          <span class="gn num">4</span>
+          <div>
+            <h3>מוסיפים סכמות וממלאים מטאפילדס</h3>
+            <p>סכמת Product עם מחיר וזמינות, סכמת FAQPage בעמודי מידע, ומטאפילדס למאפייני מוצר שה-theme מציג · כדי שגוגל ומנועי AI יבינו בדיוק מה נמכר.</p>
+          </div>
+        </li>
+        <li class="card fade-up">
+          <span class="gn num">5</span>
+          <div>
+            <h3>מפרסמים sitemap, מודדים ומצטברים</h3>
+            <p>מוודאים ש-<code>sitemap.xml</code> נשלח ל-Search Console ושה-<code>robots.txt</code> לא חוסם עמודים חשובים, ואז מודדים דירוגים ונראות מדי שבוע ומתקנים לפי הנתונים · לא לפי תחושה.</p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="svc-body alt-bg">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">איך Scayla עוזרת</span>
+        <h2>מדידה ותיקון · אוטומטית, מתוך חנות ה-Shopify</h2>
+      </div>
+      <div class="bgrid three">
+        <div class="b card fade-up">
+          <span class="b-ic" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 3a8 8 0 1 0 0 16 8 8 0 0 0 0-16z"/><path d="M21 21l-4.3-4.3"/></svg>
+          </span>
+          <h3>סורקת ומאבחנת</h3>
+          <p>המכונה עוברת על הקולקציות והמוצרים, מזהה כותרות חלשות, קנוניקל שבור, סכמות חסרות ועמודי 404 · ומדרגת מה יזיז הכי הרבה קונים.</p>
+        </div>
+        <div class="b card fade-up">
+          <span class="b-ic" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5V6a2 2 0 0 1 2-2h11l3 3v12.5a1.5 1.5 0 0 1-1.5 1.5H5.5A1.5 1.5 0 0 1 4 19.5z"/><path d="M8 10h8M8 14h5"/></svg>
+          </span>
+          <h3>בונה תוכן ומטאדאטה</h3>
+          <p>כותבת מטא, תיאורי מוצר ומאמרים בעברית תקנית ובמבנה שגוגל ומנועי AI אוהבים · ומפרסמת רק באישורכם.</p>
+        </div>
+        <div class="b card fade-up">
+          <span class="b-ic" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.6 6.6a3.5 3.5 0 0 0-4.7 4.6L3 18.5V21h2.5l7.3-7.3a3.5 3.5 0 0 0 4.6-4.7l-2.3 2.3-2-.3-.3-2 2.4-2.4z"/></svg>
+          </span>
+          <h3>מתקנת את מה שחוסם</h3>
+          <p>קנוניקל, סכמות חסרות, כותרות חלשות, הפניות 301 · כל מה שמקשה על גוגל ומנוע AI להבין את החנות. התיקונים מוכנים לאישור בקליק, והכל הפיך.</p>
+        </div>
+      </div>
+      <p class="svc-note center">
+        רוצים לראות מה חוסם אתכם? <a href="/scan">בדיקת נראות חינם</a> מריצה אבחון על החנות תוך
+        דקות ומראה את התיקונים הממתינים. פרטים מלאים על <a href="/pricing">התוכניות</a> ומה כלול בכל אחת.
+      </p>
+    </div>
+  </section>
+
   <section class="svc-faq">
     <div class="narrow">
       <div class="sh"><span class="eyebrow">שאלות נפוצות</span><h2>קידום אורגני לשופיפיי · תשובות מהירות</h2></div>
       <FaqAccordion items={faq} schema={true} />
+    </div>
+  </section>
+
+  <section class="svc-links alt-bg">
+    <div class="wrap">
+      <div class="sh"><span class="eyebrow">להעמיק</span><h2>אותה מכונה · מנוע-מנוע</h2></div>
+      <div class="lgrid">
+        <a class="lcard card fade-up" href="/geo"><b>אופטימיזציה למנועי AI · GEO</b><small>העיקרון שמאחורי ChatGPT, Gemini ו-Perplexity · מדידה ופעולה</small></a>
+        <a class="lcard card fade-up" href="/ai-visibility"><b>נראות במנועי AI</b><small>שתהיו בתשובה כשקונה שואל המלצה · לא רק בגוגל</small></a>
+        <a class="lcard card fade-up" href="/chatgpt-seo"><b>הופעה ב-ChatGPT</b><small>הנפוץ בישראל · נפח שאלות הקנייה הגדול ביותר</small></a>
+        <a class="lcard card fade-up" href="/gemini-seo"><b>הופעה ב-Gemini</b><small>המנוע של גוגל, מחובר לחיפוש שכבר יש לכם בו נוכחות</small></a>
+        <a class="lcard card fade-up" href="/perplexity-seo"><b>הופעה ב-Perplexity</b><small>המנוע שמצרף מקורות עם קישור · ציטוט שהופך לתנועה</small></a>
+        <a class="lcard card fade-up" href="/claude-seo"><b>הופעה ב-Claude</b><small>קהל מקצועי, מחקר לעומק · פחות רעש, יותר כוונה</small></a>
+      </div>
     </div>
   </section>
 
@@ -102,25 +390,76 @@ const faq = [
 <style>
   .svc-hero { padding-block-end: 16px; }
   .svc-hero .lede { max-inline-size: 62ch; margin-inline: auto; }
+  .byline { font-size: 13.5px; color: var(--sc-muted); margin-block: 6px 14px; font-weight: 500; }
+  .byline a { font-weight: 700; }
   .cta-note { font-size: 13px; color: var(--sc-disabled); margin-block-start: 14px; }
   .alt-bg { background: var(--sc-card); }
   :global([data-theme='dark']) .alt-bg { background: #17141d; }
-  .bgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  @media (max-width: 720px) { .bgrid { grid-template-columns: 1fr; } }
-  .b { padding: 24px; background: var(--sc-paper); }
-  .b { transition: transform .18s var(--sc-ease), box-shadow .18s var(--sc-ease); }
+
+  .svc-tldr { padding-block: 8px; }
+  .tldr { padding: 22px 24px; border-inline-start: 4px solid var(--sc-accent); background: var(--sc-wash); }
+  .tldr-tag {
+    display: inline-block; font-size: 12px; font-weight: 800; letter-spacing: .04em;
+    color: var(--sc-accent-text); margin-block-end: 8px;
+    text-transform: uppercase;
+  }
+  .tldr p { font-size: 16px; color: var(--sc-ink); line-height: 1.75; margin: 0; }
+
+  .prose p { max-inline-size: 68ch; margin-inline: auto; margin-block-end: 14px; font-size: 16px; }
+  .prose { margin-block-end: 8px; }
+  .prose code {
+    font-size: 13.5px; background: var(--sc-wash); border: 1px solid var(--sc-hair);
+    padding: 1px 6px; border-radius: 6px; direction: ltr; unicode-bidi: embed;
+  }
+
+  .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table.cmp {
+    inline-size: 100%; border-collapse: collapse; margin-inline: auto;
+    font-size: 15px; background: var(--sc-paper); border-radius: 14px; overflow: hidden;
+    border: 1px solid var(--sc-hair);
+  }
+  table.cmp th, table.cmp td { padding: 12px 16px; text-align: start; vertical-align: top; }
+  table.cmp thead th { background: var(--sc-wash); color: var(--sc-ink); font-weight: 800; font-size: 14.5px; }
+  table.cmp tbody th { font-weight: 700; color: var(--sc-ink); inline-size: 22%; }
+  table.cmp tbody td { color: var(--sc-muted); font-weight: 500; }
+  table.cmp tbody tr + tr th, table.cmp tbody tr + tr td { border-block-start: 1px solid var(--sc-hair); }
+
+  .bgrid { display: grid; gap: 16px; }
+  .bgrid.two { grid-template-columns: repeat(2, 1fr); }
+  .bgrid.three { grid-template-columns: repeat(3, 1fr); }
+  @media (max-width: 820px) { .bgrid.two, .bgrid.three { grid-template-columns: 1fr; } }
+  .b { padding: 24px; background: var(--sc-paper); transition: transform .18s var(--sc-ease), box-shadow .18s var(--sc-ease); }
   .b:hover { transform: translateY(-3px); box-shadow: var(--sc-sh-lift); }
   .b-ic {
-    display: grid; place-items: center;
-    inline-size: 44px; block-size: 44px;
-    border-radius: 12px;
-    background: var(--sc-wash);
-    border: 1px solid var(--sc-soft);
-    color: var(--sc-accent-text);
-    margin-block-end: 14px;
+    display: grid; place-items: center; inline-size: 44px; block-size: 44px;
+    border-radius: 12px; background: var(--sc-wash); border: 1px solid var(--sc-soft);
+    color: var(--sc-accent-text); margin-block-end: 14px;
   }
   .b h3 { margin-block-end: 6px; font-size: 17px; }
   .b p { font-size: 14.5px; }
-  .svc-note { margin-block-start: 26px; font-size: 15px; max-inline-size: 60ch; margin-inline: auto; }
+
+  .guide { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .guide li { display: flex; gap: 16px; align-items: flex-start; padding: 20px 22px; }
+  .gn {
+    flex: none; inline-size: 34px; block-size: 34px; border-radius: 10px;
+    background: var(--sc-wash); color: var(--sc-accent-text);
+    display: grid; place-items: center; font-size: 16px; font-weight: 800;
+  }
+  .guide h3 { font-size: 16.5px; margin-block-end: 4px; }
+  .guide p { font-size: 14.5px; }
+  .guide code {
+    font-size: 13px; background: var(--sc-wash); border: 1px solid var(--sc-hair);
+    padding: 1px 5px; border-radius: 6px; direction: ltr; unicode-bidi: embed;
+  }
+
+  .lgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 820px) { .lgrid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 520px) { .lgrid { grid-template-columns: 1fr; } }
+  .lcard { display: flex; flex-direction: column; gap: 5px; padding: 18px 20px; color: var(--sc-ink); transition: transform var(--sc-fast) var(--sc-ease), border-color 200ms, box-shadow 200ms; }
+  .lcard:hover { color: var(--sc-ink); transform: translateY(-2px); border-color: var(--sc-soft); box-shadow: var(--sc-sh-lift); }
+  .lcard b { font-size: 15.5px; font-weight: 800; letter-spacing: -.01em; }
+  .lcard small { font-size: 13px; color: var(--sc-muted); font-weight: 500; line-height: 1.5; }
+
+  .svc-note { margin-block-start: 26px; font-size: 15px; max-inline-size: 64ch; margin-inline: auto; }
   .svc-cta { padding-block-end: clamp(24px, 4vw, 48px); }
 </style>

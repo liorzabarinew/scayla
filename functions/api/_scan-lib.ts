@@ -15,6 +15,7 @@ export interface Env {
   TURNSTILE_SECRET_KEY?: string;
   SCAN_JOBS?: KVNamespace;
   SCAN_DAILY_CAP?: string;
+  SCAN_IP_CAP?: string;
 }
 
 // ── דומיין ──
@@ -23,6 +24,23 @@ export const cleanHost = (v: string) =>
     .replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/.*$/, '').replace(/:\d+$/, '');
 
 export const okHost = (v: string) => /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9-]+)+$/.test(cleanHost(v));
+
+/**
+ * דומיין-רושם (eTLD+1) · מקפל תת-דומיינים ונתיבים לאותה יחידה, כדי
+ * שסריקה אחת לדומיין תחסום גם את m.example.com ואת example.com/path.
+ * לא רשימת PSL מלאה · מכסה את ה-TLDs הדו-שכבתיים הנפוצים (בעיקר IL).
+ */
+const MULTI_TLD = new Set([
+  'co.il', 'org.il', 'ac.il', 'gov.il', 'net.il', 'muni.il', 'idf.il',
+  'co.uk', 'org.uk', 'com.au', 'net.au', 'co.nz', 'co.za', 'com.br', 'co.jp', 'com.tr',
+]);
+export const registrableDomain = (v: string) => {
+  const h = cleanHost(v);
+  const p = h.split('.');
+  if (p.length <= 2) return h;
+  const last2 = p.slice(-2).join('.');
+  return (MULTI_TLD.has(last2) ? p.slice(-3) : p.slice(-2)).join('.');
+};
 
 export const trim = (v: unknown, max = 400) => String(v ?? '').slice(0, max).trim();
 
@@ -105,6 +123,8 @@ export const machine = async (env: Env, path: string, init: RequestInit = {}) =>
   });
 };
 
-// ── dedupe + תקרות · KV מתאים לזה בול, זו קריאה אחת קצרה ──
-export const domKey = (host: string) => `dom:${host}`;
+// ── dedupe + תקרות · KV הוא נתיב-מהיר; הנעילה האטומית האמיתית נגד
+//    8-במקביל יושבת ב-Cloud Run (Firestore transaction), לא כאן. ──
+export const domKey = (host: string) => `dom:${registrableDomain(host)}`;
 export const capKey = () => `cap:${new Date().toISOString().slice(0, 10)}`;
+export const ipKey = (ip: string) => `ip:${ip}:${new Date().toISOString().slice(0, 10)}`;

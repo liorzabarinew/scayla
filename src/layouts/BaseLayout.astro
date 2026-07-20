@@ -2,6 +2,8 @@
 import '../styles/global.css';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import ExitIntent from '../components/ExitIntent.astro';
+import StickyCheck from '../components/StickyCheck.astro';
 
 interface Crumb {
   name: string;
@@ -105,33 +107,14 @@ const breadcrumbLd = {
     <meta name="twitter:image:alt" content={ogImageAlt} />
     <link rel="preload" href="/fonts/heebo-hebrew.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/heebo-latin.woff2" as="font" type="font/woff2" crossorigin />
-    <meta name="theme-color" content="#f6f4fb" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#121016" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f6f4fb" />
     <script is:inline>
-      // Theme boot · runs before paint to avoid a flash.
-      // PURELY AUTOMATIC by Israel time (Asia/Jerusalem), for every visitor,
-      // regardless of their own timezone: dark 20:00–07:00 · light 07:00–20:00.
-      // There is no manual toggle and no saved preference · time always wins.
+      // Theme boot · runs before paint. Dark Mode is DISABLED (Lior, 2026-07-18):
+      // the site is always light. The [data-theme='dark'] CSS stays in the codebase
+      // but is never triggered, so re-enabling later is a one-line change here.
       (function () {
         document.documentElement.classList.add('js');
-        function israelHour() {
-          try {
-            // Read the current hour in Asia/Jerusalem via Intl (handles DST for us).
-            var h = new Intl.DateTimeFormat('en-US', {
-              timeZone: 'Asia/Jerusalem', hour: 'numeric', hour12: false,
-            }).format(new Date());
-            var n = parseInt(h, 10);
-            return n === 24 ? 0 : n; // some engines emit "24" for midnight
-          } catch (e) {
-            return new Date().getHours(); // fallback · local hour
-          }
-        }
-        var h = israelHour();
-        // dark from 20:00 up to (not including) 07:00 · light otherwise
-        var theme = (h >= 20 || h < 7) ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', theme);
-        // clean up the preference saved by the old (removed) manual toggle,
-        // so nothing anywhere can override the time-based theme.
+        document.documentElement.setAttribute('data-theme', 'light');
         try { localStorage.removeItem('sc-theme'); } catch (e) {}
       })();
     </script>
@@ -153,6 +136,9 @@ const breadcrumbLd = {
       <slot />
     </main>
     <SiteFooter />
+    <ExitIntent />
+    {/* כפתור בדיקה-חינם סטיקי · בכל האתר חוץ מ-/scan עצמו */}
+    {!cleanPathname.startsWith('/scan') && <StickyCheck />}
     <script>
       // Fade-up reveal · animates on scroll, but content must NEVER stay invisible
       // (fast scroll or an observer hiccup could otherwise strand a section at opacity:0).

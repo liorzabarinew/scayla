@@ -24,15 +24,26 @@ const hasHardIssue = (issues) => (issues || []).some((i) => HARD_ISSUE_RE.test(S
 
 /** בוחר שני נושאים מהפערים שנמדדו · לא מהאוויר. */
 export async function pickTopics(store, score) {
-  const missed = score.answers.filter((a) => !a.mentioned).map((a) => a.q);
-  const pool = missed.length >= 2 ? missed : score.answers.map((a) => a.q);
+  const missedAI = score.answers.filter((a) => !a.mentioned).map((a) => a.q);
+  // עדיפות: שאלות שבהן החנות חסרה גם ב-AI וגם בגוגל (פער כפול · ההזדמנות
+  // החזקה ביותר). נופלים חזרה לחוסר-ב-AI בלבד, ואז לכל השאלות.
+  const googleGaps = score.serp?.gaps || [];
+  const doubleGap = missedAI.filter((q) => googleGaps.includes(q));
+  const pool = doubleGap.length >= 2 ? doubleGap
+    : missedAI.length >= 2 ? missedAI
+    : score.answers.map((a) => a.q);
+  // מתחרים אמיתיים שמדורגים בגוגל על השאלות האלה · הקשר לזווית התוכן.
+  const comps = (score.serp?.competitors || []).slice(0, 4).map((c) => c.domain);
+  const compLine = comps.length
+    ? `\nמתחרים שמדורגים בגוגל על שאלות אלה: ${comps.join(', ')}. כתוב תוכן שיכול לעקוף אותם · בלי להזכיר אותם בשם.`
+    : '';
   const prompt = `אתה מתכנן תוכן לחנות אונליין ישראלית.
 
 החנות: ${store.title || store.host} (${store.host})
 מה היא מוכרת: ${(store.description || store.text || '').slice(0, 700)}
 
 אלה שאלות קונה אמיתיות שבהן החנות לא הופיעה בתשובת ה-AI:
-${pool.slice(0, 6).map((q, i) => `${i + 1}. ${q}`).join('\n')}
+${pool.slice(0, 6).map((q, i) => `${i + 1}. ${q}`).join('\n')}${compLine}
 
 בחר בדיוק 2 נושאי מאמר שונים זה מזה, שכתיבתם תעזור לחנות להופיע בשאלות כאלה.
 כללים:

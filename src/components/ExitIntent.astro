@@ -1,0 +1,189 @@
+---
+// ExitIntent · popup that offers a free /scan when a visitor is about to leave.
+// Desktop: mouse exits the top of the window. Mobile: dwell 25s OR 60% scroll.
+// Shown once per visitor (localStorage). Never shown to someone who already
+// reached /scan, and never on the /scan pages themselves.
+---
+
+<div id="ei-overlay" class="ei-overlay" hidden>
+  <div class="ei-card" role="dialog" aria-modal="true" aria-labelledby="ei-title">
+    <button type="button" class="ei-x" aria-label="סגירה" data-ei-close>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+
+    <div class="ei-eyebrow">רגע לפני שאתם הולכים...</div>
+    <h2 id="ei-title" class="ei-title">מה ה-AI עונה כשמחפשים חנות כמו שלכם?</h2>
+    <p class="ei-body">נסרוק את החנות מול שאלות הקנייה האמיתיות בקטגוריה, ונראה לכם בדיוק איפה אתם מופיעים ואיפה לא.</p>
+
+    <a class="ei-cta" href="/scan" data-ei-go>בדקו את החנות · חינם</a>
+    <button type="button" class="ei-later" data-ei-close>אולי אחר כך</button>
+  </div>
+</div>
+
+<style>
+  .ei-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(20, 18, 38, 0.55);
+    opacity: 0;
+    transition: opacity 220ms ease;
+  }
+  .ei-overlay[hidden] { display: none; }
+  .ei-overlay.ei-in { opacity: 1; }
+
+  .ei-card {
+    position: relative;
+    width: 430px;
+    max-width: 100%;
+    border-radius: 22px;
+    padding: 44px 32px 30px;
+    text-align: center;
+    background: linear-gradient(150deg, #6d5cf0 0%, #8b46e0 55%, #b84bd8 100%);
+    box-shadow: 0 28px 70px rgba(20, 18, 38, 0.5);
+    transform: translateY(10px) scale(0.98);
+    transition: transform 260ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .ei-overlay.ei-in .ei-card { transform: translateY(0) scale(1); }
+
+  .ei-x {
+    position: absolute;
+    top: 16px;
+    inset-inline-start: 16px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+    cursor: pointer;
+    transition: background 160ms ease;
+  }
+  .ei-x:hover { background: rgba(255, 255, 255, 0.34); }
+
+  .ei-eyebrow { font-size: 19px; font-weight: 600; color: #fff; margin-bottom: 14px; }
+  .ei-title { font-size: 26px; line-height: 1.3; font-weight: 700; color: #fff; margin: 0 0 16px; }
+  .ei-body { font-size: 15px; line-height: 1.65; color: rgba(255, 255, 255, 0.9); margin: 0 0 26px; }
+
+  .ei-cta {
+    display: block;
+    background: #24c88c;
+    color: #06381f;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+    transition: transform 140ms ease, background 140ms ease;
+  }
+  .ei-cta:hover { background: #1eb87f; transform: translateY(-1px); color: #06381f; }
+
+  .ei-later {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 14px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .ei-later:hover { color: #fff; }
+
+  @media (max-width: 480px) {
+    .ei-card { padding: 38px 24px 26px; }
+    .ei-title { font-size: 23px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ei-overlay, .ei-card { transition: none; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var SEEN = 'scayla_exit_seen';
+    var SCANNED = 'scayla_scanned';
+    var overlay = document.getElementById('ei-overlay');
+    if (!overlay) return;
+
+    var path = location.pathname;
+    var onScan = path === '/scan' || path.indexOf('/scan/') === 0 || path.indexOf('/scan') === 0;
+
+    function ls(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
+    function set(key, v) { try { localStorage.setItem(key, v); } catch (e) {} }
+
+    // On any /scan page: mark the visitor as engaged so the popup never nags
+    // them again, then remove it from the DOM entirely.
+    if (onScan) {
+      set(SCANNED, '1');
+      overlay.parentNode && overlay.parentNode.removeChild(overlay);
+      return;
+    }
+
+    // Already seen, or already ran a scan → never show.
+    if (ls(SEEN) || ls(SCANNED)) {
+      overlay.parentNode && overlay.parentNode.removeChild(overlay);
+      return;
+    }
+
+    var shown = false;
+    var timer = null;
+
+    function open() {
+      if (shown) return;
+      shown = true;
+      cleanup();
+      set(SEEN, '1');
+      overlay.hidden = false;
+      document.body.style.overflow = 'hidden';
+      requestAnimationFrame(function () { overlay.classList.add('ei-in'); });
+    }
+
+    function close() {
+      overlay.classList.remove('ei-in');
+      document.body.style.overflow = '';
+      setTimeout(function () { overlay.hidden = true; }, 240);
+    }
+
+    function cleanup() {
+      document.removeEventListener('mouseout', onMouseOut);
+      window.removeEventListener('scroll', onScroll);
+      if (timer) { clearTimeout(timer); timer = null; }
+    }
+
+    // Desktop · genuine exit intent: pointer leaves the top edge of the window.
+    function onMouseOut(e) {
+      if (e.clientY <= 0 && (!e.relatedTarget && !e.toElement)) open();
+    }
+
+    // Mobile · no exit intent exists. Trigger on 60% scroll depth.
+    function onScroll() {
+      var h = document.documentElement;
+      var depth = (h.scrollTop + window.innerHeight) / h.scrollHeight;
+      if (depth >= 0.6) open();
+    }
+
+    var isTouch = window.matchMedia('(hover: none)').matches;
+    if (isTouch) {
+      window.addEventListener('scroll', onScroll, { passive: true });
+      timer = setTimeout(open, 25000); // dwell fallback · whichever fires first
+    } else {
+      document.addEventListener('mouseout', onMouseOut);
+    }
+
+    // Close controls · X, "אולי אחר כך", and clicking the backdrop.
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay || e.target.closest('[data-ei-close]')) close();
+    });
+    // The CTA navigates to /scan · mark as engaged so a back-nav won't re-pop.
+    var go = overlay.querySelector('[data-ei-go]');
+    if (go) go.addEventListener('click', function () { set(SCANNED, '1'); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && shown) close(); });
+  })();
+</script>

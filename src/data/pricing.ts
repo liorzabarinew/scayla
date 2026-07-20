@@ -7,15 +7,22 @@
 // ניטור AI · מאמרים בחודש · מתחרים במעקב · מוצרים מנוטרים
 // (First-draft numbers · the client refines later.)
 
-// TEMPORARY (Lior, 2026-07-14): the app is NOT public on the Shopify App Store yet,
-// so "התקינו ב-Shopify" opens the SAME Calendly demo popup as "קבעו דמו" (any
-// calendly.com link → popup, wired site-wide in BaseLayout). Keep this identical to
-// DEMO_URL below. REVERT the day the app goes live → set to the real App Store URL.
-export const SHOPIFY_APP_URL = 'https://calendly.com/lior-mrmake/30min';
+// LIVE (Lior, 2026-07-18): the app is public on the Shopify App Store, so every
+// "התקינו ב-Shopify" CTA site-wide points to the real listing. This is NOT a
+// calendly.com link, so BaseLayout's Calendly popup interceptor leaves it alone
+// and it navigates straight to the App Store.
+export const SHOPIFY_APP_URL = 'https://apps.shopify.com/scayla';
 
-// Monthly billing only · the Shopify app bills every 30 days (Shopify Billing API).
-// No annual plan yet — annual pricing was removed from the site to match the app
-// (2026-07-14). When an annual plan ships in the app, re-add the toggle + helpers here.
+// Annual billing · 20% off the monthly price (matches the Shopify app, re-added
+// 2026-07-18). One knob: change ANNUAL_DISCOUNT and every price + badge updates.
+// At 20% off: Growth $49→$39 · Scale $69→$55 · Max $99→$79 per month.
+export const ANNUAL_DISCOUNT = 0.2;
+/** % off, shown on the toggle + savings line (e.g. 20). */
+export const ANNUAL_DISCOUNT_PCT = Math.round(ANNUAL_DISCOUNT * 100);
+/** Effective per-month price when billed annually, rounded to a whole dollar. */
+export const annualPerMonth = (price: number) => Math.round(price * (1 - ANNUAL_DISCOUNT));
+/** Total charged once per year when billed annually, rounded to a whole dollar. */
+export const annualTotal = (price: number) => Math.round(price * 12 * (1 - ANNUAL_DISCOUNT));
 
 // The "קבעו דמו" destination · Lior's Calendly. Loaded site-wide (BaseLayout):
 // clicking any demo CTA opens the Calendly popup; if the widget script hasn't

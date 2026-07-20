@@ -552,6 +552,13 @@ const C = +(2 * Math.PI * 84).toFixed(2);
   .reader :global(.art-src a) { color: var(--sc-accent-text); text-decoration: none; direction: ltr; unicode-bidi: isolate; display: inline-block; }
   .reader :global(.art-src a:hover) { text-decoration: underline; }
 
+  .reader :global(.art-wm) {
+    margin-block-start: 40px; padding-block-start: 20px;
+    border-block-start: 1px solid var(--sc-div);
+    font-size: 12.5px; color: var(--sc-muted); text-align: center; font-weight: 600;
+  }
+  .reader :global(.art-wm strong) { color: var(--sc-accent-text); font-weight: 800; }
+
   /* ═══ סיום ותקלה ═══ */
   .end { padding: clamp(30px, 4vw, 48px); text-align: center; }
   .end h2 { margin-block-end: 10px; font-size: clamp(20px, 2.4vw, 28px); }
@@ -714,6 +721,9 @@ const C = +(2 * Math.PI * 84).toFixed(2);
     return out.join('');
   };
 
+  // החנות שנסרקה · לשימוש בסימן המים של המאמר. נלכד מ-status.host.
+  let scanHost = '';
+
   /** פותח את המאמר המלא בשכבה · נעים יותר מלנווט החוצה ולאבד את העמוד. */
   const openReader = (a: any) => {
     const t = $('reader-t'); if (t) t.textContent = a.title || 'מאמר';
@@ -733,7 +743,9 @@ const C = +(2 * Math.PI * 84).toFixed(2);
       const fq = (a.faq || []).length
         ? '<div class="faq"><h3>שאלות ותשובות</h3>' + a.faq.map((f: any) => `<div class="faq-i"><p class="faq-q">${esc(f.q)}</p><p class="faq-a">${esc(f.a)}</p></div>`).join('') + '</div>'
         : '';
-      b.innerHTML = wh + tk + mdToHtml(a.md || '') + fq;
+      // סימן מים · ייחוס עדין. לא חוסם את המתנה, אבל כל דליפה נושאת את המותג.
+      const wm = `<p class="art-wm">מאמר שנכתב על ידי <strong>Scayla</strong>${scanHost ? ` עבור ${esc(scanHost)}` : ''} · scayla.co.il</p>`;
+      b.innerHTML = wh + tk + mdToHtml(a.md || '') + fq + wm;
     }
     const s = $('reader-src');
     if (s) {
@@ -750,6 +762,15 @@ const C = +(2 * Math.PI * 84).toFixed(2);
   const closeReader = () => { hide($('reader')); document.body.style.overflow = ''; };
   $('reader-close')?.addEventListener('click', closeReader);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeReader(); });
+
+  // מיתוג-העתקה · לא חוסם (המאמר הוא מתנה מלאה), אבל כל טקסט שמעתיקים
+  // מהמאמר נושא ייחוס ל-Scayla · דליפה הופכת לפרסומת שמובילה חזרה אלינו.
+  $('reader-md')?.addEventListener('copy', (e: any) => {
+    const sel = String(document.getSelection() || '');
+    if (sel.length < 40 || !e.clipboardData) return;
+    e.clipboardData.setData('text/plain', `${sel}\n\n— מאמר מאת Scayla · scayla.co.il`);
+    e.preventDefault();
+  });
 
   const renderArts = (arts: any[]) => {
     const wrap = $('arts');
@@ -806,6 +827,7 @@ const C = +(2 * Math.PI * 84).toFixed(2);
 
   const apply = (st: any) => {
     if (st.startedAt) startedAt = st.startedAt;
+    if (st.host || st.store?.host) scanHost = st.host || st.store.host;
     if (st.score) { paintScore(st.score); renderAnswers(st.score.answers || []); }
     switch (st.phase) {
       case 'scanning':
@@ -863,6 +885,7 @@ const C = +(2 * Math.PI * 84).toFixed(2);
           bad_url: 'הכתובת לא נראית תקינה · בדקו ונסו שוב.',
           turnstile: 'אימות האבטחה לא עבר · רעננו את העמוד ונסו שוב.',
           scan_cap: 'הגענו לתקרת הבדיקות להיום · נסו שוב מחר.',
+          ip_cap: 'ביצעתם כמה בדיקות היום · נסו שוב מחר, או דברו איתנו לבדיקה של עוד חנויות.',
         };
         const el = $('e-summary');
         if (el) { el.textContent = m[j.error] || 'הבדיקה לא זמינה כרגע · נסו שוב בעוד כמה דקות.'; show(el); }

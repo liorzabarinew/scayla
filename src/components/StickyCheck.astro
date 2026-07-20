@@ -1,0 +1,85 @@
+---
+/**
+ * כפתור סטיקי עגול צף (שמאל-תחתון) · "בדיקה חינם" → /scan.
+ * טבעת-טעינה מסתובבת (אפקט הלוגו) + כניסה עם pop + ריחוף עדין.
+ * מוטמע פעם אחת ב-BaseLayout, מוצג בכל האתר חוץ מ-/scan עצמו.
+ */
+---
+
+<a class="sc" href="/scan" aria-label="בדיקה חינם · סריקת נראות ל-AI">
+  <svg class="sc-ring" viewBox="0 0 100 100" aria-hidden="true">
+    <defs>
+      <linearGradient id="sc-grad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#211c86" /><stop offset=".5" stop-color="#5546d6" /><stop offset="1" stop-color="#8b76f2" />
+      </linearGradient>
+    </defs>
+    <circle cx="50" cy="50" r="45" fill="none" stroke="url(#sc-grad)" stroke-width="6" stroke-linecap="round" stroke-dasharray="168 215" />
+  </svg>
+  <span class="sc-core">
+    <span class="sc-spark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+    </span>
+    <span class="sc-txt">בדיקה<br />חינם</span>
+  </span>
+</a>
+
+<style>
+  .sc {
+    position: fixed; z-index: 1000;
+    bottom: 24px; left: 24px;
+    inline-size: 108px; block-size: 108px;
+    display: grid; place-items: center; text-decoration: none;
+    filter: drop-shadow(0 12px 26px rgba(33, 28, 134, .34));
+    /* base = VISIBLE, in place · the entrance only enhances. `backwards` fill so
+       the resting state reverts to this base (opacity 1) and it can never get
+       stuck invisible if the entrance is throttled (e.g. loaded in a background tab). */
+    opacity: 1;
+    animation: sc-in .7s cubic-bezier(.2, 1.2, .3, 1) backwards, sc-bob 4.5s ease-in-out 1s infinite;
+    -webkit-tap-highlight-color: transparent;
+  }
+  @media (max-width: 560px) { .sc { inline-size: 92px; block-size: 92px; bottom: 18px; left: 18px; } }
+
+  .sc-ring {
+    position: absolute; inset: 0; inline-size: 100%; block-size: 100%;
+    animation: sc-spin 2.6s linear infinite;
+  }
+
+  .sc-core {
+    position: relative; z-index: 1;
+    inline-size: 82px; block-size: 82px; border-radius: 50%;
+    background: var(--sc-card);
+    display: grid; place-items: center; gap: 1px;
+    box-shadow: inset 0 0 0 1px var(--sc-hair);
+    transition: transform .2s ease;
+  }
+  @media (max-width: 560px) { .sc-core { inline-size: 70px; block-size: 70px; } }
+  /* נגיעה קטנה למטה · כדי שהזכוכית מגדלת תשב טוב מול הטקסט */
+  .sc-spark { color: var(--sc-accent-text); display: grid; place-items: center; transform: translateY(2px); }
+  .sc-txt {
+    font-family: var(--sc-font);
+    font-size: 14px; font-weight: 800; line-height: 1.05; letter-spacing: -.01em;
+    color: var(--sc-ink); text-align: center;
+  }
+  @media (max-width: 560px) { .sc-txt { font-size: 12.5px; } }
+
+  /* no animation-play-state:paused on hover · pausing could freeze the entrance
+     mid-flight (invisible). Hover just speeds the ring + grows the core. */
+  .sc:hover .sc-ring { animation-duration: 1.1s; }
+  .sc:hover .sc-core { transform: scale(1.07); }
+  .sc:focus-visible { outline: 3px solid var(--sc-accent); outline-offset: 4px; border-radius: 50%; }
+
+  @keyframes sc-spin { to { transform: rotate(360deg); } }
+  @keyframes sc-bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -7px; } }
+  /* Scale-only pop · NO opacity fade and NO off-screen slide, so even if the
+     animation never runs (throttled/background tab) the held 0% state is still a
+     fully-visible button (just 70% size). It can never be invisible or off-screen. */
+  @keyframes sc-in {
+    0% { transform: scale(.7); }
+    60% { transform: scale(1.06); }
+    100% { transform: scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sc { animation: none; }
+    .sc-ring { animation: none; }
+  }
+</style>
