@@ -16,7 +16,7 @@
     "machine:publish": "node scripts/machine-vertex.mjs --publish",
     "daily": "node scripts/daily.mjs",
     "predeploy": "node scripts/deploy-guard.mjs",
-    "deploy": "npm run build && wrangler pages deploy dist --project-name scayla --branch main"
+    "deploy": "npm run build && npx --yes wrangler pages deploy dist --project-name scayla --branch main"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.4.1",
