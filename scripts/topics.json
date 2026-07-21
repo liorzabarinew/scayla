@@ -174,135 +174,15 @@
     "intent": "informational"
   },
   {
-    "cluster": "seo-shopify",
-    "keyword": "סכמות מתקדמות לשופיפיי",
-    "title": "איך להטמיע ShippingDetails ו-ReturnPolicy כדי לנצח ב-Rich Snippets",
-    "intent": "transactional"
-  },
-  {
     "cluster": "ecommerce",
     "keyword": "גיימיפיקציה בחנות שופיפיי",
     "title": "מעבר להנחה: 7 טקטיקות גיימיפיקציה (Gamification) להגדלת המרות בשופיפיי",
     "intent": "commercial"
   },
   {
-    "cluster": "ecommerce",
-    "keyword": "שיווק ב-SMS לשופיפיי",
-    "title": "לא רק לעגלה נטושה: מדריך שיווק ב-SMS לשופיפיי שמייצר מכירות חוזרות",
-    "intent": "informational"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "ניהול מלאי עם AI שופיפיי",
-    "title": "נגמר עידן הניחושים: איך לנהל מלאי והזמנות בשופיפיי עם כלי AI (אחרי Stocky)",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "שילוח ירוק לאיקומרס בישראל",
-    "title": "לא רק אקולוגי, כלכלי: המדריך לשילוח ירוק ובר-קיימא בחנות ישראלית",
-    "intent": "informational"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "שיווק לגיל השלישי באיקומרס",
-    "title": "כוח הקנייה השקט: איך משווקים לגיל השלישי (55+) בחנות אונליין ישראלית",
-    "intent": "informational"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "מחיר קידום בגוגל שופיפיי",
-    "title": "מדריך השוואת עלויות SEO ו-GEO: סוכנות, פרילנסר או אפליקציה",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "קידום באפליקציית Shop",
-    "title": "המדריך המלא: איך להופיע ולהימכר יותר באפליקציית Shop של שופיפיי",
-    "intent": "informational"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "שופיפיי ליוצרי תוכן",
-    "title": "איך למכור מרצ', קורסים ומוצרים דיגיטליים בישראל (מדריך מעשי)",
-    "intent": "informational"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "בניית דאשבורד איקומרס",
-    "title": "מדריך Looker Studio: חיבור נתוני Shopify ו-GA4 לדוחות חזותיים",
-    "intent": "informational"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "חוב טכני ב-SEO",
-    "title": "איך לאתר ולתקן חוב טכני בחנות שופיפיי (אודיט טכני למתקדמים)",
-    "intent": "informational"
-  },
-  {
     "cluster": "geo-ai",
     "keyword": "שיוך המרות מבינה מלאכותית",
     "title": "מדריך Attribution למכירות מ-Gemini ו-ChatGPT",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "שימור קול מותג בתשובות AI",
-    "title": "כשה-AI מדבר בשמכם: איך לשמור על קול מותג ייחודי בתשובות גנריות",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "ניתוח AEO של מתחרים",
-    "title": "ריגול חוקי: כלים ושיטות לניתוח אסטרטגיית ה-AEO של המתחרים שלכם",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "AEO לחנויות אופנה",
-    "title": "אופטימיזציה לוריאציות (צבע/מידה): איך לגרום ל-AI להמליץ על קטלוג האופנה המלא",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "תוכן \"עוקף-סיכום\" ל-AI",
-    "title": "7 טכניקות תוכן שיגרמו ל-AI להפסיק לסכם ולהתחיל להפנות תנועה לאתר",
-    "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "טיפול בבעיות סינון ו-SEO בשופיפיי",
-    "title": "קטסטרופת הפילטרים: איך לנהל ניווט פאסטות (Faceted Navigation) בשופיפיי ולהימנע מכפילויות",
-    "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "השפעת אפליקציות על מהירות האתר",
-    "title": "רוצחי המהירות השקטים: איך לזהות איזו אפליקציית שופיפיי מאטה לך את החנות",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "מעבר לשופיפיי הידרוג'ן ושמירת SEO",
-    "title": "מ-Theme ל-Headless: צ'קליסט ה-SEO המלא למעבר ל-Hydrogen בלי לאבד דירוגים.",
-    "intent": "transactional"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "מחקר מילות מפתח בעידן AI Overviews",
-    "title": "סוף עידן מילות המפתח? איך לעשות מחקר נושאים (Topical Research) ל-AEO.",
-    "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "עדכון תיאורי מוצר עם AI",
-    "title": "סקייל-אפ: המדריך לעדכון אלפי תיאורי מוצר עם AI בלי להענש על ידי גוגל.",
-    "intent": "transactional"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "הנגשת חנות שופיפיי",
-    "title": "מעבר לחוק: המדריך המלא להנגשת חנות שופיפיי (ולמה זה רווח נקי)",
     "intent": "informational"
   },
   {
@@ -717,6 +597,126 @@
     "cluster": "guides",
     "keyword": "שילוח בינלאומי וניהול החזרות שופיפיי",
     "title": "שילוח מישראל לעולם: המדריך ללוגיסטיקה, מכסים והחזרות ב-Shopify Markets",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "ניהול מוניטין פרואקטיבי ב-AI",
+    "title": "איך למנוע סיכומי AI שליליים על המותג",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "פרסום ממומן בתשובות AI",
+    "title": "כך תופיעו במודעות של ChatGPT ו-Perplexity",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "אופטימיזציה לחיפוש ויזואלי ב-AI",
+    "title": "המדריך להופעת מוצרי שופיפיי בחיפוש תמונות",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "AEO לחנויות דרופשיפינג",
+    "title": "איך לייצר סמכות ובידול כשכולם מוכרים אותו דבר",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "תמחור דינמי חכם בשופיפיי",
+    "title": "מדריך להטמעת אפליקציות תמחור מבוססות AI",
+    "intent": "transactional"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "ניהול הפניות 301 שבורות",
+    "title": "המדריך לאיתור ותיקון שגיאות 404 שמדממות לכם SEO",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "אסטרטגיית SEO לוריאנטים",
+    "title": "איך לטפל בוריאנטים של מוצר בשופיפיי בלי ליצור כפילויות",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "אופטימיזציית תמונות מתקדמת",
+    "title": "מדריך WebP ו-AVIF בשופיפיי: מה שופיפיי עושה אוטומטית ואיפה אתם נכנסים לתמונה",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "אשכולות תוכן בשופיפיי",
+    "title": "מדריך לבניית סמכות נושאית (Topical Authority) שמביאה טראפיק אורגני",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "אסטרטגיית ריטנשן אורגנית",
+    "title": "איך להחזיר לקוחות לחנות שופיפיי דרך גוגל, לא רק במייל",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "חיבור שופיפיי ליוטיוב שופינג",
+    "title": "מדריך שיווק ב-YouTube Shopping לישראל (2026)",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "pSEO לשופיפיי",
+    "title": "מדריך Programmatic SEO לחנות עם קטלוג גדול",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "ניקוי אפליקציות זומבי שופיפיי",
+    "title": "איך להסיר קוד ישן שמאט את החנות שלך",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "דוחות GA4 מתקדמים לשופיפיי",
+    "title": "מעבר לבייסיק: מדידת ROI על תוכן והמרות",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שיווק מוצרים מחודשים",
+    "title": "SEO ומיצוב לחנות שמוכרת מוצרי Refurbished",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "קידום וריאנטים שופיפיי",
+    "title": "מדריך SEO טכני ל-Variants: איך לטפל בתוכן כפול ולהגדיל חשיפה",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "פתרון בעיות GA4 בשופיפיי",
+    "title": "מדריך מעשי: איך לאתר ולתקן פערים בין Shopify Analytics ל-GA4",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "חוק הפרטיות שופיפיי",
+    "title": "מדריך 2026: איך להתאים את החנות לחוקי הפרטיות וניהול עוגיות בישראל",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "ניתוח מתחרים עם AI",
+    "title": "מדריך: איך להשתמש ב-AI לניתוח אסטרטגיות SEO ומחירים של מתחרים",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "pSEO שופיפיי",
+    "title": "מדריך למתקדמים: איך לייצר מאות דפי נחיתה ממוקדים עם Programmatic SEO",
     "intent": "informational"
   }
 ]
