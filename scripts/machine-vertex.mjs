@@ -74,9 +74,10 @@ const FIX_MODELS = (process.env.FIX_MODELS || 'gemini-2.5-flash,gemini-2.5-pro,g
 export const fixModelForRound = (round) => FIX_MODELS[Math.min(Math.max(1, round | 0) - 1, FIX_MODELS.length - 1)]
 export const fixRegionForRound = (round) =>
   fixModelForRound(round).includes('flash') ? (process.env.CRITIC_REGION || 'global') : (process.env.GCP_REGION || 'us-central1')
-// בעיות "קשות" ששרדו את כל סבבי-התיקון (כולל האגרסיבי) → גניזה, לא פרסום. טענות/מספרים לא-מאומתים
-// מוסרים בסבב האגרסיבי, אז מה שנותר קשה הוא מבנה שבור/כותרת-פסולה/ייחוס-שגוי — אלו לא ראויים לאוויר.
-export const HARD_ISSUE_RE = /כותרת לא תקינה|קטוע|מבנה שבור|ייחוס/
+// בעיות "קשות" ששרדו את כל סבבי-התיקון (כולל האגרסיבי) → גניזה, לא פרסום. הסבב האגרסיבי אמור
+// להסיר טענות/מספרים לא-מאומתים — אבל אם מספר-לא-נתמך או טענה-לא-מאומתת שרדו גם אותו, זו כבר
+// שגיאה עובדתית חיה (כמו 7%→1%), ועדיף לגנוז מלפרסם. מבנה שבור/כותרת-פסולה/ייחוס-שגוי כנ"ל.
+export const HARD_ISSUE_RE = /כותרת לא תקינה|קטוע|מבנה שבור|ייחוס|מספר לא-נתמך|טענה לא-מאומתת/
 export const hasHardIssue = (issues) => (issues || []).some((i) => HARD_ISSUE_RE.test(String(i)))
 // כשמייבאים את המודול (למשל בבדיקות-יחידה) — לא מריצים את הצינור, רק חושפים את הפונקציות.
 const isMain = !!process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href
@@ -93,6 +94,19 @@ const CLUSTER_BY_SLUG = Object.fromEntries(CLUSTERS.map((c) => [c.slug, c]))
 const CLUSTER_BY_TITLE = Object.fromEntries(CLUSTERS.map((c) => [c.title, c]))
 const CLUSTER_SLUGS = new Set(CLUSTERS.map((c) => c.slug))
 const CAT_PATHS = CLUSTERS.map((c) => `/magazine/cluster/${c.slug}`).join(' , ')
+// C1: עמודי-מוצר אמיתיים (routes חיים) שמותר לקשר אליהם מגוף המאמר — CTA המרה אחד/מאמר.
+// allowlist זה גם סוגר את E8: קישור-שורש לא-מוכר נחתך ב-validateLinks במקום להפוך ל-404.
+const PRODUCT_LINKS = [
+  { path: '/scan', what: 'בדיקת נראות ה-AI החינמית של החנות' },
+  { path: '/pricing', what: 'תוכניות ומחירים' },
+  { path: '/features/ai-score', what: 'ציון הנראות ב-AI' },
+  { path: '/features/answer-viewer', what: 'צפייה בתשובות ה-AI על המותג' },
+  { path: '/features/competitor-race', what: 'השוואת נראות מול מתחרים' },
+  { path: '/features/content', what: 'מנוע התוכן האוטומטי' },
+  { path: '/features/store-fixes', what: 'תיקוני חנות אוטומטיים' },
+  { path: '/features/roi', what: 'מדידת ROI מתנועת AI' },
+]
+const PRODUCT_LINKS_FOR_PROMPT = PRODUCT_LINKS.map((p) => `${p.path} (${p.what})`).join(' · ')
 const CLUSTER_NAMES = CLUSTERS.map((c) => c.title).join(' | ')
 
 // כותבים אמיתיים (E-E-A-T) · byline מקושר ל-/experts. איזון 2/2 לריצה יומית של 4:
@@ -300,6 +314,7 @@ ${related || '(אין עדיין)'}
 - בלוק "## מה חשוב לזכור" עם 3-4 נקודות תמצית (bullets).
 - הגדר מושג-מפתח אחד בבירור (לבהירות ל-AI).
 - 3-5 קישורים פנימיים מהרשימה/מהאשכולות, בטקסט-עוגן תיאורי (3-6 מילים, לעולם לא "כאן"/"לחצו"), בתוך משפט רץ.
+- **קישור-מוצר אחד (CTA):** שלב פעם אחת, באופן טבעי (בד"כ לקראת הסוף), קישור לעמוד-המוצר הרלוונטי ביותר של Scayla מתוך הרשימה: ${PRODUCT_LINKS_FOR_PROMPT}. טקסט-עוגן תיאורי, בתוך משפט. אל תשתמש בנתיב שלא ברשימה. מקסימום קישור-מוצר אחד לכל המאמר.
 - אל תכתוב סעיף "## שאלות נפוצות" בגוף. ה-FAQ נכנס אך ורק לשדה faq ב-frontmatter.
 
 ${factsForPrompt()}
@@ -494,12 +509,26 @@ function injectSources(md, sources) {
   if (/^sources:/m.test(md)) return md.replace(/^sources:[\s\S]*?(?=^---\s*$)/m, yaml)
   return md.replace(/\n---\n/, `\n${yaml}---\n`)
 }
-// משאיר רק קישורים פנימיים תקינים: /magazine/<slug-קיים> או /magazine/cluster/<אשכול>.
-// קישור שבור → מסירים את הקישור ומשאירים את טקסט-העוגן (לא מאבדים תוכן).
+// משאיר רק קישורים פנימיים תקינים: /magazine/<slug-קיים> או /magazine/cluster/<אשכול>. קישור-מגזין
+// שבור → מסירים ומשאירים טקסט-עוגן. עמודי-מוצר ושאר קישורי-שורש תקינים (/pricing, /#how) עוברים כמו שהם.
+// E8: קישורי-שורש בנאמספייסים של Shopify שלא קיימים באתר-השיווק (/products, /collections, /cart, /checkout)
+//     הם המצאה של המודל (הוא כותב על Shopify) → 404. חותכים אותם לטקסט. שאר הקישורים לא נגעים.
+// C2: גוזם את תיאור-ה-meta ל-≤155 תווים בגבול-מילה (בלי אליפסיס · Google חותך ממילא).
+//   דטרמיניסטי — לא נשען על המודל (כל 63 המאמרים הראשונים חרגו למרות ההנחיה בפרומפט).
+function clampDescription(md, max = 155) {
+  return md.replace(/^(description:\s*")([^"]*)(")/m, (m, a, desc, b) => {
+    const d = desc.trim()
+    if (d.length <= max) return a + d + b
+    const cut = d.slice(0, max).replace(/\s+\S*$/, '').replace(/[\s,;:·\-–]+$/, '')
+    return a + cut + b
+  })
+}
+const FAKE_NS_RE = /\[([^\]]+)\]\(\/(?:products|collections|cart|checkout|admin)(?:\/[^)]*)?\)/g
 function validateLinks(md, validSlugs) {
   return md
     .replace(/\[([^\]]+)\]\(\/magazine\/cluster\/([a-z0-9-]+)\/?\)/g, (m, t, c) => (CLUSTER_SLUGS.has(c) ? `[${t}](/magazine/cluster/${c})` : t))
     .replace(/\[([^\]]+)\]\(\/magazine\/([^\/)]+)\/?\)/g, (m, t, slug) => (validSlugs.has(decodeURIComponent(slug)) ? `[${t}](/magazine/${slug})` : t))
+    .replace(FAKE_NS_RE, (m, t) => t)
 }
 
 // שער-דמיון דטרמיניסטי (Jaccard על מילות כותרת+slug אחרי סינון מילים גנריות).
@@ -619,7 +648,9 @@ ${md.replace(/^---[\s\S]*?^---\s*$/m, '').slice(0, 9000)}
 ${srcTexts.map((s, i) => `--- מקור ${i + 1} (${s.url}) ---\n${s.text}`).join('\n\n').slice(0, 24000)}`
 async function qaSourceGrounding(md, srcTexts) {
   if (!srcTexts.length) return { unsupported: [], _skipped: true }
-  const { text } = await callGemini(sourceGroundPrompt(md, srcTexts), { maxTokens: 3000, temperature: 0, thinkingBudget: 0, model: CRITIC_MODEL, region: CRITIC_REGION })
+  // thinkingBudget אמיתי · זו העדשה היחידה שמשווה כל מספר בגוף מול טקסט-המקור בפועל —
+  // בדיוק המשימה שבה thinking קריטי (thinkingBudget:0 "מלובוטם" ומחמיץ שגיאות-מספר כמו 7%→1%).
+  const { text } = await callGemini(sourceGroundPrompt(md, srcTexts), { maxTokens: 3000, temperature: 0, thinkingBudget: 1024, model: CRITIC_MODEL, region: CRITIC_REGION })
   const o = looseJson(text)
   if (o && Array.isArray(o.unsupported)) return o
   console.error('⚠ source-grounding QA parse failed')
@@ -800,24 +831,33 @@ if (isMain) try {
     qaSourceGrounding(md, srcTexts).catch((e) => { console.error('⚠ source-grounding QA error:', String(e).slice(0, 120)); return null }),
   ])
 
+  // ── fail-CLOSED · אם כל שלוש עדשות אימות-העובדות הליבה (fact-check + 2 מבקרי-טענות) לא רצו
+  //    באמת (תקלת Vertex/מכסה → null או parseFailed), אי-אפשר לאמת את המאמר. אל תפרסם לא-מבוקר:
+  //    גונזים (כמו fixer.mjs:74). עדשת source-grounding לבדה אינה תחליף ל-fact-check. ──
+  const coreQaRan = [v, gc, c].some((o) => o && !o._parseFailed)
+  if (!coreQaRan) console.error('⛔ all core QA lenses failed to run (Vertex/quota?) — shelving unverified [fail-closed]')
+
   // ── MONITOR only · collect every issue the QA lenses found; block NOTHING. Even a
   //    fact-check "reject" is routed to the fixer (it rewrites), never skipped. QA detects;
   //    the fix→verify loop below repairs until the article is publishable.
   if (v && v.verdict === 'reject') issues.push(...(v.issues || []).map((i) => `שגיאה חמורה לתיקון: ${i}`))
   else if (v && (v.verdict === 'fixable' || v.fabricated)) issues.push(...(v.issues || []))
   if (v && v.slugOk === false) suggestedSlug = v.suggestedSlug || ''
-  const collectClaims = (o) => (o && !o._parseFailed)
-    ? [...(o.issues || []), ...((o.claims || []).filter((x) => x.verifiedBySearch === 'no').map((x) => `הסר או רכך טענה לא-מאומתת: ${x.claim}`))]
-    : []
+  // parse-fail של מבקר ≠ "נקי": critic שמחזיר JSON שבור מסיר עדשה בשקט. מחזירים issue רך
+  //   שמפעיל את ה-fixer (כמו qa ב-:568), במקום להתייחס כ-pass ולפרסם לא-מבוקר.
+  const collectClaims = (o) => !o ? []
+    : o._parseFailed ? ['טענה לא-מאומתת: בדיקת-הטענות נכשלה טכנית (JSON לא נקרא) — אמת/רכך ידנית כל מספר וציטוט לא-מגובה.']
+    : [...(o.issues || []), ...((o.claims || []).filter((x) => x.verifiedBySearch === 'no').map((x) => `הסר או רכך טענה לא-מאומתת: ${x.claim}`))]
   if (c && c.verdict === 'reject') console.error('⚠ cross-model (flash) flagged claims → routing to fixer')
   if (gc && gc.verdict === 'reject') console.error('⚠ Gemini-claims flagged → routing to fixer')
   issues.push(...collectClaims(c), ...collectClaims(gc))
   if (cp && !cp._parseFailed && cp.hasIssues) issues.push(...(cp.issues || []).map((i) => `לשון: ${i}`))
   if (sg && !sg._skipped && Array.isArray(sg.unsupported) && sg.unsupported.length) {
     issues.push(...sg.unsupported.slice(0, 8).map((u) => `מספר לא-נתמך-במקור (${u.number || ''}): "${(u.claim || '').slice(0, 90)}" — החלף במספר שמופיע במקור אמיתי, או רכך לאמירה כללית בלי מספר.`))
-  } else if (sg && sg._skipped) {
-    // sources unfetchable → numbers can't be confirmed. NOT a blocker: flag any stats so the
-    // fixer softens what it can't stand behind (the aggressive round strips the rest).
+  } else if (sg && (sg._skipped || sg._parseFailed)) {
+    // sources unfetchable OR the grounding critic returned broken JSON → numbers can't be
+    // confirmed. NOT a blocker: flag any stats so the fixer softens what it can't stand
+    // behind (the aggressive round strips the rest).
     const bodyOnly = md.replace(/^---[\s\S]*?\n---\n?/, '')
     if (/\d+(?:[.,]\d+)?\s*%|\bפי\s+\d|\d{1,3}(?:,\d{3})+/.test(bodyOnly)) issues.push('לא ניתן לאמת מספרים מול מקור (המקורות לא נשלפו) · ודא שכל מספר מגובה, אחרת רכך לאמירה כללית בלי מספר.')
   }
@@ -829,7 +869,8 @@ if (isMain) try {
   //    or MAX_FIX_ROUNDS. The last round is aggressive — it strips any number/claim it still
   //    can't support. The outcome is ALWAYS a publishable article; nothing is ever held. ──
   let round = 0
-  while ((issues.length || suggestedSlug) && round < MAX_FIX_ROUNDS) {
+  // אם ה-QA כולו נפל — אין טעם ב-fix loop (אין מול מה לאמת); מדלגים ישר לגניזה למטה.
+  while (coreQaRan && (issues.length || suggestedSlug) && round < MAX_FIX_ROUNDS) {
     round++
     const aggressive = round >= MAX_FIX_ROUNDS
     const fixModel = fixModelForRound(round), fixRegion = fixRegionForRound(round)
@@ -854,6 +895,8 @@ if (isMain) try {
     qaNote = issues.length ? `fixing-r${round}` : `clean-r${round}`
   }
   residual = issues.slice(0, 6) // whatever survived every round (rare) · reported, still shipped
+  // fail-closed: QA לא רץ → כופים בעיה קשה ('ייחוס') כדי לגנוז במקום לפרסם לא-מאומת.
+  if (!coreQaRan) residual = ['ייחוס: כל בדיקות ה-QA נכשלו טכנית — לא ניתן לאמת את המאמר, נגנז']
   if (residual.length) console.error(`⚠ ${residual.length} issue(s) survived ${MAX_FIX_ROUNDS} rounds — shipping with a note (QA never blocks)`)
 
   slug = sanitizeSlug(slug)
@@ -881,6 +924,7 @@ if (isMain) try {
   md = setDraft(md, !publishNow)
   md = stampDates(md, today) // תאריך דטרמיניסטי · המכונה קובעת, לא המודל
   md = stampReadingMinutes(md) // readingMinutes דטרמיניסטי מספירת-מילים
+  md = clampDescription(md) // C2: תיאור-meta ≤155 תווים דטרמיניסטי (מונע חיתוך ב-SERP)
   const title = (md.match(/^title:\s*"([^"]*)"/m) || [])[1] || ''
   const description = (md.match(/^description:\s*"([^"]*)"/m) || [])[1] || ''
   if (!fmParses(md)) {

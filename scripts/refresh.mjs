@@ -80,6 +80,35 @@ async function fetchTimeout(url, opts = {}, timeoutMs = 90_000) {
   try { return await fetch(url, { ...opts, signal: ac.signal }) }
   finally { clearTimeout(t) }
 }
+
+// ── E5: אימות-מקור לרענון · מושכים את הטקסט האמיתי של עמוד-המקור וממירים ל-plain text.
+//    fail-closed: fetch שנכשל/ריק → מחזיר '' → שום מספר לא "נתמך" → השינוי נדחה. ──
+async function fetchSourceText(url) {
+  try {
+    const res = await fetchTimeout(url, { headers: { 'user-agent': 'Mozilla/5.0 (compatible; ScaylaBot/1.0)' } }, 20_000)
+    if (!res.ok) return ''
+    const html = await res.text()
+    return html
+      .replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<[^>]+>/g, ' ').replace(/&[a-z#0-9]+;/gi, ' ').replace(/\s+/g, ' ')
+  } catch { return '' }
+}
+// כל אסימון-מספר משמעותי ב-replace (אחוזים קודם — הם הטענה) חייב להופיע בטקסט-המקור.
+// זה מה שהיה עוצר את 7%→1%: מודל שמציע "1%" עם URL סביר נדחה, אלא אם "1%" באמת במקור.
+function sourceSupportsNumbers(replace, srcText) {
+  const toks = String(replace).match(/\d+(?:[.,]\d+)?\s*%?/g) || []
+  if (!toks.length) return true // אין מספר ב-replace (שינוי טקסטואלי בלבד) → לא בסמכות העדשה הזו
+  if (srcText.length < 200) return false // עמוד חסום/ריק → אי-אפשר לאמת מספר → fail-closed
+  const norm = srcText.replace(/\s+/g, ' ')
+  const pct = toks.filter((t) => t.includes('%'))
+  const meaningful = pct.length ? pct : toks // אם יש אחוזים — הם הטענה; אחרת כל המספרים
+  return meaningful.every((t) => {
+    const d = t.replace(/\s/g, '')            // "7%" / "2.5"
+    const alt = d.replace('.', ',')            // וריאנט פסיק-עשרוני
+    const spaced = d.replace('%', ' %')        // "7 %"
+    return norm.includes(d) || norm.includes(alt) || norm.includes(spaced)
+  })
+}
 async function postJSONRetry(url, headers, body, { timeoutMs = 120_000, retries = 2 } = {}) {
   let lastErr
   for (let attempt = 0; attempt <= retries; attempt++) {
@@ -246,6 +275,14 @@ async function run() {
     if (!c.source || !/^https?:\/\//.test(String(c.source))) { console.error('דחוי (אין source תקין):', JSON.stringify(c).slice(0, 120)); continue }
     const idx = body.indexOf(c.find)
     if (idx === -1) { console.error('דחוי (find לא נמצא מילולית בגוף):', JSON.stringify(c.find).slice(0, 120)); continue }
+    // ── E5: לא מספיק ש-source תואם regex — מושכים אותו בפועל ומוודאים שהמספר החדש באמת
+    //    מופיע בו. זה שורש הבאג correct→wrong: refresh החליף מספר נכון ומגובה במספר שגוי עם
+    //    URL שלא נבדק. fail-closed: source שלא נשלף/לא תומך → דוחים את השינוי (משאירים את המקור). ──
+    const srcText = await fetchSourceText(c.source)
+    if (!sourceSupportsNumbers(c.replace, srcText)) {
+      console.error('דחוי (המספר החדש לא נתמך בטקסט-המקור שנשלף):', JSON.stringify({ replace: c.replace, source: c.source }).slice(0, 160))
+      continue
+    }
     // מחליף רק את המופע הראשון, בלי regex (הימנעות מהחלפות לא-מכוונות).
     body = body.slice(0, idx) + c.replace + body.slice(idx + c.find.length)
     applied.push({ find: c.find, replace: c.replace, reason: c.reason || '', source: c.source })

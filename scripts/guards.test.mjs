@@ -93,12 +93,17 @@ test('fixRegionForRound: Flash→global, Pro→us-central1 (endpoint per model)'
   assert.equal(fixRegionForRound(1), 'global')
   assert.equal(fixRegionForRound(2), 'us-central1')
 })
-test('hasHardIssue: structural/attribution issues shelve; soft claims/numbers do not', () => {
+test('hasHardIssue: structural/attribution AND surviving numeric/claim issues shelve', () => {
   assert.equal(hasHardIssue(['מבנה שבור · תקן']), true)
   assert.equal(hasHardIssue(['כותרת לא תקינה (אורך/מבנה)']), true)
   assert.equal(hasHardIssue(['התוכן קטוע · השלם']), true)
   assert.equal(hasHardIssue(['ייחוס שגוי של מקור']), true)
-  assert.equal(hasHardIssue(['הסר או רכך טענה לא-מאומתת: x']), false) // מוסר בסבב האגרסיבי
-  assert.equal(hasHardIssue(['מספר לא-נתמך-במקור: "y"']), false)      // מוסר בסבב האגרסיבי
+  // policy change (E4): a number/claim that SURVIVED the aggressive fix round is a live
+  // factual error (the 7%→1% lesson) — shelve, don't ship-with-note. residual only holds
+  // issues that outlived every round, so this fires rarely and fail-closed.
+  assert.equal(hasHardIssue(['הסר או רכך טענה לא-מאומתת: x']), true)
+  assert.equal(hasHardIssue(['מספר לא-נתמך-במקור: "y"']), true)
   assert.equal(hasHardIssue([]), false)
+  // a plain soft copy-edit nit still ships (not hard)
+  assert.equal(hasHardIssue(['לשון: חוסר התאמה במין']), false)
 })
