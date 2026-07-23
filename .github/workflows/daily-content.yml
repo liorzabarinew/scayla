@@ -1,11 +1,13 @@
 name: daily-content
 
-# ריצה יומית של מכונת התוכן · כל בוקר ~08:00 שעון ישראל (05:00 UTC).
-# מריצה 4 אשכולות → כותבת מאמרים + קאברים (Gemini/Vertex) → בונה → פורסת ל-Cloudflare
-# Pages → מדווחת לטלגרם. ניתן להריץ ידנית מ-Actions (workflow_dispatch).
+# ריצה יומית של מכונת התוכן.
+#
+# ⚠️ ה-schedule היומי הועבר ל-GCP (Cloud Run Job + Cloud Scheduler) כדי לממש
+#    קרדיטים במקום לשלם דקות GitHub Actions. ראו ops/content-job/README.md.
+#    ה-Job הפעיל: `scayla-content` (project scayla-prod, region me-west1),
+#    cron `scayla-content-daily` @ 05:00 UTC.
+#    workflow_dispatch הושאר כאן כגיבוי-חירום ידני בלבד (לא רץ אוטומטית).
 on:
-  schedule:
-    - cron: '0 5 * * *'
   workflow_dispatch:
 
 concurrency:
