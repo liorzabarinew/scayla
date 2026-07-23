@@ -216,57 +216,9 @@
     "intent": "commercial"
   },
   {
-    "cluster": "guides",
-    "keyword": "אופטימיזציה לפיד מוצרים ל-AI",
-    "title": "המדריך המעשי להתאמת פיד המוצרים ל-AI Overviews",
-    "intent": "informational"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "התאמת אזור אישי בשופיפיי",
-    "title": "מדריך להגברת נאמנות ורכישות חוזרות עם Customer Accounts",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "אופטימיזציה לגרף המוצרים",
-    "title": "איך להפוך את הקטלוג למקור סמכות ב-Google Shopping Graph",
-    "intent": "informational"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "Shopify Sidekick למתקדמים",
-    "title": "7 שימושים מעשיים שיחסכו לכם שעות עבודה",
-    "intent": "informational"
-  },
-  {
     "cluster": "geo-ai",
     "keyword": "גיאו שופיפיי לחנות פיזית",
     "title": "איך למנף חנות פיזית לקידום AEO בשופיפיי?",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "יצירת וידאו שיווקי עם AI",
-    "title": "הפקת סרטוני מוצר ו-UGC עם AI: המדריך לחנויות שופיפיי",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "ניתוח סנטימנט ביקורות מוצר",
-    "title": "ניתוח סנטימנט ביקורות בעברית עם AI לשיפור מוצרים וחווית לקוח",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "חיבור שופיפיי ל-Gemini",
-    "title": "מדריך: חיבור API של Gemini 2.0 לחנות שופיפיי לאוטומציות מתקדמות",
-    "intent": "transactional"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "אפליקציית SimGym שופיפיי",
-    "title": "שימוש בסוכני AI לבדיקת A/B ו-UX בחנות: מדריך ל-SimGym",
     "intent": "informational"
   },
   {
@@ -274,18 +226,6 @@
     "keyword": "אפליקציית Search & Discovery שופיפיי",
     "title": "מדריך Shopify Search & Discovery: איך להשתלט על חיפוש וסינון בחנות ולהפסיק לאבד מכירות",
     "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "קידום סרטוני מוצר שופיפיי",
-    "title": "מעבר לתמונות: מדריך SEO לסרטוני מוצר בשופיפיי (יוטיוב, טיקטוק ו-Product Studio)",
-    "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "סיכום ביקורות מוצר עם AI",
-    "title": "מכר מביקורות: איך להשתמש ב-AI לסיכום חוות דעת וחיזוק E-E-A-T בדפי מוצר",
-    "intent": "commercial"
   },
   {
     "cluster": "seo-shopify",
@@ -717,6 +657,66 @@
     "cluster": "guides",
     "keyword": "ניהול מלאי מתקדם בשופיפיי",
     "title": "מדריך לניהול מלאי חכם: מעקב, חיזוי וסנכרון בין ספקים ומחסנים",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "ניתוח לוגים שופיפיי SEO",
+    "title": "זהב בשרת: מדריך לניתוח קבצי לוג (Log Files) לאיתור בעיות SEO בשופיפיי",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "SEO למבצעי בזק שופיפיי",
+    "title": "מבצע נגמר, ה-SEO נשאר: המדריך לטיפול בדפי מבצעים זמניים (Flash Sales)",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "קידום באפליקציית Shop",
+    "title": "לא רק גוגל: המדריך המלא לאופטימיזציה וקידום באפליקציית Shop של שופיפיי",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "SEO למוצרים מותאמים אישית",
+    "title": "האתגר הבא: אסטרטגיית SEO למוצרים עם התאמה אישית (Product Customizers)",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "אוטומציות SEO לשופיפיי עם Make",
+    "title": "מעבר ל-Flow: בניית אוטומציות SEO מתקדמות לשופיפיי עם Make ו-Zapier",
+    "intent": "transactional"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "חיבור שופיפיי לטיקטוק שופ",
+    "title": "מדריך 2026: כך תמכרו בטיקטוק שופ ישירות משופיפיי בישראל",
+    "intent": "transactional"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "נגישות אתרים ו-SEO",
+    "title": "המדריך המעשי: איך הנגשת חנות שופיפיי (A11y) משפרת SEO ומכירות",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "תיוג צד-שרת שופיפיי",
+    "title": "מדריך למתקדמים: הטמעת Server-Side Tagging בשופיפיי לדיוק נתונים בעולם פוסט-עוגיות",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "אסטרטגיית אומניצ'אנל שופיפיי",
+    "title": "מדריך All-in-One: חיבור חנות פיזית (POS) ואונליין בשופיפיי לחווית לקוח אחודה",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "Shopify Audiences מדריך",
+    "title": "כך תמצאו לקוחות חדשים עם Shopify Audiences (בלי לבזבז כסף על קהלים גרועים)",
     "intent": "informational"
   }
 ]
