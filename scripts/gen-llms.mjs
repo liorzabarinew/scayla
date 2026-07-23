@@ -26,7 +26,9 @@ function readArticles() {
     const g = (k) => (fm.match(new RegExp(`^${k}:\\s*["']?(.+?)["']?\\s*$`, 'm')) || [])[1] || ''
     if (/^draft:\s*true/m.test(fm) || /^needsReview:\s*true/m.test(fm)) continue
     const body = raw.replace(/^---[\s\S]*?\n---\n?/, '').replace(/\n{3,}/g, '\n\n').trim()
-    out.push({ slug: f.replace(/\.md$/, ''), title: g('title'), description: g('description'), cluster: g('cluster'), body })
+    // slug חייב להיות lowercase · Astro's content loader ממפה את ה-route ל-slug
+    // באותיות קטנות, אז כותרת עם "AI" גדול נבנתה כ-/magazine/…-ai-… (הגרסה הגדולה 404).
+    out.push({ slug: f.replace(/\.md$/, '').toLowerCase(), title: g('title'), description: g('description'), cluster: g('cluster'), body })
   }
   return out
 }
