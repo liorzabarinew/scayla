@@ -234,12 +234,6 @@
     "intent": "informational"
   },
   {
-    "cluster": "seo-shopify",
-    "keyword": "קידום אורגני לשופיפיי לבד",
-    "title": "קידום אתרים לשופיפיי לבד: מדריך DIY לבעלי חנויות בתקציב נמוך",
-    "intent": "informational"
-  },
-  {
     "cluster": "ecommerce",
     "keyword": "פער הכנסות שופיפיי GA4",
     "title": "שופיפיי מול GA4: למה המספרים לא תואמים ועל מי לסמוך ב-2026?",
@@ -252,93 +246,15 @@
     "intent": "commercial"
   },
   {
-    "cluster": "ecommerce",
-    "keyword": "שופיפיי הידרוג'ן SEO טכני",
-    "title": "מעבר ל-Headless: מדריך SEO טכני ל-Shopify Hydrogen (SSR, SSG ו-Crawling)",
-    "intent": "informational"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "מערכת UGC לחנות שופיפיי",
-    "title": "מביקורת לסרטון: איך לבנות מכונת UGC שמייצרת אמון, תוכן ודירוגים",
-    "intent": "informational"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "לייב שופינג שופיפיי ישראל",
-    "title": "לייב שופינג בישראל: המדריך להפיכת צופים לקונים בזמן אמת בשופיפיי",
-    "intent": "informational"
-  },
-  {
     "cluster": "guides",
     "keyword": "KEYWORD",
     "title": "TITLE",
     "intent": "informational"
   },
   {
-    "cluster": "guides",
-    "keyword": "עלות שופיפיי פלוס 2026",
-    "title": "המדריך המלא: כמה באמת עולה Shopify Plus ומה העלות הנסתרת?",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "אופטימיזציה של Shopify Bundles",
-    "title": "מדריך SEO ל-Shopify Bundles: כך תגדילו חשיפה ומכירות של חבילות מוצרים",
-    "intent": "informational"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "מדריך Shopify Checkout Extensibility",
-    "title": "מדריך חובה: איך לעבור ל-Checkout Extensibility לפני הדדליין ושדרוג חווית התשלום",
-    "intent": "transactional"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "איך להילחם בביקורות מזויפות",
-    "title": "זירת הקרב החדשה: זיהוי ומניעת ביקורות מזויפות מ-AI בחנות השופיפיי שלכם",
-    "intent": "informational"
-  },
-  {
     "cluster": "geo-ai",
     "keyword": "תיקון טעויות AI על מוצרים",
     "title": "ה-AI ממציא? מדריך לזיהוי ותיקון הלוצינציות על המוצרים שלך בתשובות AI",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "אופטימיזציה לחיפוש קולי שופיפיי",
-    "title": "\"היי גוגל, תקני לי\": המדריך המלא לאופטימיזציית חנות שופיפיי למסחר קולי",
-    "intent": "transactional"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "בניית דף אתיקת AI לאתר",
-    "title": "מעבר ל-E-E-A-T: כך תבנו דף \"אתיקת AI\" לחנות שופיפיי שירכוש אמון",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "קידום סרטונים במנועי AI",
-    "title": "לא רק ביוטיוב: אופטימיזציה של סרטוני מוצר כדי ש-Gemini ו-Claude \"יצפו\" וימליצו",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "שיווק שותפים AI שופיפיי",
-    "title": "סוכני-שותפים: מודלים וכלים לניהול תוכנית שותפים מבוססת AI בחנות שופיפיי",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "קידום אתרים שופיפיי מרקטס פרו",
-    "title": "מדריך SEO ל-Shopify Markets Pro: כך תמכרו גלובלית בלי לאבד דירוגים",
-    "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "סכמת קיימות (Sustainability) לשופיפיי",
-    "title": "קידום ירוק: המדריך להטמעת סכמות קיימות ו-Eco-Friendly בשופיפיי",
     "intent": "informational"
   },
   {
@@ -717,6 +633,90 @@
     "cluster": "guides",
     "keyword": "Shopify Audiences מדריך",
     "title": "כך תמצאו לקוחות חדשים עם Shopify Audiences (בלי לבזבז כסף על קהלים גרועים)",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "חישוב החזר השקעה AEO",
+    "title": "מחשבון AEO: כך תחשבו את ההחזר על ההשקעה (ROI) ותצדיקו תקציב לאופטימיזציית AI",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "כלים לבדיקת נראות ב-AI",
+    "title": "5 כלים לבדיקת נראות ב-ChatGPT ו-Gemini שחובה להכיר ב-2026",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "אופטימיזציית פיד מוצרים ל-AI",
+    "title": "מעבר ל-Title: אופטימיזציית פיד מוצרים מתקדמת להזנת ה-AI של גוגל ופרפלקסיטי",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "אפליקציית Knowledge Base שופיפיי",
+    "title": "מדריך לאפליקציית Shopify Knowledge Base: כך תשפיעו על תשובות ה-AI על החנות שלכם",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "A/B טסטינג לאופטימיזציית AI",
+    "title": "איך עושים A/B טסטינג ל-AEO? מדריך לבדיקת תיאורים וכותרות שמנועי AI מצטטים",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שיווק לאחר רכישה בשופיפיי",
+    "title": "מעבר לתודה: 7 אסטרטגיות Post-Purchase להגדלת ערך חיי לקוח",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "פרסונליזציה ללא עוגיות שופיפיי",
+    "title": "עידן הפרטיות פתוח: המדריך לפרסונליזציה מבוססת Zero & First-Party Data",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "ניתוח סנטימנט ביקורות מוצר",
+    "title": "מה לקוחות באמת חושבים? ניתוח סנטימנט אוטומטי לביקורות מוצר עם AI",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "אסטרטגיית Zero-Party Data",
+    "title": "\"תגידו לי מה אתם רוצים\": המדריך המלא לאיסוף והפעלת Zero-Party Data בשופיפיי",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שיווק שיחות לחנות שופיפיי",
+    "title": "מ-SMS ו-WhatsApp למכירות: המדריך לשיווק שיחות (Conversational Marketing) בישראל",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "קידום לוקאלי שופיפיי POS",
+    "title": "מלקוחות בחנות לדירוגים בגוגל: מדריך SEO אומניצ'אנל לשופיפיי POS",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "כלי מחקר מתחרים AI",
+    "title": "המדריך המעשי: איך לגלות את סודות השיווק של המתחרים עם כלי AI",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "אופטימיזציה לסריקה שופיפיי",
+    "title": "תקציב זחילה 2026: המדריך המעשי לאופטימיזציית יומני שרת (Logs) בשופיפיי",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "אסטרטגיית תוכן AI לאיקומרס",
+    "title": "מעבר לתיאורי מוצר:",
     "intent": "informational"
   }
 ]
