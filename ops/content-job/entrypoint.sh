@@ -27,6 +27,11 @@ cd "$WORK"
 git config user.name  "scayla-machine"
 git config user.email "machine@scayla.co.il"
 
+# ── התראת כשל · משחזר את ה-`if: always()` של ה-yaml המקורי: כל יציאה בקוד≠0
+#    (בדיקות/daily/build/push/deploy) שולחת פינג טלגרם לפני שהריצה מתה. בלי זה
+#    כשל היה שקט. no-op בלי טוקן טלגרם או אם notify.mjs עוד לא נמשך. ──
+trap 'code=$?; [ "$code" -ne 0 ] && [ -f "$WORK/scripts/notify.mjs" ] && node "$WORK/scripts/notify.mjs" "⚠️ מכונת התוכן נכשלה · Cloud Run Job (GCP) · exit $code" || true' EXIT
+
 npm ci
 
 # ── fail-CLOSED שער 1: בדיקות ה-guards · guard שבור מבטל לפני שריפת Gemini ──
