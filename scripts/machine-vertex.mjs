@@ -396,7 +396,10 @@ function parseArticle(raw) {
   return { slug, md }
 }
 // slug בעברית: משמר אותיות עבריות/אנגליות/ספרות, מאחד רווחים/מפרידים למקף יחיד.
-export const sanitizeSlug = (s) => s.replace(/["'`]/g, '').replace(/[^֐-׿a-zA-Z0-9-]+/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '')
+// E7: מנמיך אותיות-לטיניות · Astro גוזר את ה-route מה-slug באותיות קטנות, אז קובץ בשם
+// "…-AI-…" מתפרסם בכתובת "…-ai-…". שמירת אותיות גדולות יצרה קישורים פנימיים ל-404
+// (ה-slug "תואם" את שם-הקובץ אבל לא את הכתובת האמיתית). filename == route == link.
+export const sanitizeSlug = (s) => s.replace(/["'`]/g, '').replace(/[^֐-׿a-zA-Z0-9-]+/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '').toLowerCase()
 
 export function tidyMarkdown(md) {
   return md
@@ -527,7 +530,12 @@ const FAKE_NS_RE = /\[([^\]]+)\]\(\/(?:products|collections|cart|checkout|admin)
 function validateLinks(md, validSlugs) {
   return md
     .replace(/\[([^\]]+)\]\(\/magazine\/cluster\/([a-z0-9-]+)\/?\)/g, (m, t, c) => (CLUSTER_SLUGS.has(c) ? `[${t}](/magazine/cluster/${c})` : t))
-    .replace(/\[([^\]]+)\]\(\/magazine\/([^\/)]+)\/?\)/g, (m, t, slug) => (validSlugs.has(decodeURIComponent(slug)) ? `[${t}](/magazine/${slug})` : t))
+    // E7: משווים ופולטים ב-lowercase · ה-route של Astro תמיד קטן, אז קישור עם "AI" גדול
+    //     היה "תואם" את שם-הקובץ ועובר, אבל בפועל מוביל ל-404.
+    .replace(/\[([^\]]+)\]\(\/magazine\/([^\/)]+)\/?\)/g, (m, t, slug) => {
+      const lc = decodeURIComponent(slug).toLowerCase()
+      return validSlugs.has(lc) ? `[${t}](/magazine/${encodeURI(lc)})` : t
+    })
     .replace(FAKE_NS_RE, (m, t) => t)
 }
 
@@ -807,7 +815,7 @@ if (isMain) try {
   let { slug, md } = parseArticle(writeRes.text)
   if (!slug || !md.startsWith('---') || md.split(/^---\s*$/m).length < 3) { result({ status: 'error', cluster: cat.slug, reason: 'write parse failed or truncated' }); process.exit(1) }
 
-  const validSlugs = new Set(arts.map((a) => a.slug))
+  const validSlugs = new Set(arts.map((a) => a.slug.toLowerCase())) // E7: route של Astro = lowercase
   const allSources = await resolveSources([...writeRes.sources, ...briefRes.sources])
   const assemble = (m) => appendCta(normalizeBrands(fixFmQuotes(validateLinks(injectSources(tidyMarkdown(m), allSources), validSlugs))).md)
   md = assemble(md)

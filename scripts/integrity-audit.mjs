@@ -114,7 +114,9 @@ function main() {
     errorSources: [],
   }
 
-  const slugSet = new Set(files.map((f) => f.replace(/\.md$/, '')))
+  // E7: ה-route של Astro תמיד lowercase · משווים קטן-מול-קטן, אחרת קישור עם אות גדולה
+  //     "עובר" את הבדיקה (תואם שם-קובץ) אבל בפועל 404 (כך 6 קישורים שבורים חמקו).
+  const slugSet = new Set(files.map((f) => f.replace(/\.md$/, '').toLowerCase()))
   const REQUIRED = ['title', 'description', 'pubDate', 'cluster', 'readingMinutes']
 
   for (const f of files) {
@@ -195,9 +197,15 @@ function main() {
       }
       const artMatch = path.match(/^\/magazine\/([^/]+)$/)
       if (artMatch) {
-        const target = decodeURIComponent(artMatch[1])
-        if (target === slug) continue // קישור-עצמי בלתי-מזיק
-        if (!slugSet.has(target) && !slugSet.has(artMatch[1])) violations.brokenInternalLinks.push({ slug, href, reason: 'slug יעד לא קיים' })
+        const raw = decodeURIComponent(artMatch[1])
+        const target = raw.toLowerCase()
+        if (target === String(slug).toLowerCase()) continue // קישור-עצמי בלתי-מזיק
+        if (!slugSet.has(target) && !slugSet.has(artMatch[1].toLowerCase())) {
+          violations.brokenInternalLinks.push({ slug, href, reason: 'slug יעד לא קיים' })
+        } else if (raw !== target) {
+          // היעד קיים, אבל ה-href נכתב באות גדולה · ה-route של Astro קטן → הכתובת הזו 404.
+          violations.brokenInternalLinks.push({ slug, href, reason: 'אות גדולה ב-slug (ה-route קטן) → 404' })
+        }
       }
       // כל מסלול /magazine/... אחר (עמוד אינדקס וכו') — לא נבדק
     }
