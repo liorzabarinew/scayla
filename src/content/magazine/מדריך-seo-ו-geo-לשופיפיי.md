@@ -7,6 +7,7 @@ draft: false
 cluster: "SEO לחנויות שופיפיי"
 readingMinutes: 6
 demo: false
+pillar: true
 author: "נוי קייטל"
 updatedDate: 2026-07-20
 takeaways:

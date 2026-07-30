@@ -49,6 +49,8 @@ const magazine = defineCollection({
     cluster: z.enum(CLUSTERS),
     readingMinutes: z.number().default(5),
     demo: z.boolean().default(false),
+    /** עמוד-העוגן (cornerstone) של האשכול · כל מאמר תומך מקשר אליו ראשון. אופציונלי, ברירת-מחדל false. */
+    pillar: z.boolean().default(false),
     /** Content machine · bank model. draft:true = written to the bank, not yet dripped live. */
     draft: z.boolean().default(false),
     /** Content machine · a QA/dup gate held this for a human glance. Excluded from listings until released. */

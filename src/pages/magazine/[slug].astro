@@ -61,6 +61,7 @@ const postUrl = new URL(`/magazine/${post.id}`, Astro.site).href;
 const clusterUrl = clusterPath(post.data.cluster);
 
 // Article schema · Person author (E-E-A-T) when set, else the Organization.
+// publisher + author-fallback reference the canonical #org node (emitted once in BaseLayout) · never redefine it inline.
 const articleLd = {
   '@context': 'https://schema.org',
   '@type': 'Article',
@@ -76,11 +77,8 @@ const articleLd = {
   }),
   author: author
     ? { '@type': 'Person', '@id': new URL(`${author.url}#person`, Astro.site).href, name: author.name, url: new URL(author.url, Astro.site).href }
-    : { '@type': 'Organization', '@id': 'https://scayla.co.il/#organization', name: 'Scayla', url: 'https://scayla.co.il/' },
-  publisher: {
-    '@type': 'Organization', '@id': 'https://scayla.co.il/#organization', name: 'Scayla', url: 'https://scayla.co.il/',
-    logo: { '@type': 'ImageObject', url: 'https://scayla.co.il/scayla-icon-512.png', width: 512, height: 512 },
-  },
+    : { '@id': 'https://scayla.co.il/#org' },
+  publisher: { '@id': 'https://scayla.co.il/#org' },
   mainEntityOfPage: postUrl,
   // Research sources as schema.org citation · the reciprocal-citation signal AI engines reward + E-E-A-T.
   ...(post.data.sources && post.data.sources.length > 0 && {

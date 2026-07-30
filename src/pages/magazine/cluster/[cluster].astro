@@ -33,6 +33,49 @@ const intros: Record<string, string> = {
 };
 const intro = intros[cluster] ?? '';
 
+// C5 · פרוזת-עוגן לכל אשכול · דף-hub בלי טקסט אמיתי הוא דף ריק בעיני מנוע.
+// כל מאמר באתר מקשר לכאן, אז לדף מגיע גוף של ממש: מה הנושא, למה הוא חשוב, מה מוצאים.
+const pillarProse: Record<string, { heading: string; paragraphs: string[] }> = {
+  'GEO ואופטימיזציה למנועי AI': {
+    heading: 'מה זה GEO ולמה זה נוגע לחנות שלכם',
+    paragraphs: [
+      'GEO (Generative Engine Optimization, אופטימיזציה למנועים גנרטיביים) הוא העבודה שגורמת למנועי AI כמו ChatGPT, Gemini ו-Perplexity להזכיר את החנות שלכם כשקונים שואלים אותם שאלה. וזה כבר קורה: חלק הולך וגדל מהקונים בישראל לא פותח את גוגל, אלא שואל צ\'אט "איזה מוצר כדאי לקנות" ומקבל תשובה עם שלושה או ארבעה שמות. אם החנות שלכם לא ברשימה הזאת, היא פשוט לא קיימת בשיחה.',
+      'ההבדל מ-SEO קלאסי מהותי. בגוגל נלחמים על מיקום ברשימת תוצאות, ובמנוע AI נלחמים על ציטוט בתוך תשובה אחת. המנועים מעדיפים מקורות שמנוסחים ברור, עונים על שאלות באופן ישיר, ומסמנים את המידע שלהם בסכמה (Schema, קוד שמסביר למנוע מה יש בעמוד). בעברית התחרות על הציטוטים האלה עדיין קטנה, וזה בדיוק החלון: מי שמסדר את התוכן שלו עכשיו מגדיל את הסיכוי להיכנס למאגר שהמנועים שואבים ממנו.',
+      'באשכול הזה תמצאו הסברים על איך המנועים בוחרים את המקורות שלהם, דרכים לבדוק אם ה-AI מכיר את החנות שלכם כבר היום, והצעדים המעשיים לפי סדר: מהתוכן ועד הסימון הטכני. בלי הבטחות קסם, עם עבודה שאפשר להתחיל השבוע.',
+    ],
+  },
+  'SEO לחנויות שופיפיי': {
+    heading: 'קידום אורגני שמותאם למבנה של Shopify',
+    paragraphs: [
+      'SEO (קידום אורגני, הופעה בתוצאות החיפוש בלי לשלם על מודעות) לחנות Shopify הוא משחק קצת שונה מקידום אתר רגיל. לפלטפורמה יש מבנה קבוע: קטגוריות תחת ‎/collections, עמודי מוצר עם וריאציות שמייצרות תוכן כפול, ותבניות שכותבות לבד כותרות זהות לעשרות עמודים. מי שלא מכיר את המוזרויות האלה משאיר תנועה על הרצפה.',
+      'לבעלי חנויות בישראל זה חשוב במיוחד. נפחי החיפוש בעברית קטנים יחסית, אז כל מיקום שווה יותר, ומחירי המודעות רק עולים. תנועה אורגנית היא הנכס שמצטבר: עמוד קטגוריה או מאמר שמדורג יכול להמשיך להביא קונים גם חודשים אחרי שפורסם, בלי תקציב יומי.',
+      'כאן תמצאו מדריכים על מבנה קטגוריות נכון, כתיבת תיאורי מוצר שגם גוגל וגם קונים מבינים, סכמות (קוד שמסמן למנוע החיפוש מה יש בעמוד: מחיר, מלאי, ביקורות), מהירות טעינה וקישורים פנימיים. כל מדריך נכתב על Shopify ספציפית, עם המסכים והשמות שאתם רואים בממשק, לא עצות כלליות שצריך לתרגם לבד. ואם אתם מתלבטים מאיפה להתחיל, התחילו מעמודי הקטגוריה: הם אלה שמתמודדים על החיפושים הרחבים באמת, ורוב החנויות משאירות אותם כמעט ריקים.',
+    ],
+  },
+  'שיווק לאיקומרס ישראלי': {
+    heading: 'שיווק שמדבר בשפה של השוק המקומי',
+    paragraphs: [
+      'להביא תנועה לחנות זה חצי מהעבודה. האשכול הזה עוסק בחצי השני: מה קורה מהרגע שקונה ישראלי נוחת בחנות ועד שהוא משלם, חוזר וממליץ. עגלות נטושות, רשימות תפוצה, מבצעי חגים, ביקורות של לקוחות, וכל מה שהופך ביקור חד-פעמי ללקוח קבוע. העלות של הבאת קונה חדש רק עולה, אז הערך של כל לקוח שנשאר גדל בהתאם.',
+      'למה אשכול נפרד לשוק הישראלי? כי הוא באמת שונה. לוח השנה המסחרי כאן בנוי סביב החגים ולא רק סביב בלאק פריידיי, קונים מצפים למשלוח מהיר ולשירות בעברית, אמצעי תשלום מקומיים משפיעים על ההחלטה בקופה, והשוק קטן מספיק כדי ששירות גרוע מתפרסם מהר. עצות מתורגמות מבלוגים אמריקאיים מפספסות את כל אלה.',
+      'תמצאו כאן מאמרים מעשיים על שיפור יחס ההמרה (האחוז מהמבקרים שבאמת קונים), בניית קהל שחוזר בלי תלות במודעות, ותזמון קמפיינים ללוח השנה הישראלי. הכול כתוב מנקודת המבט של חנות קטנה או בינונית: תקציב מוגבל, צוות של איש אחד או שניים, ובלי ז\'רגון שדורש תואר בשיווק. רוב הצעדים גם אפשריים ישירות מתוך Shopify, בלי להוסיף מערכת חדשה רק בשביל להתחיל.',
+    ],
+  },
+  'מדריכים וכלים': {
+    heading: 'מדריכים שאפשר לבצע לבד, צעד אחרי צעד',
+    paragraphs: [
+      'לא לכל משימה צריך סוכנות. חלק גדול מעבודת הקידום של חנות אפשר לעשות לבד: לבדוק מה גוגל רואה, לתקן כותרות, להוסיף סכמה בסיסית, למדוד מהירות טעינה. הבעיה היא שרוב ההסברים ברשת כתובים למקדמי אתרים, לא לבעלי חנויות. האשכול הזה סוגר את הפער. וגם מי שעובד עם איש מקצוע מרוויח מלהבין את העבודה: קל יותר לדעת מה לבקש, ומה לבדוק כשמקבלים דוח.',
+      'כל מדריך כאן בנוי אותו דבר: מה בודקים, איך בודקים, מה עושים עם התוצאה. בלי הנחות מוקדמות על ידע טכני, וכל מונח מקצועי מוסבר במקום הראשון שהוא מופיע. אם מדריך דורש כלי, הוא יהיה חינמי או כזה שכבר יש לכם, כמו Google Search Console (הלוח שבו גוגל מראה איך הוא רואה את האתר שלכם).',
+      'זה גם המקום להתחיל בו אם רק נכנסתם לעולם הזה. המדריכים מסודרים כך שאפשר לבצע אחד בכל פעם, בחצי שעה עד שעה, ולראות מה השתנה לפני שממשיכים הלאה. קידום חנות הוא לא פרויקט של פעם אחת אלא הרגל, והדרך הכי טובה לבנות הרגל היא צעדים קטנים שנגמרים.',
+    ],
+  },
+};
+const about = pillarProse[cluster];
+
+// מאמר-pillar · הדגל מגיע מהאוסף (נוסף במקביל בתהליך אחר) · בדיקה הגנתית בזמן
+// ריצה: כשהשדה עוד לא קיים אין קלף מובלט והדף נבנה כרגיל.
+const pillarPost = posts.find((p) => (p.data as Record<string, unknown>)?.pillar === true);
+const gridPosts = pillarPost ? posts.filter((p) => p.id !== pillarPost.id) : posts;
+
 const title = `${cluster} · הבלוג של Scayla`;
 const description =
   intro.length <= 130 ? intro : `${cluster} · מדריכים מבוססי מחקר בעברית תקנית מהבלוג של Scayla.`;
@@ -91,11 +134,43 @@ const collectionLd = {
     </div>
   </section>
 
+  {about && (
+    <section class="cl-about">
+      <div class="narrow">
+        <h2>{about.heading}</h2>
+        {about.paragraphs.map((p) => <p>{p}</p>)}
+      </div>
+    </section>
+  )}
+
   <section class="cl-list">
     <div class="wrap">
       {posts.length > 0 ? (
         <div class="grid">
-          {posts.map((post) => (
+          {pillarPost && (
+            <article class="post card pillar fade-up">
+              <a href={`/magazine/${pillarPost.id}`} class="post-link">
+                {pillarPost.data.coverImage ? (
+                  <div class="thumb has-img">
+                    <img src={pillarPost.data.coverImage} alt={pillarPost.data.title} loading="lazy" width="600" height="240" />
+                  </div>
+                ) : (
+                  <div class="thumb" aria-hidden="true"><span class="cat">{pillarPost.data.cluster}</span></div>
+                )}
+                <div class="body">
+                  <span class="start-here">התחילו כאן</span>
+                  <h2>{pillarPost.data.title}</h2>
+                  <p>{pillarPost.data.description}</p>
+                  <div class="meta">
+                    <time datetime={pillarPost.data.pubDate.toISOString()}>{fmt.format(pillarPost.data.pubDate)}</time>
+                    <span aria-hidden="true">·</span>
+                    <span><span class="num">{pillarPost.data.readingMinutes}</span> דקות קריאה</span>
+                  </div>
+                </div>
+              </a>
+            </article>
+          )}
+          {gridPosts.map((post) => (
             <article class="post card fade-up">
               <a href={`/magazine/${post.id}`} class="post-link">
                 {post.data.coverImage ? (
@@ -144,6 +219,22 @@ const collectionLd = {
   .crumbs a:hover { color: var(--sc-accent-text); }
   .cl-hero .lede { max-inline-size: 56ch; margin-inline: auto; }
   .count { font-size: 13.5px; color: var(--sc-disabled); margin-block-start: 14px; }
+
+  /* C5 · פרוזת-העוגן · גוף טקסט קריא מתחת להירו, לפני רשת הקלפים */
+  .cl-about { padding-block: 10px 6px; }
+  .cl-about h2 { font-size: 20px; font-weight: 800; color: var(--sc-ink); margin-block-end: 12px; }
+  .cl-about p { font-size: 15.5px; line-height: 1.85; color: var(--sc-muted); }
+  .cl-about p + p { margin-block-start: 12px; }
+
+  /* C5 · קלף "התחילו כאן" · שורה מלאה עם הדגשת wash כדי שיקרא ככניסה לאשכול */
+  .post.pillar { grid-column: 1 / -1; background: var(--sc-wash); box-shadow: inset 0 0 0 1.5px var(--sc-soft); }
+  .post.pillar .thumb { block-size: 150px; }
+  .start-here {
+    align-self: flex-start;
+    background: var(--sc-accent); color: #fff;
+    font-size: 11px; font-weight: 800; letter-spacing: .02em;
+    border-radius: var(--sc-r-pill); padding: 4px 12px;
+  }
 
   .cl-list { padding-block-start: 24px; }
   .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }

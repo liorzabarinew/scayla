@@ -7,6 +7,7 @@ draft: false
 cluster: "מדריכים וכלים"
 readingMinutes: 6
 demo: false
+pillar: true
 author: "ליאור צברי"
 updatedDate: 2026-07-28
 takeaways:

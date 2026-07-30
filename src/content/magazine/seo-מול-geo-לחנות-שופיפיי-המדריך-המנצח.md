@@ -7,6 +7,7 @@ draft: false
 cluster: "GEO ואופטימיזציה למנועי AI"
 readingMinutes: 6
 demo: false
+pillar: true
 author: "נוי קייטל"
 updatedDate: 2026-07-23
 takeaways:

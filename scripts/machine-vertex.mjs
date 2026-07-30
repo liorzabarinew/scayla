@@ -211,6 +211,8 @@ function scanArticles() {
         // מאמר גנוז (draft:true) לא נבנה ל-route בכלל · קישור אליו = 404 חי. הדגל מאפשר
         // ל-relatedList ול-validSlugs לא להציע ולא לאשר קישור למאמר שלא קיים באתר.
         draft: /^draft:\s*true\b/m.test(txt),
+        // C6: עמוד-העוגן (pillar: true) של האשכול · relatedList מציע אותו תמיד ראשון.
+        pillar: /^pillar:\s*true\b/m.test(txt),
       })
     }
   }
@@ -228,6 +230,23 @@ function markDone(keyword) {
   if (done.has(keyword)) return
   done.add(keyword)
   writeFileSync(DONE_FILE, JSON.stringify([...done]))
+}
+
+// E6 · נעילה בין-ריצות: markDone נורה רק בסוף הצינור, אז שתי ריצות חופפות היו בוחרות את אותו
+// נושא וכותבות מאמר כפול. claimTopic תופס את ה-keyword לתוך topics-done.json מיד אחרי הבחירה,
+// לפני העבודה היקרה · ריצה מקבילה תראה אותו כ-done ותדלג לנושא הבא.
+// התנהגות בכשל (בחירה מתועדת): אם הריצה נכשלת אחרי ה-claim בלי לכתוב מאמר, ה-claim נשאר
+// והנושא "נשרף". זו ההתנהגות הפשוטה שהמבנה הקיים תומך בה · אין לוגיקת-שחרור ואין מצבי-ביניים,
+// ו-idea-engine ממלא נושאים חדשים בכל ריצה, אז נושא שרוף זול בהרבה ממאמר כפול חי.
+// markDone לא משתנה: הוא אידמפוטנטי (has-check) ונשאר כרשת-ביטחון בסוף · אם claim נדרס
+// בכתיבה מקבילה של ריצה אחרת, ה-markDone הסופי קורא-מחדש את הקובץ ומחזיר אותו.
+function claimTopic(keyword) {
+  if (!keyword) return true // נושא אד-הוק (בלי keyword מהתוכנית) · אין מה לתפוס
+  const done = loadDone()
+  if (done.has(keyword)) return false // ריצה מקבילה כבר תפסה את הנושא
+  done.add(keyword)
+  writeFileSync(DONE_FILE, JSON.stringify([...done]))
+  return true
 }
 
 // הנושא-הבא-שלא-נעשה מ-topics.json עבור אשכול נתון (המאגר הרחב מזין את הבחירה כשהאשכול ידוע).
@@ -290,7 +309,10 @@ function relatedList(cat, arts, max = 6) {
   const rank = (list) => list.sort((a, b) => (inbound.get(a.slug.toLowerCase()) || 0) - (inbound.get(b.slug.toLowerCase()) || 0))
   const same = rank(titled.filter((a) => a.cluster === cat.slug))
   const other = rank(titled.filter((a) => a.cluster !== cat.slug))
-  const ordered = [...same, ...other].slice(0, max)
+  // C6: כל מאמר תומך מקשר אל עמוד-העוגן של האשכול · ה-pillar תמיד המועמד הראשון (drafts כבר
+  // סוננו למעלה, ו-self לא ברשימה כי המאמר החדש טרם נכתב). שאר המקומות נשארים least-inbound-first.
+  const pillar = same.find((a) => a.pillar)
+  const ordered = [...(pillar ? [pillar] : []), ...same.filter((a) => a !== pillar), ...other].slice(0, max)
   return ordered.map((a) => `- "${a.title}" → /magazine/${a.slug}`).join('\n')
 }
 
@@ -871,6 +893,13 @@ if (isMain) try {
   } else {
     const picked = pickTopic(counts); cat = picked.cat; topicHint = cliTopic || picked.brief; planKeyword = picked.fromPlan ? picked.keyword : null
     if (!seedUrls.length && picked.seeds && picked.seeds.length) seedUrls = picked.seeds
+  }
+  // E6: תפיסת-הנושא לפני העבודה היקרה · אם ריצה מקבילה הקדימה אותנו מדלגים מיד ('skipped'
+  //     גורם ל-daily.mjs לנסות שוב, והבחירה הבאה תמצא נושא פנוי כי הזה כבר ב-done).
+  if (planKeyword && !claimTopic(planKeyword)) {
+    console.error(`⚠ topic "${planKeyword}" already claimed by a concurrent run — skipping`)
+    result({ status: 'skipped', cluster: cat.slug, reason: `topic already claimed: ${planKeyword}` })
+    process.exit(0)
   }
   const related = relatedList(cat, arts, 6)
 

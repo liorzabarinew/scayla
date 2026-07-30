@@ -85,8 +85,8 @@ export const experts: Expert[] = [
       { label: 'תעודת שיווק דיגיטלי', from: 'HackerU (האקריו)' },
     ],
     links: [
-      // LinkedIn ירד בכוונה · קישור לעמוד הבית של לינקדאין נראה מזויף. יחזור כשיהיה URL אמיתי.
       { label: 'busymom.co.il', href: 'https://busymom.co.il' },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/noy-kaitel-793226137/' },
     ],
     knowsAbout: [
       'SEO',
@@ -95,7 +95,7 @@ export const experts: Expert[] = [
       'Content Strategy',
       'E-commerce SEO',
     ],
-    sameAs: ['https://busymom.co.il/'],
+    sameAs: ['https://busymom.co.il/', 'https://www.linkedin.com/in/noy-kaitel-793226137/'],
     accent: 'indigo',
   },
   {
