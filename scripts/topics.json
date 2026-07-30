@@ -438,45 +438,9 @@
     "intent": "informational"
   },
   {
-    "cluster": "ecommerce",
-    "keyword": "פרסונליזציה עם AI",
-    "title": "מעבר לשם הלקוח: מדריך לפרסונליזציית חווית הגלישה בחנות שופיפיי",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "אסטרטגיית Zero Click Search",
-    "title": "איך לנצח כשאין קליק: אופטימיזציה לדירוג #0 ו-AI Overviews",
-    "intent": "informational"
-  },
-  {
     "cluster": "guides",
     "keyword": "מדריך שופיפיי פורמס",
     "title": "המדריך המעשי ל-Shopify Forms: איסוף דאטה ולידים בלי אפליקציות צד-שלישי",
-    "intent": "informational"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "שופיפיי פאנקשנס למשווקים",
-    "title": "מדריך Shopify Functions למנהלי שיווק: כך תשתמשו בכוח של קוד, בלי לכתוב קוד",
-    "intent": "informational"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "אופטימיזציה דף תודה שופיפיי",
-    "title": "מעבר ל\"תודה על הרכישה\": המדריך להפיכת דף התודה למנוע הגדלת LTV",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "תיקון LTV שופיפיי",
-    "title": "ה-LTV שלכם שגוי: המדריך לאיחוד לקוחות כפולים בשופיפיי ותיקון מדדי השיווק",
-    "intent": "informational"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "ניהול צוות שיווק איקומרס",
-    "title": "מבנה צוות השיווק המנצח ב-2026: כישורים, תפקידים וכלים בעידן ה-AI",
     "intent": "informational"
   },
   {
@@ -486,94 +450,10 @@
     "intent": "informational"
   },
   {
-    "cluster": "geo-ai",
-    "keyword": "מודל תמחור AEO",
-    "title": "איך סוכנויות מתמחרות אופטימיזציה ל-AI (ולמה זה לא כמו SEO)",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "צוות שיווק לעידן ה-AI",
-    "title": "מ-SEO ל-AEO: איך בונים צוות שיווק מנצח ומהם תפקידי המפתח החדשים",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "נתח קול במנועי AI",
-    "title": "נתח קול 2.0: המדריך למדידת ה-Share of Voice שלכם בתשובות AI",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "AEO וחוות דעת מוצר",
-    "title": "הלקוחות כותבים, ה-AI מצטט: המדריך המלא ל-AEO עם תוכן גולשים בשופיפיי",
-    "intent": "informational"
-  },
-  {
     "cluster": "seo-shopify",
     "keyword": "קידום חנויות שופיפיי בעברית",
     "title": "מדריך לפתרון בעיות RTL וכתובות URL",
     "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "אופטימיזציה לדפי תגיות שופיפיי",
-    "title": "מדריך למניעת תוכן כפול ושיפור SEO",
-    "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "ניהול הפניות 301 ו-404",
-    "title": "מדריך מעשי לשמירה על SEO בחנות שופיפיי",
-    "intent": "transactional"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "אוטומציות SEO עם Shopify Flow",
-    "title": "מדריך להגדרת וורקפלואו שיחסוך לכם זמן",
-    "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "קידום בינלאומי בלי Shopify Markets",
-    "title": "איך למכור גלובלית בחנות שופיפיי בתקציב נמוך",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "בניית קהילה סביב מותג",
-    "title": "מעבר לרכישה: המדריך המלא לבניית קהילה פעילה וממירה סביב חנות השופיפיי שלך",
-    "intent": "informational"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "שופיפיי קולאבס למשווקים",
-    "title": "Shopify Collabs: מדריך למציאת משפיענים, ניהול שיתופי-פעולה ומדידת ROI בישראל",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "ניהול מלאי חכם עם AI",
-    "title": "ממלאי מת ל-SEO חכם: איך להשתמש ב-AI לניהול מלאי דינמי שמקדם את החנות בגוגל",
-    "intent": "informational"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "אסטרטגיית תוכן גולשים UGC",
-    "title": "מעבר לחוות דעת: אסטרטגיית UGC מלאה לשופיפיי – מאיסוף ועד הטמעה בדפי מוצר",
-    "intent": "informational"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "ניתוח דאטה של החזרות",
-    "title": "זהב נסתר: איך לנתח נתוני החזרות בשופיפיי כדי לשפר מוצרים, להעלות המרות ולחזק SEO",
-    "intent": "informational"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "מחקר מילים לטיקטוק שופ",
-    "title": "איך למצוא מילות מפתח מנצחות לטיקטוק שופ בישראל",
-    "intent": "commercial"
   },
   {
     "cluster": "guides",
@@ -717,6 +597,126 @@
     "cluster": "guides",
     "keyword": "שיווק איקומרס בתקופת מיתון",
     "title": "אסטרטגיית SEO למיתון: איך לקדם חנות שופיפיי כשהשוק הישראלי מתכווץ",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "פרפלקסיטי פייג'ס לאיקומרס",
+    "title": "Perplexity Pages: המדריך ליצירת מדריכי קנייה ויראליים מהקטלוג שלכם",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "GDPR שימוש ב-API של AI",
+    "title": "אחריות משפטית ב-AEO: המדריך לשימוש בטוח ב-API של AI ונתוני לקוחות בשופיפיי.",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "ניתוח סנטימנט ביקורות מוצר",
+    "title": "מביקורת לתובנה: איך להשתמש ב-AI לניתוח סנטימנט גולשים ולשיפור ה-AEO.",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "מרצ'נדייזינג עם AI שופיפיי",
+    "title": "החידוש מ-Summer '26: מדריך לשימוש בכלי המרצ'נדייזינג החדש מבוסס ה-AI של שופיפיי.",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "אופטימיזציה לגוגל לנס בשופיפיי",
+    "title": "המצלמה קונה: 7 טיפים לאופטימיזציית תמונות מוצר לחיפוש ויזואלי ב-Google Lens.",
+    "intent": "transactional"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "שופיפיי הידרוג'ן SEO",
+    "title": "שופיפיי הידרוג'ן או תבנית? מדריך SEO טכני לקבלת החלטה ב-2026",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "נגישות אתרים שופיפיי",
+    "title": "נגישות היא ה-SEO החדש: מדריך WCAG 2.2 לחנויות שופיפיי שמכוונות גבוה",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "חיבור CRM לשופיפיי SEO",
+    "title": "מ-CRM למנוע SEO: איך להשתמש בדאטה מ-HubSpot כדי לזהות פערי תוכן",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "שופיפיי מרקטס פרו",
+    "title": "מעבר לשוק המקומי: מדריך SEO ומיסוי ל-Shopify Markets Pro",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "קידום חנות נישה שופיפיי",
+    "title": "פחות תחרות, יותר המרות: אסטרטגיית SEO מנצחת לחנויות בשוקי נישה",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שיווק בתקופת מיתון",
+    "title": "5 אסטרטגיות איקומרס שישאירו אתכם במשחק (ואפילו יצמיחו אתכם)",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שימור לקוחות בתקציב נמוך",
+    "title": "איך להגדיל LTV כשתקציב השיווק קוצץ, באמצעות אוטומציות ו-AI",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "הנגשת אתר שופיפיי",
+    "title": "מדריך A11y פרקטי ל-2026: איך לעמוד בחוק ולהרוויח בדירוג גוגל",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "אופטימיזציה לחיפוש קולי בעברית",
+    "title": "\"היי סירי, איפה קונים?\": אסטרטגיית AEO לדירוג החנות בחיפוש קולי",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "Shopify Functions התאמת מחיר",
+    "title": "יצירת תמחור דינמי והנחות חכמות לפי לקוח עם Shopify Functions",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "שופיפיי checkout extensibility seo",
+    "title": "מדריך למשווקים: איך להשתמש ב-Checkout Extensibility לשיפור SEO ואמון",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "seo לחבילות מוצרים בשופיפיי",
+    "title": "המדריך המעשי ל-SEO של חבילות מוצרים (Bundles) בשופיפיי (בלי תוכן כפול)",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "תוכנית השקה seo שוק בינלאומי",
+    "title": "שוק בינלאומי ראשון בשופיפיי: תוכנית עבודה וצ'קליסט SEO ל-30 יום",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "שופיפיי headless seo",
+    "title": "Headless Commerce ו-SEO: מתי זה נכון לחנות השופיפיי שלכם (ומתי לא)?",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "ניתוח חיפוש פנימי שופיפיי",
+    "title": "אוצר בחצר האחורית: איך לנתח דאטה מחיפוש פנימי בשופיפיי ולמצוא מילות מפתח חדשות",
     "intent": "informational"
   }
 ]
