@@ -21,7 +21,7 @@ GEO חזק (direct-answer 63/63, FAQ 63/63, sources 61/63, schema מלא Article
 
 ### Medium (שווה effort)
 - `[x]` **E5 · refresh.mjs מחליף מספרים בלי אימות (correct→wrong)** — שורש הבאג שראינו חי: מקבל `{find,replace,source}`, מחיל אם `find` בגוף ו-`source` רק תואם regex `^https?://` (:246-248). ה-source **לא נמשך**, ה-replace לא נבדק, ו**אף lens לא רץ על המאמר המרוענן**. **תיקון:** משוך את ה-source, הפל שינוי שהמספר החדש לא מופיע בו, אל תחליש מספר שכבר יש לו entry ב-`sources:`. **impact High · effort Med.**
-- `[ ]` **E6 · אין נעילה בין-ריצות** — `markDone` רק בסוף (:892); שתי ריצות חופפות בוחרות אותו topic → מאמר כפול (slug `-2`). **תיקון:** רזרבציה אופטימית ל-`topics-done` לפני הכתיבה, או lockfile. **impact Med · effort Med.**
+- `[x]` **E6 · אין נעילה בין-ריצות** — `markDone` רק בסוף (:892); שתי ריצות חופפות בוחרות אותו topic → מאמר כפול (slug `-2`). **תיקון:** רזרבציה אופטימית ל-`topics-done` לפני הכתיבה, או lockfile. **impact Med · effort Med.**
 - `[x]` **E7 · sanitizeSlug שומר Latin גדול; gen-llms מנמיך → אי-התאמה** ✅ **אומת כבאג חי** (GSC דיווח "Not found 404"): 6 קישורים פנימיים ב-5 מאמרים הצביעו לכתובת עם אות גדולה → 404. תוקן ב-3 רבדים: sanitizeSlug מנמיך · validateLinks משווה+פולט lowercase · integrity-audit קיבל **סוג-הפרה חדש** ("אות גדולה ב-slug → 404") אחרי שהתגלה שהוא עצמו היה עיוור לזה (דיווח 0). בוצע backfill ל-6 הקישורים; ה-guard נבדק מול רגרסיה מכוונת. — קובץ `GEO-מול-SEO.md` נכתב mixed-case, אבל ה-route ו-llms.txt lowercase (`machine-vertex.mjs:384` מול `gen-llms.mjs:31`). קישור-כרטיס באתר (raw case) ו-llms עלולים לא-להסכים → 404. **תיקון:** הנמך Latin ב-sanitizeSlug בזמן-כתיבה כדי שהכל יסכים. **impact Med · effort Low.**
 - `[x]` **E8 · validateLinks מכסה רק /magazine/** (נסגר עם C1 · חיתוך /products,/collections,/cart,/checkout,/admin) — קישורי product/collection/external בגוף לא מאומתים (:499-503). כרגע latent (הפרומפט לא מבקש אותם), אבל מסוכן כשנפעיל קישור-למוצרים. **תיקון:** allowlist של routes תקינים, סמן external ל-fixer. **impact Low-Med · effort Low.**
 
@@ -38,11 +38,11 @@ GEO חזק (direct-answer 63/63, FAQ 63/63, sources 61/63, schema מלא Article
 - `[x]` **C4 · כיסוי מסחרי דק — 74% אינפורמטיבי** — topics.json: 89 info / 24 commercial / 7 transactional. הקונה מחפש bottom-funnel ("Scayla מחיר", "חלופה ל-X", השוואות). **תיקון:** שקלל ב-idea-engine יותר commercial/comparison/alternative. **auto · impact High · effort Med.**
 
 ### Medium
-- `[ ]` **C5 · עמודי-hub של אשכול דקים** — שורת-intro אחת + card grid, בלי pillar prose (`cluster/[cluster].astro:90`). **תיקון:** הרחב כל hub ל-150-300 מילות pillar + links ל-cornerstones. **one-time (4 עמודים) · impact Med · effort Med.**
-- `[ ]` **C6 · אין הגדרת cornerstone/pillar** — related-links רק "same cluster+newest" (:41-50), בלי עמוד-עוגן לאשכול. **תיקון:** frontmatter `pillar:true` (1/אשכול), קשר supporting→pillar. משלים C3/C5. **auto + backfill · impact Med · effort Med.**
+- `[x]` **C5 · עמודי-hub של אשכול דקים** — שורת-intro אחת + card grid, בלי pillar prose (`cluster/[cluster].astro:90`). **תיקון:** הרחב כל hub ל-150-300 מילות pillar + links ל-cornerstones. **one-time (4 עמודים) · impact Med · effort Med.**
+- `[x]` **C6 · אין הגדרת cornerstone/pillar** — related-links רק "same cluster+newest" (:41-50), בלי עמוד-עוגן לאשכול. **תיקון:** frontmatter `pillar:true` (1/אשכול), קשר supporting→pillar. משלים C3/C5. **auto + backfill · impact Med · effort Med.**
 - `[x]` **C7 · sources לא מוצגים בגוף** — 61/63 יש sources, נפלט כ-schema citation (:78) אבל אין בלוק "מקורות" בתבנית. AI ואנשים מתגמלים מקורות גלויים. **תיקון:** render בלוק "מקורות" מ-`post.data.sources`. **one-time (כל 63) · impact Med · effort Low.**
 - `[ ]` **C8 · schema HowTo/SoftwareApplication חסר** — כיסוי כרגע Article/FAQPage/Breadcrumb/Person. 15 מדריכי-שלבים ראויים ל-HowTo; /pricing ל-SoftwareApplication+Offer. **תיקון:** זהה `## שלב`→HowTo; pricing→SoftwareApplication. **auto + one-time · impact Med · effort Med.**
-- `[ ]` **C10 · www.scayla.co.il מחזיר 200 במקום 301 לאפקס** — GSC מדווח "Alternate page with proper canonical". ה-canonical מצביע נכון לאפקס אז גוגל מאחד כמו שצריך (לא נזק), אבל 301 מ-www לאפקס נקי יותר ומרכז סמכות. דורש Redirect Rule ב-CF (לא `_redirects` — הוא לא תומך בניתוב לפי host). **impact Low · effort Low.**
+- `[x]` **C10 · www.scayla.co.il מחזיר 200 במקום 301 לאפקס** — GSC מדווח "Alternate page with proper canonical". ה-canonical מצביע נכון לאפקס אז גוגל מאחד כמו שצריך (לא נזק), אבל 301 מ-www לאפקס נקי יותר ומרכז סמכות. דורש Redirect Rule ב-CF (לא `_redirects` — הוא לא תומך בניתוב לפי host). **impact Low · effort Low.**
 - `[ ]` **C9 · (נמוך) freshness — guard לשנה/נתונים** — refresh תקין (נוגע רק ב-updatedDate), אבל ודא שהוא באמת מחליף "2025"→נוכחי בגוף, לא רק bump תאריך. **monitor · impact Low · effort Low.**
 
 ---
