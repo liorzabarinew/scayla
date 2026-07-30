@@ -71,10 +71,18 @@ test('lintArticle: thin body is caught', () => {
   assert.equal(lintArticle(thin).truncated, true) // thin folds into truncated
 })
 
-test('mostSimilarArticle: near-duplicate title ≥0.8 is detected', () => {
+// שינוי-מדיניות: השער ירד 0.8 → 0.6 · 0.8 היה שער-מת — זוגות same-topic אמיתיים
+// (שני מאמרי-הווריאנטים, יום הפרש) עברו מתחתיו ופורסמו. 0.45-0.6 = אזהרת-לוג בלבד.
+test('mostSimilarArticle: near-duplicate title ≥0.6 is detected', () => {
   const arts = [{ title: 'מחקר מילות מפתח לאיקומרס מדריך', slug: 'keyword-research-ecommerce' }]
   const hit = mostSimilarArticle('מחקר מילות מפתח לאיקומרס', 'keyword-research', arts)
   assert.ok(hit, 'should detect the near-duplicate')
+})
+test('mostSimilarArticle: same-topic pair in the 0.6-0.8 band is now caught (the variant-articles lesson)', () => {
+  const arts = [{ title: 'עמודי וריאנטים כפולים בגוגל תיקון', slug: 'variants-fix' }]
+  const hit = mostSimilarArticle('עמודי וריאנטים כפולים בגוגל פתרון', 'duplicate-pages', arts)
+  assert.ok(hit, 'mid-band similarity must trigger the skip gate')
+  assert.ok(hit.score >= 0.6 && hit.score < 0.8, `score ${hit && hit.score} should sit in the band the old gate missed`)
 })
 test('mostSimilarArticle: unrelated title returns null', () => {
   const arts = [{ title: 'מהירות אתר Core Web Vitals', slug: 'core-web-vitals' }]

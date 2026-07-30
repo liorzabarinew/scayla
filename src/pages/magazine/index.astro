@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { CLUSTERS } from '../../content.config';
+import { CLUSTERS, clusterPath } from '../../content.config';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CtaBand from '../../components/CtaBand.astro';
 import { authorMap } from '../../data/experts';
@@ -66,10 +66,11 @@ const featuredAuthor = featured?.data.author ? authorMap[featured.data.author] :
 
   <section class="mag-list">
     <div class="wrap">
+      {/* real <a> tabs · crawlers follow the cluster-hub hrefs, the script keeps the filter UX. */}
       <div class="filters" role="tablist" aria-label="סינון לפי נושא">
-        <button class="tab is-active" role="tab" aria-selected="true" data-filter="all" type="button">הכל</button>
+        <a class="tab is-active" role="tab" aria-selected="true" data-filter="all" href="/magazine">הכל</a>
         {activeClusters.map((c) => (
-          <button class="tab" role="tab" aria-selected="false" data-filter={c} type="button">{c}</button>
+          <a class="tab" role="tab" aria-selected="false" data-filter={c} href={clusterPath(c)}>{c}</a>
         ))}
       </div>
 
@@ -122,7 +123,9 @@ const featuredAuthor = featured?.data.author ? authorMap[featured.data.author] :
 
 <script>
   // Cluster filter · client-side, keyboard-accessible tablist.
-  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('.filters .tab'));
+  // The tabs are real links to the cluster hubs (internal-link equity) · JS hijacks the
+  // click so the in-page filter UX stays exactly as it was.
+  const tabs = Array.from(document.querySelectorAll<HTMLAnchorElement>('.filters .tab'));
   const cards = Array.from(document.querySelectorAll<HTMLElement>('#post-grid .post'));
   const empty = document.getElementById('empty-note');
 
@@ -136,7 +139,7 @@ const featuredAuthor = featured?.data.author ? authorMap[featured.data.author] :
     if (empty) empty.hidden = shown !== 0;
   }
 
-  function select(tab: HTMLButtonElement) {
+  function select(tab: HTMLAnchorElement) {
     tabs.forEach((t) => {
       const on = t === tab;
       t.classList.toggle('is-active', on);
@@ -146,7 +149,10 @@ const featuredAuthor = featured?.data.author ? authorMap[featured.data.author] :
   }
 
   tabs.forEach((tab, i) => {
-    tab.addEventListener('click', () => select(tab));
+    tab.addEventListener('click', (e) => {
+      e.preventDefault();
+      select(tab);
+    });
     tab.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
         e.preventDefault();

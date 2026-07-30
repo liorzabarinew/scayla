@@ -3,7 +3,8 @@
 // refresh.mjs — נתיב רענון/re-grounding למכונת התוכן של Scayla.
 // לא כותב מאמר חדש — לוקח מאמר קיים, מאמת מחדש את הסטטיסטיקות שלו מול Google
 // (Gemini 2.5 Pro + googleSearch), מתקן נתון מיושן/שגוי בלבד (בלי לשכתב סעיפים),
-// ומעדכן אך ורק את updatedDate להיום. pubDate לעולם לא משתנה.
+// ומעדכן את updatedDate להיום רק כשתיקון אכן הוחל. אפס שינויים = אפס כתיבה.
+// pubDate לעולם לא משתנה.
 //
 // אותה פילוסופיית fact-check של המכונה, אבל על מאמרים שכבר עלו.
 // שמרני בכוונה: משנים רק מספר/אחוז/שנה שניתן לאמת שהוא מיושן, אף פעם לא פסקה שלמה.
@@ -291,7 +292,24 @@ async function run() {
   const reVerified = true // אימות אמיתי רץ (קריאת-grounding הושלמה) → מותר לגעת ב-updatedDate בלבד.
   const changed = applied.length > 0
 
-  // בונים מסמך חדש: גוף מעודכן (אם היו תיקונים) + updatedDate=today. pubDate לעולם לא נוגע.
+  // ── אפס שינויים = אפס כתיבה. bump של updatedDate בלי שינוי תוכן הוא זיוף-טריות:
+  //    Google משווה dateModified לתוכן בפועל, ובקנה-מידה לומד לא להאמין לתאריכים שלנו בכל האתר.
+  //    לכן כשאין מה לתקן לא נוגעים בקובץ בכלל · הסטטוס נשאר 'verified' והתאריך הקיים מדווח כמו-שהוא. ──
+  if (!changed) {
+    const keptDate = fmField(doc.fm, 'updatedDate') || fmField(doc.fm, 'pubDate')
+    result({
+      status: 'verified', slug: art.slug, title: art.title,
+      pubDate: fmField(doc.fm, 'pubDate'), updatedDate: keptDate,
+      reVerified, changes: 0, applied: [],
+      proposedButRejected: proposed.length,
+      note: 'updatedDate intentionally untouched (no content change)',
+      url: `/magazine/${art.slug}`,
+    })
+    await notify(`✅ אומת ואין מה לעדכן · <b>${art.title || art.slug}</b> (updatedDate נשאר ${keptDate} בכוונה)`)
+    return
+  }
+
+  // בונים מסמך חדש: גוף מעודכן + updatedDate=today. pubDate לעולם לא נוגע.
   let newFm = doc.fm
   if (/^updatedDate:/m.test(newFm)) {
     newFm = newFm.replace(/^updatedDate:.*$/m, `updatedDate: ${today}`)
@@ -319,20 +337,15 @@ async function run() {
 
   writeFileSync(art.path, out)
 
-  const status = changed ? 'refreshed' : 'verified'
-  const r = {
-    status, slug: art.slug, title: art.title,
+  result({
+    status: 'refreshed', slug: art.slug, title: art.title,
     pubDate: fmField(doc.fm, 'pubDate'), updatedDate: today,
     reVerified, changes: applied.length, applied,
     proposedButRejected: proposed.length - applied.length,
     url: `/magazine/${art.slug}`,
-  }
-  result(r)
+  })
 
-  const line = changed
-    ? `♻️ רועננו ${applied.length} נתונים · <b>${art.title || art.slug}</b> (updatedDate→${today})`
-    : `✅ אומת ואין מה לעדכן · <b>${art.title || art.slug}</b> (updatedDate→${today})`
-  await notify(line)
+  await notify(`♻️ רועננו ${applied.length} נתונים · <b>${art.title || art.slug}</b> (updatedDate→${today})`)
 }
 
 run().catch(async (e) => {

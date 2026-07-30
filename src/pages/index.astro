@@ -23,39 +23,20 @@ const title = 'קידום אורגני בגוגל ובמנועי AI לחנויו
 const description =
   'מודדים אם ChatGPT מצטט את החנות שלכם, משווים למתחרים בעברית, וסוגרים את הפער אוטומטית. 14 יום ניסיון.';
 
-// Schema per Noy (question 9): Organization + WebSite (with SearchAction) on home.
-// SoftwareApplication + the 3 Offers live on /pricing. FAQPage lives on /faq.
+// Schema per Noy (question 9): WebSite on home. The canonical Organization (#org,
+// incl. founder) is emitted site-wide by BaseLayout · here we only reference it,
+// never redefine. SearchAction was removed: the site has no search page (/magazine
+// ignores ?q) and a fake target disqualifies the markup. SoftwareApplication + the
+// Offers live on /pricing. FAQPage lives on /faq ONLY (the home shows the same
+// questions, so marking them up twice would clash).
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'Organization',
-      '@id': 'https://scayla.co.il/#org',
-      name: 'Scayla',
-      url: 'https://scayla.co.il',
-      logo: 'https://scayla.co.il/favicon.svg',
-      founder: [
-        { '@type': 'Person', name: 'ליאור צברי' },
-        { '@type': 'Person', name: 'נוי קייטל' },
-      ],
-    },
-    {
-      '@type': 'WebSite',
-      '@id': 'https://scayla.co.il/#website',
-      name: 'Scayla',
-      url: 'https://scayla.co.il',
-      inLanguage: 'he',
-      publisher: { '@id': 'https://scayla.co.il/#org' },
-      potentialAction: {
-        '@type': 'SearchAction',
-        target: {
-          '@type': 'EntryPoint',
-          urlTemplate: 'https://scayla.co.il/magazine?q={search_term_string}',
-        },
-        'query-input': 'required name=search_term_string',
-      },
-    },
-  ],
+  '@type': 'WebSite',
+  '@id': 'https://scayla.co.il/#website',
+  name: 'Scayla',
+  url: 'https://scayla.co.il',
+  inLanguage: 'he',
+  publisher: { '@id': 'https://scayla.co.il/#org' },
 };
 
 const rotWords = ['נעלי ריצה', 'מנורות לסלון', 'שמלת ערב', 'מזון לכלבים', 'מתנה ללידה'];
@@ -349,7 +330,9 @@ const team = [
     </div>
   </section>
 
-  <!-- ═══ FAQ · moved to the home since it left the nav ═══ -->
+  <!-- ═══ FAQ · moved to the home since it left the nav · NO FAQPage schema here:
+       all five questions repeat on /faq, the canonical FAQPage · duplicate markup
+       makes Google distrust both copies ═══ -->
   <section id="faq" class="faq-sec">
     <div class="wrap narrow-faq">
       <div class="faq-head fade-up">
@@ -358,7 +341,7 @@ const team = [
         <p class="faq-lead">לא מצאתם תשובה? <a href="/faq">כל השאלות כאן</a> · או <a href="/contact">דברו איתנו</a>.</p>
       </div>
       <div class="fade-up">
-        <FaqAccordion items={homeFaq} schema={true} />
+        <FaqAccordion items={homeFaq} />
       </div>
     </div>
   </section>

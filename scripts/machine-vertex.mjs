@@ -208,6 +208,9 @@ function scanArticles() {
         slug: f.replace(/\.md$/, ''),
         title: (txt.match(/^title:\s*"([^"]*)"/m) || [])[1] || '',
         cluster: c ? c.slug : '',
+        // מאמר גנוז (draft:true) לא נבנה ל-route בכלל · קישור אליו = 404 חי. הדגל מאפשר
+        // ל-relatedList ול-validSlugs לא להציע ולא לאשר קישור למאמר שלא קיים באתר.
+        draft: /^draft:\s*true\b/m.test(txt),
       })
     }
   }
@@ -253,11 +256,40 @@ function pickTopic(counts) {
   return { cat: best, brief: '', keyword: '', seeds: [], fromPlan: false }
 }
 
+// ספירת קישורים-נכנסים לכל slug: מעבר אחד על כל גופי-המאמרים, cache ב-Map (זול · רץ פעם בריצה).
+let _inboundCache = null
+function inboundCounts() {
+  if (_inboundCache) return _inboundCache
+  _inboundCache = new Map()
+  if (existsSync(ARTICLES_DIR)) {
+    for (const f of readdirSync(ARTICLES_DIR)) {
+      if (!f.endsWith('.md')) continue
+      const txt = readFileSync(join(ARTICLES_DIR, f), 'utf8')
+      const re = /\/magazine\/([^\s)"'\]\/#?]+)/g
+      let m
+      while ((m = re.exec(txt))) {
+        let slug = m[1]
+        try { slug = decodeURIComponent(slug) } catch { /* אחוז-קידוד שבור · נספר כמו-שהוא */ }
+        slug = slug.toLowerCase()
+        if (slug === 'cluster') continue // /magazine/cluster/<אשכול> הוא עמוד-אשכול, לא מאמר
+        _inboundCache.set(slug, (_inboundCache.get(slug) || 0) + 1)
+      }
+    }
+  }
+  return _inboundCache
+}
+
 // מועמדי-קישור-פנימי לכותב: same-cluster תחילה, ואז מעט מאשכולות אחרים.
+// בתוך כל קבוצה: הכי-פחות-מקושרים (inbound) קודם, שובר-שוויון אקראי — מפזר link-equity אל
+// היתומים · הבחירה האלפביתית הישנה שלחה 57% מה-equity ל-24 slugs והשאירה 33 מאמרים יתומים.
+// draft לא מוצע לעולם (route לא קיים → הכותב היה מקשר ל-404 חי).
 function relatedList(cat, arts, max = 6) {
-  const titled = arts.filter((a) => a.title)
-  const same = titled.filter((a) => a.cluster === cat.slug)
-  const other = titled.filter((a) => a.cluster !== cat.slug)
+  const inbound = inboundCounts()
+  const titled = arts.filter((a) => a.title && !a.draft)
+  titled.sort(() => Math.random() - 0.5) // ערבוב לפני מיון יציב = שובר-שוויון אקראי
+  const rank = (list) => list.sort((a, b) => (inbound.get(a.slug.toLowerCase()) || 0) - (inbound.get(b.slug.toLowerCase()) || 0))
+  const same = rank(titled.filter((a) => a.cluster === cat.slug))
+  const other = rank(titled.filter((a) => a.cluster !== cat.slug))
   const ordered = [...same, ...other].slice(0, max)
   return ordered.map((a) => `- "${a.title}" → /magazine/${a.slug}`).join('\n')
 }
@@ -306,20 +338,22 @@ ${related || '(אין עדיין)'}
 מבנה המאמר (קריטי לציטוט ב-AI, מבוסס מחקר GEO):
 **אורך: 900-1,200 מילים. תעמיק: דוגמאות קונקרטיות, תרחישים אמיתיים, תת-שאלות, ופרקטיקה ליישום בחנות. אל "תמרח": כל פסקה חייבת להוסיף ערך. עדיף 1,000 מילים של ערך מאשר 600 שטחיות.**
 **קריאוּת: פסקאות קצרות (2-3 שורות), הדגש משפטי-מפתח בטקסט מודגש, ובולטים/טבלאות כדי שבעל-חנות יסרוק במהירות.**
-- פסקה ראשונה: **תשובה ישירה מודגשת (**טקסט**) של 40-60 מילים** שעונה מיד על שאלת המאמר ועומדת בפני עצמה (זה ה-direct answer ל-GEO). המשפט הראשון פותח בשם-הנושא המלא.
+- פסקה ראשונה: **תשובה ישירה מודגשת (**טקסט**) של 40-60 מילים** שעונה מיד על שאלת המאמר ועומדת בפני עצמה (זה ה-direct answer ל-GEO). המשפט הראשון פותח בשם-הנושא המלא. זו הפסקה הראשונה בגוף פשוטו כמשמעו · אסור hook סיפורי, שאלה רטורית או משפט-אווירה לפניה.
 - 6-8 כותרות H2 (##) שמכסות לעומק. לפחות 2-3 בצורת שאלה ("איך...?", "כמה...?", "מתי...?"). הפסקה הראשונה אחרי כותרת-שאלה עונה ישירות ב-1-2 משפטים, ורק אז מרחיבה.
-- שלב אך ורק סטטיסטיקות שמופיעות ב-STATS בתדריך (אומתו עם URL), כל אחת עם שם-המקור באותו משפט. אסור להוסיף מספר/אחוז שלא ב-STATS. אם התדריך דל, כתוב איכותית ("לרוב", "מחקרים מצביעים") במקום להמציא מספר.
+- שלב אך ורק סטטיסטיקות שמופיעות ב-STATS בתדריך (אומתו עם URL), כל אחת עם שם-המקור באותו משפט. אסור להוסיף מספר/אחוז שלא ב-STATS. אם התדריך דל, אל תמציא מספר וגם אל תסתתר מאחורי ניסוח עמום · כתוב משפט-מנגנון קונקרטי (למה/איך זה עובד בפועל) או פרפרזה עם שם-המקור. הביטויים "מחקרים מראים", "מחקרים מצביעים", "מומחים מסכימים" אסורים, אלא אם באותו משפט מופיע מקור בשם.
+- קישורי-מקור בגוף: כשאתה מביא נתון עם שם-מקור, קשר את שם-המקור פעם אחת בקישור inline · [שם המקור](URL מה-STATS) · 2-3 כאלה למאמר. אך ורק URL-ים שניתנו ב-STATS/QUOTE של התדריך; אסור להמציא או לנחש URL.
 - ציטוט: שלב רק אם ב-QUOTE בתדריך יש טקסט verbatim עם שם+URL, והעתק מילה-במילה. אחרת אל תמציא.
 - אם יש רעיון-טבלה בתדריך, הוסף טבלת-השוואה ב-Markdown (מספר עמודות עקבי).
 - בלוק "## מה חשוב לזכור" עם 3-4 נקודות תמצית (bullets).
 - הגדר מושג-מפתח אחד בבירור (לבהירות ל-AI).
 - 3-5 קישורים פנימיים מהרשימה/מהאשכולות, בטקסט-עוגן תיאורי (3-6 מילים, לעולם לא "כאן"/"לחצו"), בתוך משפט רץ.
 - **קישור-מוצר אחד (CTA):** שלב פעם אחת, באופן טבעי (בד"כ לקראת הסוף), קישור לעמוד-המוצר הרלוונטי ביותר של Scayla מתוך הרשימה: ${PRODUCT_LINKS_FOR_PROMPT}. טקסט-עוגן תיאורי, בתוך משפט. אל תשתמש בנתיב שלא ברשימה. מקסימום קישור-מוצר אחד לכל המאמר.
-- אל תכתוב סעיף "## שאלות נפוצות" בגוף. ה-FAQ נכנס אך ורק לשדה faq ב-frontmatter.
+- אל תכתוב סעיף שאלות-ותשובות בגוף (לא "## שאלות נפוצות", לא "## שאלות ותשובות" ולא שום וריאציה). ה-FAQ נכנס אך ורק לשדה faq ב-frontmatter.
+- כותרת: גוון בתבנית · שאלה ("איך...?"), מספר ("5 דרכים..."), טענה ממוקדת, או how-to בלי המילה "מדריך". אל תיפול לברירת-המחדל "נושא: המדריך המלא" · השתמש ב"מדריך" רק כשזה באמת מתבקש (לכל היותר מאמר אחד מכל שלושה), ולא כל כותרת חייבת נקודתיים.
 
 ${factsForPrompt()}
 
-חוקי-ברזל: עברית בלבד. אסור להבטיח תוצאות ("דירוג ראשון מובטח", "מובטח", "תוך X ימים") — דבר בעקרונות והסתברויות. אל תמכור את Scayla בכל פסקה, הזכר לכל היותר פעם אחת בסוף ורק אם טבעי. אסור קו מפריד ארוך (— או –), במקומו נקודה-מפרידה " · " או פסיק. פורמט מרקדאון נקי (פסקה=בלוק רציף, פריט רשימה בשורה אחת).
+חוקי-ברזל: עברית בלבד. אסור להבטיח תוצאות ("דירוג ראשון מובטח", "מובטח", "תוך X ימים") — דבר בעקרונות והסתברויות. אל תמכור את Scayla בכל פסקה, הזכר לכל היותר פעם אחת בסוף ורק אם טבעי. אסור קו מפריד ארוך (— או –), במקומו נקודה-מפרידה " · " או פסיק. פורמט מרקדאון נקי (פסקה=בלוק רציף, פריט רשימה בשורה אחת). אסורות קלישאות-AI: "נצלול"/"בואו נצלול", "מכרה זהב", "בשורה התחתונה"; ותבנית "לא רק... אלא" לכל היותר פעם אחת במאמר.
 **מקוריות מוחלטת: נסח הכל מחדש בלשונך. אסור להעתיק או לשכתב-קלות אף משפט ממקור. מותר לשאוב רעיון/זווית/עובדה, אבל הניסוח כולו מאפס, בקול של Scayla.**
 **אנטי-חרטוט (קריטי): כל מספר, אחוז, סטטיסטיקה או מחקר חייב להיות אמיתי ומאומת בחיפוש. אסור להמציא נתונים ואסור לייחס נתון לגוף שלא פרסם אותו. אם אינך בטוח במספר, השמט או רכך. עדיף בלי מספר מאשר מספר שגוי.**
 
@@ -328,7 +362,7 @@ ${factsForPrompt()}
 שורה ריקה.
 ואז Markdown עם frontmatter (כולל המרכאות):
 ---
-title: "<כותרת בעברית, ממוקדת ומושכת, עד ~60 תווים>"
+title: "<כותרת בעברית, ממוקדת ומושכת, עד 50 תווים · התבנית מוסיפה ' · Scayla' ולכן כותרת ארוכה תיחתך ב-SERP>"
 description: "<תיאור 120-155 תווים>"
 pubDate: ${today}
 cluster: "${cat.title}"
@@ -374,6 +408,7 @@ ${aggressive
   ? '**סבב אחרון — מצב אגרסיבי:** לכל מספר/סטטיסטיקה/טענה שסומנו כלא-מאומתים — **מחק את הנתון או רכך לאמירה כללית בלי מספר**. עדיף משפט חלק בלי מספר על מספר שלא ניתן לגבות. אל תמציא מספרים חדשים.'
   : 'שני סוגי הערות: (א) מספר/טענה מסומנים — הסר או רכך; (ב) "לשון: ..." — תקן את מה שצוין. אל תיגע במה שלא צוין, ואל תשנה מבנה.'}
 חובה לשמר בדיוק: פסקת-הפתיחה המודגשת, כל כותרות ה-H2 **ברמת ## בדיוק (לעולם אל תשנה כותרת ל-### או לרמה אחרת — התבנית מסתמכת על ##)**, בלוק "מה חשוב לזכור", הטבלה, כל הקישורים הפנימיים (/magazine/...), וה-FAQ. שמור אורך ומבנה. אל תמחק סעיפים שלמים (רק את הנתון/הטענה הבעייתיים בתוכם).
+אסור להכניס בתיקון: קלישאות-AI ("נצלול", "מכרה זהב", "בשורה התחתונה"), וניסוח עמום ("מחקרים מראים/מצביעים", "מומחים מסכימים") בלי מקור בשם באותו משפט · כשמרככים נתון, החלף במשפט-מנגנון כללי בלי מספר.
 שמור פורמט: שורה ראשונה SLUG:, שורה ריקה, frontmatter + Markdown.
 
 הערות לתיקון:
@@ -399,7 +434,9 @@ function parseArticle(raw) {
 // E7: מנמיך אותיות-לטיניות · Astro גוזר את ה-route מה-slug באותיות קטנות, אז קובץ בשם
 // "…-AI-…" מתפרסם בכתובת "…-ai-…". שמירת אותיות גדולות יצרה קישורים פנימיים ל-404
 // (ה-slug "תואם" את שם-הקובץ אבל לא את הכתובת האמיתית). filename == route == link.
-export const sanitizeSlug = (s) => s.replace(/["'`]/g, '').replace(/[^֐-׿a-zA-Z0-9-]+/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '').toLowerCase()
+// תקרה: 8 מילים (מקף-מופרדות) · slug עברי מתקודד ל-URL ארוך פי ~6 (חציון חי 200 תווים,
+// שיא 337) — נחתך ב-SERP ושובר קישורי-שיתוף. 8 המילים הראשונות נושאות את הכוונה.
+export const sanitizeSlug = (s) => s.replace(/["'`]/g, '').replace(/[^֐-׿a-zA-Z0-9-]+/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '').toLowerCase().split('-').slice(0, 8).join('-')
 
 export function tidyMarkdown(md) {
   return md
@@ -409,6 +446,9 @@ export function tidyMarkdown(md) {
     .replace(/ ·(?: ·)+ /g, ' · ')
     .replace(/https?:\/\/(?:www\.)?scayla\.co\.il(\/magazine\/[^\s)"'\]]*)/g, '$1') // קישור-פנים מוחלט → יחסי
     .replace(/\]\(\s*https?[-:]\s*(?:\/\/)?\s*scayla[-.]co[-.]il(\/magazine\/[^\s)"'\]]*)\)/gi, ']($1)') // קישור-פנים מעוות (https-scayla-co-il/…) → יחסי תקין
+    // דומיין זר: המודל ממציא scayla.com (הדומיין שלנו scayla.co.il · 15 קישורי-גוף חיים הצביעו
+    // לשם) → משכתבים לנתיב יחסי, ו-validateLinks בהמשך משאיר-או-חותך לפי תקינות הנתיב.
+    .replace(/https?:\/\/(?:www\.)?scayla\.com(\/[^\s)"'\]]*)?/gi, (m, p) => p || '/')
     .replace(/(?<!\.)\.\.(?!\.)/g, '.')
     .replace(/\]\(\s+/g, '](')
     .replace(/^([ \t]*[-*])[ \t]*\n(?=\S)/gm, '$1 ')
@@ -555,7 +595,10 @@ export function mostSimilarArticle(title, slug, arts) {
     if (!a.title && !a.slug) continue
     const theirs = simTokens(a.title, a.slug)
     const score = Math.max(jaccard(mine.he, theirs.he), jaccard(mine.en, theirs.en))
-    if (score >= 0.8 && (!best || score > best.score)) best = { slug: a.slug, score }
+    // 0.8 היה שער-מת: זוגות same-topic אמיתיים (שני מאמרי-הווריאנטים, יום הפרש) עברו מתחתיו.
+    // 0.6 = דילוג · 0.45-0.6 = אזהרה בלוג-הריצה, כדי שדמיון-שיורי יהיה גלוי ולא ייעלם בשקט.
+    if (score >= 0.45 && score < 0.6) console.error(`⚠ similarity ${score.toFixed(2)} vs "${a.slug}" — מתחת לשער-הדילוג, שים עין על קניבליזציה`)
+    if (score >= 0.6 && (!best || score > best.score)) best = { slug: a.slug, score }
   }
   return best
 }
@@ -587,10 +630,22 @@ export function stampReadingMinutes(md) {
 
 // CTA קבוע בסוף הגוף — רך, לא מכירתי. אידמפוטנטי.
 const CTA_MARK = 'רוצים לראות איפה החנות שלכם עומדת?'
+const CTA_OPEN = CTA_MARK.slice(0, 11) // 'רוצים לראות' · פתיח-הבלוק, לזיהוי שריד שנחתך לפני ה-mark המלא
 const CTA_BLOCK = `\n\n---\n\n**${CTA_MARK}** Scayla מודדת את הנראות של החנות בגוגל ובמנועי ה-AI, מאבחנת פערים, ובונה את התוכן שסוגר אותם. [כך זה עובד](/#how)\n`
 function appendCta(md) {
   if (md.includes(CTA_MARK)) return md
-  return md.replace(/\s*$/, '') + CTA_BLOCK
+  // שריד-CTA חתוך: סבב-תיקון שקטע את הבלוק באמצע משאיר זנב "**רוצים לראות…" בלי ה-mark
+  // המלא — ה-includes לא מזהה, ומאמר חי נגמר באמצע משפט (או מקבל CTA כפול). חותכים את
+  // השריד מהזנב לפני ההוספה — רק כשהוא באמת בזנב (הביטוי יכול להופיע גם בפרוזה לגיטימית):
+  // שריד חתוך קצר מהבלוק המלא בהגדרה, אז מרחק-מהסוף גדול מזה = טקסט-גוף, לא נוגעים.
+  let out = md
+  const frag = out.lastIndexOf(CTA_OPEN)
+  if (frag !== -1 && out.length - frag < CTA_BLOCK.length + 80) {
+    out = out.slice(0, frag)
+      .replace(/\*\*\s*$/, '')       // ה-'**' הפותח של השריד
+      .replace(/\n+ *-{3,} *\n*\s*$/, '') // ה-'---' המפריד של בלוק-ה-CTA (לא קו-אופקי של תוכן)
+  }
+  return out.replace(/\s*$/, '') + CTA_BLOCK
 }
 
 // ── QA: fact-check (Gemini), adversarial claims (Gemini/Claude), copy-edit (Gemini) ──
@@ -713,10 +768,14 @@ export function lintArticle(md) {
   const fm = (md.match(/^---[\s\S]*?\n---/) || [''])[0]
   const fmBroken = /\\"/.test(fm) || /\\[״׳]/.test(fm)
   if (fmBroken) issues.push('frontmatter שובר YAML (מרכאה עם backslash) — החלף בגרש עברי ״ בלי backslash.')
-  const titleLen = ((md.match(/^title:\s*"([^"]*)"/m) || [])[1] || '').trim().length
-  const titleBad = titleLen < 8 || titleLen > 68
-  if (titleLen < 8) issues.push('כותרת קצרה/פגומה — צור כותרת עברית מלאה 25-65 תווים במרכאות-כפולות.')
-  if (titleLen > 68) issues.push(`כותרת ${titleLen} תווים — תיחתך ב-SERP; קצר ל-25-65.`)
+  const titleStr = ((md.match(/^title:\s*"([^"]*)"/m) || [])[1] || '').trim()
+  const titleLen = titleStr.length
+  // תקציב-כותרת: התבנית מוסיפה ' · Scayla' (9 תווים) לכל <title> — 56 גולמי = 65 מעובד, גבול-החיתוך ב-SERP.
+  const titleBad = titleLen < 8 || titleLen > 56
+  if (titleLen < 8) issues.push('כותרת קצרה/פגומה — צור כותרת עברית מלאה 25-50 תווים במרכאות-כפולות.')
+  if (titleLen > 56) issues.push(`כותרת ${titleLen} תווים — עם ' · Scayla' שהתבנית מוסיפה תיחתך ב-SERP; קצר ל-25-50.`)
+  // שחיקת-נוסחה (69% "מדריך", 91% נקודתיים בכותרות החיות) — דגל רך, הפרומפט עושה את הגיוון.
+  if (/המדריך המלא/.test(titleStr)) issues.push('תבנית-כותרת שחוקה ("המדריך המלא") — גוון: שאלה, מספר, או טענה ממוקדת בלי "מדריך".')
   const descLen = ((md.match(/^description:\s*"([^"]*)"/m) || [])[1] || '').trim().length
   if (descLen && (descLen < 110 || descLen > 160)) issues.push(`תיאור ${descLen} תווים — כוון ל-110-160 תווים (אורך-SERP אופטימלי).`)
   const bodyTrim = body.trim()
@@ -734,7 +793,28 @@ export function lintArticle(md) {
   const emptyTail = /##+[^\n]*\n+\s*$/.test(contentTrim)
   if (truncBody || emptyTail) issues.push('הגוף קטוע — נגמר באמצע משפט/טבלה או בכותרת ריקה. השלם עד סוף מלא (כולל "## מה חשוב לזכור").')
   if (!/##+\s*מה חשוב לזכור/.test(body)) issues.push('חסר סעיף "## מה חשוב לזכור" עם 3-4 נקודות תמצית.')
-  if (/##+\s*שאלות נפוצות/.test(body)) issues.push('הסר את סעיף "## שאלות נפוצות" מהגוף — ה-FAQ נכנס רק לשדה faq.')
+  // מאמר חי שלף "## שאלות ותשובות נפוצות" ועקף את הבדיקה הישנה — לוכדים כל וריאציה של H2-שאלות.
+  if (/##+[^\n]*שאלות\s+(?:נפוצות|ותשובות)/.test(body)) issues.push('הסר את סעיף השאלות-ותשובות מהגוף — ה-FAQ נכנס רק לשדה faq.')
+  // GEO: התשובה הישירה חייבת להיות הפסקה הראשונה — hook סיפורי לפניה קובר אותה ומנועי-AI לא מצטטים.
+  const firstPara = (bodyTrim.split('\n').find((l) => l.trim()) || '').trim()
+  if (firstPara && !firstPara.startsWith('**')) issues.push('הפסקה הראשונה בגוף חייבת להיות התשובה הישירה המודגשת (פותחת ב-**) — העבר אותה לראש והסר כל פתיח/hook לפניה.')
+  // ערפול-מקור: "מחקרים מראים" בלי שם-מקור באותו משפט = ריח-חרטוט (50 מופעים חיים). מקור בשם
+  //   מזוהה כמילה לטינית-רישית אחרי הביטוי, עד סוף המשפט. fixable — ה-fixer מנסח מנגנון במקום.
+  const vagueRe = /מחקרים מראים|מחקרים מצביעים|מומחים מסכימים/g
+  let vg, vagueCnt = 0
+  while ((vg = vagueRe.exec(body))) {
+    const restOfSentence = body.slice(vg.index, vg.index + 220).split(/[.!?\n]/)[0]
+    if (!/[A-Z][A-Za-z]/.test(restOfSentence)) vagueCnt++
+  }
+  if (vagueCnt) issues.push(`${vagueCnt} ניסוח(ים) עמומים ("מחקרים מראים/מצביעים"/"מומחים מסכימים") בלי שם-מקור באותו משפט — החלף במשפט-מנגנון קונקרטי או בפרפרזה עם שם-המקור.`)
+  // קלישאות-AI (זיהוי-מכונה מיידי בעברית) — fixable, לא גונז.
+  const cliches = []
+  if (/נצלול/.test(body)) cliches.push('"נצלול"')
+  if (/מכרה זהב/.test(body)) cliches.push('"מכרה זהב"')
+  if (/בשורה התחתונה/.test(body)) cliches.push('"בשורה התחתונה"')
+  const notOnlyCnt = (body.match(/לא רק[^.!?\n]{0,80}אלא/g) || []).length
+  if (notOnlyCnt > 2) cliches.push(`תבנית "לא רק... אלא" x${notOnlyCnt}`)
+  if (cliches.length) issues.push(`קלישאות-AI בגוף: ${cliches.join(', ')} — נסח מחדש בשפה טבעית, בלי הביטויים האלה ובלי למחזר את תבנית "לא רק... אלא".`)
   // ── שער-ייחוס (הבעיה המערכתית #1): מספר/עובדה מיוחסים לגוף לועזי שאינו ב-sources = חשד-המצאה. ──
   const srcBlock = ((fm.match(/^sources:[\s\S]*/m) || [''])[0] || '').toLowerCase()
   const attribRe = /(?:לפי|על[- ]פי|מחקר של|נתוני|סקר של|דו"?ח של|מבוסס על נתוני|נתונים של|מצטט את)\s+((?:[A-Z][A-Za-z0-9.&''-]*)(?:\s+(?:with\s+)?[A-Z][A-Za-z0-9.&''-]*){0,3})/g
@@ -746,7 +826,7 @@ export function lintArticle(md) {
     if (!key) continue
     if (!srcBlock.includes(key.toLowerCase())) badAttrib.add(name)
   }
-  if (badAttrib.size) issues.push(`ייחוס לא-נתמך: מספרים/עובדות מיוחסים ל-[${[...badAttrib].join(', ')}] שאינם מופיעים ב-sources. אמת מול חיפוש והוסף מקור תואם, או הסר את השם והמספר ורכך לאמירה כללית ("מחקרים מראים ש...").`)
+  if (badAttrib.size) issues.push(`ייחוס לא-נתמך: מספרים/עובדות מיוחסים ל-[${[...badAttrib].join(', ')}] שאינם מופיעים ב-sources. אמת מול חיפוש והוסף מקור תואם, או הסר את השם והמספר ורכך למשפט-מנגנון כללי (בלי "מחקרים מראים" ללא מקור בשם).`)
   const factIssues = lintFacts(md)
   issues.push(...factIssues)
   const bodyWords = contentTrim ? contentTrim.split(/\s+/).filter(Boolean).length : 0
@@ -815,7 +895,9 @@ if (isMain) try {
   let { slug, md } = parseArticle(writeRes.text)
   if (!slug || !md.startsWith('---') || md.split(/^---\s*$/m).length < 3) { result({ status: 'error', cluster: cat.slug, reason: 'write parse failed or truncated' }); process.exit(1) }
 
-  const validSlugs = new Set(arts.map((a) => a.slug.toLowerCase())) // E7: route של Astro = lowercase
+  // E7: route של Astro = lowercase · draft:true לא נבנה ל-route בכלל — קישור אליו = 404 חי,
+  // אז מאמר גנוז לא נחשב slug תקין (validateLinks יחתוך אותו לטקסט-עוגן).
+  const validSlugs = new Set(arts.filter((a) => !a.draft).map((a) => a.slug.toLowerCase()))
   const allSources = await resolveSources([...writeRes.sources, ...briefRes.sources])
   const assemble = (m) => appendCta(normalizeBrands(fixFmQuotes(validateLinks(injectSources(tidyMarkdown(m), allSources), validSlugs))).md)
   md = assemble(md)

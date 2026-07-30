@@ -49,12 +49,11 @@ const collectionLd = {
   name: cluster,
   description,
   inLanguage: 'he-IL',
-  isPartOf: { '@type': 'Blog', '@id': `${SITE}/magazine`, name: 'הבלוג של Scayla' },
-  publisher: {
-    '@type': 'Organization',
-    name: 'Scayla',
-    logo: { '@type': 'ImageObject', url: `${SITE}/scayla-icon-512.png` },
-  },
+  // ה-Blog מוגדר כאן inline במלואו (type + name + url) · אין עמוד אחר שמגדיר את
+  // הצומת, אז הפניה עירומה ל-@id הייתה נשארת תלויה באוויר בלי ישות מאחוריה
+  isPartOf: { '@type': 'Blog', '@id': `${SITE}/magazine`, name: 'הבלוג של Scayla', url: `${SITE}/magazine` },
+  // ה-Organization הקנוני נפלט פעם אחת ב-BaseLayout · כאן הפניה בלבד, בלי הגדרה מחדש
+  publisher: { '@id': `${SITE}/#org` },
   mainEntity: {
     '@type': 'ItemList',
     numberOfItems: posts.length,

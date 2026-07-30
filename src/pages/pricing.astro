@@ -4,7 +4,7 @@ import PricingCards from '../components/PricingCards.astro';
 import FaqAccordion from '../components/FaqAccordion.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { fullFaq } from '../data/faq';
-import { tiers } from '../data/pricing';
+import { tiers, annualPerMonth } from '../data/pricing';
 
 const billingFaq = fullFaq.filter((f) =>
   ['איך עובד החיוב?', 'יש תוכנית חינם?', 'מה ההבדל בין Scayla לסוכנות SEO?', 'מה קורה לתוכן אם נבטל את המנוי?'].includes(f.q)
@@ -59,7 +59,12 @@ const title = 'מחירון · Scayla';
 const description =
   'Growth $49 · Scale $69 · Max $99 לחודש. 14 יום ניסיון חינם, אבחון חינם, חיוב דרך Shopify וביטול בכל עת.';
 
-// SoftwareApplication + the 3 pricing Offers (Noy · question 9)
+// SoftwareApplication schema (Noy · question 9) · prices come from pricing.ts so
+// the markup can never drift from the cards. AggregateOffer: lowPrice = the visible
+// "from $39" (Growth billed annually, 20% off) · highPrice = Max monthly · the
+// per-tier Offers carry the monthly card prices. publisher = a bare reference to
+// the ONE canonical #org node (defined once in BaseLayout). No aggregateRating ·
+// we never fabricate reviews we don't have.
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
@@ -68,15 +73,22 @@ const jsonLd = {
   operatingSystem: 'Web (Shopify)',
   inLanguage: 'he',
   url: 'https://scayla.co.il',
-  publisher: { '@type': 'Organization', name: 'Scayla', url: 'https://scayla.co.il' },
-  offers: tiers.map((t) => ({
-    '@type': 'Offer',
-    name: `Scayla ${t.name}`,
-    price: String(t.price),
+  publisher: { '@id': 'https://scayla.co.il/#org' },
+  offers: {
+    '@type': 'AggregateOffer',
     priceCurrency: 'USD',
-    description: t.tagline,
-    url: 'https://scayla.co.il/pricing',
-  })),
+    lowPrice: String(Math.min(...tiers.map((t) => annualPerMonth(t.price)))),
+    highPrice: String(Math.max(...tiers.map((t) => t.price))),
+    offerCount: tiers.length,
+    offers: tiers.map((t) => ({
+      '@type': 'Offer',
+      name: `Scayla ${t.name}`,
+      price: String(t.price),
+      priceCurrency: 'USD',
+      description: t.tagline,
+      url: 'https://scayla.co.il/pricing',
+    })),
+  },
 };
 ---
 

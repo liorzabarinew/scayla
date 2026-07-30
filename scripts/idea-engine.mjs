@@ -51,6 +51,16 @@ const CLUSTER_BY_SLUG = Object.fromEntries(CLUSTERS.map((c) => [c.slug, c]))
 const CLUSTER_BY_TITLE = Object.fromEntries(CLUSTERS.map((c) => [c.title, c]))
 const VALID_INTENTS = new Set(['informational', 'commercial', 'transactional', 'navigational'])
 
+// מילות-אות פר-אשכול לבדיקת-שפיות של שיוך: keyword+title שלא נוגעים באף אחת = כנראה נחת באשכול
+// הלא-נכון (מחליש hubs ועוקף את הדה-דופ התוך-אשכולי). אזהרה בלבד — הרשימות חלקיות בכוונה.
+// guides הוא סל-כל של מדריכים וכלים — בלי רשימה = בלי בדיקה.
+const CLUSTER_SIGNALS = {
+  'geo-ai': ['geo', 'aeo', 'ai', 'גיאו', 'בינה מלאכותית', "צ'אט", 'chatgpt', 'gpt', 'gemini', "ג'מיני", 'perplexity', 'פרפלקסיטי', 'claude', 'קלוד', 'llm', 'סוכנ', 'ציטוט', 'overviews', 'מנועי תשובה', 'נראות'],
+  'seo-shopify': ['seo', 'קידום', 'גוגל', 'סכמ', 'schema', 'canonical', 'קנוניקל', '301', '404', 'sitemap', 'robots', 'אינדוקס', 'דירוג', 'מהירות', 'זחיל', 'מטא', 'קישור', 'core web'],
+  ecommerce: ['שיווק', 'המרה', 'המרות', 'לקוח', 'עגלה', 'מייל', 'איקומרס', 'מכירה', 'מכירות', 'מותג', 'קהיל', 'ltv', 'ugc', 'שימור', 'תנועה', 'טראפיק', 'קמפיין'],
+  guides: [],
+}
+
 function result(obj) { console.log('RESULT:' + JSON.stringify(obj)) }
 
 // ── Google auth (SA JWT → access token), ללא תלות חיצונית ──
@@ -151,6 +161,24 @@ function loadDone() {
 // נירמול מפתח להשוואת-כפילויות (case-fold, רווחים, פיסוק-קצה) — עברית+לטינית.
 const normKey = (s) => String(s || '').toLowerCase().replace(/[‘’'"“”]/g, '').replace(/\s+/g, ' ').trim()
 
+// Jaccard על סטים-של-מילים (keyword+title יחד) — תופס כמעט-כפילויות שההשוואה המדויקת של normKey
+// מפספסת (סדר-מילים שונה, מילה נוספת/חסרה, ניסוח-משנה). סף 0.5 = חצי מהמילים משותפות → קניבליזציה.
+// קידומות-שימוש עבריות (ו/ה/ב/ל/מ/ש/כ) מודבקות למילה ("המדריך"/"לחיבור") מפוצצות את ההשוואה —
+// מסירים אחת כשנשארת מילה של 3+ תווים. סימטרי לשני הצדדים, לא ניתוח לשוני.
+const JACCARD_THRESHOLD = 0.5
+const OVERLAP_THRESHOLD = 0.66
+const stripHebPrefix = (w) => /^[והבלמשכ]/.test(w) && w.length >= 4 ? w.slice(1) : w
+const wordSet = (s) => new Set(normKey(s).split(/[^\p{L}\p{N}]+/u).filter((w) => w.length > 1).map(stripHebPrefix))
+// כמעט-כפיל = Jaccard>=0.5 (חצי מהמילים משותפות) או Overlap>=0.66 (שני-שליש מהסט הקצר בתוך הארוך).
+// ה-Overlap משלים את ה-Jaccard במקרה שנתפס בפועל: כותרת-חיה קצרה שנבלעת בתוך מועמד ארוך —
+// האיחוד הגדול מדלל את היחס הסימטרי ומפספס קניבליזציה ברורה.
+function nearDupe(a, b) {
+  if (!a.size || !b.size) return false
+  let inter = 0
+  for (const w of a) if (b.has(w)) inter++
+  return inter / (a.size + b.size - inter) >= JACCARD_THRESHOLD || inter / Math.min(a.size, b.size) >= OVERLAP_THRESHOLD
+}
+
 // ── פרסור הפלט של Gemini לרעיונות ──
 // מבקשים שורות בפורמט: KEYWORD | TITLE | INTENT   (אחד לשורה, בלי JSON — יציב מול grounding)
 function parseIdeas(text, clusterSlug) {
@@ -166,6 +194,10 @@ function parseIdeas(text, clusterSlug) {
     let [keyword, title, intent] = parts
     if (!keyword || !title) continue
     if (keyword.length > 90 || title.length > 160) continue // מסנן שורות-זבל/משפטים ארוכים
+    // שומר-זבל דטרמיניסטי: הד-של-פורמט (המודל מהדהד את שורת-התבנית KEYWORD | TITLE מילולית),
+    // שדה קצר מדי, או intent שגלש ל-title כשהמודל השמיט עמודה — שני הדפוסים כבר שרפו תור.
+    const junk = (s) => /^KEYWORD|^TITLE|\|/.test(s) || s.trim().length < 4
+    if (junk(keyword) || junk(title) || VALID_INTENTS.has(title.toLowerCase())) continue
     intent = (intent || '').toLowerCase()
     if (!VALID_INTENTS.has(intent)) intent = 'informational'
     out.push({ cluster: clusterSlug, keyword, title, intent })
@@ -176,17 +208,25 @@ function parseIdeas(text, clusterSlug) {
 const scanPrompt = (cat, existingTitles, existingKeywords, today) => {
   const titles = existingTitles.slice(0, 80)
   const kws = existingKeywords.slice(0, 200)
+  // אוגוסט-נובמבר = חלון ההכנה לנובמבר הישראלי: FIFO אומר שנושא עונתי שנכנס מאוחר יתפרסם מאוחר מדי.
+  const month = parseInt(today.slice(5, 7), 10)
+  const seasonal = month >= 8 && month <= 11
+    ? `\nעונתיות: אנחנו בחלון ההכנה לנובמבר (בלאק פריידי / סייבר מאנדיי / שופינג IL). כלול לפחות רעיון אחד של הכנת חנויות Shopify ישראליות לנובמבר מזווית האשכול הזה — הכנות, לוחות זמנים, מלאי, SEO עונתי, נראות ב-AI לקניות חג.\n`
+    : ''
   return `אתה חוקר-תוכן בכיר למגזין של "Scayla" — אפליקציית SEO/GEO ל-Shopify שמקדמת חנויות אונליין בגוגל וגם במנועי-התשובות של ה-AI (ChatGPT, Gemini, Perplexity, Claude). הקהל: בעלי חנויות Shopify ואנשי שיווק בישראל. התאריך היום: ${today}.
 
 המשימה: השתמש בחיפוש Google כדי לזהות **פערי-תוכן טריים** באשכול הבא, ולהציע ${IDEAS_PER_CLUSTER + 3} רעיונות למאמרים חדשים שאין לנו עדיין.
 אשכול: ${cat.title}
 מיקוד: ${cat.focus}
 
+גבולות האשכולות (כל רעיון חייב להשתייך לאשכול הנוכחי בלבד — רעיון שמתאים יותר לאשכול אחר, אל תציע אותו כאן):
+${CLUSTERS.map((c) => `- ${c.title}${c.slug === cat.slug ? ' ← האשכול הנוכחי' : ''}: ${c.focus}`).join('\n')}
+
 חקור מה קורה *עכשיו*:
 - מה בעלי חנויות Shopify ואנשי SEO/GEO בישראל מחפשים בגוגל בתקופה האחרונה (מונחי-לונג-טייל, שאלות "איך/כמה/מתי/למה").
 - שאלות People-Also-Ask ונושאים שמתחרים/בלוגים מקצועיים העלו לאחרונה.
 - טרנדים/עדכונים חדשים (עדכוני Google, פיצ'רים חדשים ב-Shopify, שינויים ב-AI Overviews / ChatGPT / Perplexity) שעדיין לא כיסינו.
-
+${seasonal}
 **חובה: הימנע מכל נושא שכבר קיים אצלנו.** אלה הכותרות שכבר במגזין:
 ${titles.length ? titles.map((t) => `  • ${t}`).join('\n') : '  (אין עדיין)'}
 
@@ -199,6 +239,8 @@ KEYWORD | TITLE | INTENT
 - KEYWORD: ביטוי-חיפוש קצר בעברית (2-6 מילים) שבן-אדם באמת מקליד בגוגל. ייחודי, לא חופף לרשימות למעלה.
 - TITLE: כותרת-מאמר ממגנטת ומדויקת בעברית (עד ~12 מילים). אם שנה הכרחית — רק ${today.slice(0, 4)}, ועדיף על-זמני.
 - INTENT: אחד מ: informational | commercial | transactional | navigational.
+
+תמהיל-intent מחייב: לפחות 2 רעיונות commercial ולפחות רעיון אחד transactional בכל batch — לא הכל informational. כלול במפורש רעיונות השוואה ("X מול Y"), חלופות ("חלופות ל-..."), מעבר/הגירה מפלטפורמה או מכלי אחר, ותמחור/עלויות — הכל לשוק ה-Shopify הישראלי.
 
 רק רעיונות אמיתיים שנתמכים במה שמצאת בחיפוש. בלי המצאות, בלי כותרות קלישאתיות ריקות.`
 }
@@ -215,6 +257,12 @@ async function main() {
   // סט-כפילויות: כל מילות-המפתח הקיימות (topics.json + topics-done.json) מנורמלות.
   const seenKeys = new Set([...topics.map((t) => normKey(t && t.keyword)), ...[...done].map(normKey)].filter(Boolean))
   const seenTitles = new Set([...topics.map((t) => normKey(t && t.title)), ...allTitles.map(normKey)].filter(Boolean))
+  // קורפוס ל-Jaccard: keyword+title של כל התור + כותרות המאמרים החיים — דחיית כמעט-כפיל גם מולם,
+  // לא רק התאמה מדויקת (וריאציה קלה על נושא קיים = קניבליזציה, לא מאמר חדש).
+  const seenWordSets = [
+    ...topics.map((t) => wordSet(((t && t.keyword) || '') + ' ' + ((t && t.title) || ''))),
+    ...allTitles.map((t) => wordSet(t)),
+  ].filter((s) => s.size)
 
   const perCluster = {}
   const added = []
@@ -228,13 +276,22 @@ async function main() {
     try {
       const { text } = await callGemini(scanPrompt(cat, existingTitles, existingKeywords, today), { search: true, maxTokens: 4000, temperature: 0.85 })
       const ideas = parseIdeas(text, cat.slug)
+      // אכיפה רכה של תמהיל-intent: batch שכולו informational = המודל התעלם מהמכסה — מתריעים, לא זורקים.
+      if (ideas.length && ideas.every((i) => i.intent === 'informational')) console.warn(`[${cat.slug}] אזהרה: כל ה-batch יצא informational למרות מכסת commercial/transactional בפרומפט`)
       for (const idea of ideas) {
         if (perCluster[cat.slug] >= IDEAS_PER_CLUSTER) break
         const kNorm = normKey(idea.keyword)
         const tNorm = normKey(idea.title)
         if (!kNorm || seenKeys.has(kNorm) || seenTitles.has(tNorm)) continue
+        const ws = wordSet(idea.keyword + ' ' + idea.title)
+        if (seenWordSets.some((s) => nearDupe(ws, s))) continue // כמעט-כפיל של התור או של מאמר חי
+        // בדיקת-שפיות שיוך-אשכול: אזהרה בלבד, כדי שנתפוס שיוך שגוי בלוגים בלי לזרוק רעיון טוב.
+        const signals = CLUSTER_SIGNALS[cat.slug] || []
+        const hay = normKey(idea.keyword + ' ' + idea.title)
+        if (signals.length && !signals.some((w) => hay.includes(w))) console.warn(`[${cat.slug}] אזהרה: "${idea.keyword}" לא נוגע באף מילת-אות של האשכול — ייתכן שיוך שגוי`)
         seenKeys.add(kNorm)
         seenTitles.add(tNorm)
+        seenWordSets.push(ws)
         topics.push(idea)
         added.push(idea)
         perCluster[cat.slug]++

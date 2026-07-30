@@ -5,6 +5,12 @@
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
 
+# עטיפות המאמרים · בלי כלל מפורש CF נותן ~4h בלבד. שבוע + SWR כי עטיפה של מאמר
+# שכבר פורסם כמעט לא משתנה, ולא immutable כי אותו שם קובץ כן נדרס בעדכון עטיפה.
+/covers/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains

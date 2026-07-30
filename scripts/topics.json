@@ -246,12 +246,6 @@
     "intent": "commercial"
   },
   {
-    "cluster": "guides",
-    "keyword": "KEYWORD",
-    "title": "TITLE",
-    "intent": "informational"
-  },
-  {
     "cluster": "geo-ai",
     "keyword": "תיקון טעויות AI על מוצרים",
     "title": "ה-AI ממציא? מדריך לזיהוי ותיקון הלוצינציות על המוצרים שלך בתשובות AI",
@@ -444,39 +438,9 @@
     "intent": "informational"
   },
   {
-    "cluster": "geo-ai",
-    "keyword": "AEO פוגש PPC: איך תובנות מ-Gemini יכולות להוזיל קליקים ולהגדיל המרות",
-    "title": "informational",
-    "intent": "informational"
-  },
-  {
     "cluster": "seo-shopify",
     "keyword": "קידום חנויות שופיפיי בעברית",
     "title": "מדריך לפתרון בעיות RTL וכתובות URL",
-    "intent": "informational"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "אופטימיזציה דף 404 שופיפיי",
-    "title": "מ-404 למכירה: איך להפוך דפי שגיאה למנוע המרות מותאם-אישית עם AI",
-    "intent": "informational"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "חיבור שופיפיי ל-OpenAI Actions",
-    "title": "מדריך למתחילים: איך לחבר את החנות ל-OpenAI Actions (בלי מתכנת)",
-    "intent": "informational"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "חיזוי ביקוש עם AI שופיפיי",
-    "title": "מעבר לסטטיסטיקה: המדריך לחיזוי ביקוש וניהול מלאי עם AI בשופיפיי",
-    "intent": "informational"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "אסטרטגיית UGC ל-AI Overviews",
-    "title": "מביקורות לסיכומים: איך למנף תוכן גולשים (UGC) כדי להופיע ב-AI Overviews",
     "intent": "informational"
   },
   {
@@ -717,6 +681,42 @@
     "cluster": "guides",
     "keyword": "ניתוח חיפוש פנימי שופיפיי",
     "title": "אוצר בחצר האחורית: איך לנתח דאטה מחיפוש פנימי בשופיפיי ולמצוא מילות מפתח חדשות",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "מה זה seo לשופיפיי",
+    "title": "מה זה SEO לשופיפיי? המדריך שמסביר הכל מאפס",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "seo לשופיפיי למתחילים",
+    "title": "SEO לשופיפיי למתחילים: צעד-אחר-צעד לחנות הראשונה שלכם",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "מה זה geo",
+    "title": "מה זה GEO? המדריך למושג שמחליף את ה-SEO בעידן ה-AI",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "הכנת חנות שופיפיי לבלאק פריידי",
+    "title": "צ'קליסט בלאק פריידי לחנות שופיפיי: הכנה מלאה לנובמבר הישראלי",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "seo לבלאק פריידי שופיפיי",
+    "title": "SEO לבלאק פריידי בשופיפיי: לוח זמנים מאוגוסט ועד נובמבר",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "בלאק פריידי נראות ב-AI",
+    "title": "בלאק פריידי בעידן ה-AI: כך המבצעים שלכם יופיעו בתשובות של ChatGPT ו-Gemini",
     "intent": "informational"
   }
 ]

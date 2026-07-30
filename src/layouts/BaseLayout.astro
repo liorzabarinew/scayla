@@ -16,11 +16,10 @@ interface Props {
   /** Optional path override for canonical (defaults to current URL) */
   ogType?: string;
   noIndex?: boolean;
-  /** Per-page social share image · path or absolute URL. Defaults to the branded /og.png */
+  /** Per-page share-image props · accepted but IGNORED (see the share-card note
+      below): the branded /og.png is really 1200×630 and its dims/alt are hard-coded */
   ogImage?: string;
-  /** Alt text for the social share image */
   ogImageAlt?: string;
-  /** Social share image pixel dimensions · default to the branded /og.png (1200×630) */
   ogImageWidth?: number;
   ogImageHeight?: number;
   /** Breadcrumb trail after Home · defaults to one crumb derived from the title */
@@ -32,18 +31,17 @@ const {
   description,
   ogType = 'website',
   noIndex = false,
-  ogImage = '/og.png',
-  ogImageAlt = 'קידום אורגני בגוגל ובמנועי AI לחנויות · Scayla',
-  ogImageWidth = 1200,
-  ogImageHeight = 630,
   breadcrumbs,
 } = Astro.props;
 
 // ── Share card (Lior, 2026-07-13): SITE-WIDE fixed share copy + cover. Every page —
 //    home, features, magazine, legal — shares with the SAME branded card. Per-page
-//    ogImage props are intentionally ignored; the <title> tag stays per-page for SEO. ──
+//    ogImage props are intentionally ignored · including alt + dims: og.png is really
+//    1200×630, so per-page numbers (e.g. 1600×760) would lie to the crawlers. The
+//    <title> tag stays per-page for SEO. ──
 const SHARE_TITLE = 'קידום אורגני בגוגל ובמנועי AI לחנויות · Scayla';
 const SHARE_DESCRIPTION = 'קידום אורגני אוטומטי בגוגל ובמנועי AI · נבנה ע״י אנשי שיווק עם 15 שנות ניסיון באיקומרס. 14 יום ניסיון בלי להכניס כרטיס אשראי.';
+const SHARE_IMAGE_ALT = 'קידום אורגני בגוגל ובמנועי AI לחנויות · Scayla';
 // Absolute URL for the social share image (og:image requires an absolute URL)
 const ogImageUrl = new URL('/og.png', Astro.site).href;
 
@@ -71,6 +69,31 @@ const breadcrumbLd = {
     })),
   ],
 };
+
+// ── Organization · the ONE canonical node for the whole site. It used to be
+//    defined 3 conflicting ways (#org vs #organization vs inline copies), so the
+//    knowledge graph never merged them into one entity. Emitted here once,
+//    site-wide; every other schema references it with a bare
+//    {"@id":"https://scayla.co.il/#org"} and must NEVER redefine it. ──
+const orgLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': 'https://scayla.co.il/#org',
+  name: 'Scayla',
+  url: 'https://scayla.co.il',
+  logo: {
+    '@type': 'ImageObject',
+    url: 'https://scayla.co.il/scayla-icon-512.png',
+    width: 512,
+    height: 512,
+  },
+  // only profiles we actually own · never list links that don't exist
+  sameAs: ['https://apps.shopify.com/scayla'],
+  founder: [
+    { '@type': 'Person', name: 'ליאור צברי' },
+    { '@type': 'Person', name: 'נוי קייטל' },
+  ],
+};
 ---
 
 <!doctype html>
@@ -92,19 +115,22 @@ const breadcrumbLd = {
     <link rel="sitemap" href="/sitemap-index.xml" />
     {noIndex && <meta name="robots" content="noindex, nofollow" />}
     <script type="application/ld+json" set:html={JSON.stringify(breadcrumbLd)} />
+    <script type="application/ld+json" set:html={JSON.stringify(orgLd)} />
     <meta property="og:type" content={ogType} />
     <meta property="og:title" content={SHARE_TITLE} />
     <meta property="og:description" content={SHARE_DESCRIPTION} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="he_IL" />
     <meta property="og:site_name" content="Scayla" />
+    {/* dims/alt hard-coded to the REAL og.png (1200×630) · per-page props are ignored
+        because the image itself is always the fixed branded card */}
     <meta property="og:image" content={ogImageUrl} />
-    <meta property="og:image:width" content={String(ogImageWidth)} />
-    <meta property="og:image:height" content={String(ogImageHeight)} />
-    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={SHARE_IMAGE_ALT} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content={ogImageUrl} />
-    <meta name="twitter:image:alt" content={ogImageAlt} />
+    <meta name="twitter:image:alt" content={SHARE_IMAGE_ALT} />
     <link rel="preload" href="/fonts/heebo-hebrew.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/heebo-latin.woff2" as="font" type="font/woff2" crossorigin />
     <meta name="theme-color" content="#f6f4fb" />

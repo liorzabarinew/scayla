@@ -85,8 +85,8 @@ export const experts: Expert[] = [
       { label: 'תעודת שיווק דיגיטלי', from: 'HackerU (האקריו)' },
     ],
     links: [
+      // LinkedIn ירד בכוונה · קישור לעמוד הבית של לינקדאין נראה מזויף. יחזור כשיהיה URL אמיתי.
       { label: 'busymom.co.il', href: 'https://busymom.co.il' },
-      { label: 'LinkedIn', href: 'https://www.linkedin.com/', placeholder: true },
     ],
     knowsAbout: [
       'SEO',

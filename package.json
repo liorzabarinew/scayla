@@ -8,6 +8,7 @@
     "dev": "astro dev",
     "prebuild": "node scripts/gen-llms.mjs",
     "build": "astro build",
+    "postbuild": "node scripts/postbuild-sitemap-lastmod.mjs",
     "test": "node --test scripts/*.test.mjs",
     "preview": "astro preview",
     "astro": "astro",

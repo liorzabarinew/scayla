@@ -51,12 +51,24 @@ llms = llms.replace(new RegExp(`\\n*${START}[\\s\\S]*?${END}\\n*`), '\n') // ה�
 llms = llms.replace(/\s*$/, '') + '\n\n' + block + '\n'
 writeFileSync(LLMS, llms)
 
-// ── llms-full.txt · הטקסט המלא של כל המאמרים ──
-let full = `# Scayla · llms-full.txt\n> הטקסט המלא של מאמרי המגזין, לסוכני-AI. עודכן אוטומטית.\n\n`
+// ── llms-full.txt · תקציר עשיר של כל המאמרים ──
+// הקובץ המלא חצה ~1MB וגדל עם כל מאמר יומי · fetchers של סוכני-AI חותכים בשקט
+// באמצע, אז המאמרים האחרונים פשוט נעלמים. עדיף קיצוץ מכוון בגבול פסקה + קישור
+// למאמר המלא, מאשר חיתוך שרירותי אצל הצרכן.
+const BODY_CAP = 3500
+function capBody(body, url) {
+  if (body.length <= BODY_CAP) return body
+  const cut = body.lastIndexOf('\n\n', BODY_CAP) // גבול פסקה אחרון בתוך התקרה
+  const head = body.slice(0, cut > 0 ? cut : BODY_CAP).trim()
+  return `${head}\n\n[המאמר המלא: ${url}]`
+}
+
+let full = `# Scayla · llms-full.txt\n> תקצירי מאמרי המגזין, לסוכני-AI. עודכן אוטומטית. לכל מאמר מצורף קישור לגרסה המלאה.\n\n`
 for (const c of CLUSTER_ORDER) {
   for (const a of byCluster(c)) {
+    const url = `${SITE}/magazine/${encodeURI(a.slug)}`
     full += `\n\n=====================================================================\n`
-    full += `# ${a.title}\nURL: ${SITE}/magazine/${encodeURI(a.slug)}\nאשכול: ${a.cluster}\n\n${a.body}\n`
+    full += `# ${a.title}\nURL: ${url}\nאשכול: ${a.cluster}\n\n${capBody(a.body, url)}\n`
   }
 }
 writeFileSync(LLMS_FULL, full)
