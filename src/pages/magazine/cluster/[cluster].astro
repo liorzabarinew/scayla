@@ -137,6 +137,12 @@ const collectionLd = {
   {about && (
     <section class="cl-about">
       <div class="narrow">
+        {cluster === 'SEO לחנויות שופיפיי' && (
+          <p class="hub-guide">
+            רוצים את כל התמונה במקום אחד? <a href="/seo-shopify">המדריך המלא לקידום אתרי שופיפיי</a> עובר
+            על הכול לפי הסדר, ממבנה הקטגוריות ועד תיאורי המוצר והמהירות · המאמרים כאן נכנסים לעומק של כל שלב.
+          </p>
+        )}
         <h2>{about.heading}</h2>
         {about.paragraphs.map((p) => <p>{p}</p>)}
       </div>
@@ -222,6 +228,17 @@ const collectionLd = {
 
   /* C5 · פרוזת-העוגן · גוף טקסט קריא מתחת להירו, לפני רשת הקלפים */
   .cl-about { padding-block: 10px 6px; }
+  /* קישור-עוגן לעמוד-המוצר /seo-shopify · רק באשכול השופיפיי, בולט מתחת להירו */
+  .hub-guide {
+    background: var(--sc-wash);
+    box-shadow: inset 0 0 0 1.5px var(--sc-soft);
+    border-radius: 14px;
+    padding: 14px 18px;
+    font-size: 15.5px; line-height: 1.85; color: var(--sc-muted);
+    margin-block-end: 18px;
+  }
+  .hub-guide a { font-weight: 800; color: var(--sc-accent-text); }
+  .hub-guide a:hover { text-decoration: underline; }
   .cl-about h2 { font-size: 20px; font-weight: 800; color: var(--sc-ink); margin-block-end: 12px; }
   .cl-about p { font-size: 15.5px; line-height: 1.85; color: var(--sc-muted); }
   .cl-about p + p { margin-block-start: 12px; }

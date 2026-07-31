@@ -99,6 +99,7 @@ const CAT_PATHS = CLUSTERS.map((c) => `/magazine/cluster/${c.slug}`).join(' , ')
 const PRODUCT_LINKS = [
   { path: '/scan', what: 'בדיקת נראות ה-AI החינמית של החנות' },
   { path: '/pricing', what: 'תוכניות ומחירים' },
+  { path: '/seo-shopify', what: 'המדריך המלא לקידום אתרי שופיפיי (SEO + GEO)' },
   { path: '/features/ai-score', what: 'ציון הנראות ב-AI' },
   { path: '/features/answer-viewer', what: 'צפייה בתשובות ה-AI על המותג' },
   { path: '/features/competitor-race', what: 'השוואת נראות מול מתחרים' },

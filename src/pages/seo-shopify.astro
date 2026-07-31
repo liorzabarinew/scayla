@@ -3,17 +3,24 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import CtaBand from '../components/CtaBand.astro';
 import InstallCtaPair from '../components/InstallCtaPair.astro';
 import FaqAccordion from '../components/FaqAccordion.astro';
+import { experts } from '../data/experts';
 
-const title = 'קידום אורגני לשופיפיי (Shopify) · מדריך SEO לחנות · Scayla';
+const title = 'קידום אתרי שופיפיי · מדריך SEO אורגני מלא לחנות Shopify · Scayla';
 const description =
-  'קידום אורגני לחנות שופיפיי: איך עובד SEO ב-Shopify · קולקציות מול עמודי מוצר, URL כפולים וקנוניקל, מטאדאטה, סכמות ו-sitemap. מדריך + מכונה שמתקנת אוטומטית, מ-$39 לחודש.';
+  'קידום אתרי שופיפיי מא׳ עד ת׳: איך עובד SEO ב-Shopify, קולקציות מול עמודי מוצר, URL כפולים וקנוניקל, מטאדאטה, סכמות ו-sitemap. מדריך + מכונה, מ-$39 לחודש.';
 
 const canonicalPath = '/seo-shopify';
 const authorName = 'נוי קייטל';
 const authorUrl = 'https://scayla.co.il/experts/noy-keitel';
+// Canonical author data · single source of truth in src/data/experts.ts.
+const noy = experts.find((e) => e.slug === 'noy-keitel')!;
 const datePublished = '2026-06-15';
-const dateModified = '2026-07-17';
-const updatedLabel = 'עודכן 17 ביולי 2026';
+const dateModified = '2026-07-31';
+const updatedLabel = new Date(dateModified).toLocaleDateString('he-IL', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
 
 const faq = [
   {
@@ -37,8 +44,40 @@ const faq = [
     a: 'כשמוצר משויך לכמה קולקציות, Shopify יכול להגיש אותו גם תחת ‎/collections/שם/products/שם‎ וגם תחת ‎/products/שם‎. זה יוצר תוכן כפול שמפצל אותות דירוג. הפתרון הוא תג canonical שמצביע תמיד על כתובת ‎/products/‎ הנקייה, וזה בדיוק מה שמנוע התיקונים בודק.',
   },
   {
-    q: 'תוך כמה זמן רואים תוצאות מקידום אורגני בשופיפיי?',
-    a: 'תיקונים טכניים · קנוניקל, סכמות, מטאדאטה · נסרקים תוך ימים. שיפור אמיתי בדירוג של קטגוריה או מוצר מצטבר לאורך שבועות, אחרי שגוגל סרק את התוכן החדש והתחיל לתת בו אמון. מדידה שבועית מראה אם הכיוון נכון בלי לנחש.',
+    q: 'כמה עולה קידום אתרי שופיפיי?',
+    a: 'תלוי במסלול. סוכנות בישראל גובה ריטיינר חודשי שמתחיל באלפי שקלים, פרילנסר פחות מזה אבל עם היקף מצומצם, ועבודה עצמאית עולה בעיקר זמן. אפליקציה כמו Scayla עושה את התיקונים והתוכן אוטומטית מ-$39 לחודש, כך שההשוואה הנכונה היא מול שעות העבודה שהיא חוסכת.',
+  },
+  {
+    q: 'מה ההבדל בין קידום אתר שופיפיי לקידום אתר וורדפרס?',
+    a: 'ההבדל המרכזי הוא שליטה. בוורדפרס אפשר לשנות כל דבר · מבנה URL, קבצי שרת, קוד · ובשופיפיי המבנה קבוע, ובתמורה הטכני הבסיסי מגיע מסודר. בפועל, קידום שופיפיי מתרכז בקנוניקל, מטאדאטה, תוכן קטגוריות ומהירות של אפליקציות, בזמן שבוורדפרס חלק גדול מהזמן הולך לתחזוקת תוספים ושרת.',
+  },
+  {
+    q: 'האם כדאי לכתוב בלוג בחנות שופיפיי?',
+    a: 'כן, בתנאי שהוא עונה על שאלות שקונים שואלים לפני רכישה ומקשר לקטגוריות ולמוצרים. מאמר כמו "איך בוחרים נעלי ריצה למתחילים" מושך קונים בשלב ההשוואה ומזרים אותם לעמוד הקטגוריה. בלוג כללי שלא נוגע בקטלוג כמעט לא מזיז את הדירוגים של עמודי המכירה.',
+  },
+  {
+    q: 'איך מקדמים עמוד קטגוריה בשופיפיי?',
+    a: 'נותנים לו מה שאין לו בברירת מחדל: פסקת פתיחה מעל רשת המוצרים שמסבירה מה יש בקטגוריה, תוכן מרחיב מתחת לרשת, title ותיאור ייחודיים, וקישורים פנימיים ממאמרים ומעמוד הבית. עמוד קטגוריה עם טקסט אמיתי מתחרה על מילות החיפוש הרחבות, ושם נמצא רוב נפח החיפוש.',
+  },
+  {
+    q: 'האם URL בעברית פוגע בקידום בשופיפיי?',
+    a: 'לא. גוגל קורא ומדרג כתובות בעברית בדיוק כמו באנגלית, ומילה בעברית בכתובת אף עוזרת להתאמה לשאילתה. הבעיה היחידה קוסמטית: כשמעתיקים את הקישור הוא הופך לרצף ארוך של אחוזים. מה שכן פוגע הוא שינוי כתובות קיימות בלי הפניית 301, אז חנות שכבר מדורגת לא משנה כתובות בלי תוכנית.',
+  },
+  {
+    q: 'מה עושים עם מוצר שאזל מהמלאי מבחינת SEO?',
+    a: 'לא מוחקים עמוד שמדורג. אם המוצר יחזור, משאירים את העמוד חי עם עדכון זמינות והצעת חלופות. אם הוא לא יחזור, מפנים ב-301 למוצר המחליף או לקטגוריה הרלוונטית, כדי שהדירוג שנצבר לא יתאדה בעמוד 404. מחיקה בלי הפניה זורקת לפח את כל אותות הדירוג שהעמוד אסף.',
+  },
+  {
+    q: 'איך גורמים ל-ChatGPT להמליץ על החנות שלי?',
+    a: 'נותנים לו סיבות לצטט אתכם: תוכן שעונה על שאלות אמיתיות של קונים, סכמות מוצר מלאות עם מחיר וזמינות, עמודי קטגוריה עם מידע ולא רק רשת מוצרים, ואזכורים באתרים שמנועי ה-AI נשענים עליהם. זה בדיוק התחום של GEO, והוא נבנה על אותה תשתית של SEO טוב.',
+  },
+  {
+    q: 'מה זה GEO ולמה חנות שופיפיי צריכה את זה?',
+    a: 'GEO (אופטימיזציה למנועי חיפוש מבוססי AI) הוא התאמת החנות כך ש-ChatGPT, Gemini ו-Perplexity יזכירו וימליצו עליה בתשובות שלהם. קונים עוברים לשאול את המנועים האלה מה כדאי לקנות, ומי שלא מופיע בתשובה פשוט לא קיים עבורם. חנות שנשענת רק על גוגל מוותרת על ערוץ שצומח מהר.',
+  },
+  {
+    q: 'כמה זמן לוקח לראות תוצאות מקידום אורגני בשופיפיי?',
+    a: 'תלוי בסוג התיקון ובגודל הקטלוג. תיקונים טכניים כמו קנוניקל ומטאדאטה נסרקים בדרך כלל תוך ימים עד שבועות, ושיפור בדירוגים של קטגוריות מצטבר על פני שבועות עד חודשים, כי גוגל צריך לסרוק, להשוות ולבנות אמון. חנות עם מאות מוצרים תראה תזוזה מדורגת · עמוד אחרי עמוד, לא הכל בבת אחת.',
   },
 ];
 
@@ -52,13 +91,15 @@ const articleLd = {
   image: 'https://scayla.co.il/og.png',
   datePublished,
   dateModified,
-  author: { '@type': 'Person', name: authorName, url: authorUrl },
-  publisher: {
-    '@type': 'Organization',
-    name: 'Scayla',
-    url: 'https://scayla.co.il/',
-    logo: { '@type': 'ImageObject', url: 'https://scayla.co.il/favicon-32.png' },
+  author: {
+    '@type': 'Person',
+    name: authorName,
+    url: authorUrl,
+    jobTitle: noy.role,
+    sameAs: noy.sameAs,
   },
+  // ONE canonical Organization node lives in BaseLayout · reference only, never redefine.
+  publisher: { '@id': 'https://scayla.co.il/#org' },
   about: ['קידום אורגני לשופיפיי', 'SEO', 'Shopify', 'קנוניקל', 'מטאפילדס', 'sitemap.xml', 'סכמת Product', 'GEO'],
 };
 
@@ -72,7 +113,7 @@ const appLd = {
   inLanguage: 'he',
   url: `https://scayla.co.il${canonicalPath}`,
   image: 'https://scayla.co.il/og.png',
-  publisher: { '@type': 'Organization', name: 'Scayla', url: 'https://scayla.co.il/' },
+  publisher: { '@id': 'https://scayla.co.il/#org' },
   offers: {
     '@type': 'Offer',
     price: '49',
@@ -101,7 +142,7 @@ const howToLd = {
 <BaseLayout
   title={title}
   description={description}
-  breadcrumbs={[{ name: 'קידום אורגני לשופיפיי', path: canonicalPath }]}
+  breadcrumbs={[{ name: 'קידום אתרי שופיפיי', path: canonicalPath }]}
 >
   <script type="application/ld+json" set:html={JSON.stringify(articleLd)} slot="head" />
   <script type="application/ld+json" set:html={JSON.stringify(appLd)} slot="head" />
@@ -109,9 +150,21 @@ const howToLd = {
 
   <section class="svc-hero">
     <div class="wrap center">
-      <span class="eyebrow">קידום אורגני לשופיפיי</span>
-      <h1>קידום אורגני לחנות שופיפיי · בלי סוכנות, בלי כאב ראש</h1>
-      <p class="byline">מאת <a href={authorUrl}>{authorName}</a> · {updatedLabel}</p>
+      <span class="eyebrow">קידום אתרי שופיפיי</span>
+      <h1>קידום אתרי שופיפיי · המדריך המלא לקידום אורגני (SEO) של חנות Shopify</h1>
+      <p class="hero-sub">בלי סוכנות, בלי כאב ראש</p>
+      <p class="byline">
+        נכתב על ידי <a href="/experts/noy-keitel">נוי קייטל, מומחית SEO ו-GEO</a> · עודכן: {updatedLabel}
+      </p>
+      <p class="lede opening">
+        <strong>
+          קידום אתרי שופיפיי הוא תהליך של התאמת מבנה החנות, עמודי הקטגוריה, עמודי המוצר והתוכן
+          שלה כך שגוגל ומנועי ה-AI ימצאו אותם, יבינו אותם וידרגו אותם. בשופיפיי יש שלושה חסמים
+          מובנים שלא קיימים באתרים אחרים: כתובות URL כפולות למוצרים, מבנה קולקציות קשיח,
+          ואפליקציות שמאטות את החנות. המדריך הזה עובר על כל אחד מהם, כולל מה שצריך לעשות אחרת
+          בעברית.
+        </strong>
+      </p>
       <p class="lede">
         Scayla היא מכונת קידום אורגני שעובדת בתוך חנות ה-Shopify שלכם: מחקר מילות מפתח בעברית,
         מאמרים מבוססי מחקר, SEO למוצרים ולקטגוריות, קנוניקל, סכמות ותיקוני 404 · הכל באישור שלכם,
@@ -168,6 +221,13 @@ const howToLd = {
         <p>Shopify מכתיב מבנה קבוע. מי שמכיר אותו, מנצל אותו במקום להיאבק בו:</p>
       </div>
       <div class="prose">
+        <p class="lead">
+          SEO בתוך Shopify עובד על שני סוגי עמודים: קולקציות תחת <code>/collections/</code>
+          שנלחמות על מילות מפתח רחבות, ומוצרים תחת <code>/products/</code> שמנצחים על מונחים
+          מדויקים. הפלטפורמה מספקת תשתית קבועה · sitemap, robots וקנוניקל בסיסי · והעבודה
+          האמיתית נמצאת בשכבה שמעליה: מטאדאטה ייחודית, סכמות ומטאפילדס. אלה חמשת התחומים,
+          אחד-אחד.
+        </p>
         <p>
           <b>קולקציות מול עמודי מוצר.</b> Shopify מפריד בין שני סוגי עמודים: קטגוריות תחת
           <code>/collections/</code> ומוצרים תחת <code>/products/</code>. הכלל הפשוט הוא שקטגוריות
@@ -182,6 +242,64 @@ const howToLd = {
           הוא תג <code>&lt;link rel="canonical"&gt;</code> שמצביע תמיד על כתובת <code>/products/</code>
           הנקייה. Shopify מוסיף אותו בברירת מחדל, אך ערכות ותוספים יכולים לשבור אותו · לכן צריך לבדוק.
         </p>
+        <figure class="fig">
+          <svg
+            viewBox="0 0 640 400"
+            width="640"
+            height="400"
+            role="img"
+            aria-label="איפה נולד ה-URL הכפול בשופיפיי: מוצר שמשויך לשתי קולקציות מקבל שתי כתובות כפולות, ותג הקנוניקל מצביע על הכתובת הנקייה"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title>איפה נולד ה-URL הכפול בשופיפיי</title>
+            <defs>
+              <marker id="dg-arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 0L8 4L0 8z" class="dg-arrhead" />
+              </marker>
+              <marker id="dg-arr-acc" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 0L8 4L0 8z" class="dg-arrhead-acc" />
+              </marker>
+            </defs>
+
+            <!-- product -->
+            <rect x="210" y="14" width="220" height="44" rx="10" class="dg-box wash" />
+            <text x="320" y="41" text-anchor="middle" class="dg-t">מוצר אחד בקטלוג</text>
+
+            <!-- product → collections -->
+            <path d="M290 58 L190 92" class="dg-line" marker-end="url(#dg-arr)" />
+            <path d="M350 58 L450 92" class="dg-line" marker-end="url(#dg-arr)" />
+
+            <!-- collections -->
+            <rect x="340" y="96" width="240" height="42" rx="10" class="dg-box" />
+            <text x="460" y="122" text-anchor="middle" class="dg-t">משויך לקולקציה ״ספורט״</text>
+            <rect x="60" y="96" width="240" height="42" rx="10" class="dg-box" />
+            <text x="180" y="122" text-anchor="middle" class="dg-t">משויך לקולקציה ״נשים״</text>
+
+            <!-- collections → duplicate URLs -->
+            <path d="M460 138 L470 172" class="dg-line" marker-end="url(#dg-arr)" />
+            <path d="M180 138 L170 172" class="dg-line" marker-end="url(#dg-arr)" />
+
+            <!-- duplicate URL boxes -->
+            <rect x="330" y="176" width="290" height="42" rx="10" class="dg-box dup" />
+            <text x="475" y="202" text-anchor="middle" class="dg-code">/collections/sport/products/shoe</text>
+            <text x="475" y="238" text-anchor="middle" class="dg-s">אותו עמוד · כתובת כפולה</text>
+            <rect x="20" y="176" width="290" height="42" rx="10" class="dg-box dup" />
+            <text x="165" y="202" text-anchor="middle" class="dg-code">/collections/women/products/shoe</text>
+            <text x="165" y="238" text-anchor="middle" class="dg-s">אותו עמוד · כתובת כפולה</text>
+
+            <!-- canonical arrows -->
+            <path d="M475 218 C 475 280, 400 300, 348 314" class="dg-canonline" marker-end="url(#dg-arr-acc)" />
+            <path d="M165 218 C 165 280, 240 300, 292 314" class="dg-canonline" marker-end="url(#dg-arr-acc)" />
+            <text x="530" y="286" text-anchor="middle" class="dg-s acc">rel=canonical</text>
+            <text x="110" y="286" text-anchor="middle" class="dg-s acc">rel=canonical</text>
+
+            <!-- clean canonical URL -->
+            <rect x="190" y="318" width="260" height="46" rx="10" class="dg-box canon" />
+            <text x="320" y="346" text-anchor="middle" class="dg-code strong">/products/shoe</text>
+            <text x="320" y="388" text-anchor="middle" class="dg-s">הכתובת הנקייה האחת · אליה מצביע תג הקנוניקל</text>
+          </svg>
+          <figcaption>מוצר בשתי קולקציות מקבל שתי כתובות נוספות · הקנוניקל מאחד את אותות הדירוג בכתובת אחת.</figcaption>
+        </figure>
         <p>
           <b>מטאדאטה, כותרות ותיאורים.</b> ה-<code>title</code>, ה-<code>meta description</code>
           וכותרת ה-<code>H1</code> הם מה שגוגל מציג ומדרג. ברירת המחדל של Shopify ממחזרת את שם המוצר
@@ -199,6 +317,413 @@ const howToLd = {
           ישירות בעמוד התוצאות, וסכמת <b>FAQPage</b> בעמודי מידע פותחת מקום נוסף. את הסכמות מזריקים
           ל-Liquid של ה-theme או דרך אפליקציה, ותמיד מוודאים שהן תקינות ב-Rich Results Test של גוגל.
         </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-body alt-bg">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">מגבלות הפלטפורמה</span>
+        <h2>מה שופיפיי לא נותן לכם, ואיך עוקפים</h2>
+      </div>
+      <div class="prose">
+        <p class="lead">
+          בשופיפיי יש ארבע מגבלות מובנות שאף הגדרה בלוח הבקרה לא מבטלת: כתובת כפולה לכל מוצר
+          שמוגש דרך קולקציה, עמוד <code>/collections/all</code> שנוצר לבד ומציג את כל הקטלוג,
+          מבנה בלוג נעול תחת <code>/blogs/</code>, וקובץ robots.txt שנערך רק דרך תבנית בשם
+          robots.txt.liquid. כל אחת מהן עקיפה, אם יודעים איפה.
+        </p>
+        <p>
+          הכפילות היא הכבדה מכולן, כי היא נוצרת מחדש בכל פעם שמשייכים מוצר לקולקציה. אי אפשר
+          לכבות אותה · אפשר רק לוודא שתג הקנוניקל מצביע תמיד על כתובת <code>/products/</code>
+          הנקייה ושכל הקישורים הפנימיים בערכה מפנים אליה ולא לגרסת הקולקציה. איך בודקים את זה
+          בקוד ומה עושים כשערכה או אפליקציה דרסו את ברירת המחדל · פירטנו ב<a
+            href="/magazine/תג-קנוניקל-שופיפיי-לתקן-את-בעיית-products">מדריך תג הקנוניקל בשופיפיי</a>.
+        </p>
+        <p>
+          את עמוד <code>/collections/all</code> רוב החנויות בכלל לא מכירות, למרות שהוא קיים אצל
+          כולן ומתחרה לפעמים על אותן מילים עם קולקציות אמיתיות. או שנותנים לו תפקיד · כותרת,
+          טקסט ומיון מכוון · או שמוודאים שהוא לא צובר קישורים פנימיים. גם מבנה הבלוג נעול:
+          הכתובת תמיד תהיה <code>/blogs/שם-הבלוג/</code>, אז בוחרים שם קצר וממוקד כבר ביום
+          הראשון, כי שינוי מאוחר גורר הפניות לכל מאמר.
+        </p>
+        <p>
+          ולגבי robots.txt · הקובץ שאומר למנועי חיפוש איפה מותר להם להסתובב באתר: שופיפיי מייצר
+          אותו אוטומטית, ועריכה אפשרית רק דרך robots.txt.liquid. זה מספיק כדי לחסום כתובות
+          פילטרים מיותרות, אבל שורה שגויה אחת שם יכולה להעלים חצי חנות מגוגל. נוגעים בו רק עם
+          גיבוי ורק כשיש סיבה מדידה.
+        </p>
+      </div>
+      <div class="tbl-wrap">
+        <table class="cmp">
+          <thead>
+            <tr><th>הבעיה בשופיפיי</th><th>התיקון</th></tr>
+          </thead>
+          <tbody>
+            <tr><th>אותו מוצר נגיש בכמה כתובות דרך קולקציות</th><td>תג קנוניקל שמצביע תמיד על כתובת ‎/products/‎ הנקייה</td></tr>
+            <tr><th>‎/collections/all‎ נוצר לבד ומתחרה בקולקציות אמיתיות</th><td>כותרת וטקסט ייעודיים לעמוד, או צמצום הקישורים הפנימיים אליו</td></tr>
+            <tr><th>מבנה הבלוג נעול תחת ‎/blogs/‎</th><td>שם בלוג קצר וממוקד מהיום הראשון · שינוי מאוחר גורר הפניות</td></tr>
+            <tr><th>robots.txt נערך רק דרך robots.txt.liquid</th><td>עריכה זהירה עם גיבוי, רק כשיש סיבה מדידה</td></tr>
+            <tr><th>כתובות פילטרים מייצרות וריאציות של אותו עמוד</th><td>חסימת סריקה או קנוניקל לגרסה הנקייה</td></tr>
+            <tr><th>מטאדאטה בברירת מחדל ממחזרת את שם המוצר</th><td>title ותיאור ייחודיים לכל קטגוריה ומוצר</td></tr>
+            <tr><th>מוצר שנמחק משאיר עמוד 404 שהיה מדורג</th><td>הפניית 301 למוצר המחליף או לקטגוריה הרלוונטית</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-body">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">עברית בכתובת</span>
+        <h2>כתובות URL בעברית בשופיפיי</h2>
+      </div>
+      <div class="prose">
+        <p class="lead">
+          כתובת URL בעברית לא פוגעת בקידום. גוגל קורא אותה כרגיל ואף מזהה בה את מילת המפתח.
+          הבחירה האמיתית היא בין שלוש דרכים · עברית מלאה, תעתיק באותיות לטיניות או אנגלית ·
+          והשיקול המרכזי הוא לא הדירוג אלא העקביות: חנות שכבר מדורגת לא משנה כתובות בלי הפניות
+          301.
+        </p>
+        <p>
+          מה שמבלבל בעלי חנויות הוא הקידוד. כתובת כמו <code>/products/שמלת-ערב</code> נשמרת
+          בדפדפן כרצף של סימני אחוז, וכשמדביקים אותה בוואטסאפ או במייל היא נראית שבורה. גוגל לא
+          מוטרד מזה בכלל · הוא מפענח את הקידוד וקורא את המילים · אבל אם החנות חיה משיתוף קישורים,
+          תעתיק או אנגלית פשוט נוחים יותר לעין האנושית.
+        </p>
+        <p>
+          מתי בכל זאת משנים? כשעוברים למיתוג חדש, כשמאחדים קטגוריות כפולות, או כשהכתובות הקיימות
+          נוצרו אוטומטית ויצאו לא קריאות. בכל אחד מהמקרים משנים בשלבים, עם הפניית 301 מכל כתובת
+          ישנה לחדשה, ועוקבים שהדירוגים חוזרים לפני שממשיכים. את שלוש הגישות, כולל טבלת החלטה לפי
+          מצב החנות, פירקנו ב<a href="/magazine/כתובות-url-בעברית-שופיפיי-מדריך-seo">מדריך כתובות
+          ה-URL בעברית לשופיפיי</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-body alt-bg">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">איפה נפח החיפוש</span>
+        <h2>קידום עמודי קטגוריה מול עמודי מוצר</h2>
+      </div>
+      <div class="prose">
+        <p class="lead">
+          רוב נפח החיפוש בקניות יושב על מונחי קטגוריה · "שמלות ערב", "נעלי ריצה לנשים" · ולא על
+          שמות של מוצרים, ולכן עמודי ה-<code>/collections/</code> הם הנכס החשוב ביותר בחנות.
+          עמודי מוצר מנצחים על שאילתות מדויקות של דגם או מק"ט. חנות שמקדמת רק מוצרים נלחמת על
+          השאריות ומוותרת על המילים הגדולות.
+        </p>
+        <figure class="fig">
+          <svg
+            viewBox="0 0 640 250"
+            width="640"
+            height="250"
+            role="img"
+            aria-label="איפה מתרכז נפח החיפוש: מונחי קטגוריה רחבים מרכזים את רוב החיפושים, מונחי מוצר מדויקים מקבלים פחות חיפושים עם כוונת קנייה גבוהה"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title>איפה מתרכז נפח החיפוש · קטגוריה מול מוצר</title>
+
+            <!-- category row -->
+            <text x="620" y="34" text-anchor="end" class="dg-t">עמוד קטגוריה · <tspan class="dg-code-inline">/collections/</tspan></text>
+            <rect x="180" y="46" width="440" height="40" rx="9" class="dg-bar wide" />
+            <text x="600" y="71" text-anchor="end" class="dg-bt">מונחים רחבים · ״נעלי ריצה לנשים״</text>
+            <text x="620" y="112" text-anchor="end" class="dg-s">רוב נפח החיפוש בקניות יושב כאן</text>
+
+            <!-- product row -->
+            <text x="620" y="158" text-anchor="end" class="dg-t">עמוד מוצר · <tspan class="dg-code-inline">/products/</tspan></text>
+            <rect x="460" y="170" width="160" height="40" rx="9" class="dg-bar narrow" />
+            <text x="600" y="195" text-anchor="end" class="dg-bt">שם דגם · מק״ט</text>
+            <text x="620" y="236" text-anchor="end" class="dg-s">פחות חיפושים · כוונת קנייה מדויקת</text>
+          </svg>
+          <figcaption>המחשה של העיקרון בלבד · רוחב הפסים אינו נתון נפח מדוד.</figcaption>
+        </figure>
+        <p>
+          הבעיה: עמוד קטגוריה טיפוסי בשופיפיי הוא רשת מוצרים בלי מילה אחת של טקסט, וגוגל לא
+          יכול לדרג עמוד שהוא לא מבין. הפתרון בנוי משתי שכבות: פסקת פתיחה קצרה מעל הרשת שאומרת
+          מה יש כאן ולמי זה מתאים, ותוכן מרחיב מתחת לרשת · שאלות נפוצות, הסבר על התאמה ובחירה ·
+          שלא דוחף את המוצרים למטה. את המבנה המלא, כולל איפה בדיוק שמים כל בלוק בערכה, תמצאו
+          ב<a href="/magazine/אופטימיזציית-דפי-קטגוריה-שופיפיי-מדריך-מנצח">מדריך אופטימיזציית דפי
+          הקטגוריה</a>.
+        </p>
+        <p>
+          עוד מוקש: פילטרים. כל שילוב של צבע, מידה ומחיר מייצר כתובת עם פרמטרים, וגוגל יכול לבזבז
+          את תקציב הסריקה שלו על אלפי וריאציות של אותו עמוד. מוודאים שכתובות הפילטרים לא נסרקות
+          או מקבלות קנוניקל לגרסה הנקייה. ובצד של המוצרים · כותרת, תיאור מקורי וסכמה מלאה עושים
+          את ההבדל, כמו שמפורט ב<a href="/magazine/אופטימיזציית-על-לדפי-מוצר-בשופיפיי">מדריך
+          אופטימיזציית דפי המוצר</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-body">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">מלאי משתנה</span>
+        <h2>מוצרים שאזלו מהמלאי ווריאציות</h2>
+      </div>
+      <div class="prose">
+        <p class="lead">
+          מוצר שאזל הוא לא סיבה למחוק עמוד. עמוד מוצר שמדורג צבר אותות דירוג לאורך חודשים,
+          ומחיקה שולחת את כולם לעמוד 404. הכלל: מוצר עונתי שיחזור נשאר חי עם עדכון זמינות, מוצר
+          שהוחלף מקבל הפניית 301 למחליף, ורק מוצר שנעלם לתמיד בלי תחליף סביר מגיע ל-404.
+        </p>
+        <p>
+          המקרה העונתי הוא הנפוץ והכי קל לפספס. מעיל חורף שירד מהמלאי במאי ויחזור באוקטובר צריך
+          להישאר עמוד חי · עם ציון "יחזור למלאי", טופס עדכון במייל וקישורים לחלופות · כי אם מחקתם
+          אותו, בספטמבר תתחילו את הדירוג מאפס בדיוק כשהביקוש חוזר. את עץ ההחלטה המלא, מקרה-מקרה,
+          פירטנו ב<a href="/magazine/טיפול-במוצר-אזל-מהמלאי-שופיפיי-seo">מדריך הטיפול במוצר שאזל
+          מהמלאי</a>.
+        </p>
+        <p>
+          וריאציות הן הצד השני של אותה בעיה. מוצר עם עשרה צבעים יכול להיות מוגש כעשר כתובות עם
+          פרמטר <code>?variant=</code>, וכשערכה או אפליקציה חושפות אותן לגוגל בלי קנוניקל, נוצר
+          תוכן משוכפל שמפצל את הדירוג. בודקים שכתובות הווריאציות מצביעות על עמוד המוצר הראשי,
+          ושאם וריאציה מסוימת מחפשת בנפרד · יש לה עמוד ייעודי אמיתי. ההרחבה הטכנית נמצאת
+          ב<a href="/magazine/מדריך-seo-טכני-וריאציות-שופיפיי">מדריך ה-SEO הטכני לווריאציות</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-body alt-bg">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">מהירות</span>
+        <h2>מהירות: Core Web Vitals בחנות שופיפיי</h2>
+      </div>
+      <div class="prose">
+        <p class="lead">
+          Core Web Vitals · מדדי מהירות וחוויית הטעינה שגוגל מודד בכל עמוד · הם גורם דירוג,
+          ובחנויות שופיפיי הגורם שפוגע בהם יותר מכל הוא אפליקציות. כל אפליקציה שמזריקה סקריפט
+          לחנות מאטה כל עמוד בה, גם עמודים שהיא בכלל לא פעילה בהם. שני המדדים שנופלים ראשונים:
+          LCP ו-INP.
+        </p>
+        <p>
+          LCP הוא הזמן עד שהאלמנט הגדול בעמוד נטען, ובעמוד מוצר זה כמעט תמיד תמונת המוצר. תמונה
+          שהועלתה ישר מהמצלמה, בלי כיווץ ובפורמט כבד, יכולה לבדה למשוך את העמוד מתחת לסף. הטיפול:
+          פורמט WebP, מידות מותאמות לתצוגה, וטעינה מוקדמת של התמונה הראשית בלבד. את רשימת הבדיקות
+          המלאה ריכזנו ב<a href="/magazine/core-web-vitals-שופיפיי-מדריך-אופטימיזציה">מדריך
+          ה-Core Web Vitals לשופיפיי</a>.
+        </p>
+        <p>
+          INP מודד כמה מהר העמוד מגיב ללחיצה · הוספה לעגלה, פתיחת תפריט, בחירת וריאציה. כשעשרה
+          סקריפטים של אפליקציות רבים על אותו רגע עיבוד, הקליק מרגיש תקוע, וגוגל רואה את זה
+          במספרים. עושים ביקורת אפליקציות רבעונית: מסירים מה שלא בשימוש, ומנקים גם את שאריות
+          הקוד שאפליקציות משאירות בערכה אחרי ההסרה. איך מאתרים את הסקריפט האשם · צעד-צעד
+          ב<a href="/magazine/מדריך-inp-לשופיפיי-תיקון-אינטראקציות-איטיות">מדריך ה-INP
+          לשופיפיי</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-body">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">זמן ותקציב</span>
+        <h2>כמה זמן זה לוקח וכמה זה עולה באמת</h2>
+      </div>
+      <div class="prose">
+        <p class="lead">
+          אף אחד לא יכול להתחייב לתאריך, ומי שמתחייב · כדאי להיזהר ממנו. הסדר האמיתי: תיקונים
+          טכניים נסרקים בדרך כלל תוך ימים עד שבועות, שיפור בדירוגים של קטגוריות מצטבר על פני
+          שבועות עד חודשים, וחנות עם מאות מוצרים רואה תזוזה מדורגת, עמוד אחרי עמוד ולא הכל בבת
+          אחת.
+        </p>
+        <p>
+          הקצב תלוי בשלושה דברים: גיל הדומיין וכמה אמון כבר צבר, רמת התחרות על המילים שבחרתם,
+          וכמה מהר מיישמים בפועל את התיקונים. קטלוג קטן של עשרות מוצרים אפשר לסדר ביסודיות תוך
+          זמן קצר; קטלוג של אלפי מוצרים דורש עדיפויות · קודם הקטגוריות שמביאות כסף, אחר כך כל
+          השאר.
+        </p>
+        <p>
+          ובצד העלות, שלושה מסלולים: סוכנות SEO גובה בדרך כלל אלפי שקלים בחודש ומתאימה כשצריך
+          אסטרטגיה אנושית צמודה ותקציב שמאפשר אותה. עבודה עצמאית לא עולה כסף אבל עולה הרבה שעות
+          למידה וביצוע, וזה זמן שנגרע מניהול החנות. ומכונה כמו Scayla מתחילה מ-$39 לחודש ועושה את
+          העבודה השוטפת בעצמה, כשאתם רק מאשרים. את ההשוואה המסודרת בין שלושת המסלולים, כולל למי
+          כל אחד מתאים, תמצאו ב<a href="/magazine/סוכנות-seo-אפליקציה-או-diy-לחנות-שופיפיי">מדריך
+          סוכנות, אפליקציה או לבד</a> · וטבלה מפורטת מחכה גם כאן למטה.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-body alt-bg">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">מה לא לעשות</span>
+        <h2>שבע טעויות שהורגות קידום של חנות שופיפיי</h2>
+      </div>
+      <div class="prose">
+        <p class="lead">
+          רוב החנויות שלא מדורגות לא סובלות מבעיה נדירה אלא מאותן שבע טעויות שחוזרות שוב ושוב:
+          מטאדאטה בברירת מחדל, קטגוריות ריקות מטקסט, מחיקת מוצרים מדורגים, עודף אפליקציות,
+          קנוניקל שבור, עבודה בלי נתונים, ובלוג מנותק מהקטלוג. כל אחת מהן ניתנת לתיקון בשעות
+          עבודה, לא בחודשים.
+        </p>
+      </div>
+      <ol class="mistakes">
+        <li>
+          <strong>מטאדאטה בברירת מחדל.</strong> שופיפיי ממחזר את שם המוצר גם ככותרת וגם בתיאור,
+          וכך נשרף השטח בעמוד התוצאות. התיקון: title ותיאור ייחודיים לכל עמוד, עם מילת המפתח
+          בהתחלה.
+        </li>
+        <li>
+          <strong>עמודי קטגוריה בלי טקסט.</strong> רשת מוצרים בלבד לא נותנת לגוגל מה לדרג.
+          התיקון: פסקת פתיחה מעל הרשת ותוכן מרחיב מתחתיה.
+        </li>
+        <li>
+          <strong>מחיקת מוצר שאזל.</strong> העמוד המדורג הופך ל-404 וכל האותות נעלמים. התיקון:
+          השארה עם עדכון זמינות, או הפניית 301 למחליף.
+        </li>
+        <li>
+          <strong>עודף אפליקציות.</strong> כל סקריפט מוזרק מאט את כל החנות. התיקון: ביקורת
+          רבעונית, הסרת מה שלא בשימוש וניקוי שאריות קוד מהערכה.
+        </li>
+        <li>
+          <strong>קנוניקל שבור.</strong> ערכה או אפליקציה שדרסו את ברירת המחדל מפצלות את הדירוג
+          בין כתובות כפולות. התיקון: בדיקת קוד המקור של עמוד מוצר שנפתח דרך קולקציה.
+        </li>
+        <li>
+          <strong>עבודה בלי Search Console.</strong> בלי הכלי החינמי של גוגל אתם מנחשים אילו
+          מילים מביאות תנועה במקום לדעת. התיקון: חיבור החנות ומעקב שאילתות שבועי ·
+          <a href="/magazine/גוגל-סרץ-קונסול-לשופיפיי-המדריך-המעשי">המדריך המעשי ל-Search Console
+          בשופיפיי</a> מראה איך.
+        </li>
+        <li>
+          <strong>בלוג מנותק מהקטלוג.</strong> מאמרים כלליים בלי קישור לקטגוריות לא מזיזים
+          דירוגים של עמודי מכירה. התיקון: כל מאמר עונה על שאלת קנייה ומקשר לקטגוריה או למוצר,
+          כמו שמודגם ב<a href="/magazine/לא-רק-בלוג-מדריך-תוכן-אינפורמטיבי-שופיפיי">מדריך התוכן
+          האינפורמטיבי לשופיפיי</a>.
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="svc-body">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">שני מנועים</span>
+        <h2>SEO מול GEO: למה חנות צריכה את שניהם ב-2026</h2>
+      </div>
+      <div class="prose">
+        <p class="lead">
+          SEO מקדם את החנות בתוצאות החיפוש של גוגל, ו-GEO · אופטימיזציה למנועי חיפוש מבוססי AI ·
+          גורם ל-ChatGPT, Gemini ו-Perplexity להזכיר ולהמליץ עליה בתשובות שלהם. SEO נמדד
+          במיקומים ובקליקים, GEO נמדד בציטוטים ובאזכורים. חנות שופיפיי ב-2026 צריכה את שניהם, כי
+          הקונים כבר שואלים בשני המקומות.
+        </p>
+        <p>
+          ההבדל המהותי הוא בשאלה שנשאלת. בגוגל הקונה מקליד "נעלי ריצה לנשים" ומקבל רשימת עמודים
+          לבחירה; במנוע AI הוא שואל "אילו נעלי ריצה כדאי לקנות למתחילה" ומקבל תשובה אחת מוכנה,
+          עם שמות של חנויות ספציפיות. אין שם עמוד 2 · או שאתם בתשובה, או שאתם לא. איך שני
+          המנגנונים משלימים זה את זה, בלי לבחור ביניהם, פירטנו ב<a
+            href="/magazine/seo-מול-geo-לחנות-שופיפיי-המדריך-המנצח">מדריך SEO מול GEO לחנות
+          שופיפיי</a>.
+        </p>
+        <p>
+          החדשות הטובות: התשתית משותפת. סכמות מוצר מלאות · כרטיס-מידע שמסביר לגוגל ול-AI מה נמכר,
+          בכמה והאם במלאי · תוכן שעונה על שאלות אמיתיות ועמודי קטגוריה עשירים משרתים את שני
+          המנועים בבת אחת. מה שכן שונה הוא המדידה: דירוגים בודקים בכלים מוכרים, ואת הנוכחות
+          בתשובות AI צריך לבדוק בשיטה אחרת לגמרי, כמו שמוסבר ב<a
+            href="/magazine/מדידת-נראות-במנועי-AI-ותשובות">מדריך מדידת הנראות במנועי AI</a>.
+        </p>
+      </div>
+      <div class="tbl-wrap">
+        <table class="cmp">
+          <thead>
+            <tr><th>מה משווים</th><th>SEO · גוגל</th><th>GEO · מנועי AI</th></tr>
+          </thead>
+          <tbody>
+            <tr><th>איפה מתחרים</th><td>תוצאות החיפוש של גוגל</td><td>תשובות של ChatGPT, Gemini ו-Perplexity</td></tr>
+            <tr><th>מה מודדים</th><td>מיקומים, קליקים והופעות</td><td>ציטוטים ואזכורים בתשובות</td></tr>
+            <tr><th>איך בודקים</th><td>Search Console ומעקב דירוגים שבועי</td><td>שואלים את המנועים שאלות קנייה ובודקים מי מוזכר</td></tr>
+            <tr><th>איך נראית הצלחה</th><td>העמוד בעמוד הראשון והקליק מגיע אליכם</td><td>החנות מופיעה בתוך התשובה עצמה</td></tr>
+            <tr><th>על מה זה נבנה</th><td>מבנה נקי, מטאדאטה, תוכן וקישורים</td><td>אותה תשתית · בתוספת סכמות מלאות ותוכן שעונה על שאלות</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="svc-body">
+    <div class="narrow">
+      <div class="sh">
+        <span class="eyebrow">לעבוד לפי סדר</span>
+        <h2>צ׳קליסט קידום אתרי שופיפיי</h2>
+      </div>
+      <div class="prose">
+        <p class="lead">
+          עשרים ושתיים בדיקות שמכסות את רוב הפער בין חנות שופיפיי ממוצעת לחנות מדורגת, מחולקות
+          לארבעה תחומים: טכני, תוכן, GEO ומדידה. עוברים עליהן לפי הסדר · טכני קודם, כי תוכן
+          מצוין על תשתית שבורה לא יעבוד · ומסמנים מה כבר קיים ומה ממתין לטיפול.
+        </p>
+      </div>
+      <div class="ckg">
+        <div class="ckg-card card">
+          <div class="ckg-head"><h3>טכני</h3><span class="ckg-count">7 בדיקות</span></div>
+          <ul class="ck">
+            <li>תג קנוניקל בכל עמוד מוצר מצביע על כתובת ‎/products/‎ הנקייה</li>
+            <li>קישורים פנימיים בערכה מפנים לכתובות הנקיות, לא לגרסאות הקולקציה</li>
+            <li>‎sitemap.xml‎ הוגש ב-Search Console ומתעדכן</li>
+            <li>robots.txt לא חוסם קטגוריות או מוצרים חשובים</li>
+            <li>כתובות פילטרים עם פרמטרים לא נסרקות או מקבלות קנוניקל</li>
+            <li>עמודי 404 עם תנועה או קישורים קיבלו הפניית 301</li>
+            <li>אפליקציות שאינן בשימוש הוסרו, כולל שאריות הקוד שלהן בערכה</li>
+          </ul>
+        </div>
+        <div class="ckg-card card">
+          <div class="ckg-head"><h3>תוכן</h3><span class="ckg-count">6 בדיקות</span></div>
+          <ul class="ck">
+            <li>לכל קטגוריה ומוצר יש title ותיאור ייחודיים · לא ברירת המחדל</li>
+            <li>מיפוי מילות מפתח: מונח רחב לכל קטגוריה, מונח מדויק לכל מוצר, לפי <a href="/magazine/מחקר-מילות-מפתח-לאיקומרס-מיפוי-כוונת-חיפוש">מדריך מחקר מילות המפתח לאיקומרס</a></li>
+            <li>עמודי קטגוריה עם פסקת פתיחה מעל הרשת ותוכן מתחתיה</li>
+            <li>תיאורי מוצר מקוריים, לא הועתקו מהספק או מחנות אחרת</li>
+            <li>מאמרי בלוג עונים על שאלות קנייה ומקשרים לקטגוריות</li>
+            <li>קישורים פנימיים זורמים ממאמרים לקטגוריות ולמוצרים, במבנה שמרכז סמכות · כמו ב<a href="/magazine/ארכיטקטורת-seo-שופיפיי-קישורים-פנימיים-סמכות">מדריך ארכיטקטורת הקישורים הפנימיים</a></li>
+          </ul>
+        </div>
+        <div class="ckg-card card">
+          <div class="ckg-head"><h3>GEO</h3><span class="ckg-count">5 בדיקות</span></div>
+          <ul class="ck">
+            <li>סכמת Product מלאה בכל מוצר: מחיר, זמינות, דירוגים אם קיימים</li>
+            <li>סכמת FAQPage בעמודי מידע וקטגוריות עם שאלות · לפי <a href="/magazine/סכמה-לשופיפיי-המדריך-ל-rich-snippets-וציטוטים-ב-ai">מדריך הסכמות לשופיפיי</a></li>
+            <li>עמוד אודות אמיתי: מי אתם, למה לקנות מכם, פרטי עסק מלאים</li>
+            <li>תוכן שעונה על שאלות "מה כדאי לקנות" בתחום שלכם, לא רק תיאורי מוצרים</li>
+            <li>פרטי העסק זהים בכל מקום שהוא מופיע ברשת</li>
+          </ul>
+        </div>
+        <div class="ckg-card card">
+          <div class="ckg-head"><h3>מדידה</h3><span class="ckg-count">4 בדיקות</span></div>
+          <ul class="ck">
+            <li>Search Console מחובר ונבדק לפחות פעם בשבוע</li>
+            <li>GA4 מודד מכירות מתנועה אורגנית, לא רק כניסות</li>
+            <li>מעקב דירוגים שבועי על המילים החשובות</li>
+            <li>בדיקת נוכחות בתשובות של ChatGPT ו-Gemini על שאלות קנייה בתחום</li>
+          </ul>
+        </div>
+      </div>
+      <h3 class="tools-h">כלי מול מה שהוא פותר</h3>
+      <div class="tbl-wrap">
+        <table class="cmp">
+          <thead>
+            <tr><th>הכלי</th><th>מה הוא פותר</th></tr>
+          </thead>
+          <tbody>
+            <tr><th>Google Search Console</th><td>מראה אילו שאילתות מביאות קליקים, אילו עמודים נסרקו ואיפה יש שגיאות 404</td></tr>
+            <tr><th>Rich Results Test</th><td>בודק שסכמות Product ו-FAQ תקינות ויכולות להופיע כתוצאות עשירות</td></tr>
+            <tr><th>PageSpeed Insights</th><td>מודד את ה-Core Web Vitals של עמוד בודד ומצביע על מה שמאט אותו</td></tr>
+            <tr><th>GA4</th><td>מודד כמה מהתנועה האורגנית הופכת למכירות, לא רק לכניסות</td></tr>
+            <tr><th>robots.txt.liquid</th><td>התבנית היחידה שדרכה עורכים את חוקי הסריקה של החנות</td></tr>
+            <tr><th>Scayla</th><td>סורקת את החנות, מאבחנת חוסמים ומכינה תיקונים לאישור בקליק · כולל מדידת נראות במנועי AI</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </section>
@@ -390,6 +915,9 @@ const howToLd = {
 <style>
   .svc-hero { padding-block-end: 16px; }
   .svc-hero .lede { max-inline-size: 62ch; margin-inline: auto; }
+  .hero-sub { font-size: 17px; font-weight: 700; color: var(--sc-muted); margin-block: 8px 2px; }
+  .lede.opening { color: var(--sc-ink); }
+  .lede.opening strong { font-weight: 600; }
   .byline { font-size: 13.5px; color: var(--sc-muted); margin-block: 6px 14px; font-weight: 500; }
   .byline a { font-weight: 700; }
   .cta-note { font-size: 13px; color: var(--sc-disabled); margin-block-start: 14px; }
@@ -411,8 +939,63 @@ const howToLd = {
     font-size: 13.5px; background: var(--sc-wash); border: 1px solid var(--sc-hair);
     padding: 1px 6px; border-radius: 6px; direction: ltr; unicode-bidi: embed;
   }
+  .prose .lead { font-weight: 600; color: var(--sc-ink); }
+  .prose .ck-h { max-inline-size: 68ch; margin-inline: auto; font-size: 16.5px; margin-block: 22px 10px; }
+  .ck { list-style: none; max-inline-size: 68ch; margin: 0 auto 6px; padding: 0; display: grid; gap: 8px; }
+  .ck li { position: relative; padding-inline-start: 28px; font-size: 15px; color: var(--sc-muted); line-height: 1.65; }
+  .ck li::before {
+    content: '✓'; position: absolute; inset-inline-start: 2px; inset-block-start: 0;
+    color: var(--sc-accent-text); font-weight: 800;
+  }
+  .mistakes {
+    max-inline-size: 68ch; margin: 6px auto 0; padding-inline-start: 24px;
+    display: grid; gap: 12px; font-size: 15.5px; line-height: 1.75; color: var(--sc-muted);
+  }
+  .mistakes li::marker { font-weight: 800; color: var(--sc-accent-text); }
+  .mistakes strong { color: var(--sc-ink); }
 
-  .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  /* ── inline diagrams ── */
+  .fig { max-inline-size: 68ch; margin: 18px auto 26px; }
+  .fig svg { display: block; inline-size: 100%; block-size: auto; }
+  .fig figcaption { font-size: 13px; color: var(--sc-disabled); text-align: center; margin-block-start: 8px; }
+  .dg-box { fill: var(--sc-paper); stroke: var(--sc-hair); stroke-width: 1.5; }
+  .dg-box.wash { fill: var(--sc-wash); }
+  .dg-box.dup { stroke-dasharray: 6 4; fill: var(--sc-wash); }
+  .dg-box.canon { stroke: var(--sc-accent-text); stroke-width: 2; fill: var(--sc-wash); }
+  .dg-line { fill: none; stroke: var(--sc-muted); stroke-width: 1.5; }
+  .dg-canonline { fill: none; stroke: var(--sc-accent-text); stroke-width: 1.75; stroke-dasharray: 6 4; }
+  .dg-arrhead { fill: var(--sc-muted); }
+  .dg-arrhead-acc { fill: var(--sc-accent-text); }
+  .dg-t { font-size: 14px; font-weight: 700; fill: var(--sc-ink); direction: rtl; }
+  .dg-s { font-size: 12px; font-weight: 500; fill: var(--sc-muted); direction: rtl; }
+  .dg-s.acc { fill: var(--sc-accent-text); font-weight: 700; direction: ltr; }
+  .dg-code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; fill: var(--sc-ink); direction: ltr; }
+  .dg-code.strong { font-weight: 700; font-size: 14px; fill: var(--sc-accent-text); }
+  .dg-code-inline { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; direction: ltr; unicode-bidi: embed; }
+  .dg-bar { stroke-width: 1.5; }
+  .dg-bar.wide { fill: var(--sc-wash); stroke: var(--sc-accent-text); }
+  .dg-bar.narrow { fill: var(--sc-paper); stroke: var(--sc-hair); }
+  .dg-bt { font-size: 12.5px; font-weight: 600; fill: var(--sc-ink); direction: rtl; }
+
+  /* ── checklist infographic grid ── */
+  .ckg { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-block-start: 10px; }
+  @media (max-width: 720px) { .ckg { grid-template-columns: 1fr; } }
+  .ckg-card { padding: 20px 22px; background: var(--sc-paper); }
+  .ckg-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-block-end: 12px; padding-block-end: 10px; border-block-end: 1px solid var(--sc-hair);
+  }
+  .ckg-head h3 { font-size: 16.5px; margin: 0; }
+  .ckg-count {
+    font-size: 12px; font-weight: 800; color: var(--sc-accent-text);
+    background: var(--sc-wash); border: 1px solid var(--sc-soft);
+    padding: 3px 10px; border-radius: 999px; white-space: nowrap;
+  }
+  .ckg .ck { max-inline-size: none; margin: 0; }
+  .ckg .ck li { font-size: 14.5px; }
+  .tools-h { max-inline-size: 68ch; margin: 26px auto 12px; font-size: 17px; }
+
+  .tbl-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-block-start: 18px; }
   table.cmp {
     inline-size: 100%; border-collapse: collapse; margin-inline: auto;
     font-size: 15px; background: var(--sc-paper); border-radius: 14px; overflow: hidden;
