@@ -522,51 +522,9 @@
     "intent": "informational"
   },
   {
-    "cluster": "seo-shopify",
-    "keyword": "העברת אתר מוויקס לשופיפיי SEO",
-    "title": "מעבר מוויקס לשופיפיי: צ'קליסט ה-SEO המלא שימנע אסון בדירוגים ב-2026",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "השוואת אפליקציות SEO לשופיפיי",
-    "title": "אפליקציות SEO לשופיפיי: איזו מהן באמת תעיף לכם את הדירוגים בגוגל?",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "אופטימיזציית תקציב זחילה שופיפיי",
-    "title": "תקציב זחילה בשופיפיי: כך תגרמו לגוגל לבזבז זמן על הדפים הנכונים (ולא על זבל)",
-    "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "ביקורת SEO לחנות שופיפיי",
-    "title": "עשה זאת בעצמך: איך לבצע ביקורת SEO לחנות השופיפיי שלך ב-60 דקות (ומה לחפש)",
-    "intent": "transactional"
-  },
-  {
     "cluster": "ecommerce",
     "keyword": "שיווק תוכן בלאק פריידי",
     "title": "המדריך המלא: אסטרטגיית תוכן מקדימה לבלאק פריידי ונובמבר סייל",
-    "intent": "informational"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "שופיפיי אימייל או קלביו",
-    "title": "Shopify Email מול Klaviyo: מה מתאים לחנות ישראלית ואיך עוברים ביניהן?",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "ביקורת תוכן לחנות איקומרס",
-    "title": "ביקורת תוכן לחנות Shopify: איך תמצאו ותתקנו תוכן שלא מוכר או ממיר",
-    "intent": "transactional"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "תלות בממומן",
-    "title": "המדריך להורדת התלות בממומן: בניית תמהיל שיווק אורגני יציב",
     "intent": "informational"
   },
   {
@@ -582,88 +540,10 @@
     "intent": "informational"
   },
   {
-    "cluster": "guides",
-    "keyword": "עלויות תחזוקה חנות שופיפיי",
-    "title": "כמה באמת עולה להחזיק חנות שופיפיי? פירוט עלויות נסתרות (אפליקציות, עמלות, תחזוקה)",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "חלופות לקלביו לשופיפיי",
-    "title": "7 חלופות Klaviyo מומלצות לשיווק במייל ואוטומציה בחנות שופיפיי ישראלית",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "שופיפיי POS מול קופות ישראליות",
-    "title": "Shopify POS מול ריווחית או iCount: מהי הקופה המשתלמת ביותר לחנות שלכם?",
-    "intent": "commercial"
-  },
-  {
     "cluster": "geo-ai",
     "keyword": "אופטימיזציית AI מבצעי נובמבר",
     "title": "המדריך ל-AEO דינמי: סנכרון מלאי ומחירים בזמן אמת לסוכני AI בבלאק פריידי",
     "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "פרפלקסיטי פייג'ס מול קלוד ארטיפקטס",
-    "title": "Perplexity Pages מול Claude Artifacts: מה הכלי הנכון להצגת מוצרי שופיפיי ב-AI?",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "עלויות כלים למדידת AEO",
-    "title": "כמה עולה למדוד נראות ב-AI? השוואת מחירים ותכונות בכלי AEO לשנת 2026",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "מעבר מאסטרטגיית SEO ל-AEO",
-    "title": "מתוכן SEO למידע ציטוטבילי: המדריך להסבת אסטרטגיית התוכן שלכם לעידן ה-AI.",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "הטמעת סכמת Fact-Claim בשופיפיי",
-    "title": "כך תטמיעו סכמת 'טענות עובדתיות' (FactClaim) בדפי מוצר ותהפכו למקור שה-AI מצטט",
-    "intent": "transactional"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "אופטימיזציה פיד מוצרים שופיפיי",
-    "title": "איך להופיע בחינם בגוגל שופינג (ולמנועי AI) עם פיד מוצרים מנצח",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "קידום אחרי בלאק פריידי",
-    "title": "ניקוי וסידור: צ'קליסט SEO לחנות שופיפיי אחרי מבצעי נובמבר",
-    "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "Shopify Markets Pro או hreflang",
-    "title": "מה הדרך הנכונה ל-SEO בינלאומי בחנות שופיפיי ישראלית?",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "עלות שיפור מהירות אתר שופיפיי",
-    "title": "כמה עולה לתקן Core Web Vitals ואיך לחשב החזר השקעה (ROI)",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "בעיות אינדוקס שופיפיי",
-    "title": "למה גוגל לא מאנדקס את העמודים שלי? מדריך איתור ותיקון",
-    "intent": "informational"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "אסטרטגיית הייפ אורגנית לנובמבר",
-    "title": "מעבר להנחות: בניית הייפ אורגני לחגי נובמבר בחנות שופיפיי שלך",
-    "intent": "commercial"
   },
   {
     "cluster": "ecommerce",
@@ -718,5 +598,125 @@
     "keyword": "כמה עולה קופירייטינג לאיקומרס",
     "title": "המדריך לתמחור פרויקטים: מדפי מוצר ועד ניוזלטרים (עם תבנית בריף)",
     "intent": "commercial"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "תכנית עבודה AEO בלאק פריידי",
+    "title": "מפת הדרכים ל-AEO: תכנית 90 הימים לחנות שופיפיי לבלאק פריידי 2026",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "תבנית ביקורת AEO שופיפיי",
+    "title": "ביקורת AEO עצמית: הורדת תבנית Notion/Sheets לאבחון הנראות שלכם במנועי AI",
+    "intent": "transactional"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "פיד מוצרים AEO שופיפיי",
+    "title": "פיד ישיר לאינדוקס של AI מול Google Merchant Center: מה הדרך הנכונה להזין מוצרים?",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "חלופות ל-Shopify Sidekick",
+    "title": "Shopify Sidekick או בוט חיצוני? השוואת כלים לניהול, ניתוח ואופטימיזציית AEO",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "תיקון שגיאות נתונים מובנים AI",
+    "title": "ה-AI קורא לא נכון את המחיר? מדריך לאיתור ותיקון שגיאות נפוצות בסכמה (Schema)",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "שרשרת הפניות 301 שופיפיי",
+    "title": "שרשראות הפניות הורגות לך את ה-SEO: מדריך לאיתור ותיקון בשופיפיי",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "קונפליקט סכמות בשופיפיי",
+    "title": "סכמה כפולה: איך לפתור קונפליקטים בין התבנית, אפליקציות וקוד ידני",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "פילטרים עם מטא-אובג'קטים",
+    "title": "מעבר לתגים: המדריך לבניית פילטרים חכמים (ומהירים) עם Metaobjects",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "שופיפיי פלוס מול אדוונסד SEO",
+    "title": "שופיפיי פלוס או אדוונסד? השוואת SEO שתחסוך לך עשרות אלפי שקלים",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "לוז SEO לבלאק פריידי",
+    "title": "ספירה לאחור לנובמבר: תכנית עבודה שבועית להכנת ה-SEO של החנות",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שיווק אורגני בלאק פריידי",
+    "title": "מלקוחות של יום ללקוחות של קבע: המדריך לשיווק אורגני אחרי נובמבר",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "אפליקציות ביקורות שופיפיי ישראל",
+    "title": "Yotpo מול Judge.me מול Loox: איזו אפליקציית ביקורות תמכור יותר בחנות שופיפיי ישראלית?",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שיווק בוואטסאפ לחנות שופיפיי",
+    "title": "מעבר לניוזלטר: אסטרטגיית WhatsApp Marketing לחנות שופיפיי בישראל",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "כמה עולה שיווק אורגני לאיקומרס",
+    "title": "עלות שיווק אורגני לשופיפיי ב-2026: השוואת מחירים (פרילנסר vs סוכנות vs In-House)",
+    "intent": "transactional"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "בניית קהילה למותג איקומרס",
+    "title": "מלקוחות לשגרירים: המדריך לבניית קהילה רווחית סביב חנות שופיפיי בישראל",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "תכנון מלאי בלאק פריידי",
+    "title": "המדריך המעשי: איך לתכנן מלאי לחגי נובמבר עם כלי חיזוי ודוחות שופיפיי",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "Shopify Functions הנחות",
+    "title": "מדריך למתקדמים: איך ליצור מבצעים מורכבים (BOGO, מדורגים) עם Shopify Functions",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "השוואת כלי BI לשופיפיי",
+    "title": "Looker Studio מול Power BI: השוואת פלטפורמות ה-BI לחנות שופיפיי ישראלית",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "עלות פיתוח אפליקציה לשופיפיי",
+    "title": "כמה עולה לפתח אפליקציית שופיפיי פרטית? מדריך תמחור וחלופות",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "תבנית ניהול קמפיין",
+    "title": "להורדה: תבנית Google Sheets לניהול ותכנון קמפיין שיווקי באיקומרס",
+    "intent": "transactional"
   }
 ]
