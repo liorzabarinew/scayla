@@ -1,57 +1,85 @@
 # Scayla · מזמינים את מנועי ה-AI לזחול ולצטט
+#
+# הערה חשובה לתחזוקה: כלל Disallow חייב לחזור בכל בלוק User-agent.
+# בוט קורא רק את הבלוק הספציפי ביותר שתואם לו · אם הוא מוגדר בנפרד,
+# הוא מתעלם לחלוטין מהבלוק של "User-agent: *". לכן /api/ חסום בכל בלוק.
+#
+# מה חסום ולמה:
+#   /api/  · נקודות הקצה שמקבלות ומחזירות פרטים אישיים (טפסי לידים, בדיקת
+#            נראות, סטטוס סריקה). חסימה כאן מונעת זליגת נתונים לאינדקס.
+# מה לא חסום בכוונה:
+#   /quizz ו-/scan הם טפסים · הם לא מכילים נתוני גולשים, רק אוספים אותם.
+#   הם מסומנים noindex ומוחרגים ממפת האתר. אסור לחסום אותם כאן: בוט שחסום
+#   מלסרוק אותם לא יראה את תגית ה-noindex, והכתובת עלולה להיכנס לאינדקס
+#   בלי תוכן. חסימה = פחות שליטה, לא יותר.
 
 User-agent: *
 Allow: /
+Disallow: /api/
 
 # OpenAI
 User-agent: GPTBot
 Allow: /
+Disallow: /api/
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /api/
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /api/
 
 # Anthropic
 User-agent: ClaudeBot
 Allow: /
+Disallow: /api/
 
 User-agent: Claude-Web
 Allow: /
+Disallow: /api/
 
 User-agent: anthropic-ai
 Allow: /
+Disallow: /api/
 
 # Perplexity
 User-agent: PerplexityBot
 Allow: /
+Disallow: /api/
 
 User-agent: Perplexity-User
 Allow: /
+Disallow: /api/
 
 # Google AI
 User-agent: Google-Extended
 Allow: /
+Disallow: /api/
 
 # Apple
 User-agent: Applebot-Extended
 Allow: /
+Disallow: /api/
 
 # Microsoft Bing
 User-agent: Bingbot
 Allow: /
+Disallow: /api/
 
 # Common Crawl
 User-agent: CCBot
 Allow: /
+Disallow: /api/
 
 # ByteDance
 User-agent: Bytespider
 Allow: /
+Disallow: /api/
 
 # Meta
 User-agent: meta-externalagent
 Allow: /
+Disallow: /api/
 
-Sitemap: https://scayla.co.il/sitemap-index.xml
+Sitemap: https://scayla.co.il/sitemap.xml

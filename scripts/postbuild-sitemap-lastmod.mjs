@@ -67,3 +67,20 @@ for (const f of files) {
   writeFileSync(p, out)
   console.log(`✓ ${basename(p)} · הוזרק lastmod ל-${injected} כתובות מאמרים`)
 }
+
+// ── /sitemap.xml · מפת האתר הקנונית שמגישים ל-Search Console ──
+// @astrojs/sitemap פולט sitemap-index.xml + sitemap-N.xml, ואין /sitemap.xml
+// (הכתובת שבני-אדם וכלים מצפים לה · החזירה 404). האתר מתחת ל-50,000 כתובות,
+// אז מפה שטוחה אחת חוקית לגמרי ופשוטה יותר להגשה ולניפוי-שגיאות.
+// נכתב אחרי הזרקת ה-lastmod כדי שהעותק יכיל אותו. אם אי-פעם יהיו כמה
+// sitemap-N, נאחד את כולם לקובץ אחד במקום להעתיק את הראשון.
+{
+  const urls = files
+    .map((f) => readFileSync(join(DIST, f), 'utf8'))
+    .flatMap((xml) => xml.match(/<url>[\s\S]*?<\/url>/g) || [])
+  const head =
+    '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+  writeFileSync(join(DIST, 'sitemap.xml'), head + urls.join('\n') + '\n</urlset>\n')
+  console.log(`✓ sitemap.xml · מפה שטוחה אחת · ${urls.length} כתובות`)
+}
