@@ -14,6 +14,7 @@
  * הכפתורים בכתובת הפורטל ומורידים את הסקשן. זו החלפה של שורה.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PricingCards from '../components/PricingCards.astro';
 
 const title = 'Scayla ל-WordPress ו-WooCommerce · קידום אורגני ונראות במנועי AI';
 const description =
@@ -197,22 +198,28 @@ const faq = [
       </div>
     </section>
 
-    <!-- ══ תמחור ══ -->
+    <!-- ══ תמחור · אותו סולם בדיוק כמו בשופיפיי ══ -->
     <section class="wp-sec alt" id="pricing">
-      <div class="wrap narrow">
-        <div class="sh"><p class="eyebrow">תמחור</p><h2>התוסף חופשי. השירות בתשלום.</h2></div>
-        <p>
-          התוסף עצמו חופשי, מופץ תחת GPL, וכל יכולת שקיימת בקוד שלו פועלת בלי לשלם. התשלום, אם
-          תבחרו בו, הוא עבור שירות הענן: כמה סריקות, כמה מדידות שבועיות וכמה תוכן הוא מייצר עבורכם.
+      <div class="wrap">
+        <div class="sh">
+          <p class="eyebrow">תמחור</p>
+          <h2>התוסף חופשי. משלמים על שירות הענן.</h2>
+        </div>
+        <p class="wp-price-lede">
+          אותם מסלולים בדיוק כמו בחנויות Shopify, כי זו אותה מכונה. התוסף עצמו חופשי ומופץ תחת
+          GPL, וכל יכולת שקיימת בקוד שלו פועלת בלי לשלם. התשלום הוא על היקף העבודה שהשירות מבצע:
+          כמה מוצרים מנוטרים, כמה מדידות וכמה תוכן.
         </p>
-        <p>
-          המסלולים לאתרי WordPress נפתחים יחד עם התוסף. אנחנו מעדיפים לא לפרסם כאן מחיר סופי לפני
-          שהחיוב פתוח, כדי שלא תראו מספר שאי אפשר עדיין לשלם עליו. השאירו פרטים והמחיר המדויק יגיע
-          אליכם לפני כל התחייבות. החיוב אינו עובר דרך Shopify, ולא יתבצע בלי אישור מפורש שלכם.
+        <PricingCards ctaHref="#signup" ctaLabel="התקנה לוורדפרס" />
+        <p class="wp-note">
+          <strong>איך מתבצע החיוב באתר WordPress.</strong> לא דרך Shopify. החיוב נעשה דרך ספק
+          סליקה חיצוני שמנפיק את החשבונית וגובה את התשלום. תראו את המסלול, המחיר ומחזור החיוב
+          במלואם לפני אישור, ולא יתבצע חיוב בלי אישור מפורש שלכם. המסלולים לאתרי WordPress
+          נפתחים יחד עם התוסף.
         </p>
         <p class="wp-links">
           <a href="/terms">תנאי השימוש</a> · <a href="/privacy">מדיניות הפרטיות</a> ·
-          <a href="/privacy#3-5">מה בדיוק עובר מהאתר שלכם</a>
+          <a href="/privacy">מה בדיוק עובר מהאתר שלכם (סעיף 3.5)</a>
         </p>
       </div>
     </section>
@@ -364,6 +371,7 @@ const faq = [
     .p-wp .wp-faq details[open] summary::after { content: '−'; }
     .p-wp .wp-faq p { margin: 10px 0 0; font-size: 16px; line-height: 1.78; color: var(--sc-muted); }
 
+    .p-wp .wp-price-lede { max-inline-size: 68ch; margin: 0 0 26px; font-size: 16.5px; line-height: 1.75; }
     .p-wp .wp-links { margin-block-start: 22px; font-size: 15.5px; }
     .p-wp .wp-form { margin-block-start: 24px; display: grid; gap: 16px; max-inline-size: 40rem; }
     .p-wp .wp-field { display: grid; gap: 6px; }

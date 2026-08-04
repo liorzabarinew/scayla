@@ -11,6 +11,15 @@ import {
   tiers, SHOPIFY_APP_URL,
   ANNUAL_DISCOUNT_PCT, annualPerMonth, annualTotal,
 } from '../data/pricing';
+
+interface Props {
+  /** Per-card CTA target · defaults to the Shopify listing. /wordpress passes its signup. */
+  ctaHref?: string;
+  ctaLabel?: string;
+}
+// One price ladder for both platforms · the tiers come from the same source of truth,
+// only the CTA changes, so a price edit never has to be made twice.
+const { ctaHref = SHOPIFY_APP_URL, ctaLabel = 'התחילו ב-Shopify' } = Astro.props;
 ---
 
 <div class="pricing" data-billing="monthly">
@@ -50,8 +59,8 @@ import {
             {t.features.map((f) => <li>{f}</li>)}
           </ul>
         )}
-        <a href={SHOPIFY_APP_URL} class:list={['btn', t.popular ? 'btn-white' : 'btn-ghost']}>
-          התחילו ב-Shopify
+        <a href={ctaHref} class:list={['btn', t.popular ? 'btn-white' : 'btn-ghost']}>
+          {ctaLabel}
         </a>
       </article>
     ))}
