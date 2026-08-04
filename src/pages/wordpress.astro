@@ -9,12 +9,19 @@
  * יכולות שלא נבדקו: ה-readme.txt של התוסף הוא מסמך ציבורי, ובודק מטעם
  * wordpress.org משווה בין השניים.
  *
- * ה-CTA מוביל לטופס אמיתי באותו עמוד (#signup → POST /api/wp-signup) · לא
- * "בקרוב" ולא רשימת המתנה. כשפורטל החיבור יעלה, מחליפים את ה-href של שני
- * הכפתורים בכתובת הפורטל ומורידים את הסקשן. זו החלפה של שורה.
+ * שני מסלולים, שניהם אמיתיים:
+ *   1. CTA ראשי → פורטל הצימוד (PORTAL_URL) · למי שהתוסף כבר מותקן אצלו.
+ *   2. סקשן #signup → POST /api/wp-signup · למי שהתוסף עוד לא אצלו. נחוץ כל עוד
+ *      התוסף לא פורסם ב-wordpress.org, כי בלעדיו הפורטל הוא מבוי סתום עבורו.
+ * כשהתוסף יפורסם אפשר לשקול להסיר את (2), אבל אין חובה · הוא לא מזיק.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PricingCards from '../components/PricingCards.astro';
+
+// פורטל הצימוד · הלאיין של התוסף (scayla-wp) פרס אותו 2026-08-04. הווריאנט העברי
+// מגיש RTL ומקשר לתנאים ולפרטיות בעברית, אז אליו מפנים מעמוד עברי.
+// אומת חי לפני ההחלפה: DNS נפתר, /connect?lang=he מחזיר 200 עם טופס צימוד אמיתי.
+const PORTAL_URL = 'https://wp-api.scayla.co.il/connect?lang=he';
 
 const title = 'Scayla ל-WordPress ו-WooCommerce · קידום אורגני ונראות במנועי AI';
 const description =
@@ -53,7 +60,7 @@ const steps = [
   {
     n: '2',
     h: 'מחברים את האתר',
-    p: 'יוצרים ב-WordPress סיסמת-יישום (Application Password) ומדביקים אותה ב-Scayla פעם אחת. Scayla ממירה אותה מיד לטוקן ייעודי, מצומצם ובר-ביטול משלה, וניתן לבטל את סיסמת-היישום מיד לאחר מכן.',
+    p: 'יוצרים ב-WordPress סיסמת-יישום (Application Password) ומדביקים אותה בעמוד החיבור פעם אחת. Scayla ממירה אותה מיד לטוקן ייעודי, מצומצם ובר-ביטול משלה, וניתן לבטל את סיסמת-היישום מיד לאחר מכן.',
   },
   {
     n: '3',
@@ -115,7 +122,7 @@ const faq = [
           נפוצות, טקסט חלופי לתמונות והפניות 301.
         </p>
         <div class="wp-cta">
-          <a class="btn-wp btn-wp-1" href="#signup">התקנה לוורדפרס<small>התוסף חופשי · ההרשמה לשירות בעמוד</small></a>
+          <a class="btn-wp btn-wp-1" href={PORTAL_URL}>חברו את האתר<small>התוסף חופשי · הצימוד לוקח דקה</small></a>
           <a class="btn-wp btn-wp-2" href="#how">איך זה עובד</a>
         </div>
         <p class="wp-fine">
@@ -210,7 +217,7 @@ const faq = [
           GPL, וכל יכולת שקיימת בקוד שלו פועלת בלי לשלם. התשלום הוא על היקף העבודה שהשירות מבצע:
           כמה מוצרים מנוטרים, כמה מדידות וכמה תוכן.
         </p>
-        <PricingCards ctaHref="#signup" ctaLabel="התקנה לוורדפרס" />
+        <PricingCards ctaHref={PORTAL_URL} ctaLabel="חברו את האתר" />
         <p class="wp-note">
           <strong>איך מתבצע החיוב באתר WordPress.</strong> לא דרך Shopify. החיוב נעשה דרך ספק
           סליקה חיצוני שמנפיק את החשבונית וגובה את התשלום. תראו את המסלול, המחיר ומחזור החיוב
@@ -242,10 +249,12 @@ const faq = [
     <!-- ══ הרשמה · הזרימה האמיתית ══ -->
     <section class="wp-sec alt" id="signup">
       <div class="wrap narrow">
-        <div class="sh"><p class="eyebrow">התקנה לוורדפרס</p><h2>מחברים את האתר</h2></div>
+        <div class="sh"><p class="eyebrow">התוסף עוד לא אצלכם?</p><h2>נשלח לכם אותו ונלווה את החיבור</h2></div>
         <p>
-          השאירו את כתובת האתר ואימייל. נפתח לכם חשבון, נשלח את קישור ההתקנה ואת הוראות החיבור,
-          ונלווה את הצימוד הראשון. אין כאן חיוב ואין צורך בכרטיס אשראי.
+          אם התוסף כבר מותקן אצלכם, אפשר פשוט
+          <a href={PORTAL_URL}>לחבר את האתר עכשיו</a> ולדלג על הטופס הזה.
+          אחרת השאירו כתובת אתר ואימייל: נשלח את קישור ההתקנה ואת הוראות החיבור, ונלווה
+          את הצימוד הראשון. אין כאן חיוב ואין צורך בכרטיס אשראי.
         </p>
 
         <form class="wp-form" id="wpForm" novalidate>
@@ -270,7 +279,7 @@ const faq = [
                  autocomplete="off" aria-hidden="true" />
 
           <button class="btn-wp btn-wp-1 wp-submit" type="submit" id="wpSubmit">
-            התקנה לוורדפרס
+            שלחו לי את התוסף
           </button>
           <p class="wp-consent">
             בשליחה אתם מאשרים את <a href="/terms">תנאי השימוש</a> ואת
