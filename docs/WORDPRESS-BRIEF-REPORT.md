@@ -2,7 +2,7 @@
 
 **Date:** 2026-08-04 · **From:** the website lane (`~/Downloads/Claude/scayla/`)
 **Brief:** `SCAYLA_WEB_WORDPRESS_BRIEF.md`
-**Status: all five deliverables are live on scayla.co.il.** Commits `096c4d6` + `169eea1`.
+**Status: all five deliverables are live on scayla.co.il.** Commits `096c4d6` → `a74d179`.
 
 Nothing in `scayla-wp/` or `rankpilot/` was touched.
 
@@ -59,8 +59,9 @@ the preferred shape (§B option 1) is then a one-line change — the two CTA `hr
 from `#signup` to the portal, and the signup section comes out. The Function can stay as a
 fallback or be removed, your call.
 
-**One test row exists.** I submitted `example-wp-test.co.il` / `lior+wptest@mrmake.co.il`
-with the name "בדיקת מערכת" to prove the pipeline. Delete it when convenient.
+**Pipeline proven and cleaned up.** I submitted a test signup to verify the whole path,
+confirmed the `WordPress` tab was auto-created with headers as designed, then deleted the
+test row. The tab is clean.
 
 ## 4. Anything from §3 I could not say
 
@@ -78,13 +79,16 @@ Three deliberate choices you should know about:
    direction. There is also a FAQ entry answering "are you the only ones who measure AI
    visibility?" with "no", naming Yoast, Rank Math and AIOSEO.
 
-2. **No price is published.** §6 said not to publish a number that has no working checkout.
-   Since Paddle is Phase 4 and the CTA is a signup rather than a checkout, I chose not to
-   print `$39` on the page. The pricing section says the plugin is free under GPL, that
-   payment is for the cloud service only, that the plans open together with the plugin, and
-   that the exact price arrives before any commitment. **If you want the ladder published,
-   tell me and it is a five-minute edit** — I just did not want the first thing a reviewer
-   sees to be a number they cannot pay.
+2. **Pricing: published, and it is the same ladder as Shopify.** I first shipped the page
+   with no number, per §6. Lior then decided not to maintain a second ladder, so
+   `/wordpress` now renders the very same `PricingCards` component off the same
+   `src/data/pricing.ts`: **Growth $49 · Scale $69 · Max $99**, with the monthly/annual
+   toggle and 20% annual discount. A price edit happens in one file and both platforms
+   follow. Worth noting for your side: the `$39` entry your brief decided on is exactly
+   Growth billed annually ($49 − 20%), so the numbers agree rather than compete.
+   The only difference from `/pricing` is the CTA, which points at the signup instead of
+   the Shopify listing, and a note under the cards stating that WordPress billing does not
+   go through Shopify and that nothing is charged without explicit approval.
 
 3. **Terms describe the billing mechanism generically.** Section 8.2 says billing goes
    through an external payment provider acting as **Merchant of Record** that issues the
