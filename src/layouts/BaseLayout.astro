@@ -178,11 +178,11 @@ const orgLd = {
   </head>
   <body>
     <a class="skip-link" href="#main">דילוג לתוכן הראשי</a>
-    <SiteHeader />
+    <div lang="he" dir="rtl"><SiteHeader /></div>
     <main id="main">
       <slot />
     </main>
-    <SiteFooter />
+    <div lang="he" dir="rtl"><SiteFooter /></div>
     <ExitIntent />
     {/* כפתור בדיקה-חינם סטיקי · בכל האתר חוץ מ-/scan עצמו */}
     {!cleanPathname.startsWith('/scan') && <StickyCheck />}
