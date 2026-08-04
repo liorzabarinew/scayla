@@ -1,0 +1,448 @@
+---
+/**
+ * /wordpress · עמוד המוצר ל-WordPress / WooCommerce.
+ *
+ * הכתובת הזו מקובעת: היא ה-Plugin URI בכותרת התוסף שמוגש ל-wordpress.org.
+ * שינוי נתיב מחייב עדכון של התוסף · לא לשנות בלי לתאם.
+ *
+ * כל טענה כאן אומתה מול הקוד שנשלח (ראו הבריף של lane ה-WordPress). אין להוסיף
+ * יכולות שלא נבדקו: ה-readme.txt של התוסף הוא מסמך ציבורי, ובודק מטעם
+ * wordpress.org משווה בין השניים.
+ *
+ * ה-CTA מוביל לטופס אמיתי באותו עמוד (#signup → POST /api/wp-signup) · לא
+ * "בקרוב" ולא רשימת המתנה. כשפורטל החיבור יעלה, מחליפים את ה-href של שני
+ * הכפתורים בכתובת הפורטל ומורידים את הסקשן. זו החלפה של שורה.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'Scayla ל-WordPress ו-WooCommerce · קידום אורגני ונראות במנועי AI';
+const description =
+  'תוסף חופשי שמחבר את אתר ה-WordPress או חנות ה-WooCommerce שלכם ל-Scayla: מדידה שבועית של אזכורים במנועי AI, וכתיבה חזרה לאתר של כותרות SEO, תיאורים, שאלות נפוצות והפניות 301.';
+const canonicalPath = '/wordpress';
+
+const capabilities = [
+  {
+    n: '01',
+    h: 'מודדים אם מנועי ה-AI מזכירים את החנות',
+    p: 'השאילתות הנמדדות אינן מילות מפתח שמישהו הקליד בתיבה. הן נגזרות מסריקה של שמות המוצרים, סוגי המוצרים והקטגוריות האמיתיים שלכם, ולכן הן מגיעות לרזולוציה של מוצר מסוים או קטגוריה מסוימת. אותו סט שאילתות קבוע נמדד מחדש בכל שבוע, כך שהמגמה כנה.',
+  },
+  {
+    n: '02',
+    h: 'סוגרים את המעגל וכותבים חזרה לאתר',
+    p: 'כשנמצא פער, הוא הופך לשינוי באתר: כותרות SEO ותיאורי מטא במוצרים ובקטגוריות, תוכן שאלות נפוצות מבוסס מקורות, טקסט חלופי לתמונות, והפניות 301 לכתובות שבורות. המדידה והפעולה הן אותה מערכת.',
+  },
+  {
+    n: '03',
+    h: 'כל כתיבת SEO מאומתת בקריאה חוזרת ממה שהאתר באמת מגיש',
+    p: 'מאז Yoast SEO 14, Yoast אינו מגיש את נתוני ה-SEO מתוך post meta אלא מטבלה משלו, wp_yoast_indexable. כלי שכותב ל-post meta מקבל כתיבה מוצלחת למסד הנתונים, תשובת 200, וחזית אתר שממשיכה להגיש את הכותרת הישנה ללא הגבלת זמן. Scayla כותב, מיישב את ה-indexable, קורא מחדש ממקור ההגשה, משווה, ומדווח על כישלון מפורש אם יש הבדל. כתיבה שלא נחתה מדווחת ככישלון, לעולם לא כהצלחה.',
+  },
+  {
+    n: '04',
+    h: 'שום דבר בתוסף אינו נעול',
+    p: 'התוסף חופשי ומופץ תחת רישיון GPL, וכל יכולת שקיימת בקוד שלו פועלת בלי לשלם. מגבלות המסלולים חלות על היקף העבודה שמבצע שירות הענן, לא על מה שהתוסף רשאי לעשות.',
+  },
+];
+
+const steps = [
+  {
+    n: '1',
+    h: 'מתקינים את התוסף החופשי',
+    p: 'מספריית התוספים של wordpress.org, או בהעלאת קובץ zip. התוסף נקרא Scayla Connect.',
+  },
+  {
+    n: '2',
+    h: 'מחברים את האתר',
+    p: 'יוצרים ב-WordPress סיסמת-יישום (Application Password) ומדביקים אותה ב-Scayla פעם אחת. Scayla ממירה אותה מיד לטוקן ייעודי, מצומצם ובר-ביטול משלה, וניתן לבטל את סיסמת-היישום מיד לאחר מכן.',
+  },
+  {
+    n: '3',
+    h: 'המכונה עובדת',
+    p: 'סורקת את הקטלוג, מודדת נראות במנועי AI מדי שבוע, מציעה שינויים, וכשתבחרו לתת בה אמון גם מחילה אותם לבד. כל שינוי נרשם ביומן וניתן לביטול בלחיצה אחת.',
+  },
+];
+
+const faq = [
+  {
+    q: 'האם התוסף שולח מידע מהאתר שלי בלי שביקשתי?',
+    a: 'לא. התוסף אינו מבצע ולו קריאה יוצאת אחת, ואין בו רכיב HTTP client בכלל. כל התעבורה נכנסת: שרתי Scayla פונים לממשק ה-REST של האתר ומאמתים את עצמם עם הטוקן, והמידע יוצא רק בתוך התגובה לבקשה מאומתת כזו. התוסף לעולם אינו יוצר קשר עם Scayla מיוזמתו, גם לא בעת השבתה.',
+  },
+  {
+    q: 'איזה מידע כן יוצא מהאתר?',
+    a: 'התוכן שעליו עובדים: כותרות ותיאורים של מוצרים, פוסטים, עמודים וקטגוריות, כותרות SEO ותיאורי מטא, טקסט חלופי לתמונות, שאלות ותשובות, ונתיבי הפניה. בנוסף, נתוני סביבה טכניים לצורך החיבור ובדיקת התקינות. הפירוט המלא נמצא במדיניות הפרטיות, סעיף 3.5.',
+  },
+  {
+    q: 'מה בטוח שלא יוצא מהאתר?',
+    a: 'נתוני גולשים, כתובות IP, נתוני אנליטיקס, משואות מעקב, נתוני הזמנות ולקוחות, וחשבונות משתמשים או כתובות אימייל של משתמשי האתר. לא נשלח מידע לשום שרת שאינו של Scayla.',
+  },
+  {
+    q: 'איזה הרשאות יש למשתמש שנוצר באתר?',
+    a: 'משתמש-שירות ייעודי עם רשימת יכולות מצומצמת וקבועה. הוא אינו יכול להתקין תוספים, לנהל משתמשים, לשנות הגדרות אתר, או להתחבר לאתר כמשתמש.',
+  },
+  {
+    q: 'איך מנתקים?',
+    a: 'מצד האתר, בלי להסתמך עלינו: מחיקת משתמש-השירות או השבתת התוסף מבטלות את הטוקן, ומאותו רגע שרתי Scayla אינם יכולים לגשת לאתר. למחיקת הנתונים ששמורים אצלנו, שלחו בקשה ונמחק בתוך 30 יום לכל היותר.',
+  },
+  {
+    q: 'האם זה עובד עם Yoast SEO או Rank Math?',
+    a: 'כן, ושניהם מזוהים אוטומטית בעת החיבור. הכתיבה מתבצעת דרך מקור ההגשה של אותו תוסף, ומאומתת בקריאה חוזרת ממנו.',
+  },
+  {
+    q: 'האם אתם היחידים שמודדים נראות ב-AI?',
+    a: 'לא. Yoast SEO, Rank Math ו-AIOSEO כבר כוללים מעקב נראות ב-AI, והוא טוב. ההבדל הוא ברזולוציה ובסגירת המעגל: אצלם המדידה היא ברמת המותג, כלומר שם מותג וכתובת. אצלנו השאילתות נגזרות מהקטלוג עצמו, והמערכת גם כותבת בחזרה לאתר את התיקון.',
+  },
+  {
+    q: 'האם התוסף עובד בעברית?',
+    a: 'כן. כתובות בעברית מטופלות נכון, ותוכן השאלות הנפוצות מוצג כאקורדיון מובנה בלי JavaScript ובלי גיליון סגנון, כך שהוא יורש את כיוון ה-RTL של התבנית שלכם. ומכיוון שהשאילתות נגזרות מהקטלוג שלכם, חנות בעברית נמדדת בשאילתות בעברית.',
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  breadcrumbs={[{ name: 'WordPress ו-WooCommerce', path: canonicalPath }]}
+>
+  <div class="p-wp">
+    <!-- ══ HERO ══ -->
+    <section class="wp-hero">
+      <div class="wrap">
+        <p class="eyebrow">WordPress · WooCommerce</p>
+        <h1>Scayla לאתרי WordPress ולחנויות WooCommerce</h1>
+        <p class="lede">
+          תוסף חופשי מחבר את האתר שלכם ל-Scayla. מכאן המערכת מודדת מדי שבוע אם מנועי ה-AI מזכירים
+          אתכם בתשובות, ואת מה שהיא מוצאת היא כותבת בחזרה לאתר: כותרות SEO, תיאורי מטא, שאלות
+          נפוצות, טקסט חלופי לתמונות והפניות 301.
+        </p>
+        <div class="wp-cta">
+          <a class="btn-wp btn-wp-1" href="#signup">התקנה לוורדפרס<small>התוסף חופשי · ההרשמה לשירות בעמוד</small></a>
+          <a class="btn-wp btn-wp-2" href="#how">איך זה עובד</a>
+        </div>
+        <p class="wp-fine">
+          התוסף מופץ תחת רישיון GPL · כל יכולת שבקוד פועלת בלי תשלום
+        </p>
+      </div>
+    </section>
+
+    <!-- ══ מה זה עושה ══ -->
+    <section class="wp-sec" id="what">
+      <div class="wrap">
+        <div class="sh"><p class="eyebrow">מה זה עושה</p><h2>ארבעה דברים, וכולם נבדקו בקוד</h2></div>
+        <div class="wp-grid">
+          {capabilities.map((c) => (
+            <article class="wp-card">
+              <span class="wp-num" aria-hidden="true">{c.n}</span>
+              <h3>{c.h}</h3>
+              <p>{c.p}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ איך זה עובד ══ -->
+    <section class="wp-sec alt" id="how">
+      <div class="wrap">
+        <div class="sh"><p class="eyebrow">איך זה עובד</p><h2>שלושה שלבים</h2></div>
+        <ol class="wp-steps">
+          {steps.map((s) => (
+            <li>
+              <span class="wp-step-n" aria-hidden="true">{s.n}</span>
+              <div><h3>{s.h}</h3><p>{s.p}</p></div>
+            </li>
+          ))}
+        </ol>
+        <p class="wp-note">
+          <strong>מה לשירות מותר לעשות באתר.</strong> העבודה נעשית דרך משתמש ייעודי בעל רשימת
+          יכולות מצומצמת וקבועה. הוא אינו יכול להתקין תוספים, לנהל משתמשים, לשנות הגדרות אתר,
+          או להתחבר לאתר כמשתמש.
+        </p>
+      </div>
+    </section>
+
+    <!-- ══ עברית ו-RTL ══ -->
+    <section class="wp-sec" id="hebrew">
+      <div class="wrap">
+        <div class="sh"><p class="eyebrow">עברית ו-RTL</p><h2>מה שבאמת שונה בחנות ישראלית</h2></div>
+        <div class="wp-grid two">
+          <article class="wp-card">
+            <h3>כתובות בעברית לא נשברות</h3>
+            <p>
+              הפונקציה <code>sanitize_text_field()</code> של WordPress מסירה תווים מקודדים באחוזים.
+              על כתובת בעברית זה הופך בשקט slug מקודד להפניה שמצביעה על העמוד הלא נכון. התוסף משתמש
+              במסנן שמכבד קידוד אחוזים במקום. זו תקלה אמיתית שנתקלנו בה ותיקנו, לא שיווק.
+            </p>
+          </article>
+          <article class="wp-card">
+            <h3>שאלות נפוצות שיורשות את כיוון התבנית</h3>
+            <p>
+              תוכן השאלות הנפוצות מוצג כאקורדיון מובנה של הדפדפן, בלי JavaScript ובלי גיליון סגנון
+              משלנו. התוצאה יורשת את כיוון ה-RTL ואת העיצוב של התבנית שלכם, ולא נאבקת בהם.
+            </p>
+          </article>
+          <article class="wp-card">
+            <h3>מדידה בשאילתות בעברית</h3>
+            <p>
+              מכיוון שסט השאילתות נגזר מהקטלוג שלכם, חנות שהקטלוג שלה בעברית נמדדת בשאילתות בעברית.
+              זה הפער שבאמת פחות מכוסה בשוק: מדידת תשובות AI בעברית.
+            </p>
+          </article>
+          <article class="wp-card wp-card-quiet">
+            <h3>ומה לא נטען כאן</h3>
+            <p>
+              איננו טוענים שניתוח התוכן שלנו בעברית טוב משל Yoast או Rank Math. הם תומכים בעברית
+              היטב. איננו טוענים שהמצאנו מדידת נראות ב-AI, ואיננו היחידים שמודדים וכותבים בחזרה.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ תמחור ══ -->
+    <section class="wp-sec alt" id="pricing">
+      <div class="wrap narrow">
+        <div class="sh"><p class="eyebrow">תמחור</p><h2>התוסף חופשי. השירות בתשלום.</h2></div>
+        <p>
+          התוסף עצמו חופשי, מופץ תחת GPL, וכל יכולת שקיימת בקוד שלו פועלת בלי לשלם. התשלום, אם
+          תבחרו בו, הוא עבור שירות הענן: כמה סריקות, כמה מדידות שבועיות וכמה תוכן הוא מייצר עבורכם.
+        </p>
+        <p>
+          המסלולים לאתרי WordPress נפתחים יחד עם התוסף. אנחנו מעדיפים לא לפרסם כאן מחיר סופי לפני
+          שהחיוב פתוח, כדי שלא תראו מספר שאי אפשר עדיין לשלם עליו. השאירו פרטים והמחיר המדויק יגיע
+          אליכם לפני כל התחייבות. החיוב אינו עובר דרך Shopify, ולא יתבצע בלי אישור מפורש שלכם.
+        </p>
+        <p class="wp-links">
+          <a href="/terms">תנאי השימוש</a> · <a href="/privacy">מדיניות הפרטיות</a> ·
+          <a href="/privacy#3-5">מה בדיוק עובר מהאתר שלכם</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- ══ שאלות נפוצות ══ -->
+    <section class="wp-sec" id="faq">
+      <div class="wrap narrow">
+        <div class="sh"><p class="eyebrow">שאלות נפוצות</p><h2>מה שבודקים שואלים קודם</h2></div>
+        <div class="wp-faq">
+          {faq.map((f) => (
+            <details>
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ הרשמה · הזרימה האמיתית ══ -->
+    <section class="wp-sec alt" id="signup">
+      <div class="wrap narrow">
+        <div class="sh"><p class="eyebrow">התקנה לוורדפרס</p><h2>מחברים את האתר</h2></div>
+        <p>
+          השאירו את כתובת האתר ואימייל. נפתח לכם חשבון, נשלח את קישור ההתקנה ואת הוראות החיבור,
+          ונלווה את הצימוד הראשון. אין כאן חיוב ואין צורך בכרטיס אשראי.
+        </p>
+
+        <form class="wp-form" id="wpForm" novalidate>
+          <div class="wp-field">
+            <label for="wp-site">כתובת האתר</label>
+            <input id="wp-site" name="site" type="text" dir="ltr" inputmode="url"
+                   placeholder="example.co.il" autocomplete="url" required />
+            <p class="wp-err" id="err-site" role="alert" hidden></p>
+          </div>
+          <div class="wp-field">
+            <label for="wp-email">אימייל</label>
+            <input id="wp-email" name="email" type="email" dir="ltr"
+                   placeholder="you@example.co.il" autocomplete="email" required />
+            <p class="wp-err" id="err-email" role="alert" hidden></p>
+          </div>
+          <div class="wp-field">
+            <label for="wp-name">שם <span class="wp-opt">(לא חובה)</span></label>
+            <input id="wp-name" name="name" type="text" autocomplete="name" />
+          </div>
+          <!-- מלכודת בוטים · מוסתרת מבני אדם ומקוראי מסך -->
+          <input class="wp-hp" type="text" name="company_website" tabindex="-1"
+                 autocomplete="off" aria-hidden="true" />
+
+          <button class="btn-wp btn-wp-1 wp-submit" type="submit" id="wpSubmit">
+            התקנה לוורדפרס
+          </button>
+          <p class="wp-consent">
+            בשליחה אתם מאשרים את <a href="/terms">תנאי השימוש</a> ואת
+            <a href="/privacy">מדיניות הפרטיות</a>.
+          </p>
+          <p class="wp-status" id="wpStatus" role="status" hidden></p>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <style is:global>
+    .p-wp { --wp-rad: 16px; }
+    .p-wp .wrap { max-inline-size: 1160px; margin-inline: auto; padding-inline: clamp(18px, 4vw, 40px); }
+    .p-wp .narrow { max-inline-size: 78ch; }
+    .p-wp .eyebrow {
+      font-size: 13px; font-weight: 800; letter-spacing: .04em;
+      color: var(--sc-accent-text); margin: 0 0 10px;
+    }
+    .p-wp .sh { margin-block-end: 28px; }
+    .p-wp .sh h2 { font-size: clamp(25px, 3.4vw, 36px); line-height: 1.25; margin: 0; letter-spacing: -.01em; }
+
+    .p-wp .wp-hero {
+      padding-block: clamp(48px, 8vw, 92px) clamp(36px, 5vw, 64px);
+      background: linear-gradient(180deg, color-mix(in oklch, var(--sc-lav) 12%, transparent), transparent);
+    }
+    .p-wp .wp-hero h1 {
+      font-size: clamp(30px, 5vw, 50px); line-height: 1.16; margin: 0 0 18px;
+      letter-spacing: -.02em; max-inline-size: 20ch;
+    }
+    .p-wp .lede { font-size: clamp(17px, 2vw, 19.5px); line-height: 1.72; color: var(--sc-ink); max-inline-size: 62ch; margin: 0; }
+
+    .p-wp .wp-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-block-start: 30px; }
+    .p-wp .btn-wp {
+      display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 2px; padding: 14px 26px; border-radius: 999px; text-decoration: none;
+      font-weight: 800; font-size: 16.5px; border: 1.5px solid transparent;
+      transition: transform var(--sc-fast, 180ms) var(--sc-ease, ease), box-shadow var(--sc-fast, 180ms) var(--sc-ease, ease);
+    }
+    .p-wp .btn-wp:hover { transform: translateY(-1px); }
+    .p-wp .btn-wp-1 { background: var(--sc-accent); color: #fff; box-shadow: 0 10px 24px -12px color-mix(in oklch, var(--sc-accent) 70%, transparent); }
+    .p-wp .btn-wp-1 small { font-size: 11.5px; font-weight: 600; opacity: .9; }
+    .p-wp .btn-wp-2 { border-color: var(--sc-hair); color: var(--sc-ink); background: var(--sc-card); }
+    .p-wp .wp-fine { font-size: 13.5px; color: var(--sc-muted); margin-block-start: 14px; }
+
+    .p-wp .wp-sec { padding-block: clamp(40px, 6vw, 76px); }
+    .p-wp .wp-sec.alt { background: color-mix(in oklch, var(--sc-lav) 6%, transparent); }
+
+    /* שני הגרידים מחזיקים 4 פריטים · 2×2 מאוזן, ולא 3 + יתום בשורה שנייה. */
+    .p-wp .wp-grid { display: grid; gap: 18px; grid-template-columns: 1fr; }
+    @media (min-width: 880px) { .p-wp .wp-grid { grid-template-columns: 1fr 1fr; } }
+    .p-wp .wp-card {
+      background: var(--sc-card); border: 1px solid var(--sc-hair);
+      border-radius: var(--wp-rad); padding: 24px;
+    }
+    .p-wp .wp-card h3 { font-size: 18.5px; line-height: 1.35; margin: 0 0 10px; }
+    .p-wp .wp-card p { margin: 0; font-size: 16px; line-height: 1.75; color: var(--sc-ink); }
+    .p-wp .wp-card-quiet { background: transparent; border-style: dashed; }
+    .p-wp .wp-card-quiet p { color: var(--sc-muted); }
+    .p-wp .wp-num {
+      display: block; font-size: 13px; font-weight: 800; letter-spacing: .06em;
+      color: var(--sc-accent-text); margin-block-end: 8px; font-variant-numeric: tabular-nums;
+    }
+
+    .p-wp .wp-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+    .p-wp .wp-steps li { display: flex; gap: 16px; align-items: flex-start; background: var(--sc-card); border: 1px solid var(--sc-hair); border-radius: var(--wp-rad); padding: 20px 22px; }
+    .p-wp .wp-step-n {
+      flex: none; inline-size: 34px; block-size: 34px; border-radius: 50%;
+      display: grid; place-items: center; font-weight: 800; font-size: 15px;
+      background: var(--sc-accent); color: #fff;
+    }
+    .p-wp .wp-steps h3 { margin: 0 0 6px; font-size: 17.5px; }
+    .p-wp .wp-steps p { margin: 0; font-size: 15.8px; line-height: 1.72; color: var(--sc-ink); }
+    .p-wp .wp-note {
+      margin-block-start: 20px; padding: 16px 18px; border-radius: 12px;
+      background: var(--sc-card); border: 1px solid var(--sc-hair);
+      font-size: 15.5px; line-height: 1.7;
+    }
+
+    .p-wp code {
+      direction: ltr; unicode-bidi: isolate; font-size: .92em;
+      background: color-mix(in oklch, var(--sc-lav) 16%, transparent);
+      padding: 1px 7px; border-radius: 6px;
+    }
+
+    .p-wp .wp-faq details {
+      border-block-end: 1px solid var(--sc-hair); padding-block: 14px;
+    }
+    .p-wp .wp-faq summary {
+      cursor: pointer; font-weight: 700; font-size: 17px; line-height: 1.5;
+      list-style: none; padding-inline-end: 26px; position: relative;
+    }
+    .p-wp .wp-faq summary::-webkit-details-marker { display: none; }
+    .p-wp .wp-faq summary::after {
+      content: '+'; position: absolute; inset-inline-end: 0; inset-block-start: 0;
+      font-weight: 400; font-size: 22px; color: var(--sc-accent-text); line-height: 1.2;
+    }
+    .p-wp .wp-faq details[open] summary::after { content: '−'; }
+    .p-wp .wp-faq p { margin: 10px 0 0; font-size: 16px; line-height: 1.78; color: var(--sc-muted); }
+
+    .p-wp .wp-links { margin-block-start: 22px; font-size: 15.5px; }
+    .p-wp .wp-form { margin-block-start: 24px; display: grid; gap: 16px; max-inline-size: 40rem; }
+    .p-wp .wp-field { display: grid; gap: 6px; }
+    .p-wp .wp-field label { font-weight: 700; font-size: 15px; }
+    .p-wp .wp-opt { font-weight: 400; color: var(--sc-muted); }
+    .p-wp .wp-field input {
+      font: inherit; font-size: 16px; padding: 12px 14px; border-radius: 11px;
+      border: 1.5px solid var(--sc-hair); background: var(--sc-card); color: var(--sc-ink);
+    }
+    .p-wp .wp-field input:focus-visible { outline: 2.5px solid var(--sc-accent); outline-offset: 2px; }
+    .p-wp .wp-err { margin: 0; color: #c02a22; font-size: 14px; font-weight: 600; }
+    .p-wp .wp-hp { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); }
+    .p-wp .wp-submit { justify-self: start; cursor: pointer; font-family: inherit; }
+    .p-wp .wp-submit[disabled] { opacity: .6; cursor: progress; }
+    .p-wp .wp-consent { font-size: 13.5px; color: var(--sc-muted); margin: 0; }
+    .p-wp .wp-status { margin: 0; font-size: 16px; font-weight: 700; line-height: 1.6; }
+    .p-wp .wp-status[data-ok='true'] { color: var(--sc-gold-text); }
+    .p-wp .wp-status[data-ok='false'] { color: #c02a22; }
+
+    @media (max-width: 640px) {
+      .p-wp .btn-wp { inline-size: 100%; }
+      .p-wp .wp-steps li { flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .p-wp .btn-wp { transition: none; }
+      .p-wp .btn-wp:hover { transform: none; }
+    }
+  </style>
+
+  <script is:inline>
+    (function () {
+      var f = document.getElementById('wpForm');
+      if (!f) return;
+      var status = document.getElementById('wpStatus');
+      var btn = document.getElementById('wpSubmit');
+      var show = function (el, msg) { el.textContent = msg; el.hidden = !msg; };
+
+      f.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        ['site', 'email'].forEach(function (k) { show(document.getElementById('err-' + k), ''); });
+        status.hidden = true;
+
+        var data = {
+          site: f.site.value,
+          email: f.email.value,
+          name: f.name.value,
+          company_website: f.company_website.value,
+        };
+
+        btn.disabled = true;
+        try {
+          var res = await fetch('/api/wp-signup', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+          var out = await res.json().catch(function () { return {}; });
+
+          if (res.ok && out.ok) {
+            f.reset();
+            status.dataset.ok = 'true';
+            show(status, 'קיבלנו. נשלח אליכם את קישור ההתקנה ואת הוראות החיבור לאימייל שהשארתם.');
+            return;
+          }
+          if (out.errors) {
+            Object.keys(out.errors).forEach(function (k) {
+              var el = document.getElementById('err-' + k);
+              if (el) show(el, out.errors[k]);
+            });
+            return;
+          }
+          throw new Error('failed');
+        } catch (err) {
+          status.dataset.ok = 'false';
+          show(status, 'משהו השתבש בשליחה. אפשר לכתוב לנו ישירות ל-lior+scayla@mrmake.co.il ונחבר אתכם.');
+        } finally {
+          btn.disabled = false;
+        }
+      });
+    })();
+  </script>
+</BaseLayout>

@@ -24,6 +24,10 @@ interface Props {
   ogImageHeight?: number;
   /** Breadcrumb trail after Home · defaults to one crumb derived from the title */
   breadcrumbs?: Crumb[];
+  /** Locale of THIS page · 'en' flips <html lang/dir> for the English legal pages. */
+  pageLang?: 'he' | 'en';
+  /** Path of the same document in the other language · emits reciprocal hreflang. */
+  altLocalePath?: string;
 }
 
 const {
@@ -31,6 +35,8 @@ const {
   description,
   ogType = 'website',
   noIndex = false,
+  pageLang = 'he',
+  altLocalePath,
   breadcrumbs,
 } = Astro.props;
 
@@ -97,17 +103,32 @@ const orgLd = {
 ---
 
 <!doctype html>
-<html lang="he" dir="rtl">
+<html lang={pageLang} dir={pageLang === "en" ? "ltr" : "rtl"}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {/* hreflang scaffold (Noy · question 10): Hebrew only today. When the English
-        locale launches, add: <link rel="alternate" hreflang="en" href=".../en/..." />
-        and hreflang="x-default" pointing at the primary version. */}
-    <link rel="alternate" hreflang="he" href={canonical} />
+    {/* hreflang · reciprocal pair when a page has a translation. Hebrew is
+        x-default: it is the binding legal text and the primary audience. */}
+    {altLocalePath ? (
+      <>
+        <link rel="alternate" hreflang={pageLang === 'en' ? 'en' : 'he'} href={canonical} />
+        <link
+          rel="alternate"
+          hreflang={pageLang === 'en' ? 'he' : 'en'}
+          href={new URL(altLocalePath, Astro.site).href}
+        />
+        <link
+          rel="alternate"
+          hreflang="x-default"
+          href={pageLang === 'en' ? new URL(altLocalePath, Astro.site).href : canonical}
+        />
+      </>
+    ) : (
+      <link rel="alternate" hreflang="he" href={canonical} />
+    )}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
