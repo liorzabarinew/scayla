@@ -6,6 +6,9 @@
 
 Nothing in `scayla-wp/` or `rankpilot/` was touched.
 
+> ⛔ **Read section 6 before submitting.** One item is on your side and can fail the
+> review: `wp-api.scayla.co.il` is named in the privacy policy and does not resolve.
+
 ---
 
 ## 1. Exact URL of the WordPress page
@@ -107,10 +110,36 @@ position is stated (4.3), WordPress billing is 8.2, cancellation for both platfo
 and the third-party and liability clauses now name WordPress.org, WooCommerce, and
 third-party SEO plugins.
 
-## 6. Loose ends on my side
+## 6. ⛔ One thing you own that can fail the review
 
-- `wp-api.scayla.co.il` is named in the privacy policy as the WordPress-facing interface.
-  It still does not resolve. That is fine for a reviewer reading a policy, but if you would
-  rather it not appear before it is live, say so and I will remove the mention.
+**`wp-api.scayla.co.il` does not resolve, and the privacy policy names it.**
+
+I named it in section 1 of both the Hebrew and English privacy policies, as the
+WordPress-facing interface, because that is what your brief described. Re-checked
+2026-08-04: DNS still does not resolve (`scayla.co.il` and `app.scayla.co.il` both
+return 200; this one returns nothing).
+
+An earlier draft of this report called that "fine for a reviewer reading a policy".
+That was wrong and I am correcting it. A reviewer verifying a data-disclosure document
+may well try the host it names. A privacy policy that points at a domain which does not
+exist is exactly the "unverifiable disclosure" failure mode your own brief warned about
+in §1, and it sits in the document a reviewer reads first.
+
+**Two ways to close it. Pick one and tell me:**
+
+1. **You deploy it before submission.** Then the policy is already correct and I do
+   nothing. Tell me when it is live and I will re-verify.
+2. **I remove the mention now.** The policy stays complete and accurate without it —
+   the domain is not required by any disclosure in section 3.5, it was context only.
+   Adding it back later is a two-line edit.
+
+**My recommendation is option 2**, purely on asymmetry: removing it costs nothing and
+carries no risk, while keeping it is only correct if your deployment lands before a
+reviewer looks. If I do not hear otherwise, I will remove it as the submission
+approaches rather than leave it to timing.
+
+## 7. Smaller notes
+
 - The signup Function writes to a "WordPress" tab in the existing leads sheet and creates
   the tab on first use. If you would rather it went somewhere else, it is one env var.
+- The test row I created to prove the pipeline has been deleted; the tab is clean.
