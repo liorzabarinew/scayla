@@ -8,12 +8,13 @@ import { SHOPIFY_APP_URL, DEMO_URL } from '../data/pricing';
 
 const linksBefore = [];
 const linksAfter = [
-  // WordPress · חייב להיות נגיש מהניווט הראשי. זו דרישה של סקירת wordpress.org:
-  // עמוד מוצר שבודק לא מוצא מעמוד הבית אינו פותר את הבעיה. הכתובת /wordpress
-  // מקובעת · היא ה-Plugin URI בכותרת התוסף המוגש.
-  { href: '/wordpress', label: 'WordPress' },
   { href: '/pricing', label: 'מחירון' },
   { href: '/magazine', label: 'בלוג' },
+  // WordPress אחרון ברשימה (ב-RTL · משמאל ל"בלוג"). חייב להיות נגיש מהניווט
+  // הראשי: זו דרישה של סקירת wordpress.org · עמוד מוצר שבודק לא מוצא מעמוד
+  // הבית אינו פותר את הבעיה. הכתובת /wordpress מקובעת · היא ה-Plugin URI
+  // בכותרת התוסף המוגש.
+  { href: '/wordpress', label: 'WordPress' },
 ];
 
 // The mega-menu features · each with a mini sneak-peek preview (pure CSS/SVG).
@@ -144,6 +145,9 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
       <!-- full-screen mobile menu · bottom CTA -->
       <div class="ov-cta">
         <a href={SHOPIFY_APP_URL} class="btn btn-solid btn-lg">התקינו ב-Shopify</a>
+        <a href="/wordpress" class="btn btn-wp-nav btn-lg">
+          התקינו ב-WordPress<span class="soon">בקרוב</span>
+        </a>
         <span class="ov-micro">14 יום חינם · ללא כרטיס אשראי</span>
       </div>
     </div>
@@ -153,6 +157,9 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
     <span class="nav-cta-group">
       <a href={DEMO_URL} class="btn btn-solid btn-sm nav-cta" target="_blank" rel="noopener">קבעו דמו</a>
       <a href={SHOPIFY_APP_URL} class="btn btn-gold btn-sm nav-cta">התקינו ב-Shopify</a>
+      <a href="/wordpress" class="btn btn-wp-nav btn-sm nav-cta">
+        התקינו ב-WordPress<span class="soon">בקרוב</span>
+      </a>
     </span>
   </nav>
 </header>
@@ -211,6 +218,20 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
   .nav-sp { flex: 1; }
   /* sticky-header CTA pair · install (gold) + demo (purple), same size, side by side */
   .nav-cta-group { display: inline-flex; align-items: center; gap: 10px; }
+  /* WordPress · כפתור-מסגרת שקט ליד ה-CTA הראשי, כדי שלא יתחרה בשופיפיי.
+     תג "בקרוב" נאמר במפורש כי התוסף עוד לא בספריית wordpress.org. */
+  .btn-wp-nav {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--sc-card); color: var(--sc-ink);
+    border: 1.5px solid var(--sc-hair);
+  }
+  .btn-wp-nav:hover { border-color: var(--sc-accent); color: var(--sc-accent-text); }
+  .btn-wp-nav .soon {
+    font-size: 10.5px; font-weight: 800; line-height: 1;
+    padding: 3px 7px; border-radius: 999px;
+    background: color-mix(in oklch, var(--sc-lav) 24%, transparent);
+    color: var(--sc-accent-text); white-space: nowrap;
+  }
   .menu-btn { display: none; }
   .mega-mlabel { display: none; }
   .ov-cta { display: none; }
