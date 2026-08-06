@@ -27,7 +27,7 @@ Welcome to Scayla. These terms of service form a binding legal agreement between
 2.4. **Not professional advice.** The service is not a substitute for professional advice and is not a commitment to a business outcome.
 
 ## 3. Capacity and responsibility
-3.1. This agreement is entered into by a business entity with legal capacity to do so.
+3.1. **Business (B2B) use only.** Scayla is intended for owners of online stores on Shopify and WordPress / WooCommerce, for the purposes of their business. This agreement is entered into by a business entity with legal capacity to do so, and not for personal, household or family use. It is not offered for purchase by a private consumer.
 
 3.2. By installing and connecting, you declare that you own or are authorised to manage the store you connect (a Shopify store or a WordPress / WooCommerce site) and the Google accounts (Search Console, Analytics, Business Profile) you connect, and that you may accept these terms on behalf of the business.
 
@@ -66,11 +66,25 @@ Welcome to Scayla. These terms of service form a binding legal agreement between
 ## 8. Payment, subscription and cancellation
 8.1. **Billing for Shopify stores.** On the Shopify platform, Scayla is billed exclusively through Shopify's Managed Pricing mechanism (the charge appears on your Shopify invoice). Plans, prices and quotas are shown on the Shopify pricing page and may change on notice.
 
-8.2. **Billing for WordPress / WooCommerce sites.** Billing does not go through Shopify. The plugin itself is free; payment, should you choose a paid plan, is for the cloud service only. Billing is handled by an external payment provider acting as Merchant of Record, meaning it is the party that issues the invoice and collects payment, including handling applicable taxes. Plan details, price, billing currency and billing cycle will be shown to you in full before you confirm an order, and no charge will occur without your explicit approval. We do not store your payment instrument details.
+8.2. **Billing for WordPress / WooCommerce sites.** Billing does not go through Shopify. The plugin itself is free; payment, should you choose a paid plan, is for the cloud service only.
+
+- **Who sells and who charges.** The seller and the charging party is **Lior Zabari Ltd., company number 516967395** (full details in section 21). The invoice is issued in the company's name.
+- **Payment and processing.** Payment is made by credit card through a licensed payment processor operating in Israel. **Card details are provided directly to the payment processor and are never stored by us at any stage.** The processor is PCI DSS compliant and details are transmitted over an encrypted connection.
+- **Before any charge.** Plan details, price, billing currency, billing frequency and the next renewal date are shown to you in full before you confirm an order. **No charge occurs without your explicit approval.**
 
 8.3. **Free trial.** A free trial is offered; diagnostic features are available at no charge. At the end of the trial without an active subscription, generation features are paused until a plan is selected. On both platforms, suspending a paid plan does not disable the plugin or the app, and does not delete content already applied to the store.
 
-8.4. **Cancellation.** On Shopify: cancel at any time through Shopify. On WordPress: cancel at any time from your account area or by contacting us, and in addition you can disconnect the site immediately and unilaterally from the site itself (deleting the service user or deactivating the plugin revokes the service's access). In both cases cancellation applies going forward, and billing stops at the end of the current billing period.
+8.4. **Currency, VAT and invoicing.** Prices shown on the site are denominated in US dollars (USD) and do not include value added tax. Israeli businesses will be charged VAT as required by law at the rate in force on the date of the charge. Transactions with customers outside Israel are subject to the relevant tax rules. A lawful invoice is issued and sent for every charge to the email address you provided. A credit card charge may appear in shekels at your card issuer's conversion rate; we are not party to that rate or to any conversion fees the issuer charges.
+
+8.5. **Automatic renewal · full disclosure.** The subscription is a continuing transaction and **renews automatically** at the end of each billing period: a monthly subscription renews monthly and an annual subscription renews annually, on the same plan and at the same price, until you cancel. Before you confirm an order you are shown the plan, price, billing currency, billing frequency and the next renewal date, and no charge occurs without your explicit approval. Any price change taking effect at renewal is notified by email in advance, and you may cancel before the renewal date.
+
+8.6. **Cancelling a subscription.** You may cancel **at any time and without giving a reason**, with no penalty and no cancellation fee.
+
+- **How to cancel.** On Shopify: remove the app or cancel the subscription from within Shopify. On WordPress: from your account area, or by contacting us by email or phone as listed in section 21. In addition, and without depending on us, you can disconnect the site immediately from the site itself (deleting the service user or deactivating the plugin revokes the service's access).
+- **What happens after cancelling.** Cancellation applies going forward. The billing period already paid for runs to its end, and the service remains available to you until then. At the end of that period billing simply stops and no renewal occurs. So if you cancel an annual subscription a week after buying it, the service is available to you until the end of that year and you are not charged again. The same rule applies to a monthly subscription.
+- **Refunds.** Because the service remains available to you until the end of the period you paid for, we do not as a rule issue pro-rata refunds for a period that has begun. An incorrect charge, a duplicate charge, or a charge made after you cancelled will be refunded in full. Contact us and we will handle it.
+- **Content already applied.** Cancelling does not remove content and changes already applied to your store. They remain yours.
+- **Statutory rights.** Where a right of cancellation applies under law (for example in a distance-selling transaction), it applies in full and nothing above derogates from it.
 
 ## 9. Service delivery and availability
 9.1. The service is provided AS-IS and AS-AVAILABLE.
@@ -98,7 +112,7 @@ Welcome to Scayla. These terms of service form a binding legal agreement between
 13.1. We may update these terms. Reasonable notice will be given for a material change, and where necessary we will ask for renewed consent. Continued use after a non-material change may be deemed acceptance. There is no retroactive application.
 
 ## 14. Third-party services
-14.1. The service relies on Shopify (for Shopify stores), WordPress.org and WooCommerce (for WordPress sites), an external payment provider for billing outside Shopify, Google (Cloud/Vertex plus Search Console/Analytics/Business Profile APIs), OpenAI (for measurement only) and Cloudflare. These are subject to their operators' terms and policies; we are not responsible for their availability or actions.
+14.1. The service relies on Shopify (for Shopify stores), WordPress.org and WooCommerce (for WordPress sites), a licensed Israeli payment processor for billing outside Shopify, Google (Cloud/Vertex plus Search Console/Analytics/Business Profile APIs), OpenAI (for measurement only) and Cloudflare. These are subject to their operators' terms and policies; we are not responsible for their availability or actions.
 
 14.2. Data may be stored and processed on third-party servers outside Israel, as detailed in the privacy policy.
 
@@ -120,6 +134,12 @@ Welcome to Scayla. These terms of service form a binding legal agreement between
 ## 20. General provisions
 20.1. Severability, waiver, assignment (we may assign in the context of a change of control, merger or sale; you may assign with our prior written consent), entire agreement (these terms plus the privacy policy constitute the full agreement), and headings for convenience only. The Hebrew version is the binding text.
 
-## 21. Contact
-Service operator: Lior Zabari Ltd., company number 516967395 (website: mrmake.co.il)
-Email: lior+scayla@mrmake.co.il
+## 21. Merchant details and contact
+- **Legal entity:** Lior Zabari Ltd.
+- **Company number:** 516967395 (Israel)
+- **Address:** Ahavat Zion 2, Even Yehuda, Israel
+- **Phone:** +972-52-8775515
+- **Email:** lior+scayla@mrmake.co.il
+- **Operator website:** mrmake.co.il
+
+For billing, cancellation, refunds and support, use any of the channels above. We reply within a reasonable time and in any event no later than 14 business days.
