@@ -86,6 +86,13 @@ Welcome to Scayla. These terms of service form a binding legal agreement between
 - **Content already applied.** Cancelling does not remove content and changes already applied to your store. They remain yours.
 - **Statutory rights.** Where a right of cancellation applies under law (for example in a distance-selling transaction), it applies in full and nothing above derogates from it.
 
+## 8A. Service warranty
+8A.1. **We stand behind the service.** We undertake that the service will be provided with skill, in accordance with its description on the site and in the contract documents, and that we will work to fix a reported fault within a reasonable time at no additional charge.
+
+8A.2. **If the service was not delivered as presented.** If you find a gap between what was promised and what you received, contact us through any of the channels in section 21. We will investigate; if the gap is ours we will fix it, and if it cannot be fixed we will credit you for the period during which the service was not properly provided.
+
+8A.3. **What the warranty does not cover.** The warranty covers delivery and correct functioning of the service, not a business outcome. As stated in 2.3, Google rankings and AI-engine mentions depend on factors outside our control and are not guaranteed. The warranty also does not cover a fault originating in your platform, in a third-party plugin, or in a change you made yourself.
+
 ## 9. Service delivery and availability
 9.1. The service is provided AS-IS and AS-AVAILABLE.
 

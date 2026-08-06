@@ -31,6 +31,22 @@ const description =
         <a class="btn btn-solid" href="#contact-form">לטופס ←</a>
       </div>
 
+      <div class="details card fade-up">
+        <h2>פרטי העוסק</h2>
+        <ul class="biz">
+          <li><b>שם החברה</b><span>ליאור צברי בע"מ</span></li>
+          <li><b>ח.פ.</b><span class="num">516967395</span></li>
+          <li><b>כתובת</b><span>אהבת ציון 2, אבן יהודה, ישראל</span></li>
+          <li><b>טלפון</b><span><a href="tel:+972528775515" class="num" dir="ltr">052-8775515</a></span></li>
+          <li><b>דואר אלקטרוני</b><span><a href="mailto:lior+scayla@mrmake.co.il" dir="ltr">lior+scayla@mrmake.co.il</a></span></li>
+          <li><b>שעות מענה</b><span>ימים א׳ עד ה׳, 09:00 עד 17:00</span></li>
+        </ul>
+        <p class="biz-note">
+          לפניות בענייני חיוב, <a href="/terms#8">ביטול מנוי או החזר כספי</a> אפשר לפנות
+          בכל אחד מהערוצים האלה. נשיב תוך זמן סביר, ובכל מקרה לא יאוחר מ-14 ימי עסקים.
+        </p>
+      </div>
+
       <form
         id="contact-form"
         class="form card fade-up"
@@ -105,6 +121,13 @@ const description =
   .form-status.ok { color: var(--sc-pos); }
   .form-status.err { color: #d3455b; }
   button[disabled] { opacity: .6; cursor: progress; }
+  .biz { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  .biz li { display: grid; grid-template-columns: 8.5rem 1fr; gap: 10px; align-items: baseline; font-size: 15.5px; }
+  .biz b { color: var(--sc-muted); font-weight: 700; }
+  .biz span { color: var(--sc-ink); }
+  .biz a { color: var(--sc-accent-text); }
+  .biz-note { margin-block-start: 16px; font-size: 14.5px; line-height: 1.65; color: var(--sc-muted); }
+  @media (max-width: 520px) { .biz li { grid-template-columns: 1fr; gap: 2px; } }
 </style>
 
 <script>

@@ -71,6 +71,16 @@ const year = new Date().getFullYear();
         <span aria-hidden="true">&amp;</span>
         <a href="/experts/lior-zabari">ליאור צברי</a>
       </p>
+      <p class="biz-line">
+        ליאור צברי בע"מ · ח.פ. <span class="num">516967395</span> ·
+        אהבת ציון 2, אבן יהודה, ישראל ·
+        <a class="num" dir="ltr" href="tel:+972528775515">052-8775515</a> ·
+        <a dir="ltr" href="mailto:lior+scayla@mrmake.co.il">lior+scayla@mrmake.co.il</a>
+      </p>
+      <p class="cancel-line">
+        <a class="cancel-link" href="/terms#8">ביטול עסקה והחזר כספי</a>
+        <span>ניתן לבטל בכל עת · בטלפון, בדואר אלקטרוני, בדואר רשום או מתוך החשבון</span>
+      </p>
       <p class="copy">© <span class="num">{year}</span> Scayla · כל הזכויות שמורות</p>
       <a class="domain num" href="https://scayla.co.il">scayla.co.il</a>
     </div>
@@ -134,4 +144,16 @@ const year = new Date().getFullYear();
     .bottom { flex-direction: column; text-align: center; gap: 10px; }
     .credit { flex: none; text-align: center; }
   }
+  .biz-line {
+    margin: 0 0 8px; font-size: 13.5px; line-height: 1.7; color: var(--sc-muted);
+  }
+  .biz-line a { color: var(--sc-muted); text-decoration: underline; }
+  .biz-line a:hover { color: var(--sc-accent-text); }
+  /* קישור הביטול מובלט בכוונה · 14ט(ב) דורש "באופן מובלט וברור" */
+  .cancel-line { margin: 0 0 10px; font-size: 13.5px; line-height: 1.7; }
+  .cancel-link {
+    font-weight: 800; color: var(--sc-accent-text); text-decoration: underline;
+    text-underline-offset: 3px; margin-inline-end: 8px;
+  }
+  .cancel-line span { color: var(--sc-muted); }
 </style>
