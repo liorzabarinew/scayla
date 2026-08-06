@@ -31,7 +31,9 @@ Welcome to Scayla. These terms of service form a binding legal agreement between
 
 3.2. By installing and connecting, you declare that you own or are authorised to manage the store you connect (a Shopify store or a WordPress / WooCommerce site) and the Google accounts (Search Console, Analytics, Business Profile) you connect, and that you may accept these terms on behalf of the business.
 
-3.3. You are responsible for safeguarding your access credentials and reporting any unauthorised use.
+3.3. **Age.** Use of and purchase from the service are permitted to adults aged 18 or over, acting on behalf of a business. Purchases may not be made by anyone under 18.
+
+3.4. You are responsible for safeguarding your access credentials and reporting any unauthorised use.
 
 ## 4. Account, installation and connections
 4.1. **Installation on Shopify.** Installation is performed through the Shopify App Store and is also subject to Shopify's terms.
@@ -42,7 +44,14 @@ Welcome to Scayla. These terms of service form a binding legal agreement between
 
 4.4. Connecting Google sources is done through Google OAuth; you choose the account and approve read-only scopes. Any connection can be disconnected at any time.
 
-4.5. You must provide accurate and current details and keep them updated.
+4.5. **When and how the service is provided.** The service is digital and delivered entirely online. There is no physical shipment and no delivery charge.
+
+- **Account activation:** immediate on completing signup and payment approval.
+- **Connecting the store:** under your control. On Shopify by installing the app, on WordPress by installing the plugin and pairing the site. Both take minutes.
+- **First outputs:** the initial scan and diagnosis are normally produced within 24 hours of connection. AI-visibility measurement runs weekly, and the first result is shown within a week of connection.
+- **Support:** through the channels in section 21, Sunday to Thursday.
+
+4.6. You must provide accurate and current details and keep them updated.
 
 ## 5. Privacy and data protection
 5.1. Use of the service is also subject to the separate privacy policy, which forms an integral part of this agreement and details the types of data collected, its use, storage and sharing, and your rights.
