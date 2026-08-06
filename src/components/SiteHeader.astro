@@ -219,19 +219,25 @@ const current = Astro.url.pathname.replace(/\/$/, '') || '/';
   /* sticky-header CTA pair · install (gold) + demo (purple), same size, side by side */
   .nav-cta-group { display: inline-flex; align-items: center; gap: 10px; }
   /* WordPress · כפתור-מסגרת שקט ליד ה-CTA הראשי, כדי שלא יתחרה בשופיפיי.
-     תג "בקרוב" נאמר במפורש כי התוסף עוד לא בספריית wordpress.org. */
+     תג "בקרוב" נאמר במפורש כי התוסף עוד לא בספריית wordpress.org.
+     התג צף מעל הפינה ולא בתוך הכפתור · inline הרחיב את הכפתור יתר על המידה. */
   .btn-wp-nav {
-    display: inline-flex; align-items: center; gap: 7px;
+    position: relative;
     background: var(--sc-card); color: var(--sc-ink);
     border: 1.5px solid var(--sc-hair);
   }
   .btn-wp-nav:hover { border-color: var(--sc-accent); color: var(--sc-accent-text); }
   .btn-wp-nav .soon {
-    font-size: 10.5px; font-weight: 800; line-height: 1;
-    padding: 3px 7px; border-radius: 999px;
-    background: color-mix(in oklch, var(--sc-lav) 24%, transparent);
-    color: var(--sc-accent-text); white-space: nowrap;
+    position: absolute;
+    inset-block-start: -7px; inset-inline-end: 10px;
+    font-size: 10px; font-weight: 800; line-height: 1; letter-spacing: .02em;
+    padding: 3.5px 8px; border-radius: 999px;
+    background: var(--sc-accent); color: #fff;
+    box-shadow: 0 2px 8px -2px color-mix(in oklch, var(--sc-accent) 60%, transparent);
+    white-space: nowrap; pointer-events: none;
   }
+  /* התג בולט מעל גבול הכפתור · לוודא שההדר לא גוזר אותו */
+  .nav-cta-group, .nav { overflow: visible; }
   .menu-btn { display: none; }
   .mega-mlabel { display: none; }
   .ov-cta { display: none; }
