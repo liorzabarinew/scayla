@@ -30,6 +30,11 @@ const { ctaHref = SHOPIFY_APP_URL, ctaLabel = 'התחילו ב-Shopify' } = Astr
     </button>
   </div>
 
+  <p class="vat-note">
+    המחירים נקובים בדולר ארה"ב ואינם כוללים מע"מ · לעוסק ישראלי יתווסף מע"מ כדין.
+    השירות מיועד לעסקים בלבד. <a href="/terms#8">פירוט מלא בתנאי השימוש</a>.
+  </p>
+
   <div class="pgrid">
     {tiers.map((t) => (
       <article class:list={['pl', { pop: t.popular }]}>
@@ -81,6 +86,12 @@ const { ctaHref = SHOPIFY_APP_URL, ctaLabel = 'התחילו ב-Shopify' } = Astr
 </div>
 
 <style>
+  .vat-note {
+    max-inline-size: 62ch; margin: 14px auto 26px; text-align: center;
+    font-size: 14.5px; line-height: 1.6; font-weight: 600; color: var(--sc-muted);
+  }
+  .vat-note a { color: var(--sc-accent-text); }
+
   /* ── Monthly / annual toggle ── */
   .billing-toggle {
     display: flex; inline-size: fit-content; gap: 4px; margin: 0 auto 26px; padding: 4px;
