@@ -702,57 +702,9 @@
     "intent": "commercial"
   },
   {
-    "cluster": "geo-ai",
-    "keyword": "איך לשכנע בהשקעה ב-AEO",
-    "title": "תבנית הפיץ׳-דק ל-AEO: איך להציג למנכ״ל את ה-ROI ולהשיג תקציב לאופטימיזציית AI",
-    "intent": "transactional"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "בנצ'מרקינג נראות בבינה מלאכותית",
-    "title": "ציון נראות AEO: איך למדוד ולקבוע בנצ'מרק לחשיפת המותג שלכם ב-Gemini ו-Claude",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "אופטימיזציית מלאי לוקאלי AEO",
-    "title": "בלאק פריידי 2026: המדריך לסנכרון מלאי פיזי עם AEO כדי להופיע בתשובות \"זמין לידך\"",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "פרטיות גולשים ו-AEO שופיפיי",
-    "title": "לא רק GDPR: איך לנהל פרטיות משתמשים בעידן ה-AEO וצ'אטבוטים בחנות השופיפיי",
-    "intent": "informational"
-  },
-  {
     "cluster": "seo-shopify",
     "keyword": "בלאק פריידי SEO שופיפיי: לוח זמנים",
     "title": "המדריך האולטימטיבי להכנת החנות למבצעי נובמבר 2026",
-    "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "אפליקציות باندלים (Bundles) לשופיפיי",
-    "title": "איך לבחור אפליקציה שלא תהרוס את ה-SEO (ותכפיל מכירות)",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "ניהול 301 שופיפיי",
-    "title": "מתי להשתמש בכלי המובנה, באפליקציה, או ב-Bulk Import?",
-    "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "תבניות שופיפיי עם SEO גרוע",
-    "title": "5 סימני אזהרה שחייבים לבדוק לפני שקונים תבנית ב-2026",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "Shopify Markets Pro",
-    "title": "מדריך SEO מתקדם: איך באמת לכבוש שווקים בינלאומיים?",
     "intent": "informational"
   },
   {
@@ -762,57 +714,129 @@
     "intent": "commercial"
   },
   {
-    "cluster": "ecommerce",
-    "keyword": "אסטרטגיית מבצעים בלאק פריידי",
-    "title": "Offer Stacking: שיטת המבצעים לנובמבר שתגדיל רווח, לא רק מכירות",
-    "intent": "informational"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "איך להשיג ביקורות על מוצרים",
-    "title": "מ\"אין תגובות\" לנכס: 7 טקטיקות אורגניות להשגת ביקורות מלקוחות ישראלים",
-    "intent": "informational"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "שיווק מוצרים דיגיטליים",
-    "title": "מכרתם קורס בשופיפיי, מה עכשיו? המדריך לשיווק אורגני של מוצרים דיגיטליים",
-    "intent": "informational"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "שיתופי פעולה בין מותגים",
-    "title": "קולאב מנצח: המדריך למציאת וניהול שיתופי פעולה בין מותגי איקומרס בישראל",
-    "intent": "informational"
-  },
-  {
     "cluster": "guides",
     "keyword": "תהליך עבודה תוכן בלאק פריידי",
     "title": "המדריך המעשי: תהליך עבודה מלא ליצירת וקידום תוכן לבלאק פריידי 2026",
     "intent": "informational"
   },
   {
-    "cluster": "guides",
-    "keyword": "עלות אפליקציות שופיפיי",
-    "title": "כמה באמת עולות אפליקציות שופיפיי? מדריך לחישוב התקציב החודשי הריאלי שלכם",
+    "cluster": "geo-ai",
+    "keyword": "אופטימיזציה לפרפלקסיטי",
+    "title": "פרפלקסיטי AEO: המדריך להפיכת חנות השופיפיי שלכם למקור שה-AI מצטט.",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "Semrush AEO מול AirOps",
+    "title": "Semrush AEO מול AirOps: איזו פלטפורמת ניטור AI מתאימה לחנות השופיפיי שלכם ב-2026?",
     "intent": "commercial"
   },
   {
-    "cluster": "guides",
-    "keyword": "תהליך השקת מוצר חדש שופיפיי",
-    "title": "צ'קליסט השקה: תהליך עבודה מלא ל-SEO ושיווק של קולקציה חדשה בשופיפיי",
+    "cluster": "geo-ai",
+    "keyword": "חוזה שירותי AEO",
+    "title": "לא רק מחיר: איך לקרוא חוזה AEO ועל אילו סעיפי SLA ומדדי הצלחה להתעקש.",
+    "intent": "transactional"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "סכמת מבצעים בלאק פריידי",
+    "title": "בלאק פריידי 2026: כך תבנו נתוני מבצעים (Offer Schema) ש-AI יבחר להמליץ עליהם.",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "ביקורות גוגל ודירוג AI",
+    "title": "מהביקורת בגוגל לציטוט ב-Gemini: איך פרופיל העסק שלכם (GBP) משפיע על AEO.",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "אופטימיזציה ל-AI Overviews שופיפיי",
+    "title": "איך להכניס את דפי המוצר שלכם ל-AI Overviews של גוגל: המדריך המעשי",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "שגיאות 404 בשופיפיי",
+    "title": "טיפול בשגיאות 404 בשופיפיי: מתי לתקן עם 301, מתי להתעלם ואיך להפוך אותן להזדמנות",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "עדכון מוצרים לבלאק פריידי",
+    "title": "מדריך Bulk Edit: איך לעדכן מאות מוצרים למבצעי נובמבר בלי להרוס את ה-SEO",
+    "intent": "transactional"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "העברת אתר ווקומרס לשופיפיי",
+    "title": "מדריך הגירה מווקומרס לשופיפיי: כך תשמרו על הדירוגים ועל כתובות URL בעברית",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "אפליקציות SEO לשופיפיי השוואה",
+    "title": "SEO מובנה בשופיפיי או אפליקציה? מתי באמת צריך לשלם (ולמה זה משתלם)",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "הקמת תוכנית הפניות שופיפיי",
+    "title": "מפה לאוזן דיגיטלי: איך להקים תוכנית הפניות (Referral) שתהפוך לקוחות לשגרירים",
+    "intent": "transactional"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שופיפיי פלוס עלות ומאפיינים",
+    "title": "שופיפיי פלוס או Advanced? המדריך המלא למתי משדרגים (ומה העלות האמיתית בישראל)",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "חברות שליחויות לאיקומרס השוואה",
+    "title": "צ'יטה דליברי מול HFD: איזו חברת שליחויות תגדיל המרות ותפחית נטישות בחנות שלך?",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שיווק אורגני בוואטסאפ",
+    "title": "מעבר לכפתור הצף: 5 אסטרטגיות שיווק אורגני בוואטסאפ שישראלים לא יסננו",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שיווק מוצרים בהתאמה אישית",
+    "title": "לא רק וריאנטים: אסטרטגיית תוכן ושיווק למכירת מוצרים בהתאמה אישית בשופיפיי.",
     "intent": "informational"
   },
   {
     "cluster": "guides",
-    "keyword": "שופיפיי פלואו מול מייק",
-    "title": "Shopify Flow או Make/Zapier: מתי, למה ואיך לבחור כלי אוטומציה לחנות שלכם",
+    "keyword": "מילות מפתח כלי ניהול פרויקטים",
+    "title": "מ-Asana עד Notion: המדריך לבחירת והטמעת כלי ניהול פרויקטים לחנות שופיפיי",
     "intent": "commercial"
   },
   {
     "cluster": "guides",
-    "keyword": "מעבר מאטסי לשופיפיי",
-    "title": "המדריך המלא למעבר מאטסי (Etsy) לשופיפיי: צ'קליסט SEO, העברת מוצרים ושימור לקוחות",
-    "intent": "transactional"
+    "keyword": "חיבור GA4 לשופיפיי מדריך",
+    "title": "המדריך המעשי 2026: איך לחבר נכון GA4 לשופיפיי ולתקן פערים בנתונים",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "שופיפיי A/B טסטים לפני החגים",
+    "title": "הכנה לנובמבר: המדריך המעשי ל-A/B טסטים בשופיפיי שיכפילו את המכירות בחגים",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "כלי AI לסרטוני מוצר",
+    "title": "מעבר לתמונות: הכלים והתהליך ליצירת סרטוני מוצר מנצחים עם AI לחנות השופיפיי",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "עלות נסתרת אפליקציות שופיפיי",
+    "title": "מלכודת ה\"חינם\": איך לחשב את העלות האמיתית של אפליקציות שופיפיי (TCO) ולהימנע מהפתעות",
+    "intent": "informational"
   }
 ]
