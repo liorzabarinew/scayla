@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { experts } from '../data/experts';
+import { DEMO_URL } from '../data/pricing';
 
 const title = 'קידום אתרי שופיפיי · מדריך SEO אורגני מלא לחנות Shopify · Scayla';
 const description =
@@ -177,7 +178,7 @@ const howToLd = {
 </div>
 <div class="cta-pair" style="margin-block-start:28px">
   <a class="btn btn-1" href="https://apps.shopify.com/scayla">התקינו ב-Shopify<small>14 יום חינם · ללא כרטיס אשראי</small></a>
-  <a class="btn btn-2" href="https://calendly.com/lior-mrmake/30min">קבעו דמו</a>
+  <a class="btn btn-2" href={DEMO_URL}>קבעו דמו</a>
 </div>
 <p class="fineprint">אבחון חינם · חיוב דרך Shopify · ביטול בכל עת</p>
 </div></section>
@@ -599,7 +600,7 @@ const howToLd = {
 <p>התקינו את Scayla, קבלו אבחון חינם, ותראו בדיוק אילו תיקונים ממתינים לכם · עוד היום.</p>
 <div class="cta-pair">
 <a class="btn btn-1" href="https://apps.shopify.com/scayla">התקינו ב-Shopify<small>14 יום חינם · ללא כרטיס אשראי</small></a>
-<a class="btn btn-2" href="https://calendly.com/lior-mrmake/30min">קבעו דמו</a>
+<a class="btn btn-2" href={DEMO_URL}>קבעו דמו</a>
 </div></div></section>
 
 <button class="toc-fab" id="tocFab" type="button" aria-expanded="false" aria-controls="toc"><b id="fabNum">01</b><span id="fabTxt">מה זה קידום אורגני</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></button>

@@ -27,7 +27,7 @@ export const annualTotal = (price: number) => Math.round(price * 12 * (1 - ANNUA
 // The "קבעו דמו" destination · Lior's Calendly. Loaded site-wide (BaseLayout):
 // clicking any demo CTA opens the Calendly popup; if the widget script hasn't
 // loaded yet it falls back to opening this URL directly. One knob for every CTA.
-export const DEMO_URL = 'https://calendly.com/lior-mrmake/30min';
+export const DEMO_URL = 'https://calendly.com/lior-mrmake/new-meeting';
 
 export interface TierAxis {
   label: string;
