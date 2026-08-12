@@ -750,58 +750,10 @@
     "intent": "informational"
   },
   {
-    "cluster": "geo-ai",
-    "keyword": "חסימת סורקי AI שופיפיי",
-    "title": "Google-Extended: לחסום או לאפשר? המדריך האסטרטגי לחנויות שופיפיי",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "אופטימיזציה לסרטונים עבור AI",
-    "title": "מעבר לתמונה: איך להפוך סרטוני מוצר למקור שה-AI ממליץ עליו",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "אפליקציות ביקורות AEO שופיפיי",
-    "title": "Yotpo מול Judge.me מול Loox: איזו אפליקציית ביקורות תכניס אתכם לתשובות AI?",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "ניהול מלאי אזל בלאק פריידי AEO",
-    "title": "בלאק פריידי: איך לגרום ל-AI להמליץ על חלופה (או הרשמה) כשהמוצר אזל מהמלאי",
-    "intent": "transactional"
-  },
-  {
     "cluster": "seo-shopify",
     "keyword": "שופיפיי מרקטס פרו SEO",
     "title": "שופיפיי מרקטס פרו מול מרקטס: מה ההבדל ב-SEO ומי באמת צריך לשדרג?",
     "intent": "commercial"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "שופיפיי מטאפילדים לקידום",
-    "title": "מדריך מטאפילדים ו-SEO: כך תוסיפו תוכן ייחודי שיקפיץ אתכם בגוגל",
-    "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "הפניות 301 מבצעי נובמבר שופיפיי",
-    "title": "מבצעי נובמבר: המדריך לשימוש נכון בהפניות 301 לקמפיינים עונתיים",
-    "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "כמה עולה קידום חנות שופיפיי",
-    "title": "כמה עולה קידום אורגני לחנות שופיפיי ב-2026? (פירוט עלויות מלא)",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "בחירת מקדם אתרים לשופיפיי",
-    "title": "איך לבחור מקדם אתרים לחנות השופיפיי שלך? (שאלות חובה ודגלים אדומים)",
-    "intent": "transactional"
   },
   {
     "cluster": "ecommerce",
@@ -810,57 +762,99 @@
     "intent": "informational"
   },
   {
-    "cluster": "ecommerce",
-    "keyword": "אפליקציות SMS לשופיפיי",
-    "title": "Klaviyo SMS מול Attentive בישראל: איזו פלטפורמת SMS תביא יותר מכירות?",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "מעבר מאטסי לשופיפיי",
-    "title": "צ'קליסט המעבר המלא מ-Etsy לשופיפיי (בלי לאבד את הלקוחות שבנית)",
-    "intent": "transactional"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "אסטרטגיה אחרי נובמבר",
-    "title": "הסייל נגמר, השיווק מתחיל: 7 דרכים להפוך קוני נובמבר ללקוחות חוזרים",
-    "intent": "informational"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "אפליקציות סקרים לשופיפיי",
-    "title": "מעבר לביקורת: 5 אפליקציות סקרים שיעזרו לך להכפיל את ההמרות",
-    "intent": "commercial"
-  },
-  {
     "cluster": "guides",
     "keyword": "ניתוח מתחרים שופיפיי",
     "title": "ריגול עסקי לחנות שופיפיי: תהליך העבודה המלא לניתוח מתחרים (עם כלים חינמיים ובתשלום)",
     "intent": "informational"
   },
   {
-    "cluster": "guides",
-    "keyword": "מחקר מילות מפתח בלאק פריידי",
-    "title": "הכנה לנובמבר 2026: מדריך מעשי למחקר ומיפוי מילות מפתח עונתיות לחנות שופיפיי",
-    "intent": "informational"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "Ahrefs מול Semrush לאיקומרס",
-    "title": "Ahrefs מול Semrush: איזה כלי נותן את ה-ROI הגבוה ביותר לחנות שופיפיי ישראלית?",
+    "cluster": "geo-ai",
+    "keyword": "טכניקות שכנוע לבינה מלאכותית",
+    "title": "איך לגרום ל-AI להעדיף את המוצר שלכם",
     "intent": "commercial"
   },
   {
-    "cluster": "guides",
-    "keyword": "שופיפיי לוקר סטודיו",
-    "title": "מעבר לדשבורד של שופיפיי: מדריך להקמת מערכת דיווחים חכמה עם Looker Studio (גוגל דאטה סטודיו)",
+    "cluster": "geo-ai",
+    "keyword": "Perplexity Pages לשופיפיי",
+    "title": "מדריך לשימוש ב-Perplexity Pages לשיווק חנות שופיפיי",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "מדידת נראות AI בחינם",
+    "title": "כלים חינמיים למדידת נראות החנות שלכם במנועי AI",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "בלאק פריידי 2026 AEO",
+    "title": "איך להשתמש ב-AI לחזות ביקוש ולנהל מלאי בנובמבר",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "סכמת מתכונים שופיפיי",
+    "title": "איך להפוך מתכונים למקור תנועה ומכירות עם סכמה ו-AI",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "קידום בלוג בשופיפיי",
+    "title": "המדריך ל-SEO בבלוג של Shopify: מטראפיק למכירות",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "אפליקציות קישורים פנימיים שופיפיי",
+    "title": "5 אפליקציות אוטומטיות (והשוואת עלויות) ל-2026",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "הפניות 301, 302 או 410",
+    "title": "מתי להשתמש בכל הפנייה בשופיפיי (מדריך טכני)",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "וידאו SEO בדף מוצר",
+    "title": "איך להטמיע סכמת VideoObject ולהופיע בתוצאות וידאו",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "כתיבת בריף SEO לחנות שופיפיי",
+    "title": "תבנית מוכנה להורדה ודוגמאות לבחירת ספק",
     "intent": "transactional"
   },
   {
     "cluster": "guides",
-    "keyword": "תהליך עבודה תוכן לאיקומרס",
-    "title": "מחיפוש מילים לבלוג שמוכר: תהליך עבודה להקמת מערך תוכן SEO לחנות שופיפיי",
+    "keyword": "אוטומציה בלאק פריידי שופיפיי",
+    "title": "מדריך Shopify Flow להכנת החנות לחגי נובמבר 2026",
+    "intent": "transactional"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "כלי חיזוי מכירות AI",
+    "title": "כלים מומלצים לחיזוי מלאי וביקושים בחנות שופיפיי",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "עלות תפעול חנות שופיפיי",
+    "title": "כמה באמת עולה להחזיק חנות שופיפיי בישראל ב-2026",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "אלטרנטיבות לגוגל אנליטיקס",
+    "title": "5 כלים מומלצים לניתוח דאטה בחנות שופיפיי (שאינם GA4)",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "ניהול פיד מוצרים בגוגל שופינג",
+    "title": "מדריך: תהליך עבודה לאופטימיזציה של פיד המוצרים ב-Merchant Center",
     "intent": "informational"
   }
 ]
