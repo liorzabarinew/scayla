@@ -774,58 +774,10 @@
     "intent": "commercial"
   },
   {
-    "cluster": "geo-ai",
-    "keyword": "Perplexity Pages לשופיפיי",
-    "title": "מדריך לשימוש ב-Perplexity Pages לשיווק חנות שופיפיי",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "מדידת נראות AI בחינם",
-    "title": "כלים חינמיים למדידת נראות החנות שלכם במנועי AI",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "בלאק פריידי 2026 AEO",
-    "title": "איך להשתמש ב-AI לחזות ביקוש ולנהל מלאי בנובמבר",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "סכמת מתכונים שופיפיי",
-    "title": "איך להפוך מתכונים למקור תנועה ומכירות עם סכמה ו-AI",
-    "intent": "informational"
-  },
-  {
     "cluster": "seo-shopify",
     "keyword": "קידום בלוג בשופיפיי",
     "title": "המדריך ל-SEO בבלוג של Shopify: מטראפיק למכירות",
     "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "אפליקציות קישורים פנימיים שופיפיי",
-    "title": "5 אפליקציות אוטומטיות (והשוואת עלויות) ל-2026",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "הפניות 301, 302 או 410",
-    "title": "מתי להשתמש בכל הפנייה בשופיפיי (מדריך טכני)",
-    "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "וידאו SEO בדף מוצר",
-    "title": "איך להטמיע סכמת VideoObject ולהופיע בתוצאות וידאו",
-    "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "כתיבת בריף SEO לחנות שופיפיי",
-    "title": "תבנית מוכנה להורדה ודוגמאות לבחירת ספק",
-    "intent": "transactional"
   },
   {
     "cluster": "guides",
@@ -834,27 +786,123 @@
     "intent": "transactional"
   },
   {
-    "cluster": "guides",
-    "keyword": "כלי חיזוי מכירות AI",
-    "title": "כלים מומלצים לחיזוי מלאי וביקושים בחנות שופיפיי",
+    "cluster": "geo-ai",
+    "keyword": "אופטימיזציית AEO לוריאנטים",
+    "title": "AEO לווריאנטים: כך AI יבין וימליץ על הצבעים והמידות הנכונים בחנות שלכם",
     "intent": "commercial"
   },
   {
+    "cluster": "geo-ai",
+    "keyword": "מדידת AEO ב-GA4",
+    "title": "מדידת AEO ב-GA4: המדריך להגדרת דוחות וערוצים למעקב אחרי תנועה מ-AI",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "אופטימיזציה פיד מוצרים בלאק פריידי",
+    "title": "בלאק פריידי 2026: מדריך לאופטימיזציית פיד מוצרים (GMC) עבור AI Overviews",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "ביקורת מוניטין במנועי AI",
+    "title": "ביקורת מוניטין ב-AI: מדריך לאיתור ותיקון מידע שגוי על המותג שלכם ב-4 מנועי תשובות",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "ביקורות גולשים לאופטימיזציית AI",
+    "title": "מעבר ל-5 כוכבים: איך להפוך ביקורות גולשים בשופיפיי למקור ציטוטים ב-AI",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "אפליקציות שמאטות אתר שופיפיי",
+    "title": "ניתוח מהירות: אילו אפליקציות באמת מאטות את החנות ואיך לבדוק?",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "ניהול הפניות בלאק פריידי",
+    "title": "בלאק פריידי 2026: אסטרטגיית ה-301 שתמחזר את כוח ה-SEO ממבצעי העבר.",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "כמה עולה תיקון מהירות אתר שופיפיי",
+    "title": "כמה עולה לתקן את מהירות החנות? פירוט עלויות לתיקוני Core Web Vitals.",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "ביקורת סכמה שופיפיי",
+    "title": "הסכמות שלך שבורות? המדריך המעשי לביקורת ותיקון Structured Data.",
+    "intent": "transactional"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "אפליקציות הפניות 301 שופיפיי",
+    "title": "שופיפיי מול אפליקציה: מתי ולמה לשדרג את ניהול ההפניות המובנה.",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שיווק בוואטסאפ שופיפיי מול קלאביו",
+    "title": "שופיפיי וואטסאפ המובנה מול Klaviyo: במה לבחור לשיווק בישראל?",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "משפך שיווק אורגני בלאק פריידי",
+    "title": "איך להפוך גולשים מזדמנים לקונים של בלאק פריידי (בלי פרסום ממומן)",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "עלות תוכן לחנות שופיפיי",
+    "title": "תמחור תוכן לאיקומרס ישראלי: כמה באמת עולה פוסט, מייל ודף קטגוריה?",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שימור לקוחות ללא אפליקציה",
+    "title": "5 דרכים לבנות נאמנות לקוחות בשופיפיי גם בלי מועדון נקודות",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "איך להכניס מוצר למדריך מתנות",
+    "title": "המדריך המלא: כך תכניסו את מוצר השופיפיי שלכם למדורי מתנות וסקירות",
+    "intent": "transactional"
+  },
+  {
     "cluster": "guides",
-    "keyword": "עלות תפעול חנות שופיפיי",
-    "title": "כמה באמת עולה להחזיק חנות שופיפיי בישראל ב-2026",
+    "keyword": "תהליך עבודה שופיפיי סיידקיק",
+    "title": "מפקודות לרווחים: תהליך עבודה יומי עם Shopify Sidekick לניהול החנות",
     "intent": "informational"
   },
   {
     "cluster": "guides",
-    "keyword": "אלטרנטיבות לגוגל אנליטיקס",
-    "title": "5 כלים מומלצים לניתוח דאטה בחנות שופיפיי (שאינם GA4)",
+    "keyword": "שירות לקוחות שופיפיי כלים",
+    "title": "Gorgias מול Zendesk מול Re:amaze: בחירת מערכת שירות לקוחות לשופיפיי בישראל",
     "intent": "commercial"
   },
   {
     "cluster": "guides",
-    "keyword": "ניהול פיד מוצרים בגוגל שופינג",
-    "title": "מדריך: תהליך עבודה לאופטימיזציה של פיד המוצרים ב-Merchant Center",
+    "keyword": "ניהול פידים שופיפיי",
+    "title": "המדריך המעשי: איך לסנכרן פיד מוצרים מ-Shopify לגוגל, פייסבוק וטיקטוק",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "כמה עולה פיתוח לשופיפיי",
+    "title": "כמה עולה לפתח פיצ'ר או אפליקציה לשופיפיי ב-2026? (פירוט עלויות מלא)",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "מה עושים אחרי בלאק פריידי",
+    "title": "המדריך ליום שאחרי: תהליך עבודה לניתוח ומינוף דאטה אחרי חגי נובמבר",
     "intent": "informational"
   }
 ]
