@@ -792,57 +792,9 @@
     "intent": "commercial"
   },
   {
-    "cluster": "geo-ai",
-    "keyword": "מדידת AEO ב-GA4",
-    "title": "מדידת AEO ב-GA4: המדריך להגדרת דוחות וערוצים למעקב אחרי תנועה מ-AI",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "אופטימיזציה פיד מוצרים בלאק פריידי",
-    "title": "בלאק פריידי 2026: מדריך לאופטימיזציית פיד מוצרים (GMC) עבור AI Overviews",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "ביקורת מוניטין במנועי AI",
-    "title": "ביקורת מוניטין ב-AI: מדריך לאיתור ותיקון מידע שגוי על המותג שלכם ב-4 מנועי תשובות",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "ביקורות גולשים לאופטימיזציית AI",
-    "title": "מעבר ל-5 כוכבים: איך להפוך ביקורות גולשים בשופיפיי למקור ציטוטים ב-AI",
-    "intent": "informational"
-  },
-  {
     "cluster": "seo-shopify",
     "keyword": "אפליקציות שמאטות אתר שופיפיי",
     "title": "ניתוח מהירות: אילו אפליקציות באמת מאטות את החנות ואיך לבדוק?",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "ניהול הפניות בלאק פריידי",
-    "title": "בלאק פריידי 2026: אסטרטגיית ה-301 שתמחזר את כוח ה-SEO ממבצעי העבר.",
-    "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "כמה עולה תיקון מהירות אתר שופיפיי",
-    "title": "כמה עולה לתקן את מהירות החנות? פירוט עלויות לתיקוני Core Web Vitals.",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "ביקורת סכמה שופיפיי",
-    "title": "הסכמות שלך שבורות? המדריך המעשי לביקורת ותיקון Structured Data.",
-    "intent": "transactional"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "אפליקציות הפניות 301 שופיפיי",
-    "title": "שופיפיי מול אפליקציה: מתי ולמה לשדרג את ניהול ההפניות המובנה.",
     "intent": "commercial"
   },
   {
@@ -852,57 +804,123 @@
     "intent": "commercial"
   },
   {
-    "cluster": "ecommerce",
-    "keyword": "משפך שיווק אורגני בלאק פריידי",
-    "title": "איך להפוך גולשים מזדמנים לקונים של בלאק פריידי (בלי פרסום ממומן)",
-    "intent": "informational"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "עלות תוכן לחנות שופיפיי",
-    "title": "תמחור תוכן לאיקומרס ישראלי: כמה באמת עולה פוסט, מייל ודף קטגוריה?",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "שימור לקוחות ללא אפליקציה",
-    "title": "5 דרכים לבנות נאמנות לקוחות בשופיפיי גם בלי מועדון נקודות",
-    "intent": "informational"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "איך להכניס מוצר למדריך מתנות",
-    "title": "המדריך המלא: כך תכניסו את מוצר השופיפיי שלכם למדורי מתנות וסקירות",
-    "intent": "transactional"
-  },
-  {
     "cluster": "guides",
     "keyword": "תהליך עבודה שופיפיי סיידקיק",
     "title": "מפקודות לרווחים: תהליך עבודה יומי עם Shopify Sidekick לניהול החנות",
     "intent": "informational"
   },
   {
-    "cluster": "guides",
-    "keyword": "שירות לקוחות שופיפיי כלים",
-    "title": "Gorgias מול Zendesk מול Re:amaze: בחירת מערכת שירות לקוחות לשופיפיי בישראל",
+    "cluster": "geo-ai",
+    "keyword": "איך להעביר חנות מ-Wix ל-Shopify בלי לאבד דירוגים",
+    "title": "המדריך המלא ל-SEO, AEO וניתוב 301 ב-2026",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "מדידת נראות ב-AI Overviews",
+    "title": "איך יודעים אם החנות שלך מצוטטת (ומה לעשות אם לא)",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "חלופות ישראליות ל-Shopify Sidekick",
+    "title": "השוואת כלי AI אוטומטיים לאופטימיזציית AEO",
     "intent": "commercial"
   },
   {
-    "cluster": "guides",
-    "keyword": "ניהול פידים שופיפיי",
-    "title": "המדריך המעשי: איך לסנכרן פיד מוצרים מ-Shopify לגוגל, פייסבוק וטיקטוק",
+    "cluster": "geo-ai",
+    "keyword": "עלות הקמת תשתית AEO לשופיפיי",
+    "title": "כמה עולה להכין חנות לציטוט על ידי AI בישראל?",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "צ'קליסט AEO לבלאק פריידי 2026",
+    "title": "איך להכין פיד מוצרים ומבצעים ש-AI ימליץ עליו",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "קידום וידאו בדפי מוצר",
+    "title": "איך להשתמש בוידאו לשיפור SEO והמרות בשופיפיי",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "ביקורת 301 לחנות שופיפיי",
+    "title": "צ'קליסט לאיתור ותיקון הפניות שבורות ושרשראות",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "עלות קידום אורגני לשופיפיי",
+    "title": "כמה עולה שירות SEO לחנות איקומרס ב-2026?",
+    "intent": "transactional"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "דפים יתומים בשופיפיי",
+    "title": "איך למצוא ולתקן Orphan Pages לשיפור ה-SEO",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "SEO אחרי מבצעי נובמבר",
+    "title": "המדריך המלא: מה לעשות עם דפי בלאק פריידי שפג תוקפם",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שיווק חוזר לאיקומרס",
+    "title": "רימרקטינג אורגני: כך תהפכו מבקרים חד-פעמיים ללקוחות חוזרים בלי PPC",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "ניהול ציפיות משלוחים נובמבר",
+    "title": "\"איפה החבילה שלי?\": אסטרטגיית התוכן שתציל אתכם בבלאק פריידי 2026",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "מרכז לוגיסטי לשופיפיי",
+    "title": "פולפילמנט כמנוע שיווקי: איך לבחור חברת לוגיסטיקה שתגדיל לכם את המכירות",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "חלופות ישראליות לרינג",
+    "title": "רינג או אפ",
     "intent": "informational"
   },
   {
     "cluster": "guides",
-    "keyword": "כמה עולה פיתוח לשופיפיי",
-    "title": "כמה עולה לפתח פיצ'ר או אפליקציה לשופיפיי ב-2026? (פירוט עלויות מלא)",
+    "keyword": "עלות חנות שופיפיי 2026",
+    "title": "כמה באמת עולה להחזיק חנות בישראל? (תקציב מלא לדוגמה)",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "כלי אנליטיקה לשופיפיי",
+    "title": "Triple Whale מול Lifetimely מול Polar: השוואת BI לחנויות בצמיחה",
     "intent": "commercial"
   },
   {
     "cluster": "guides",
-    "keyword": "מה עושים אחרי בלאק פריידי",
-    "title": "המדריך ליום שאחרי: תהליך עבודה לניתוח ומינוף דאטה אחרי חגי נובמבר",
+    "keyword": "מעבר מאטסי לשופיפיי",
+    "title": "מדריך SEO וכלים להעברת החנות בלי לאבד לקוחות",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "ניהול קמפיין בלאק פריידי",
+    "title": "תהליך עבודה ותבנית Asana מוכנה להעתקה לחנות שופיפיי",
+    "intent": "transactional"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "ניתוח ביקורות עם AI",
+    "title": "מדריך: איך לחבר את Shopify ל-ChatGPT לניתוח סנטימנט לקוחות",
     "intent": "informational"
   }
 ]
