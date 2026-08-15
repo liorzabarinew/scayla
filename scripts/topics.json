@@ -816,57 +816,9 @@
     "intent": "informational"
   },
   {
-    "cluster": "geo-ai",
-    "keyword": "מדידת נראות ב-AI Overviews",
-    "title": "איך יודעים אם החנות שלך מצוטטת (ומה לעשות אם לא)",
-    "intent": "informational"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "חלופות ישראליות ל-Shopify Sidekick",
-    "title": "השוואת כלי AI אוטומטיים לאופטימיזציית AEO",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "עלות הקמת תשתית AEO לשופיפיי",
-    "title": "כמה עולה להכין חנות לציטוט על ידי AI בישראל?",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "צ'קליסט AEO לבלאק פריידי 2026",
-    "title": "איך להכין פיד מוצרים ומבצעים ש-AI ימליץ עליו",
-    "intent": "informational"
-  },
-  {
     "cluster": "seo-shopify",
     "keyword": "קידום וידאו בדפי מוצר",
     "title": "איך להשתמש בוידאו לשיפור SEO והמרות בשופיפיי",
-    "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "ביקורת 301 לחנות שופיפיי",
-    "title": "צ'קליסט לאיתור ותיקון הפניות שבורות ושרשראות",
-    "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "עלות קידום אורגני לשופיפיי",
-    "title": "כמה עולה שירות SEO לחנות איקומרס ב-2026?",
-    "intent": "transactional"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "דפים יתומים בשופיפיי",
-    "title": "איך למצוא ולתקן Orphan Pages לשיפור ה-SEO",
-    "intent": "informational"
-  },
-  {
-    "cluster": "seo-shopify",
-    "keyword": "SEO אחרי מבצעי נובמבר",
-    "title": "המדריך המלא: מה לעשות עם דפי בלאק פריידי שפג תוקפם",
     "intent": "informational"
   },
   {
@@ -876,51 +828,123 @@
     "intent": "informational"
   },
   {
-    "cluster": "ecommerce",
-    "keyword": "ניהול ציפיות משלוחים נובמבר",
-    "title": "\"איפה החבילה שלי?\": אסטרטגיית התוכן שתציל אתכם בבלאק פריידי 2026",
-    "intent": "informational"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "מרכז לוגיסטי לשופיפיי",
-    "title": "פולפילמנט כמנוע שיווקי: איך לבחור חברת לוגיסטיקה שתגדיל לכם את המכירות",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "חלופות ישראליות לרינג",
-    "title": "רינג או אפ",
-    "intent": "informational"
-  },
-  {
     "cluster": "guides",
     "keyword": "עלות חנות שופיפיי 2026",
     "title": "כמה באמת עולה להחזיק חנות בישראל? (תקציב מלא לדוגמה)",
     "intent": "informational"
   },
   {
-    "cluster": "guides",
-    "keyword": "כלי אנליטיקה לשופיפיי",
-    "title": "Triple Whale מול Lifetimely מול Polar: השוואת BI לחנויות בצמיחה",
+    "cluster": "geo-ai",
+    "keyword": "AEO פנימי או סוכנות",
+    "title": "עלויות AEO: מנהל In-House מול סוכנות חיצונית – מה מתאים לחנות שופיפיי?",
     "intent": "commercial"
   },
   {
-    "cluster": "guides",
-    "keyword": "מעבר מאטסי לשופיפיי",
-    "title": "מדריך SEO וכלים להעברת החנות בלי לאבד לקוחות",
+    "cluster": "geo-ai",
+    "keyword": "העברת סמכות מבלוג לחנות",
+    "title": "מבלוג וורדפרס לחנות שופיפיי: מדריך להעברת סמכות AEO בלי לאבד ציטוטים",
+    "intent": "transactional"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "כלי AEO להמרה או למיתוג",
+    "title": "AEO למכירות או למודעות? איך לבחור את הכלים הנכונים לחנות שופיפיי שלכם",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "איך AI בוחר מוצרים",
+    "title": "Gemini מול Perplexity: איך כל מנוע AI בוחר מוצרים ואיך תתאימו את החנות",
+    "intent": "informational"
+  },
+  {
+    "cluster": "geo-ai",
+    "keyword": "AEO דאשבורד ביצועים",
+    "title": "דאשבורד AEO מאוחד: כך תמדדו נראות, ציטוטים והכנסות במקום אחד",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "שופיפיי product taxonomy",
+    "title": "מדריך Shopify Product Taxonomy: כך תסדרו את הקטלוג ל-SEO מנצח",
+    "intent": "informational"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "אפליקציות קישור פנימי שופיפיי",
+    "title": "השוואת אפליקציות קישור פנימי אוטומטי לשופיפיי (2026)",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "גוגל לא מאנדקס את שופיפיי",
+    "title": "גוגל לא סורק את החנות? צ'קליסט מעשי לפתרון בעיות אינדוקס בשופיפיי",
+    "intent": "transactional"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "דפי נחיתה בלאק פריידי SEO",
+    "title": "דפי הנחיתה של נובמבר: איך לבנות ולמחזר אותם ל-SEO מקסימלי",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שותפים להחזרות שופיפיי",
+    "title": "השוואת אפליקציות ופתרונות לניהול החזרות בישראל",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "אסטרטגיית דצמבר לאיקומרס",
+    "title": "איך להפוך את טראפיק נובמבר ללקוחות חוזרים בדצמבר",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "טקסט AI בעברית שמוכר",
+    "title": "המדריך להפיכת טיוטות AI לתוכן מותג שמניע למכירה",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "לייב שופינג בישראל",
+    "title": "איך להתחיל למכור בשידור חי משופיפיי בתקציב נמוך",
+    "intent": "informational"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שירות לקוחות כמנוע תוכן",
+    "title": "איך להפוך פניות ותלונות ל-SEO שמביא לקוחות חדשים",
     "intent": "informational"
   },
   {
     "cluster": "guides",
-    "keyword": "ניהול קמפיין בלאק פריידי",
-    "title": "תהליך עבודה ותבנית Asana מוכנה להעתקה לחנות שופיפיי",
-    "intent": "transactional"
+    "keyword": "כלים לניהול פרויקטים שופיפיי",
+    "title": "מאנדיי מול אסאנה מול קליקאפ לחנות שופיפיי",
+    "intent": "commercial"
   },
   {
     "cluster": "guides",
-    "keyword": "ניתוח ביקורות עם AI",
-    "title": "מדריך: איך לחבר את Shopify ל-ChatGPT לניתוח סנטימנט לקוחות",
+    "keyword": "עלות הקמת אוטומציה בשופיפיי",
+    "title": "כמה עולה להטמיע Shopify Flow ו-Make (Zapier) בחנות?",
+    "intent": "commercial"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "תהליך עבודה לניהול מלאי וספקים",
+    "title": "מדריך מעשי: ניהול מלאי, ספקים והזמנות רכש בשופיפיי (בלי אפליקציה)",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "מחקר מילות מפתח ויזואלי",
+    "title": "מדריך SEO: איך עושים מחקר מילות מפתח לחיפוש ויזואלי (Google Lens) באיקומרס",
+    "intent": "informational"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "Shopify Functions מדריך למתחילים",
+    "title": "מדריך Functions: כך תבנו לוגיקה עסקית מותאמת אישית ללא Shopify Plus",
     "intent": "informational"
   }
 ]
