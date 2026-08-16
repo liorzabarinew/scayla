@@ -1,4 +1,5 @@
 // guards.test.mjs · בדיקות-יחידה ל-fail-closed guards של מכונת התוכן.
+import { readFileSync } from 'node:fs'
 // הקוד שמחליט אם לפרסם חייב להיות בדוק. הרצה: node --test scripts/
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
@@ -114,4 +115,33 @@ test('hasHardIssue: structural/attribution AND surviving numeric/claim issues sh
   assert.equal(hasHardIssue([]), false)
   // a plain soft copy-edit nit still ships (not hard)
   assert.equal(hasHardIssue(['לשון: חוסר התאמה במין']), false)
+})
+
+// ── שער הביקוש ───────────────────────────────────────────────────────────────
+// המנוע נשען עכשיו על Google Ads. שלוש התנהגויות חייבות להישמר, וכל אחת מהן
+// נשברה בפועל במהלך הבנייה:
+test('שער הביקוש נכשל סגור כשאי אפשר לבדוק', async () => {
+  const { hasDemand } = await import('../lib/demand.mjs')
+  // בלי רשת/סודות המקור הוא unknown, והתשובה חייבת להיות "לא לפרסם".
+  const r = await hasDemand('%%נושא שלא קיים בשום מקום%%')
+  assert.equal(typeof r.ok, 'boolean')
+  if (r.demand && r.demand.source === 'unknown') assert.equal(r.ok, false, 'unknown חייב להיפסל')
+})
+
+test('מסנני הזרע לא פוסלים את הביטוי המזוהה ביותר איתנו', () => {
+  // CLUSTER_SIGNALS נבנה כדי להבחין בין האשכולות, וכולם על שופיפיי — ולכן
+  // שימוש בו כמסנן זרע פסל דווקא את "שופיפיי". רגרסיה אמיתית שנתפסה בבדיקה.
+  const src = readFileSync(new URL('./idea-engine.mjs', import.meta.url), 'utf8')
+  const m = src.match(/const SEED_RELEVANT = \[([\s\S]*?)\]/)
+  assert.ok(m, 'SEED_RELEVANT חייב להתקיים')
+  assert.ok(m[1].includes('שופיפיי'), '"שופיפיי" חייב להיות רלוונטי לזרע')
+})
+
+test('כוונת-שכירה וורטיקלים זרים נפסלים בזרע', () => {
+  const src = readFileSync(new URL('./idea-engine.mjs', import.meta.url), 'utf8')
+  const m = src.match(/const SEED_REJECT = \[([\s\S]*?)\n\]/)
+  assert.ok(m, 'SEED_REJECT חייב להתקיים')
+  for (const needle of ['מומחה', 'סוכנות', 'עורכי דין']) {
+    assert.ok(m[1].includes(needle), `${needle} חייב להיפסל · הוא ביקוש אמיתי לקהל שאינו שלנו`)
+  }
 })

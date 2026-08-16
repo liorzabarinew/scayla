@@ -41,6 +41,46 @@ const IDEAS_PER_CLUSTER = Math.max(1, parseInt(process.env.IDEAS_PER_CLUSTER || 
 const TOPICS_CAP = Math.max(20, parseInt(process.env.TOPICS_CAP || '120', 10) || 120)
 
 // משוכפל מ-machine-vertex.mjs / content.config.ts — הסקריפט עצמאי.
+// ── שכבת הביקוש ─────────────────────────────────────────────────────────────
+// Google Ads · KeywordPlanIdeaService.GenerateKeywordIdeas בלבד, קריאה בלבד.
+// ה-MCC מחזיק ~13 חשבונות לקוח חיים; המודול לא יוצר, לא עורך ולא משהה כלום.
+import { keywordIdeas } from '../lib/ads-keywords.mjs'
+import { hasDemand } from '../lib/demand.mjs'
+
+// כמה ביטויים אמיתיים להזרים לפרומפט. 25 מספיק כדי לתת למודל ממה לבחור
+// בלי להטביע את שאר ההנחיות.
+const REAL_TERMS_PER_CLUSTER = Math.max(0, parseInt(process.env.REAL_TERMS_PER_CLUSTER || '25', 10) || 0)
+// תקרה. "chatgpt" עם 1.8 מיליון חיפושים הוא לא נושא · הוא ים שלא נשחה בו.
+// מעל הסף הזה הביטוי כללי מדי מכדי שאתר בגודל שלנו ידורג עליו.
+const MAX_HEAD_VOLUME = Math.max(0, parseInt(process.env.MAX_HEAD_VOLUME || '5000', 10) || 0)
+// סף הכניסה. לא הועתק מ-Mr. Make (50) · שם השוק גדול יותר. נמדד מול ארבעת
+// האשכולות שלנו, ומכוון דרך משתנה סביבה כדי שכיול לא ידרוש שינוי קוד.
+const MIN_REAL_VOLUME = Math.max(0, parseInt(process.env.MIN_ADS_VOLUME || '30', 10) || 0)
+
+// רלוונטיות לזרע · רשימה נפרדת מ-CLUSTER_SIGNALS בכוונה.
+// CLUSTER_SIGNALS נבנה כדי להבחין *בין* האשכולות שלנו, וכולם עוסקים בשופיפיי —
+// ולכן "שופיפיי" איננה שם, והשימוש בו כמסנן זרע פסל דווקא את הביטוי הכי
+// מזוהה איתנו. רשימה למשימה שלה.
+const SEED_RELEVANT = ['seo', 'geo', 'aeo', 'קידום', 'אורגני', 'גוגל', 'חיפוש', 'דירוג', 'אינדוקס',
+  'שופיפיי', 'shopify', 'וורדפרס', 'wordpress', 'חנות', 'חנויות', 'איקומרס', 'ecommerce', 'אונליין',
+  'מכיר', 'מוצר', 'קטגורי', 'סכמ', 'schema', 'מטא', 'כותרת', 'קישור', 'מהירות', 'המרה', 'תנועה',
+  'מילות מפתח', 'תוכן', 'בלוג', 'chatgpt', 'gemini', 'perplexity', 'בינה מלאכותית', 'ai']
+
+// כוונת-שירות ושמות-מותג. הביטויים הכי מבוקשים במרחב שלנו הם "חברת קידום
+// אתרים" ו"מומחה קידום אתרים" — מי שמקליד אותם מחפש את מי לשכור, לא מאמר.
+// נפח גבוה בלי הסינון הזה מושך את המכונה בדיוק לקהל הלא נכון.
+const SEED_REJECT = [/חבר[הת]\s/, /מומחה/, /סוכנות/, /משרד/, /מחיר/, /עלות/, /כמה עולה/,
+  /קורס/, /לימוד/, /דרוש/, /משרה/, /פרילנס/, /מנהל/, /freelanc/i, /agency/i, /jobs?\b/i,
+  // ורטיקלים אחרים · "קידום אתרים לעורכי דין" הוא ביקוש אמיתי לקהל שאינו שלנו
+  /עורכי דין|רופא|מרפא|נדל"ן|נדלן|מסעד|קליניק|רואה חשבון|ביטוח/]
+
+const CLUSTER_SEEDS = {
+  'geo-ai': ['קידום בבינה מלאכותית', 'chatgpt לעסקים', 'מנועי תשובה'],
+  'seo-shopify': ['שופיפיי', 'קידום אתרים', 'seo לחנות'],
+  ecommerce: ['חנות אונליין', 'איקומרס', 'מכירות אונליין'],
+  guides: ['מחקר מילות מפתח', 'כלי seo', 'קידום אתרים מדריך'],
+}
+
 const CLUSTERS = [
   { slug: 'geo-ai', title: 'GEO ואופטימיזציה למנועי AI', focus: 'איך נכנסים לתשובות של ChatGPT, Gemini, Perplexity ו-Claude · תוכן ציטוטבילי, נתונים מובנים, מדידת נראות ב-AI' },
   { slug: 'seo-shopify', title: 'SEO לחנויות שופיפיי', focus: 'קידום אורגני בגוגל לחנות Shopify · דפי מוצר, קטגוריות, מהירות, סכמות, קישור פנימי, תיקוני 301' },
@@ -180,7 +220,12 @@ function nearDupe(a, b) {
 }
 
 // ── פרסור הפלט של Gemini לרעיונות ──
-// מבקשים שורות בפורמט: KEYWORD | TITLE | INTENT   (אחד לשורה, בלי JSON — יציב מול grounding)
+// מבקשים שורות בפורמט: KEYWORD | TITLE | INTENT | HEAD   (אחד לשורה, בלי JSON — יציב מול grounding)
+//
+// HEAD נוסף אחרי שהתברר שהוראה בפרומפט לא מספיקה: סיפקנו 25 ביטויים אמיתיים
+// עם נפח מדוד, והמודל בכל זאת המציא לונג-טייל משלו — ארבעה מתוך ארבעה
+// נפסלו על אפס חיפושים. עכשיו הוא חייב להצהיר על איזה ביטוי *מהרשימה שלנו*
+// הרעיון נשען, ואנחנו מאמתים חברות ברשימה במקום להאמין לו.
 function parseIdeas(text, clusterSlug) {
   const out = []
   for (const raw of String(text).split('\n')) {
@@ -191,7 +236,7 @@ function parseIdeas(text, clusterSlug) {
     if (!clean.includes('|')) continue
     const parts = clean.split('|').map((p) => p.trim())
     if (parts.length < 2) continue
-    let [keyword, title, intent] = parts
+    let [keyword, title, intent, head] = parts
     if (!keyword || !title) continue
     if (keyword.length > 90 || title.length > 160) continue // מסנן שורות-זבל/משפטים ארוכים
     // שומר-זבל דטרמיניסטי: הד-של-פורמט (המודל מהדהד את שורת-התבנית KEYWORD | TITLE מילולית),
@@ -200,12 +245,49 @@ function parseIdeas(text, clusterSlug) {
     if (junk(keyword) || junk(title) || VALID_INTENTS.has(title.toLowerCase())) continue
     intent = (intent || '').toLowerCase()
     if (!VALID_INTENTS.has(intent)) intent = 'informational'
-    out.push({ cluster: clusterSlug, keyword, title, intent })
+    out.push({ cluster: clusterSlug, keyword, title, intent , head: (head || '').trim() })
   }
   return out
 }
 
-const scanPrompt = (cat, existingTitles, existingKeywords, today) => {
+/**
+ * ביטויים אמיתיים שאנשים בישראל מקלידים, לאשכול נתון.
+ *
+ * זו ההיפוך של המנוע: עד היום המודל *המציא* מילת מפתח ואז בדקנו אותה. כאן
+ * גוגל מספקת את מה שבאמת מחפשים, והמודל בוחר מתוך רשימה קיימת. בלי זה השער
+ * היה מרוקן את התור — נמדד: 48 מתוך 48 הנושאים שהיו בתור החזירו אפס חיפושים.
+ *
+ * שלושה מסננים, וכל אחד מהם נלמד מהנתונים ולא הונח מראש:
+ *   נפח מינימלי  · מתחת לזה מאמר לא מחזיר את עלות הכתיבה
+ *   תקרת-ראש     · "chatgpt" ב-1.8 מיליון הוא לא נושא, הוא ים
+ *   רלוונטיות    · CLUSTER_SIGNALS פוסל שם-מותג ושגיאת-כתיב שחוזרים מ-Ads
+ */
+async function realTermsFor(cat, seenKeys) {
+  if (!REAL_TERMS_PER_CLUSTER) return []
+  const seeds = CLUSTER_SEEDS[cat.slug] || []
+  if (!seeds.length) return []
+  try {
+    const ideas = await keywordIdeas(seeds, { market: 'IL', limit: 200 })
+    const out = []
+    for (const i of ideas) {
+      if (!i.keyword || i.volume < MIN_REAL_VOLUME) continue
+      if (MAX_HEAD_VOLUME && i.volume > MAX_HEAD_VOLUME) continue
+      if (seenKeys.has(normKey(i.keyword))) continue
+      if (!SEED_RELEVANT.some((sg) => i.keyword.includes(sg))) continue
+      if (SEED_REJECT.some((re) => re.test(i.keyword))) continue
+      out.push(i)
+      if (out.length >= REAL_TERMS_PER_CLUSTER) break
+    }
+    return out
+  } catch (e) {
+    // נפילה חיננית: בלי ביטויים אמיתיים המודל חוזר להתנהגות הישנה, והשער
+    // שבהמשך עדיין חוסם. שכבה שנעדרת לא שוברת את הצנרת.
+    console.error(`[demand] ${cat.slug}: ${String(e).slice(0, 120)}`)
+    return []
+  }
+}
+
+const scanPrompt = (cat, existingTitles, existingKeywords, today, realTerms = []) => {
   const titles = existingTitles.slice(0, 80)
   const kws = existingKeywords.slice(0, 200)
   // אוגוסט-נובמבר = חלון ההכנה לנובמבר הישראלי: FIFO אומר שנושא עונתי שנכנס מאוחר יתפרסם מאוחר מדי.
@@ -222,7 +304,11 @@ const scanPrompt = (cat, existingTitles, existingKeywords, today) => {
 גבולות האשכולות (כל רעיון חייב להשתייך לאשכול הנוכחי בלבד — רעיון שמתאים יותר לאשכול אחר, אל תציע אותו כאן):
 ${CLUSTERS.map((c) => `- ${c.title}${c.slug === cat.slug ? ' ← האשכול הנוכחי' : ''}: ${c.focus}`).join('\n')}
 
-חקור מה קורה *עכשיו*:
+${realTerms.length ? `**ביטויים אמיתיים עם ביקוש מדוד** (Google Ads Keyword Planner · ישראל, עברית, חיפושים ממוצעים לחודש).
+אלה לא הצעות — אלה מה שאנשים באמת מקלידים. כל שורה שתחזיר **חייבת** לכלול עמודה רביעית — HEAD — שהיא ביטוי **מועתק מילה-במילה מהרשימה הזאת**. שורה בלי HEAD, או עם HEAD שאינו ברשימה, נמחקת אוטומטית ולא נכתבת. ה-KEYWORD שלך יכול להיות לונג-טייל, אבל הוא חייב להישען על ה-HEAD שבחרת:
+${realTerms.map((t) => `  • ${t.keyword} — ${t.volume}/חודש`).join('\n')}
+
+` : ''}חקור מה קורה *עכשיו*:
 - מה בעלי חנויות Shopify ואנשי SEO/GEO בישראל מחפשים בגוגל בתקופה האחרונה (מונחי-לונג-טייל, שאלות "איך/כמה/מתי/למה").
 - שאלות People-Also-Ask ונושאים שמתחרים/בלוגים מקצועיים העלו לאחרונה.
 - טרנדים/עדכונים חדשים (עדכוני Google, פיצ'רים חדשים ב-Shopify, שינויים ב-AI Overviews / ChatGPT / Perplexity) שעדיין לא כיסינו.
@@ -234,7 +320,7 @@ ${titles.length ? titles.map((t) => `  • ${t}`).join('\n') : '  (אין עדי
 ${kws.length ? kws.map((k) => `  • ${k}`).join('\n') : '  (אין עדיין)'}
 
 החזר **בדיוק** ${IDEAS_PER_CLUSTER + 3} שורות, שורה לרעיון, בפורמט המדויק (מופרד ב-|), בלי טקסט מקדים או מסכם ובלי JSON:
-KEYWORD | TITLE | INTENT
+KEYWORD | TITLE | INTENT | HEAD
 
 - KEYWORD: ביטוי-חיפוש קצר בעברית (2-6 מילים) שבן-אדם באמת מקליד בגוגל. ייחודי, לא חופף לרשימות למעלה.
 - TITLE: כותרת-מאמר ממגנטת ומדויקת בעברית (עד ~12 מילים). אם שנה הכרחית — רק ${today.slice(0, 4)}, ועדיף על-זמני.
@@ -267,6 +353,7 @@ async function main() {
   const perCluster = {}
   const added = []
   const errors = []
+  const rejected = []   // נפסלו על ביקוש · מדווח, לא נבלע בשקט
 
   for (const cat of targets) {
     perCluster[cat.slug] = 0
@@ -274,7 +361,11 @@ async function main() {
     const existingTitles = [...titlesByCluster[cat.slug], ...topics.filter((t) => t && t.cluster === cat.slug).map((t) => t.title).filter(Boolean)]
     const existingKeywords = topics.map((t) => t && t.keyword).filter(Boolean)
     try {
-      const { text } = await callGemini(scanPrompt(cat, existingTitles, existingKeywords, today), { search: true, maxTokens: 4000, temperature: 0.85 })
+      const realTerms = await realTermsFor(cat, seenKeys)
+      const realIndex = new Map(realTerms.map((t) => [normKey(t.keyword), t.volume]))
+      if (realTerms.length) console.error(`[demand] ${cat.slug}: ${realTerms.length} ביטויים אמיתיים · ${realTerms[0].volume}–${realTerms[realTerms.length - 1].volume}/חודש`)
+      else console.error(`[demand] ${cat.slug}: אין ביטויים אמיתיים — המודל חוזר להמצאה, והשער יסנן`)
+      const { text } = await callGemini(scanPrompt(cat, existingTitles, existingKeywords, today, realTerms), { search: true, maxTokens: 4000, temperature: 0.85 })
       const ideas = parseIdeas(text, cat.slug)
       // אכיפה רכה של תמהיל-intent: batch שכולו informational = המודל התעלם מהמכסה — מתריעים, לא זורקים.
       if (ideas.length && ideas.every((i) => i.intent === 'informational')) console.warn(`[${cat.slug}] אזהרה: כל ה-batch יצא informational למרות מכסת commercial/transactional בפרומפט`)
@@ -285,6 +376,27 @@ async function main() {
         if (!kNorm || seenKeys.has(kNorm) || seenTitles.has(tNorm)) continue
         const ws = wordSet(idea.keyword + ' ' + idea.title)
         if (seenWordSets.some((s) => nearDupe(ws, s))) continue // כמעט-כפיל של התור או של מאמר חי
+
+        // ── שער הביקוש ──────────────────────────────────────────────────
+        // נכשל *סגור*: מקור 'unknown' (לא הצלחנו לבדוק) נפסל, בדיוק כמו נפח
+        // נמוך. פרסום על ניחוש שלא אומת הוא איך שאתר מגיע ל-164 מאמרים
+        // ולחמישה קליקים. הנפח נשמר על הרעיון · הוא מדרג את התור בהמשך.
+        // כשסיפקנו ביטויים אמיתיים, ההצדקה חייבת להגיע מהם. בודקים חברות
+        // ברשימה *שלנו* — לא שואלים את ה-API שוב ולא מאמינים למודל על מילה.
+        if (realIndex.size) {
+          const head = normKey(idea.head)
+          if (!head || !realIndex.has(head)) { rejected.push(`${idea.keyword} · HEAD לא מהרשימה (${idea.head || 'חסר'})`); continue }
+          idea.volume = realIndex.get(head)
+          idea.demandSource = 'ads'
+          idea.head = idea.head.trim()
+        } else {
+          // אין ביטויים אמיתיים (API למטה) — נופלים לבדיקה פר-ביטוי, שנכשלת סגור.
+          let dem = null
+          try { dem = await hasDemand(idea.keyword) } catch (e) { dem = { ok: false, reason: String(e).slice(0, 80), demand: null } }
+          if (!dem.ok) { rejected.push(`${idea.keyword} · ${dem.reason}`); continue }
+          idea.volume = dem.demand && typeof dem.demand.volume === 'number' ? dem.demand.volume : null
+          idea.demandSource = dem.demand ? dem.demand.source : 'unknown'
+        }
         // בדיקת-שפיות שיוך-אשכול: אזהרה בלבד, כדי שנתפוס שיוך שגוי בלוגים בלי לזרוק רעיון טוב.
         const signals = CLUSTER_SIGNALS[cat.slug] || []
         const hay = normKey(idea.keyword + ' ' + idea.title)
@@ -303,7 +415,19 @@ async function main() {
     }
   }
 
-  // ── prune: אם עברנו את ה-cap, גוזמים את *הישנים ביותר שלא-טופלו* (מתחילת הקובץ), משמרים done ורעיונות-חדשים ──
+  // ── דירוג לפי ביקוש ──────────────────────────────────────────────────
+  // עד כה התור היה FIFO: נכתב מה שנכנס ראשון. עכשיו לכל פריט יש נפח, אז
+  // הפריט המבוקש ביותר נכתב ראשון וה"פחות מבוקש" הוא זה שנגזם. גם בלי לפסול
+  // רעיון אחד, השינוי הזה לבדו מסיט את המאמץ למקום שיש בו ביקוש.
+  // יציבות: פריטים ללא נפח שומרים על סדרם היחסי בסוף, ולא קופצים.
+  const _ord = new Map(topics.map((t, i) => [t, i]))
+  topics.sort((a, b) => {
+    const av = typeof a?.volume === 'number' ? a.volume : -1
+    const bv = typeof b?.volume === 'number' ? b.volume : -1
+    return bv - av || _ord.get(a) - _ord.get(b)
+  })
+
+  // ── prune: מה שנשאר מעל ה-cap נגזם מהזנב — כלומר הנמוך-ביותר-בביקוש ──
   let pruned = 0
   if (topics.length > TOPICS_CAP) {
     const overflow = topics.length - TOPICS_CAP
@@ -320,6 +444,15 @@ async function main() {
   }
 
   // כתיבה רק אם השתנה משהו (אידמפוטנטי — ריצה חוזרת בלי רעיונות חדשים לא נוגעת בקובץ).
+  const withVol = added.filter((a) => typeof a.volume === 'number' && a.volume > 0)
+  const demandLine = added.length
+    ? `ביקוש: ${withVol.length}/${added.length} עם נפח מדוד` +
+      (withVol.length ? ` · חציון ${withVol.map((a) => a.volume).sort((x, y) => x - y)[Math.floor(withVol.length / 2)]}/חודש` : '') +
+      (rejected.length ? ` · ${rejected.length} נפסלו בשער` : '')
+    : (rejected.length ? `כל ${rejected.length} הרעיונות נפסלו בשער הביקוש` : '')
+  if (demandLine) console.error('[demand] ' + demandLine)
+  if (rejected.length) console.error('[demand] דוגמאות: ' + rejected.slice(0, 5).join(' | '))
+
   const changed = added.length > 0 || pruned > 0
   if (changed) writeFileSync(TOPICS_FILE, JSON.stringify(topics, null, 2) + '\n')
 

@@ -250,14 +250,27 @@ function claimTopic(keyword) {
   return true
 }
 
+// הפריט המבוקש-ביותר מבין אלה שטרם נכתבו. idea-engine כבר ממיין את הקובץ,
+// אבל הבחירה לא נשענת על סדר בקובץ · topics.json נערך גם ידנית, וסדר הוא
+// הנחה שקל לשבור בלי לשים לב. פריט בלי נפח נחשב -1 ונבחר רק כשאין אחר.
+function bestOf(list, done) {
+  let best = null, bestV = -Infinity
+  for (const t of list) {
+    if (!t || !t.keyword || done.has(t.keyword)) continue
+    const v = typeof t.volume === 'number' ? t.volume : -1
+    if (v > bestV) { best = t; bestV = v }
+  }
+  return best
+}
+
 // הנושא-הבא-שלא-נעשה מ-topics.json עבור אשכול נתון (המאגר הרחב מזין את הבחירה כשהאשכול ידוע).
 function nextTopicForCluster(clusterSlug) {
   if (!existsSync(TOPICS_FILE)) return null
   try {
     const topics = JSON.parse(readFileSync(TOPICS_FILE, 'utf8'))
     const done = loadDone()
-    const t = topics.find((x) => x && x.cluster === clusterSlug && x.keyword && !done.has(x.keyword))
-    return t ? { keyword: t.keyword, title: t.title || t.angle || '', seeds: Array.isArray(t.seeds) ? t.seeds : [] } : null
+    const t = bestOf(topics.filter((x) => x && x.cluster === clusterSlug), done)
+    return t ? { keyword: t.keyword, title: t.title || t.angle || '', seeds: Array.isArray(t.seeds) ? t.seeds : [], volume: typeof t.volume === 'number' ? t.volume : null } : null
   } catch (e) { console.error('topics.json parse error:', String(e)); return null }
 }
 
@@ -267,13 +280,13 @@ function pickTopic(counts) {
     try {
       const topics = JSON.parse(readFileSync(TOPICS_FILE, 'utf8'))
       const done = loadDone()
-      const next = topics.find((t) => t && t.cluster && CLUSTER_BY_SLUG[t.cluster] && t.keyword && !done.has(t.keyword))
-      if (next) return { cat: CLUSTER_BY_SLUG[next.cluster], brief: next.title || next.angle || '', keyword: next.keyword || '', seeds: Array.isArray(next.seeds) ? next.seeds : [], fromPlan: true }
+      const next = bestOf(topics.filter((t) => t && t.cluster && CLUSTER_BY_SLUG[t.cluster]), done)
+      if (next) return { cat: CLUSTER_BY_SLUG[next.cluster], brief: next.title || next.angle || '', keyword: next.keyword || '', seeds: Array.isArray(next.seeds) ? next.seeds : [], volume: typeof next.volume === 'number' ? next.volume : null, fromPlan: true }
     } catch (e) { console.error('topics.json parse error:', String(e)) }
   }
   let best = CLUSTERS[0], bestN = Infinity
   for (const c of CLUSTERS) { const n = counts[c.slug] || 0; if (n < bestN) { best = c; bestN = n } }
-  return { cat: best, brief: '', keyword: '', seeds: [], fromPlan: false }
+  return { cat: best, brief: '', keyword: '', seeds: [], volume: null, fromPlan: false }
 }
 
 // ספירת קישורים-נכנסים לכל slug: מעבר אחד על כל גופי-המאמרים, cache ב-Map (זול · רץ פעם בריצה).

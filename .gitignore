@@ -18,3 +18,6 @@ npm-debug.log*
 .dev.vars
 # Cloud Run build artifacts
 scan-machine/node_modules/
+
+# מטמון נפחי Google Ads · נבנה מחדש בכל ריצה, TTL 30 יום
+.cache/
