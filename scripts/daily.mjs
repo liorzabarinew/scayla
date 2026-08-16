@@ -17,13 +17,47 @@
 //        node scripts/daily.mjs geo-ai    → אשכול יחיד (שלבי-הלוואי עדיין רצים)
 // ─────────────────────────────────────────────────────────────────────────────
 import { spawn } from 'node:child_process'
+import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { dirname, join } from 'node:path'
 import { notify, articleLine } from './notify.mjs'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
-const CLUSTERS = ['geo-ai', 'seo-shopify', 'ecommerce', 'guides']
-const only = process.argv[2] && !process.argv[2].startsWith('--') ? [process.argv[2]] : CLUSTERS
+// שישה אשכולות, אבל עדיין ארבעה מאמרים בריצה. הרחבת המרחב לא אמורה להכפיל
+// את קצב הפרסום · היא אמורה לשפר את *הבחירה*. ARTICLES_PER_RUN קובע כמה,
+// והביקוש קובע אילו.
+const CLUSTERS = ['geo-ai', 'seo-shopify', 'ecommerce', 'guides', 'seo-general', 'wordpress']
+const ARTICLES_PER_RUN = Math.max(1, parseInt(process.env.ARTICLES_PER_RUN || '4', 10) || 4)
+
+/**
+ * ארבעת האשכולות שהנושא הממתין שלהם מבוקש ביותר.
+ *
+ * עד היום כל אשכול קיבל מאמר בכל ריצה, בלי קשר לשאלה אם יש לו בכלל מה לומר.
+ * geo-ai נמדד ב-0 ביטויים שמישים בעברית — הוא היה מקבל מאמר יומי בזכות מיקומו
+ * ברשימה. עכשיו אשכול נכנס לריצה רק אם יש לו נושא שמישהו מחפש.
+ * נפילה חיננית: בלי topics.json או בלי נפחים, חוזרים לארבעת הראשונים.
+ */
+function pickClusters() {
+  try {
+    const topics = JSON.parse(readFileSync(join(HERE, 'topics.json'), 'utf8'))
+    const done = new Set(JSON.parse(readFileSync(join(HERE, 'topics-done.json'), 'utf8')))
+    const best = new Map()
+    for (const t of topics) {
+      if (!t || !t.cluster || !t.keyword || done.has(t.keyword)) continue
+      const v = typeof t.volume === 'number' ? t.volume : -1
+      if (v > (best.get(t.cluster) ?? -Infinity)) best.set(t.cluster, v)
+    }
+    const ranked = CLUSTERS.filter((c) => best.has(c)).sort((a, b) => best.get(b) - best.get(a))
+    const chosen = ranked.slice(0, ARTICLES_PER_RUN)
+    if (chosen.length) {
+      console.error(`אשכולות הריצה (לפי ביקוש): ${chosen.map((c) => `${c}:${best.get(c)}`).join(' · ')}`)
+      return chosen
+    }
+  } catch (e) { console.error('בחירת אשכולות נפלה, חוזר לברירת מחדל:', String(e).slice(0, 90)) }
+  return CLUSTERS.slice(0, ARTICLES_PER_RUN)
+}
+
+const only = process.argv[2] && !process.argv[2].startsWith('--') ? [process.argv[2]] : pickClusters()
 
 const CLUSTER_TIMEOUT_MS = (Number(process.env.CLUSTER_TIMEOUT_MIN) || 8) * 60_000
 const STAGE_TIMEOUT_MS = (Number(process.env.STAGE_TIMEOUT_MIN) || 6) * 60_000

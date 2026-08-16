@@ -89,6 +89,8 @@ const CLUSTERS = [
   { slug: 'seo-shopify', title: 'SEO לחנויות שופיפיי', focus: 'קידום אורגני בגוגל לחנות Shopify · דפי מוצר, קטגוריות, מהירות, סכמות, קישור פנימי, תיקוני 301' },
   { slug: 'ecommerce', title: 'שיווק לאיקומרס ישראלי', focus: 'שיווק אורגני לחנות איקומרס ישראלית · תנועה בלי לשלם על כל קליק, המרה, תוכן שמוכר, עברית שמדורגת' },
   { slug: 'guides', title: 'מדריכים וכלים', focus: 'מדריכים מעשיים צעד-אחר-צעד · מחקר מילות מפתח, כלים, תהליכי עבודה למותגי איקומרס' },
+  { slug: 'seo-general', title: 'קידום אתרים אורגני', focus: 'קידום אורגני בגוגל לכל אתר · SEO טכני, מהירות, מבנה, סכמות, קישורים, מחקר מילות מפתח, דירוג בעברית. לא נעול לפלטפורמה אחת' },
+  { slug: 'wordpress', title: 'SEO לוורדפרס ו-WooCommerce', focus: 'קידום אורגני לאתר וורדפרס ולחנות WooCommerce · תוספים, מבנה קבועים, מהירות, סכמות מוצר, תוכן שמדורג בעברית' },
 ]
 const CLUSTER_BY_SLUG = Object.fromEntries(CLUSTERS.map((c) => [c.slug, c]))
 const CLUSTER_BY_TITLE = Object.fromEntries(CLUSTERS.map((c) => [c.title, c]))

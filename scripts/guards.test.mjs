@@ -145,3 +145,48 @@ test('כוונת-שכירה וורטיקלים זרים נפסלים בזרע', 
     assert.ok(m[1].includes(needle), `${needle} חייב להיפסל · הוא ביקוש אמיתי לקהל שאינו שלנו`)
   }
 })
+
+// ── אשכולות ────────────────────────────────────────────────────────────────
+// אותם אשכולות מוגדרים בשלושה קבצים: מנוע-הרעיונות, המכונה, וסכמת התוכן.
+// `cluster` הוא z.enum — מאמר שנכתב עם אשכול שאינו בסכמה מפיל את ה-build
+// ואיתו את הדפלוי כולו. השומר הזה תופס את זה בבדיקות, לפני שהמכונה כותבת.
+test('שלוש הגדרות האשכולות זהות', () => {
+  const slugsOf = (f, re) => [...readFileSync(new URL(f, import.meta.url), 'utf8').matchAll(re)]
+    .map((m) => m[1]).sort()
+  const idea = slugsOf('./idea-engine.mjs', /\{ slug: '([a-z-]+)'/g)
+  const mach = slugsOf('./machine-vertex.mjs', /\{ slug: '([a-z-]+)'/g)
+  const cfg = [...readFileSync(new URL('../src/content.config.ts', import.meta.url), 'utf8')
+    .matchAll(/: '([a-z-]+)',/g)].map((m) => m[1]).sort()
+  assert.deepEqual(idea, mach, 'idea-engine מול machine-vertex')
+  assert.deepEqual(idea, cfg, 'idea-engine מול content.config — אי-התאמה כאן שוברת את ה-build')
+})
+
+test('לכל אשכול יש זרעים ואותות שיוך', () => {
+  const src = readFileSync(new URL('./idea-engine.mjs', import.meta.url), 'utf8')
+  const slugs = [...src.matchAll(/\{ slug: '([a-z-]+)'/g)].map((m) => m[1])
+  const seeds = src.match(/const CLUSTER_SEEDS = \{([\s\S]*?)\n\}/)[1]
+  const signals = src.match(/const CLUSTER_SIGNALS = \{([\s\S]*?)\n\}/)[1]
+  for (const s of slugs) {
+    assert.ok(seeds.includes(`'${s}'`) || seeds.includes(`${s}:`), `${s} · חסרים זרעים · יישאר בלי ביקוש מדוד`)
+    assert.ok(signals.includes(`'${s}'`) || signals.includes(`${s}:`), `${s} · חסרים אותות שיוך`)
+  }
+})
+
+test('הגזימה מוחקת מהזנב · לא מהראש', () => {
+  // באג אמיתי: אחרי שהתור מוין לפי ביקוש, לולאת הגזימה עדיין רצה קדימה
+  // ומחקה את הנושאים החזקים ביותר. אשכול שלם עם חציון 1,300 נמחק בשקט.
+  const src = readFileSync(new URL('./idea-engine.mjs', import.meta.url), 'utf8')
+  const block = src.match(/if \(pendingCount > TOPICS_CAP\)[\s\S]*?\n  \}/)[0]
+  assert.ok(/for \(let i = topics\.length - 1; i >= 0/.test(block),
+    'הגזימה חייבת לרוץ מהסוף להתחלה · אחרת היא מוחקת את המבוקשים ביותר')
+})
+
+test('ה-cap נספר מול נושאים ממתינים · לא מול כל הקובץ', () => {
+  // הבאג: 147 נושאים כתובים + 4 ממתינים מול cap 120 → הגזימה ביקשה למחוק 31,
+  // מצאה 4 מועמדים (רק ממתינים ניתנים לגזימה) ומחקה את כולם. כל נושא חדש חי
+  // ריצה אחת בדיוק. שקט לחלוטין, ועלה לנו בכל נושא טרי שאי פעם נוצר.
+  const src = readFileSync(new URL('./idea-engine.mjs', import.meta.url), 'utf8')
+  assert.ok(/const pendingCount = topics\.filter/.test(src), 'חייב לספור ממתינים')
+  assert.ok(/if \(pendingCount > TOPICS_CAP\)/.test(src), 'התנאי חייב להיות מול pendingCount')
+  assert.ok(!/if \(topics\.length > TOPICS_CAP\)/.test(src), 'הספירה מול כל הקובץ חייבת להיעלם')
+})

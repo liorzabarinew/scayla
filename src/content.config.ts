@@ -17,6 +17,10 @@ export const CLUSTERS = [
   'SEO לחנויות שופיפיי',
   'שיווק לאיקומרס ישראלי',
   'מדריכים וכלים',
+  // נוספו 16.8.26 · מרחב הביקוש האמיתי. cluster הוא z.enum, כלומר מאמר
+  // שנכתב עם אשכול שאינו כאן מפיל את ה-build ואיתו את כל הדפלוי.
+  'קידום אתרים אורגני',
+  'SEO לוורדפרס ו-WooCommerce',
 ] as const;
 
 /**
@@ -29,6 +33,8 @@ export const CLUSTER_SLUGS: Record<(typeof CLUSTERS)[number], string> = {
   'SEO לחנויות שופיפיי': 'seo-shopify',
   'שיווק לאיקומרס ישראלי': 'ecommerce',
   'מדריכים וכלים': 'guides',
+  'קידום אתרים אורגני': 'seo-general',
+  'SEO לוורדפרס ו-WooCommerce': 'wordpress',
 };
 
 /** slug → cluster name (reverse lookup for getStaticPaths / links). */

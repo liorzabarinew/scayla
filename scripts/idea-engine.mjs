@@ -62,7 +62,7 @@ const MIN_REAL_VOLUME = Math.max(0, parseInt(process.env.MIN_ADS_VOLUME || '30',
 // ולכן "שופיפיי" איננה שם, והשימוש בו כמסנן זרע פסל דווקא את הביטוי הכי
 // מזוהה איתנו. רשימה למשימה שלה.
 const SEED_RELEVANT = ['seo', 'geo', 'aeo', 'קידום', 'אורגני', 'גוגל', 'חיפוש', 'דירוג', 'אינדוקס',
-  'שופיפיי', 'shopify', 'וורדפרס', 'wordpress', 'חנות', 'חנויות', 'איקומרס', 'ecommerce', 'אונליין',
+  'שופיפיי', 'shopify', 'וורדפרס', 'wordpress', 'ווקומרס', 'woocommerce', 'תוסף', 'חנות', 'חנויות', 'איקומרס', 'ecommerce', 'אונליין',
   'מכיר', 'מוצר', 'קטגורי', 'סכמ', 'schema', 'מטא', 'כותרת', 'קישור', 'מהירות', 'המרה', 'תנועה',
   'מילות מפתח', 'תוכן', 'בלוג', 'chatgpt', 'gemini', 'perplexity', 'בינה מלאכותית', 'ai']
 
@@ -79,6 +79,8 @@ const CLUSTER_SEEDS = {
   'seo-shopify': ['שופיפיי', 'קידום אתרים', 'seo לחנות'],
   ecommerce: ['חנות אונליין', 'איקומרס', 'מכירות אונליין'],
   guides: ['מחקר מילות מפתח', 'כלי seo', 'קידום אתרים מדריך'],
+  'seo-general': ['קידום אתרים', 'קידום אורגני', 'seo טכני', 'דירוג בגוגל', 'מהירות אתר'],
+  wordpress: ['קידום וורדפרס', 'seo וורדפרס', 'ווקומרס קידום', 'תוסף seo'],
 }
 
 const CLUSTERS = [
@@ -86,6 +88,14 @@ const CLUSTERS = [
   { slug: 'seo-shopify', title: 'SEO לחנויות שופיפיי', focus: 'קידום אורגני בגוגל לחנות Shopify · דפי מוצר, קטגוריות, מהירות, סכמות, קישור פנימי, תיקוני 301' },
   { slug: 'ecommerce', title: 'שיווק לאיקומרס ישראלי', focus: 'שיווק אורגני לחנות איקומרס ישראלית · תנועה בלי לשלם על כל קליק, המרה, תוכן שמוכר, עברית שמדורגת' },
   { slug: 'guides', title: 'מדריכים וכלים', focus: 'מדריכים מעשיים צעד-אחר-צעד · מחקר מילות מפתח, כלים, תהליכי עבודה למותגי איקומרס' },
+  // ── נוספו 16.8.26 · אחרי מדידת נפחים אמיתית ──────────────────────────
+  // ארבעת האשכולות המקוריים כולם נעולים על Shopify, ושם נמדדו 7 ביטויים
+  // שמישים בלבד. "קידום אתרים כללי" החזיר 152 · פי עשרים ממנו. זה מרחב
+  // הביקוש האמיתי, והוא היה סגור בפנינו בגלל הגדרה ולא בגלל שוק.
+  { slug: 'seo-general', title: 'קידום אתרים אורגני', focus: 'קידום אורגני בגוגל לכל אתר · SEO טכני, מהירות, מבנה, סכמות, קישורים, מחקר מילות מפתח, דירוג בעברית. לא נעול לפלטפורמה אחת' },
+  // וורדפרס קטן במספרים (6 ביטויים) אבל מדויק בקהל: "קידום אתרי וורדפרס"
+  // 260/חודש. מי שמקליד את זה הוא בדיוק הלקוח של התוסף שבדרך.
+  { slug: 'wordpress', title: 'SEO לוורדפרס ו-WooCommerce', focus: 'קידום אורגני לאתר וורדפרס ולחנות WooCommerce · תוספים, מבנה קבועים, מהירות, סכמות מוצר, תוכן שמדורג בעברית' },
 ]
 const CLUSTER_BY_SLUG = Object.fromEntries(CLUSTERS.map((c) => [c.slug, c]))
 const CLUSTER_BY_TITLE = Object.fromEntries(CLUSTERS.map((c) => [c.title, c]))
@@ -99,6 +109,10 @@ const CLUSTER_SIGNALS = {
   'seo-shopify': ['seo', 'קידום', 'גוגל', 'סכמ', 'schema', 'canonical', 'קנוניקל', '301', '404', 'sitemap', 'robots', 'אינדוקס', 'דירוג', 'מהירות', 'זחיל', 'מטא', 'קישור', 'core web'],
   ecommerce: ['שיווק', 'המרה', 'המרות', 'לקוח', 'עגלה', 'מייל', 'איקומרס', 'מכירה', 'מכירות', 'מותג', 'קהיל', 'ltv', 'ugc', 'שימור', 'תנועה', 'טראפיק', 'קמפיין'],
   guides: [],
+  'seo-general': ['קידום', 'אורגני', 'seo', 'גוגל', 'דירוג', 'אינדוקס', 'סכמ', 'schema', 'מטא',
+    'קישור', 'מהירות', 'core web', 'זחיל', 'sitemap', 'robots', 'canonical', '301', '404', 'מילות מפתח'],
+  wordpress: ['וורדפרס', 'wordpress', 'ווקומרס', 'woocommerce', 'תוסף', 'תוספים', 'plugin',
+    'yoast', 'rank math', 'elementor', 'קבועים', 'permalink'],
 }
 
 function result(obj) { console.log('RESULT:' + JSON.stringify(obj)) }
@@ -429,18 +443,28 @@ async function main() {
 
   // ── prune: מה שנשאר מעל ה-cap נגזם מהזנב — כלומר הנמוך-ביותר-בביקוש ──
   let pruned = 0
-  if (topics.length > TOPICS_CAP) {
-    const overflow = topics.length - TOPICS_CAP
+  // ה-cap חל על נושאים *ממתינים* בלבד.
+  //
+  // באג קיים שנחשף כאן: הוא נספר מול כל הקובץ, כולל נושאים שכבר נכתבו. עם 147
+  // כתובים מתוך 151 ו-cap של 120, הגזימה ביקשה למחוק 31 ומצאה בדיוק 4 מועמדים —
+  // הטריים. כלומר לכל נושא חדש הייתה ריצה אחת להיכתב, ואם לא נבחר הוא נמחק
+  // בריצה הבאה. התור מעולם לא הצליח לצבור נושאים טובים.
+  // נתפס כשאשכול שלם עם חציון 1,300 נעלם בריצה שלאחריו.
+  const pendingCount = topics.filter((t) => t && t.keyword && !done.has(t.keyword)).length
+  if (pendingCount > TOPICS_CAP) {
+    const overflow = pendingCount - TOPICS_CAP
     const addedSet = new Set(added) // רעיונות שנוספו עכשיו — לא לגזום
-    const kept = []
+    // מהזנב פנימה. לפני שהתור מוין לפי ביקוש, "מתחילת המערך" היה גם "הישן
+    // ביותר"; אחרי המיון ההתחלה היא דווקא המבוקש ביותר, ולולאה קדימה מחקה
+    // בדיוק את הנושאים החזקים. נתפס אחרי שאשכול שלם עם חציון 1,300 נמחק.
+    const drop = new Set()
     let toDrop = overflow
-    for (const t of topics) {
-      const isDone = t && done.has(t.keyword)
-      const isNew = addedSet.has(t)
-      if (toDrop > 0 && !isDone && !isNew) { toDrop--; pruned++; continue } // גוזם ישן-ושלא-טופל
-      kept.push(t)
+    for (let i = topics.length - 1; i >= 0 && toDrop > 0; i--) {
+      const t = topics[i]
+      if (!t || done.has(t.keyword) || addedSet.has(t)) continue
+      drop.add(t); toDrop--; pruned++
     }
-    topics = kept
+    topics = topics.filter((t) => !drop.has(t))
   }
 
   // כתיבה רק אם השתנה משהו (אידמפוטנטי — ריצה חוזרת בלי רעיונות חדשים לא נוגעת בקובץ).
