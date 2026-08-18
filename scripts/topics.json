@@ -1,6 +1,24 @@
 [
   {
     "cluster": "seo-shopify",
+    "keyword": "תיקון שגיאות סכמה שופיפיי",
+    "title": "מדריך 2026: איך לתקן שגיאות סכמה (Schema) נפוצות בסרץ׳ קונסול",
+    "intent": "informational",
+    "head": "קידום אתרים",
+    "volume": 4400,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-general",
+    "keyword": "אסטרטגיות בניית קישורים",
+    "title": "בניית קישורים ב-2026: קניית קישורים מול Digital PR — מה עובד ומה מסכן את האתר",
+    "intent": "commercial",
+    "head": "קידום אתרים",
+    "volume": 4400,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-shopify",
     "keyword": "אפליקציות מהירות לשופיפיי",
     "title": "לא רק למחוק: 8 אפליקציות מומלצות שיאיצו את החנות שלכם ב-2026",
     "intent": "commercial",
@@ -19,10 +37,55 @@
   },
   {
     "cluster": "seo-shopify",
+    "keyword": "אפליקציות קישור פנימי שופיפיי",
+    "title": "קישור פנימי אוטומטי בשופיפיי: 5 אפליקציות שיחסכו לכם שעות עבודה",
+    "intent": "commercial",
+    "head": "שופיפיי",
+    "volume": 3600,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "הפניות 301 בשופיפיי",
+    "title": "ניהול הפניות 301 בשופיפיי: הכלי המובנה מול אפליקציות ייעודיות",
+    "intent": "commercial",
+    "head": "שופיפיי",
+    "volume": 3600,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "שיפור מהירות דפי קטגוריה",
+    "title": "דפי קטגוריה איטיים? 7 טכניקות להאצת מהירות טעינה ושיפור חווית משתמש",
+    "intent": "informational",
+    "head": "שופיפיי",
+    "volume": 3600,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-shopify",
     "keyword": "קידום אורגני אחרי בלאק פריידי",
     "title": "בלאק פריידי נגמר, מה עם ה-SEO? המדריך לטיפול בדפי מבצעים זמניים",
     "intent": "informational",
     "head": "קידום אורגני",
+    "volume": 1300,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "ניהול הפניות 301 בלאק פריידי",
+    "title": "אסטרטגיית 301 למבצעי נובמבר: למחזר, להפנות או למחוק דפי מבצע ישנים?",
+    "intent": "informational",
+    "head": "קידום אורגני",
+    "volume": 1300,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-general",
+    "keyword": "אופטימיזציה תקציב זחילה",
+    "title": "תקציב זחילה (Crawl Budget): המדריך המלא לאתרים גדולים וחנויות איקומרס",
+    "intent": "informational",
+    "head": "קידום אתרים אורגני",
     "volume": 1300,
     "demandSource": "ads"
   },
@@ -36,9 +99,36 @@
     "demandSource": "ads"
   },
   {
+    "cluster": "ecommerce",
+    "keyword": "שירות לקוחות בלאק פריידי",
+    "title": "מלחץ להזדמנות: הפיכת שירות הלקוחות של נובמבר למנוע שימור לקוחות חוזרים",
+    "intent": "commercial",
+    "head": "איקומרס",
+    "volume": 1000,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "מיקרו קופי לאיקומרס בעברית",
+    "title": "\"הוספה לסל\" או \"לקנייה\"? מיקרו-קופי בעברית שמגדיל המרות בחנות איקומרס",
+    "intent": "commercial",
+    "head": "איקומרס",
+    "volume": 1000,
+    "demandSource": "ads"
+  },
+  {
     "cluster": "seo-shopify",
     "keyword": "מחיקת עמודים ישנים בשופיפיי",
     "title": "איך למחוק מוצרים ודפים ישנים בשופיפיי בלי לרסק את הקידום האורגני",
+    "intent": "informational",
+    "head": "קידום אורגני בגוגל",
+    "volume": 880,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-general",
+    "keyword": "התמודדות עם עדכון גוגל",
+    "title": "עדכון אלגוריתם בגוגל? מדריך הישרדות: איך לזהות פגיעה ומה לעשות כדי להתאושש",
     "intent": "informational",
     "head": "קידום אורגני בגוגל",
     "volume": 880,
@@ -144,6 +234,42 @@
     "keyword": "עלות קידום אתר ווקומרס",
     "title": "WooCommerce מול Shopify: כמה באמת עולה SEO לאיקומרס ב-2026?",
     "intent": "commercial",
+    "head": "קידום אתרי וורדפרס",
+    "volume": 260,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "חנות באינסטגרם או אתר שופיפיי",
+    "title": "אינסטגרם מול שופיפיי ב-2026: מתי לעבור מ-DM לחנות אונליין עצמאית?",
+    "intent": "commercial",
+    "head": "חנות אונליין",
+    "volume": 260,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-general",
+    "keyword": "קידום אתרים עלות חודשית",
+    "title": "שירותי קידום אתרים: מודלים לתמחור ב-2026 (ריטיינר, פרויקט, שעתי) ומה לבחור",
+    "intent": "commercial",
+    "head": "שירותי קידום אתרים",
+    "volume": 260,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "wordpress",
+    "keyword": "תוסף SEO וורדפרס השוואה",
+    "title": "Rank Math מול Yoast SEO: השוואת תוספי ה-SEO לוורדפרס ב-2026",
+    "intent": "commercial",
+    "head": "קידום אתרי וורדפרס",
+    "volume": 260,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "wordpress",
+    "keyword": "ביקורת SEO אתר וורדפרס",
+    "title": "הזמינו ביקורת SEO לאתר וורדפרס: איתור הזדמנויות ובעיות טכניות",
+    "intent": "transactional",
     "head": "קידום אתרי וורדפרס",
     "volume": 260,
     "demandSource": "ads"
@@ -266,6 +392,24 @@
     "demandSource": "ads"
   },
   {
+    "cluster": "ecommerce",
+    "keyword": "שיווק חנות יד שניה אונליין",
+    "title": "מעבר למוצר: 5 אסטרטגיות לבניית אמון ומותג בחנות יד שניה / וינטג' אונליין",
+    "intent": "informational",
+    "head": "חנות יד שניה אונליין",
+    "volume": 210,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-general",
+    "keyword": "ביקורת SEO טכנית לאתר",
+    "title": "הזמן ביקורת SEO טכנית: גלה מה עוצר את האתר שלך מלהתקדם בגוגל",
+    "intent": "transactional",
+    "head": "קידום אתרים מקצועי",
+    "volume": 210,
+    "demandSource": "ads"
+  },
+  {
     "cluster": "geo-ai",
     "keyword": "geo מול seo",
     "title": "GEO מול SEO: מה ההבדל ולמה חנויות שופיפיי חייבות את שניהם ב-2026",
@@ -364,6 +508,15 @@
     "volume": 140,
     "demandSource": "ads",
     "headOverlap": 2
+  },
+  {
+    "cluster": "guides",
+    "keyword": "מיפוי מילות מפתח לשופיפיי",
+    "title": "צעד-אחר-צעד: איך ממפים מחקר מילות מפתח למבנה חנות שופיפיי (קטגוריות, מוצרים ובלוג)",
+    "intent": "transactional",
+    "head": "מילות מפתח",
+    "volume": 140,
+    "demandSource": "ads"
   },
   {
     "cluster": "ecommerce",
@@ -546,6 +699,33 @@
     "cluster": "wordpress",
     "keyword": "מבנה קישורים קבועים וורדפרס",
     "title": "המדריך למבנה קישורים (Permalinks) בוורדפרס: הגדרות מנצחות ל-SEO בעברית",
+    "intent": "informational",
+    "head": "קידום אורגני וורדפרס",
+    "volume": 70,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "יש תנועה אבל אין מכירות",
+    "title": "יש תנועה, אין מכירות: 6 סיבות למה גולשים לא קונים בחנות האיקומרס שלך (ואיך לתקן)",
+    "intent": "informational",
+    "head": "חנות איקומרס",
+    "volume": 70,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "כלי מילות מפתח השוואה",
+    "title": "Ahrefs מול Semrush: איזה כלי מילות מפתח הכי טוב לחנות שופיפיי ישראלית?",
+    "intent": "commercial",
+    "head": "כלי מילות מפתח",
+    "volume": 70,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "wordpress",
+    "keyword": "הטמעת סכמת מוצר ווקומרס",
+    "title": "מדריך Schema לווקומרס: איך להטמיע סכמת מוצר נכונה ולשפר CTR.",
     "intent": "informational",
     "head": "קידום אורגני וורדפרס",
     "volume": 70,
@@ -923,6 +1103,15 @@
   },
   {
     "cluster": "wordpress",
+    "keyword": "בחירת חברת קידום אתרים וורדפרס",
+    "title": "איך לבחור מקדם אתרי וורדפרס? 8 שאלות שחייבים לשאול (ומחירון 2026)",
+    "intent": "commercial",
+    "head": "קידום אתרים בוורדפרס",
+    "volume": 50,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "wordpress",
     "keyword": "קידום ווקומרס לבלאק פריידי",
     "title": "מדריך SEO עונתי: הכנת חנות WooCommerce לבלאק פריידי 2026 ו-Shopping IL",
     "intent": "informational",
@@ -936,6 +1125,15 @@
     "title": "הדירוגים בגוגל צנחו? מדריך אבחון ותיקון בעיות SEO נפוצות באתר וורדפרס",
     "intent": "transactional",
     "head": "קידום אתרים בגוגל וורדפרס",
+    "volume": 40,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "מחקר מילות מפתח בחינם לשופיפיי",
+    "title": "מדריך: איך לבצע מחקר מילות מפתח מלא לחנות שופיפיי עם כלים חינמיים בלבד",
+    "intent": "informational",
+    "head": "מחקר מילות מפתח חינם",
     "volume": 40,
     "demandSource": "ads"
   },
@@ -1058,6 +1256,33 @@
     "volume": 30,
     "demandSource": "ads",
     "headOverlap": 2
+  },
+  {
+    "cluster": "guides",
+    "keyword": "עלות כלי מילות מפתח",
+    "title": "כמה עולה כלי מחקר מילות מפתח? השוואת תמחור וחבילות Ahrefs ו-Semrush לשנת 2026",
+    "intent": "commercial",
+    "head": "כלי מחקר מילות מפתח",
+    "volume": 30,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "מדריך מתכנן מילות המפתח",
+    "title": "המדריך המעשי: איך להשתמש במתכנן מילות המפתח של גוגל למציאת הזדמנויות בחנות שופיפיי",
+    "intent": "informational",
+    "head": "מתכנן מילות מפתח",
+    "volume": 30,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "wordpress",
+    "keyword": "קידום אתר וורדפרס לבד",
+    "title": "קידום אתר וורדפרס לבד: צ'קליסט משימות SEO חודשי למתחילים.",
+    "intent": "informational",
+    "head": "קידום אתר וורדפרס בגוגל",
+    "volume": 30,
+    "demandSource": "ads"
   },
   {
     "cluster": "geo-ai",
