@@ -19,6 +19,24 @@
   },
   {
     "cluster": "seo-shopify",
+    "keyword": "קידום חנות שופיפיי עלות",
+    "title": "קידום אורגני לשופיפיי: התמחור המלא מ-DIY ועד סוכנות ב-2026",
+    "intent": "commercial",
+    "head": "קידום אתרים",
+    "volume": 4400,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-general",
+    "keyword": "הצעת מחיר קידום אתרים לחגים",
+    "title": "קבל הצעת מחיר לקידום עונתי: חבילת SEO ממוקדת לבלאק פריידי וסייבר מאנדיי 2026",
+    "intent": "transactional",
+    "head": "קידום אתרים",
+    "volume": 4400,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-shopify",
     "keyword": "אפליקציות מהירות לשופיפיי",
     "title": "לא רק למחוק: 8 אפליקציות מומלצות שיאיצו את החנות שלכם ב-2026",
     "intent": "commercial",
@@ -90,6 +108,33 @@
     "demandSource": "ads"
   },
   {
+    "cluster": "seo-shopify",
+    "keyword": "ריענון תוכן SEO לדפי מוצר",
+    "title": "מדריך ריענון תוכן: איך להזניק דירוגים של דפי מוצר וקטגוריה ישנים",
+    "intent": "informational",
+    "head": "קידום אתרים אורגני",
+    "volume": 1300,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "ביקורת קישורים פנימיים שופיפיי",
+    "title": "מדריך לביקורת קישורים פנימיים בחנות שופיפיי: איך לאתר ולתקן הזדמנויות אבודות",
+    "intent": "informational",
+    "head": "קידום אתרים אורגניים",
+    "volume": 1300,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-general",
+    "keyword": "סכמות מתקדמות לאתר",
+    "title": "סכמות שאתה לא משתמש בהן: 10 סוגי Structured Data שיביאו לך Rich Results ב-2026",
+    "intent": "informational",
+    "head": "קידום אתרים אורגני",
+    "volume": 1300,
+    "demandSource": "ads"
+  },
+  {
     "cluster": "ecommerce",
     "keyword": "שיווק אורגני בלאק פריידי",
     "title": "נובמבר אורגני: אסטרטגיית תוכן עונתית שמביאה תנועה לפני, במהלך ואחרי החג",
@@ -148,6 +193,15 @@
     "cluster": "seo-general",
     "keyword": "מה זה קידום אתרים אורגני",
     "title": "מה זה SEO (קידום אתרים אורגני)? המדריך המלא לעסקים בישראל",
+    "intent": "informational",
+    "head": "מה זה seo",
+    "volume": 590,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-general",
+    "keyword": "מה זה E-E-A-T",
+    "title": "E-E-A-T: המדריך המלא לבניית סמכות ואמינות מול גוגל ב-2026",
     "intent": "informational",
     "head": "מה זה seo",
     "volume": 590,
@@ -270,6 +324,42 @@
     "keyword": "ביקורת SEO אתר וורדפרס",
     "title": "הזמינו ביקורת SEO לאתר וורדפרס: איתור הזדמנויות ובעיות טכניות",
     "intent": "transactional",
+    "head": "קידום אתרי וורדפרס",
+    "volume": 260,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "דרופשיפינג מול מלאי בישראל",
+    "title": "דרופשיפינג או מלאי פרטי? המודל העסקי הנכון לחנות אונליין ישראלית ב-2026",
+    "intent": "commercial",
+    "head": "חנות אונליין",
+    "volume": 260,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "תבנית מחקר מילות מפתח",
+    "title": "להורדה: תבנית Google Sheets מקצועית למחקר ומיפוי מילות מפתח בחנות שופיפיי",
+    "intent": "transactional",
+    "head": "מחקר מילות מפתח",
+    "volume": 260,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "wordpress",
+    "keyword": "תיקון INP בווקומרס",
+    "title": "מדריך 2026: כך תתקנו בעיות INP באתר WooCommerce איטי",
+    "intent": "informational",
+    "head": "קידום אתרי וורדפרס",
+    "volume": 260,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "wordpress",
+    "keyword": "קידום בינלאומי ווקומרס",
+    "title": "WPML מול Polylang: מהו התוסף הטוב ביותר ל-SEO בינלאומי בווקומרס?",
+    "intent": "commercial",
     "head": "קידום אתרי וורדפרס",
     "volume": 260,
     "demandSource": "ads"
@@ -410,6 +500,51 @@
     "demandSource": "ads"
   },
   {
+    "cluster": "seo-shopify",
+    "keyword": "שופיפיי סכמה מובנית או אפליקציה",
+    "title": "סכמת מוצר בשופיפיי: האם להסתפק במובנה או שחייבים אפליקציית SEO ייעודית?",
+    "intent": "commercial",
+    "head": "קידום אתרים seo",
+    "volume": 210,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "איך לבחור חברת קידום אתרים לשופיפיי",
+    "title": "בחירת סוכנות SEO לשופיפיי: 10 שאלות חובה לשאול לפני שסוגרים חוזה",
+    "intent": "transactional",
+    "head": "חברות קידום",
+    "volume": 210,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שיווק מוצרים יד שניה",
+    "title": "מציאה או נפילה? איך לצלם, לתאר ולתמחר פריטי יד-שניה כדי שייחטפו אונליין",
+    "intent": "informational",
+    "head": "חנות יד שניה אונליין",
+    "volume": 210,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-general",
+    "keyword": "שיפור מהירות אתר בגוגל",
+    "title": "מדריך Core Web Vitals 2026: איך לעבור את מבחן המהירות של גוגל (LCP, INP, CLS)",
+    "intent": "informational",
+    "head": "מהירות אתר",
+    "volume": 210,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-general",
+    "keyword": "איך לבחור חברת קידום אתרים",
+    "title": "תבנית בריף לחברת קידום אתרים: איך להגדיר מטרות ולקבל הצעת מחיר מדויקת",
+    "intent": "commercial",
+    "head": "חברות קידום",
+    "volume": 210,
+    "demandSource": "ads"
+  },
+  {
     "cluster": "geo-ai",
     "keyword": "geo מול seo",
     "title": "GEO מול SEO: מה ההבדל ולמה חנויות שופיפיי חייבות את שניהם ב-2026",
@@ -519,6 +654,15 @@
     "demandSource": "ads"
   },
   {
+    "cluster": "guides",
+    "keyword": "כלים לאיתור שאלות גולשים",
+    "title": "מדריך: איך למצוא ולנתח מילות מפתח של שאלות (PAA) כדי לנצח ב-AI Overviews",
+    "intent": "informational",
+    "head": "מילות מפתח",
+    "volume": 140,
+    "demandSource": "ads"
+  },
+  {
     "cluster": "ecommerce",
     "keyword": "שיווק לחגים באיקומרס",
     "title": "לוח השנה השיווקי: אסטרטגיית תוכן אורגני לחגים ומועדים בישראל",
@@ -612,6 +756,15 @@
     "cluster": "ecommerce",
     "keyword": "שיווק חנות בוטיק אונליין",
     "title": "מעבר לנישה: שיווק תוכן שמייצר ביקוש לחנות בוטיק עצמאית",
+    "intent": "informational",
+    "head": "בוטיק בגדים אונליין",
+    "volume": 90,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "ניתוח שיווק בוטיק אונליין",
+    "title": "הצופן של הבוטיקים: מה אפשר ללמוד מהשיווק האורגני של חנויות הבוטיק המצליחות בישראל",
     "intent": "informational",
     "head": "בוטיק בגדים אונליין",
     "volume": 90,
@@ -727,6 +880,33 @@
     "keyword": "הטמעת סכמת מוצר ווקומרס",
     "title": "מדריך Schema לווקומרס: איך להטמיע סכמת מוצר נכונה ולשפר CTR.",
     "intent": "informational",
+    "head": "קידום אורגני וורדפרס",
+    "volume": 70,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "מיחזור תוכן לאיקומרס",
+    "title": "מאמר אחד, 7 נכסים: המדריך המלא למיחזור תוכן והפצתו בערוצים אורגניים לחנות איקומרס",
+    "intent": "informational",
+    "head": "אתר מכירות אונליין",
+    "volume": 70,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "חלופות לכלי מילות מפתח",
+    "title": "Ahrefs ו-Semrush יקרים? 7 חלופות מעולות (כולל חינמיות) לשנת 2026",
+    "intent": "commercial",
+    "head": "כלי מילות מפתח",
+    "volume": 70,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "wordpress",
+    "keyword": "תוספי קאש לוורדפרס",
+    "title": "WP Rocket מול FlyingPress: השוואת תוספי המהירות ל-SEO ב-2026",
+    "intent": "commercial",
     "head": "קידום אורגני וורדפרס",
     "volume": 70,
     "demandSource": "ads"
@@ -1111,6 +1291,24 @@
     "demandSource": "ads"
   },
   {
+    "cluster": "ecommerce",
+    "keyword": "שיווק מקומי לחנות אונליין",
+    "title": "מהאונליין לשכונה: 5 טקטיקות שיווק מקומי שיעיפו את המכירות בחנות האונליין הישראלית שלך",
+    "intent": "informational",
+    "head": "חנות און ליין",
+    "volume": 50,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "עלות כלי קידום אתרים",
+    "title": "כמה עולה כלי קידום אתרים? השוואת מחירים ותוכניות של כלים פופולריים",
+    "intent": "commercial",
+    "head": "כלי קידום אתרים",
+    "volume": 50,
+    "demandSource": "ads"
+  },
+  {
     "cluster": "wordpress",
     "keyword": "קידום ווקומרס לבלאק פריידי",
     "title": "מדריך SEO עונתי: הכנת חנות WooCommerce לבלאק פריידי 2026 ו-Shopping IL",
@@ -1134,6 +1332,24 @@
     "title": "מדריך: איך לבצע מחקר מילות מפתח מלא לחנות שופיפיי עם כלים חינמיים בלבד",
     "intent": "informational",
     "head": "מחקר מילות מפתח חינם",
+    "volume": 40,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "wordpress",
+    "keyword": "ביקורת SEO לווקומרס",
+    "title": "צ'קליסט ביקורת SEO לחנות WooCommerce: 50+ נקודות לבדיקה עצמית",
+    "intent": "transactional",
+    "head": "קידום אתרים וורדפרס",
+    "volume": 40,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "wordpress",
+    "keyword": "קידום חנות ווקומרס עם בלוג",
+    "title": "מכונת תוכן: איך להשתמש בבלוג וורדפרס כדי להכפיל את המכירות בווקומרס",
+    "intent": "informational",
+    "head": "קידום אתרים בגוגל וורדפרס",
     "volume": 40,
     "demandSource": "ads"
   },
@@ -1281,6 +1497,15 @@
     "title": "קידום אתר וורדפרס לבד: צ'קליסט משימות SEO חודשי למתחילים.",
     "intent": "informational",
     "head": "קידום אתר וורדפרס בגוגל",
+    "volume": 30,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "כלי מחקר מילות מפתח AI",
+    "title": "מדריך: איך לבצע מחקר מתחרים מתקדם עם 5 כלי AI שלא הכרתם",
+    "intent": "informational",
+    "head": "כלי מחקר מילות מפתח",
     "volume": 30,
     "demandSource": "ads"
   },
