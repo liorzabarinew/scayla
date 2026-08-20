@@ -82,6 +82,24 @@
   },
   {
     "cluster": "seo-shopify",
+    "keyword": "השוואת אפליקציות SEO לשופיפיי",
+    "title": "קרב האפליקציות: 3 כלי ה-SEO המובילים לשופיפיי ב-2026 במבחן התוצאה",
+    "intent": "commercial",
+    "head": "שופיפיי",
+    "volume": 3600,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "אפליקציית הפניות 301 שופיפיי",
+    "title": "הכלי המובנה לא מספיק? 5 סימנים שהגיע הזמן לאפליקציית 301 מתקדמת לשופיפיי",
+    "intent": "transactional",
+    "head": "שופיפיי",
+    "volume": 3600,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-shopify",
     "keyword": "קידום אורגני אחרי בלאק פריידי",
     "title": "בלאק פריידי נגמר, מה עם ה-SEO? המדריך לטיפול בדפי מבצעים זמניים",
     "intent": "informational",
@@ -135,6 +153,33 @@
     "demandSource": "ads"
   },
   {
+    "cluster": "seo-shopify",
+    "keyword": "קידום אורגני בלאק פריידי",
+    "title": "צ'קליסט SEO ומוכנות תוכן לבלאק פריידי 2026 בחנות השופיפיי שלך",
+    "intent": "informational",
+    "head": "קידום אורגני",
+    "volume": 1300,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-general",
+    "keyword": "ניתוח לוגים SEO",
+    "title": "מדריך ניתוח לוגים (Log File Analysis) ב-2026: כך תגלו איך גוגל באמת רואה את האתר שלכם",
+    "intent": "informational",
+    "head": "קידום אתרים אורגני",
+    "volume": 1300,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-general",
+    "keyword": "גיזום תוכן SEO",
+    "title": "פחות זה יותר: מדריך גיזום תוכן (Content Pruning) לשיפור דירוגים אחרי עדכון אלגוריתם",
+    "intent": "informational",
+    "head": "קידום אורגני",
+    "volume": 1300,
+    "demandSource": "ads"
+  },
+  {
     "cluster": "ecommerce",
     "keyword": "שיווק אורגני בלאק פריידי",
     "title": "נובמבר אורגני: אסטרטגיית תוכן עונתית שמביאה תנועה לפני, במהלך ואחרי החג",
@@ -156,6 +201,24 @@
     "cluster": "ecommerce",
     "keyword": "מיקרו קופי לאיקומרס בעברית",
     "title": "\"הוספה לסל\" או \"לקנייה\"? מיקרו-קופי בעברית שמגדיל המרות בחנות איקומרס",
+    "intent": "commercial",
+    "head": "איקומרס",
+    "volume": 1000,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "תוכנית שיווק אורגני נובמבר איקומרס",
+    "title": "סיירת נובמבר: תוכנית העבודה האורגנית המלאה להכנת חנות איקומרס ישראלית לבלאק פריידי",
+    "intent": "transactional",
+    "head": "איקומרס",
+    "volume": 1000,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "חווית אנבוקסינג איקומרס ישראל",
+    "title": "השיווק מתחיל כשהקופסה נפתחת: המדריך ליצירת חווית Unboxing שגורמת ללקוחות לשתף ולקנות שוב",
     "intent": "commercial",
     "head": "איקומרס",
     "volume": 1000,
@@ -237,6 +300,15 @@
     "demandSource": "ads"
   },
   {
+    "cluster": "seo-general",
+    "keyword": "בדיקת עומסים לאתר",
+    "title": "מבחן הלחץ של נובמבר: איך לבצע בדיקת עומסים ולוודא שהאתר לא קורס בבלאק פריידי?",
+    "intent": "informational",
+    "head": "בדיקת מהירות אתר",
+    "volume": 480,
+    "demandSource": "ads"
+  },
+  {
     "cluster": "geo-ai",
     "keyword": "עלות ציטוט AI מול קליק",
     "title": "כמה שווה ציטוט ב-AI? מודל לחישוב עלות-תועלת מול קליק ממומן בגוגל",
@@ -245,6 +317,15 @@
     "volume": 390,
     "demandSource": "ads",
     "headOverlap": 2
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "תיקון מפת אתר שופיפיי",
+    "title": "מפת האתר האוטומטית של שופיפיי שבורה? מדריך לאיתור ותיקון בעיות ב-sitemap.xml",
+    "intent": "informational",
+    "head": "קידום אתר",
+    "volume": 390,
+    "demandSource": "ads"
   },
   {
     "cluster": "seo-shopify",
@@ -359,6 +440,51 @@
     "cluster": "wordpress",
     "keyword": "קידום בינלאומי ווקומרס",
     "title": "WPML מול Polylang: מהו התוסף הטוב ביותר ל-SEO בינלאומי בווקומרס?",
+    "intent": "commercial",
+    "head": "קידום אתרי וורדפרס",
+    "volume": 260,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "בניית אמון חנות אונליין חדשה",
+    "title": "מאפס לאמון: 7 מהלכים קריטיים לבניית אמינות בחנות אונליין ישראלית חדשה (בלי היסטוריה)",
+    "intent": "informational",
+    "head": "חנות אונליין",
+    "volume": 260,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "מחקר מילות מפתח לחגים",
+    "title": "מדריך מחקר מילות מפתח לחגי נובמבר 2026: מאיתור טרנדים ועד מיפוי לדפי נחיתה",
+    "intent": "informational",
+    "head": "מחקר מילות מפתח",
+    "volume": 260,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-general",
+    "keyword": "תיקון בעיות אינדוקס",
+    "title": "האתר \"נעלם\" מגוגל? קבל אבחון והצעת מחיר לתיקון בעיות אינדוקס ו-Crawl Errors",
+    "intent": "transactional",
+    "head": "שירותי קידום אתרים",
+    "volume": 260,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "wordpress",
+    "keyword": "קידום אתר אלמנטור",
+    "title": "קידום אתר אלמנטור: 7 טעויות SEO נפוצות (ואיך לתקן אותן ב-2026)",
+    "intent": "informational",
+    "head": "קידום אתרי וורדפרס",
+    "volume": 260,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "wordpress",
+    "keyword": "שיפור חיפוש פנימי ווקומרס",
+    "title": "FiboSearch מול Ivory Search: איך לשדרג את החיפוש בווקומרס ולהגדיל מכירות",
     "intent": "commercial",
     "head": "קידום אתרי וורדפרס",
     "volume": 260,
@@ -541,6 +667,24 @@
     "title": "תבנית בריף לחברת קידום אתרים: איך להגדיר מטרות ולקבל הצעת מחיר מדויקת",
     "intent": "commercial",
     "head": "חברות קידום",
+    "volume": 210,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "ביקורת SEO דף מוצר שופיפיי",
+    "title": "תבנית הביקורת שתזניק מכירות: איך לבצע ביקורת SEO לדף מוצר בשופיפיי ב-15 דקות",
+    "intent": "informational",
+    "head": "קידום אתרים seo",
+    "volume": 210,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-general",
+    "keyword": "כלי ניתוח מתחרים SEO",
+    "title": "Ahrefs מול SEMrush: השוואת הכלים למחקר מתחרים בשוק הישראלי ומה באמת צריך ב-2026",
+    "intent": "commercial",
+    "head": "קידום אתרים מקצועי",
     "volume": 210,
     "demandSource": "ads"
   },
@@ -907,6 +1051,33 @@
     "keyword": "תוספי קאש לוורדפרס",
     "title": "WP Rocket מול FlyingPress: השוואת תוספי המהירות ל-SEO ב-2026",
     "intent": "commercial",
+    "head": "קידום אורגני וורדפרס",
+    "volume": 70,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "תמחור פסיכולוגי אתר מכירות אונליין",
+    "title": "לא ₪100, אלא ₪99: המדריך לתמחור פסיכולוגי שמגדיל המרות באתר מכירות אונליין",
+    "intent": "commercial",
+    "head": "אתר מכירות אונליין",
+    "volume": 70,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "בחירת כלי מילות מפתח",
+    "title": "כלי מילות מפתח: איזה פתרון מתאים לחנות שופיפיי מתחילה, צומחת או מבוססת?",
+    "intent": "commercial",
+    "head": "כלי מילות מפתח",
+    "volume": 70,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "wordpress",
+    "keyword": "קידום וריאציות מוצר ווקומרס",
+    "title": "קידום וריאציות בווקומרס: אסטרטגיית SEO למוצרים עם צבעים ומידות.",
+    "intent": "informational",
     "head": "קידום אורגני וורדפרס",
     "volume": 70,
     "demandSource": "ads"
@@ -1310,6 +1481,15 @@
   },
   {
     "cluster": "wordpress",
+    "keyword": "אבטחת וורדפרס SEO",
+    "title": "האתר נפרץ והדירוגים צנחו? מדריך חירום ל-SEO ואבטחת אתרי וורדפרס.",
+    "intent": "informational",
+    "head": "קידום אתרים בוורדפרס",
+    "volume": 50,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "wordpress",
     "keyword": "קידום ווקומרס לבלאק פריידי",
     "title": "מדריך SEO עונתי: הכנת חנות WooCommerce לבלאק פריידי 2026 ו-Shopping IL",
     "intent": "informational",
@@ -1348,6 +1528,15 @@
     "cluster": "wordpress",
     "keyword": "קידום חנות ווקומרס עם בלוג",
     "title": "מכונת תוכן: איך להשתמש בבלוג וורדפרס כדי להכפיל את המכירות בווקומרס",
+    "intent": "informational",
+    "head": "קידום אתרים בגוגל וורדפרס",
+    "volume": 40,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "wordpress",
+    "keyword": "חיבור GA4 לווקומרס",
+    "title": "חיבור Google Analytics 4 ל-WooCommerce: המדריך המלא למדידת ROI מ-SEO",
     "intent": "informational",
     "head": "קידום אתרים בגוגל וורדפרס",
     "volume": 40,
@@ -1506,6 +1695,15 @@
     "title": "מדריך: איך לבצע מחקר מתחרים מתקדם עם 5 כלי AI שלא הכרתם",
     "intent": "informational",
     "head": "כלי מחקר מילות מפתח",
+    "volume": 30,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "השקת חנות בגדים און ליין לעוקבים",
+    "title": "יש לכם קהילה? יש לכם יתרון: כך תהפכו עוקבים באינסטגרם ללקוחות הראשונים בחנות הבגדים החדשה",
+    "intent": "transactional",
+    "head": "חנות בגדים און ליין",
     "volume": 30,
     "demandSource": "ads"
   },
