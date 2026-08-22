@@ -46,6 +46,24 @@
   },
   {
     "cluster": "seo-shopify",
+    "keyword": "שיפור INP חנות שופיפיי",
+    "title": "ציון ה-INP שלכם אדום? מדריך מעשי לאיתור ותיקון איטיות בחנויות שופיפיי",
+    "intent": "informational",
+    "head": "קידום אתרים",
+    "volume": 4400,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-general",
+    "keyword": "התאוששות מעדכון גוגל",
+    "title": "האתר צנח אחרי עדכון ליבה? מדריך מעשי לניתוח הפגיעה ובניית תכנית התאוששות",
+    "intent": "informational",
+    "head": "קידום אתרים",
+    "volume": 4400,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-shopify",
     "keyword": "אפליקציות מהירות לשופיפיי",
     "title": "לא רק למחוק: 8 אפליקציות מומלצות שיאיצו את החנות שלכם ב-2026",
     "intent": "commercial",
@@ -130,6 +148,33 @@
     "keyword": "בעיות SEO בפילטרים של שופיפיי",
     "title": "מלכודות SEO בסינון מוצרים: איך לטפל בתוכן כפול ובזבוז תקציב זחילה",
     "intent": "informational",
+    "head": "שופיפיי",
+    "volume": 3600,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "שינוי כתובת מוצר שופיפיי",
+    "title": "משנים שם או URL למוצר בשופיפיי? מדריך חובה למניעת שגיאות 404 ואיבוד דירוגים",
+    "intent": "informational",
+    "head": "שופיפיי",
+    "volume": 3600,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "מטאפילדס לקטגוריות שופיפיי",
+    "title": "מעבר לתיאור הבנאלי: שימוש ב-Metafields להעשרת דפי קטגוריה ושיפור ה-SEO",
+    "intent": "informational",
+    "head": "שופיפיי",
+    "volume": 3600,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "אופטימיזציית תמונות שופיפיי השוואה",
+    "title": "דוחס אוטומטי מול ידני: איזו אסטרטגיית אופטימיזציית תמונות תאיץ את חנות השופיפיי שלך?",
+    "intent": "commercial",
     "head": "שופיפיי",
     "volume": 3600,
     "demandSource": "ads"
@@ -228,6 +273,15 @@
     "cluster": "seo-general",
     "keyword": "אשכולות תוכן SEO",
     "title": "המדריך לבניית סמכות נושאית ומבנה אתר נכון עם Topic Clusters",
+    "intent": "informational",
+    "head": "קידום אתרים אורגני",
+    "volume": 1300,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-shopify",
+    "keyword": "קידום חיפוש ויזואלי שופיפיי",
+    "title": "חיפוש ויזואלי בשופיפיי: איך להפוך חיפוש בתמונות למנוע טראפיק אורגני חדש",
     "intent": "informational",
     "head": "קידום אתרים אורגני",
     "volume": 1300,
@@ -390,6 +444,15 @@
     "demandSource": "ads"
   },
   {
+    "cluster": "seo-general",
+    "keyword": "ניתוח דוח מהירות אתר",
+    "title": "קיבלת ציון נמוך ב-PageSpeed Insights? מדריך לפענוח הדוח ותיקון הבעיות",
+    "intent": "informational",
+    "head": "בדיקת מהירות אתר",
+    "volume": 480,
+    "demandSource": "ads"
+  },
+  {
     "cluster": "geo-ai",
     "keyword": "עלות ציטוט AI מול קליק",
     "title": "כמה שווה ציטוט ב-AI? מודל לחישוב עלות-תועלת מול קליק ממומן בגוגל",
@@ -414,6 +477,24 @@
     "title": "מה נכון טכנית לקידום אתרים ב-2026?",
     "intent": "commercial",
     "head": "קידום אתר",
+    "volume": 390,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-general",
+    "keyword": "אסטרטגיית קישורים פנימיים",
+    "title": "ארכיטקטורת קישורים פנימיים: איך לתכנן מבנה חכם שמשפר דירוגים וקל להרחבה",
+    "intent": "informational",
+    "head": "קידום אתר",
+    "volume": 390,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-general",
+    "keyword": "ssr מול csr ל-seo",
+    "title": "SSR מול CSR: איזו שיטת רינדור עדיפה לקידום בעברית ואיך לבחור נכון לאתר שלך?",
+    "intent": "commercial",
+    "head": "קידום אתרים אורגני בגוגל",
     "volume": 390,
     "demandSource": "ads"
   },
@@ -612,6 +693,42 @@
     "keyword": "קידום אתר Bricks וורדפרס",
     "title": "Bricks מול אלמנטור: איזה בילדר טוב יותר לקידום אתרי וורדפרס ומהירות ב-2026?.",
     "intent": "commercial",
+    "head": "קידום אתרי וורדפרס",
+    "volume": 260,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שיווק לייב שופינג בלאק פריידי",
+    "title": "נובמבר LIVE: המדריך המלא לשיווק מבוסס Live Shopping בחנות Shopify ישראלית",
+    "intent": "informational",
+    "head": "חנות אונליין",
+    "volume": 260,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "מחקר מילות מפתח למוצר חדש",
+    "title": "איך מבצעים מחקר מילות מפתח למוצר שעדיין לא קיים (או שאין לו חיפושים)",
+    "intent": "informational",
+    "head": "מחקר מילות מפתח",
+    "volume": 260,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "seo-general",
+    "keyword": "כמה עולה בניית קישורים",
+    "title": "מחיר בניית קישורים ב-2026: כמה עולה קישור איכותי ואיך להימנע מרכישת זבל?",
+    "intent": "commercial",
+    "head": "שירותי קידום אתרים",
+    "volume": 260,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "wordpress",
+    "keyword": "קידום חנות ווקומרס headless",
+    "title": "ווקומרס Headless 2026: המדריך המלא ל-SEO באתרים מבוססי API",
+    "intent": "informational",
     "head": "קידום אתרי וורדפרס",
     "volume": 260,
     "demandSource": "ads"
@@ -824,6 +941,15 @@
     "demandSource": "ads"
   },
   {
+    "cluster": "ecommerce",
+    "keyword": "שיווק מוצרים יחידים במלאי",
+    "title": "שיווק בעידן ה-One-Off: איך לייצר באזז ותנועה לפריטים שלא יחזרו למלאי",
+    "intent": "informational",
+    "head": "חנות יד שניה אונליין",
+    "volume": 210,
+    "demandSource": "ads"
+  },
+  {
     "cluster": "geo-ai",
     "keyword": "geo מול seo",
     "title": "GEO מול SEO: מה ההבדל ולמה חנויות שופיפיי חייבות את שניהם ב-2026",
@@ -960,6 +1086,15 @@
     "demandSource": "ads"
   },
   {
+    "cluster": "guides",
+    "keyword": "כמה שווה מילת מפתח",
+    "title": "המדריך לחישוב ROI פוטנציאלי על מילות מפתח לפני שמשקיעים שקל בתוכן",
+    "intent": "commercial",
+    "head": "מילות מפתח",
+    "volume": 140,
+    "demandSource": "ads"
+  },
+  {
     "cluster": "ecommerce",
     "keyword": "שיווק לחגים באיקומרס",
     "title": "לוח השנה השיווקי: אסטרטגיית תוכן אורגני לחגים ומועדים בישראל",
@@ -1062,6 +1197,15 @@
     "cluster": "ecommerce",
     "keyword": "ניתוח שיווק בוטיק אונליין",
     "title": "הצופן של הבוטיקים: מה אפשר ללמוד מהשיווק האורגני של חנויות הבוטיק המצליחות בישראל",
+    "intent": "informational",
+    "head": "בוטיק בגדים אונליין",
+    "volume": 90,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "שיווק חנות פופ אפ",
+    "title": "מהפופ-אפ לאונליין: איך להפוך אירוע פיזי למנוע תנועה ומכירות לחנות הבוטיק שלך",
     "intent": "informational",
     "head": "בוטיק בגדים אונליין",
     "volume": 90,
@@ -1258,6 +1402,42 @@
     "keyword": "קידום דפי מבצע ווקומרס",
     "title": "בלאק פריידי בווקומרס: איך ליצור דפי מבצע זמניים בלי להרוס את ה-SEO הקבוע.",
     "intent": "informational",
+    "head": "קידום אורגני וורדפרס",
+    "volume": 70,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "חנות שופיפיי או למכור במרקטפלייס",
+    "title": "חנות Shopify עצמאית vs. מכירה במרקטפלייס (טרמינל X, עזריאלי): מה נכון לאיקומרס ישראלי ב-2026?",
+    "intent": "commercial",
+    "head": "חנות איקומרס",
+    "volume": 70,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "ecommerce",
+    "keyword": "איך להביא מכירות ראשונות לאתר",
+    "title": "השקת רעם: 5 מהלכים אורגניים להשגת 10 המכירות הראשונות בחנות Shopify חדשה",
+    "intent": "transactional",
+    "head": "אתר מכירות אונליין",
+    "volume": 70,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "wordpress",
+    "keyword": "אוטומציות SEO וורדפרס",
+    "title": "עוזר SEO אוטומטי: 7 תהליכי קידום בוורדפרס שאפשר להפסיק לעשות ידנית",
+    "intent": "informational",
+    "head": "קידום אורגני וורדפרס",
+    "volume": 70,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "wordpress",
+    "keyword": "טיפול בסינון מוצרים ווקומרס",
+    "title": "סיוט הפילטרים בווקומרס: איך לנהל ניווט פאסטות (Faceted) בלי לפגוע ב-SEO",
+    "intent": "commercial",
     "head": "קידום אורגני וורדפרס",
     "volume": 70,
     "demandSource": "ads"
@@ -1687,6 +1867,33 @@
     "demandSource": "ads"
   },
   {
+    "cluster": "guides",
+    "keyword": "מחקר מילות מפתח ויזואלי",
+    "title": "המדריך ל-Google Lens: איך להפוך תמונות מוצר בשופיפיי למגנט לקוחות וציטוטים",
+    "intent": "informational",
+    "head": "כלי קידום אתרים",
+    "volume": 50,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "guides",
+    "keyword": "כלי מחקר קהלים",
+    "title": "מעבר לחיפושים: 5 כלים למחקר קהלי יעד שיחשפו מי הלקוחות שלכם באמת",
+    "intent": "commercial",
+    "head": "כלי קידום אתרים",
+    "volume": 50,
+    "demandSource": "ads"
+  },
+  {
+    "cluster": "wordpress",
+    "keyword": "קידום טכני ווקומרס בלאק פריידי",
+    "title": "צ'קליסט SEO טכני לבלאק פריידי בווקומרס: מוכנות שרתים, סכמות ומהירות",
+    "intent": "informational",
+    "head": "קידום אתרים בוורדפרס",
+    "volume": 50,
+    "demandSource": "ads"
+  },
+  {
     "cluster": "wordpress",
     "keyword": "קידום ווקומרס לבלאק פריידי",
     "title": "מדריך SEO עונתי: הכנת חנות WooCommerce לבלאק פריידי 2026 ו-Shopping IL",
@@ -1715,46 +1922,10 @@
   },
   {
     "cluster": "wordpress",
-    "keyword": "ביקורת SEO לווקומרס",
-    "title": "צ'קליסט ביקורת SEO לחנות WooCommerce: 50+ נקודות לבדיקה עצמית",
-    "intent": "transactional",
+    "keyword": "קידום תמונות מוצר ווקומרס",
+    "title": "קידום תמונות בווקומרס: מ-ALT טקסט ועד WebP וסכמת ImageObject",
+    "intent": "informational",
     "head": "קידום אתרים וורדפרס",
-    "volume": 40,
-    "demandSource": "ads"
-  },
-  {
-    "cluster": "wordpress",
-    "keyword": "קידום חנות ווקומרס עם בלוג",
-    "title": "מכונת תוכן: איך להשתמש בבלוג וורדפרס כדי להכפיל את המכירות בווקומרס",
-    "intent": "informational",
-    "head": "קידום אתרים בגוגל וורדפרס",
-    "volume": 40,
-    "demandSource": "ads"
-  },
-  {
-    "cluster": "wordpress",
-    "keyword": "חיבור GA4 לווקומרס",
-    "title": "חיבור Google Analytics 4 ל-WooCommerce: המדריך המלא למדידת ROI מ-SEO",
-    "intent": "informational",
-    "head": "קידום אתרים בגוגל וורדפרס",
-    "volume": 40,
-    "demandSource": "ads"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "מחקר מילות מפתח באמזון",
-    "title": "אמזון, Asos ו-Etsy: איך לבצע מחקר מילות מפתח במרקטפלייסים ולנצח אותם בשופיפיי",
-    "intent": "commercial",
-    "head": "מחקר מילות מפתח בגוגל",
-    "volume": 40,
-    "demandSource": "ads"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "ביקורת SEO עצמאית",
-    "title": "להורדה: צ'קליסט DIY לביקורת מחקר מילות מפתח בחנות שופיפיי (15 דקות ויש לך תוכנית)",
-    "intent": "transactional",
-    "head": "מחקר מילות מפתח חינם",
     "volume": 40,
     "demandSource": "ads"
   },
@@ -1859,76 +2030,11 @@
     "headOverlap": 2
   },
   {
-    "cluster": "geo-ai",
-    "keyword": "קידום מדריכי מתנות ב-AI",
-    "title": "בלאק פריידי 2026: כך תהפכו את מדריך המתנות שלכם למקור הראשי של Perplexity",
-    "intent": "informational",
-    "head": "בלאק פריידי חנויות",
-    "volume": 30,
-    "demandSource": "ads",
-    "headOverlap": 2
-  },
-  {
     "cluster": "guides",
-    "keyword": "שופיפיי קולאבס מדריך",
-    "title": "המדריך המעשי ל-Shopify Collabs: איך להקים מערך שיווק משפיענים מתוך החנות",
-    "intent": "informational",
-    "head": "shopify collabs",
-    "volume": 30,
-    "demandSource": "ads",
-    "headOverlap": 2
-  },
-  {
-    "cluster": "guides",
-    "keyword": "עלות כלי מילות מפתח",
-    "title": "כמה עולה כלי מחקר מילות מפתח? השוואת תמחור וחבילות Ahrefs ו-Semrush לשנת 2026",
-    "intent": "commercial",
-    "head": "כלי מחקר מילות מפתח",
-    "volume": 30,
-    "demandSource": "ads"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "מדריך מתכנן מילות המפתח",
-    "title": "המדריך המעשי: איך להשתמש במתכנן מילות המפתח של גוגל למציאת הזדמנויות בחנות שופיפיי",
+    "keyword": "מתכנן מילות המפתח לשופיפיי",
+    "title": "צעד-אחר-צעד: מדריך מתקדם למתכנן מילות המפתח לאיתור ביטויי קנייה רווחיים",
     "intent": "informational",
     "head": "מתכנן מילות מפתח",
-    "volume": 30,
-    "demandSource": "ads"
-  },
-  {
-    "cluster": "wordpress",
-    "keyword": "קידום אתר וורדפרס לבד",
-    "title": "קידום אתר וורדפרס לבד: צ'קליסט משימות SEO חודשי למתחילים.",
-    "intent": "informational",
-    "head": "קידום אתר וורדפרס בגוגל",
-    "volume": 30,
-    "demandSource": "ads"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "כלי מחקר מילות מפתח AI",
-    "title": "מדריך: איך לבצע מחקר מתחרים מתקדם עם 5 כלי AI שלא הכרתם",
-    "intent": "informational",
-    "head": "כלי מחקר מילות מפתח",
-    "volume": 30,
-    "demandSource": "ads"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "השקת חנות בגדים און ליין לעוקבים",
-    "title": "יש לכם קהילה? יש לכם יתרון: כך תהפכו עוקבים באינסטגרם ללקוחות הראשונים בחנות הבגדים החדשה",
-    "intent": "transactional",
-    "head": "חנות בגדים און ליין",
-    "volume": 30,
-    "demandSource": "ads"
-  },
-  {
-    "cluster": "wordpress",
-    "keyword": "כמה עולה לתחזק אתר ווקומרס",
-    "title": "עלות בעלות אמיתית (TCO) של חנות WooCommerce ב-2026: כל התוספים והשירותים שחייבים",
-    "intent": "commercial",
-    "head": "קידום אתר וורדפרס בגוגל",
     "volume": 30,
     "demandSource": "ads"
   },
@@ -2341,18 +2447,6 @@
     "intent": "commercial"
   },
   {
-    "cluster": "geo-ai",
-    "keyword": "כלים למעקב מיקומים ב-AI",
-    "title": "מי עוקב אחרינו? 7 כלים למדידת נראות וציטוטים ב-AI Overviews ו-ChatGPT",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "geo-ai",
-    "keyword": "סכמת השוואת מוצרים ל-AI",
-    "title": "המתחרים ב-Gemini? כך תבנו סכמת השוואה שתגרום ל-AI להמליץ עליכם",
-    "intent": "informational"
-  },
-  {
     "cluster": "seo-shopify",
     "keyword": "ניהול שגיאות 404 בשופיפיי",
     "title": "מדריך 404 לשופיפיי: איך להפוך שגיאות \"עמוד לא נמצא\" למנוע מכירות",
@@ -2363,23 +2457,5 @@
     "keyword": "שיווק לאחר נובמבר",
     "title": "מה עושים עם טראפיק נובמבר בדצמבר-ינואר?",
     "intent": "informational"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "Klaviyo חלופות לשופיפיי",
-    "title": "Klaviyo או Brevo בישראל: השוואת עלויות, פיצ'רים ו-ROI אמיתי",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "ecommerce",
-    "keyword": "שיווק בוואטסאפ עלויות",
-    "title": "כמה עולה שיווק בוואטסאפ API לעומת אפליקציית ביזנס ב-2026?",
-    "intent": "commercial"
-  },
-  {
-    "cluster": "guides",
-    "keyword": "חלופות לקלאביו עלויות",
-    "title": "כמה באמת עולה לעבור מקלאביו? השוואת עלויות וחישוב ROI לחלופות המובילות",
-    "intent": "commercial"
   }
 ]
